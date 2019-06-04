@@ -1,0 +1,15 @@
+# Link
+stexture Data/Textures/Player/link.png
+iwidth 32
+iheight 32
+irun 1
+icast 1
+ispecial 1
+imin_up 2
+imax_up 3
+imin_down 0
+imax_down 1
+imin_left 6
+imax_left 7
+imin_right 4
+imax_right 5

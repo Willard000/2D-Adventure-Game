@@ -1,0 +1,7 @@
+# Default
+Moveable
+iwidth 32
+iheight 32
+moveable_dspeed .1
+Sprite
+sprite_itime 300

@@ -1,0 +1,3 @@
+# Textures
+Player Data/Textures/Player/player.txt
+Object Data/Textures/Objects/objects.txt

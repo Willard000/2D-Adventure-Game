@@ -1,0 +1,14 @@
+
+.gitattributes
+.vs/5.24/v15/.suo
+*.db
+*.opendb
+*.ipch
+*.sln
+*.vcxproj
+*.filters
+*.user
+*.lastbuildstate
+*.tlog
+*.idb
+*.pdb
