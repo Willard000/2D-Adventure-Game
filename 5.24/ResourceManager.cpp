@@ -5,6 +5,7 @@ ResourceManager::ResourceManager(std::shared_ptr<Renderer> renderer) {
 	_textureManager = std::make_shared<TextureManager>(renderer);
 	_renderer = renderer;
 	_map = new Map(0);
+	loadMap(0);
 }
 
 void ResourceManager::renderEntities() {
@@ -20,7 +21,7 @@ void ResourceManager::renderEntity(Entity *entity) {
 	SpriteComponent *sprite = GetSprite(entity);
 
 	if (sprite != nullptr && moveable != nullptr) {
-		_renderer->render(_textureManager->getTextureInfo(entity), moveable->position, sprite);
+		_renderer->render(_textureManager->getSpriteInfo(entity), moveable->position, sprite);
 		return;
 	}
 
@@ -36,9 +37,7 @@ void ResourceManager::renderEntity(Entity *entity) {
 }
 
 void ResourceManager::renderMap() {
-	for (unsigned int i = 0; i < _map->_tiles.size(); i++) {
-		_renderer->render(_textureManager->getTextureInfo(TYPE_TILE, _map->_tiles[i].id), _map->_tiles[i].pos);
-	}
+	_renderer->render(_textureManager->_map, _map->_pos);
 }
 
 void ResourceManager::render() {
@@ -49,4 +48,9 @@ void ResourceManager::render() {
 	renderEntities();
 
 	_renderer->render();
+}
+
+void ResourceManager::loadMap(int id) {
+	_map->load(id);
+	_textureManager->loadMap(_map->_tiles, _map->_pos.w, _map->_pos.h);
 }

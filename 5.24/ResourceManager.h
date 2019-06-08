@@ -19,6 +19,8 @@ public:
 
 	void render();
 
+	void loadMap(int id);
+
 	Entity *getEntity(int id) { return _entityManager->get(id); }
 	Player *getPlayer()       { return _entityManager->getPlayer(); }
 private:

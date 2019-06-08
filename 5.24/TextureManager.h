@@ -6,11 +6,13 @@
 #include "FileReader.h"
 #include "Window.h"
 #include "Texture.h"
+#include "Sprite.h"
 #include "Entity.h"
 
 #ifndef TEXTURE_MANAGER_H
 #define TEXTURE_MANAGER_H
 
+#define FILE_SPRITE "Sprite"
 #define FILE_TEXTURE_PATH "stexture"
 #define FILE_TEXTURE_W "iwidth"
 #define FILE_TEXTURE_H "iheight"
@@ -40,13 +42,22 @@ public:
 
 	void loadTextures(txm::Type type, std::string path);
 	Texture *loadTextureInfo(std::string path);
+	void loadSurfaces(txm::Type type, std::string path);
+	SDL_Surface *loadSurfaceInfo(std::string path);
+	void loadMap(std::vector<Tile> &tiles, const int &width, const int &height);
 
 	const Texture *getTextureInfo(txm::Type type, txm::Key key) { return _textures[type][key]; }
-    Texture *getTextureInfo(Entity *entity) { return _textures[entity->get_type()][entity->get_type_id()]; }
+	Texture *getTextureInfo(Entity *entity) { return _textures[entity->get_type()][entity->get_type_id()]; }
+    Sprite *getSpriteInfo(Entity *entity) { return static_cast<Sprite *>(_textures[entity->get_type()][entity->get_type_id()]); }
 
 	friend class ResourceManager;
 private:
 	std::shared_ptr<Renderer> _renderer;
+
+	typedef std::map<int, SDL_Surface *> Surface_Map;
+	std::map<txm::Type, Surface_Map> _surfaces;
+
+	Texture *_map;
 
 	typedef std::map<txm::Key, Texture *> Texture_Map;
 	std::map<txm::Type, Texture_Map> _textures;

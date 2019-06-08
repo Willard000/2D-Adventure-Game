@@ -36,6 +36,7 @@ private:
 
 	int _id;
 	int _width, _height;
+	SDL_Rect _pos;
 	bool _isLoaded;
 };
 

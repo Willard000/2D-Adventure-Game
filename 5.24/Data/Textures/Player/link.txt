@@ -1,4 +1,5 @@
 # Link
+Sprite
 stexture Data/Textures/Player/link.png
 iwidth 32
 iheight 32

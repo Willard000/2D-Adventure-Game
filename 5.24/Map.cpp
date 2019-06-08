@@ -3,6 +3,9 @@
 const char *MAP_BASE_PATH = "Data/Maps/";
 
 Map::Map(int id) {
+	_pos.x = 0, _pos.y = 0;
+	_pos.w = 0, _pos.h = 0;
+	_width = 0, _height = 0;
 	_isLoaded = load(id);
 }
 
@@ -40,13 +43,16 @@ bool Map::load(int id) {
 			_tiles.push_back(tile);
 		}
 
-		if (_tiles.size() < _width * _height) {
-			printf("Map %d - Too few tiles, loaded: %d, needed: %d", _id, _tiles.size(), _width * _height);
+		if (_tiles.size() < _width * _width) {
+			printf("Map %d - Too few tiles, loaded: %d, needed: %d", _id, _tiles.size(), _width * _width);
 		}
-		else if (_tiles.size() > _width * _height) {
-			printf("Map %d - Too many tiles, loaded: %d, needed: %d", _id, _tiles.size(), _width * _height);
+		else if (_tiles.size() > _width * _width) {
+			printf("Map %d - Too many tiles, loaded: %d, needed: %d", _id, _tiles.size(), _width * _width);
 		}
 	}
+
+	_pos.w = _width * TILE_WIDTH;
+	_pos.h = _height * TILE_HEIGHT;
 
 	return true;
 }

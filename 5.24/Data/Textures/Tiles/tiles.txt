@@ -1,2 +1,3 @@
 # Tiles
-1 Data/Textures/Tiles/grass.txt
+0 Data/Textures/Tiles/grass.txt
+1 Data/Textures/Tiles/grass2.txt

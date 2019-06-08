@@ -18,6 +18,7 @@ Engine::Engine() {
 void Engine::run() {
 	while (_isRunning) {
 		_isRunning = _input->get();
+
 		_input->update();
 		_resourceManager->updateEntities();
 		_resourceManager->render();

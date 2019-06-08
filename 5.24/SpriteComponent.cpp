@@ -13,7 +13,7 @@ void SpriteComponent::update() {
 	}
 }
 
-void SpriteComponent::update(Texture *img) {
+void SpriteComponent::update(Sprite *img) {
 	if ((dir == dir_prev) && (ani == ani_prev) && (ani != CAST) && !is_update) {
 		return;
 	}
@@ -29,23 +29,23 @@ void SpriteComponent::update(Texture *img) {
 			frame = 0;
 		}
 		else if (dir == MoveEvent::MOVE_UP) {
-			if (frame < img->sprite.min_up || frame > img->sprite.max_up) {
-				frame = img->sprite.min_up;
+			if (frame < img->min_up || frame > img->max_up) {
+				frame = img->min_up;
 			}
 		}
 		else if (dir == MoveEvent::MOVE_DOWN) {
-			if (frame < img->sprite.min_down || frame > img->sprite.max_down) {
-				frame = img->sprite.min_down;
+			if (frame < img->min_down || frame > img->max_down) {
+				frame = img->min_down;
 			}
 		}
 		else if (dir == MoveEvent::MOVE_LEFT || dir == MoveEvent::MOVE_UPLEFT|| dir == MoveEvent::MOVE_DOWNLEFT) {
-			if (frame < img->sprite.min_left || frame > img->sprite.max_left) {
-				frame = img->sprite.min_left;
+			if (frame < img->min_left || frame > img->max_left) {
+				frame = img->min_left;
 			}
 		}
 		else if (dir == MoveEvent::MOVE_RIGHT || dir == MoveEvent::MOVE_DOWNLEFT || dir == MoveEvent::MOVE_DOWNRIGHT) {
-			if (frame < img->sprite.min_right || frame > img->sprite.max_right) {
-				frame = img->sprite.min_right;
+			if (frame < img->min_right || frame > img->max_right) {
+				frame = img->min_right;
 			}
 		}
 

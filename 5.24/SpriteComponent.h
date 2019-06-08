@@ -2,7 +2,7 @@
 #include <SDL.h>
 
 #include "Component.h"
-#include "Texture.h"
+#include "Sprite.h"
 #include "Timer.h"
 #include "MoveEvent.h"
 
@@ -17,7 +17,7 @@ struct SpriteComponent : public Component {
 
 	void update();
 
-	void update(Texture *img);
+	void update(Sprite *img);
 
 	Uint8
 		frame = 0, 
