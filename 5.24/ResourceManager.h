@@ -2,6 +2,7 @@
 #include "EntityManager.h"
 #include "TextureManager.h"
 #include "Renderer.h"
+#include "Map.h"
 
 #ifndef RESOURCE_MANAGER_H
 #define RESOURCE_MANAGER_H
@@ -14,6 +15,7 @@ public:
 	void renderEntities();
 
 	void renderEntity(Entity *entity);
+	void renderMap();
 
 	void render();
 
@@ -23,6 +25,7 @@ private:
 	std::shared_ptr<EntityManager> _entityManager;
 	std::shared_ptr<TextureManager> _textureManager;
 	std::shared_ptr<Renderer> _renderer;
+	Map *_map;
 };
 
 #endif

@@ -4,6 +4,7 @@ ResourceManager::ResourceManager(std::shared_ptr<Renderer> renderer) {
 	_entityManager = std::make_shared<EntityManager>();
 	_textureManager = std::make_shared<TextureManager>(renderer);
 	_renderer = renderer;
+	_map = new Map(0);
 }
 
 void ResourceManager::renderEntities() {
@@ -34,10 +35,17 @@ void ResourceManager::renderEntity(Entity *entity) {
 	}
 }
 
+void ResourceManager::renderMap() {
+	for (unsigned int i = 0; i < _map->_tiles.size(); i++) {
+		_renderer->render(_textureManager->getTextureInfo(TYPE_TILE, _map->_tiles[i].id), _map->_tiles[i].pos);
+	}
+}
+
 void ResourceManager::render() {
 	_renderer->clear();
 	_renderer->drawBackground();
 
+	renderMap();
 	renderEntities();
 
 	_renderer->render();

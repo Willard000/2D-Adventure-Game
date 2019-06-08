@@ -41,8 +41,8 @@ public:
 	void loadTextures(txm::Type type, std::string path);
 	Texture *loadTextureInfo(std::string path);
 
-	Texture *getTextureInfo(txm::Type type, txm::Key key) { return _textures[type][key]; }
-	Texture *getTextureInfo(Entity *entity) { return _textures[entity->get_type()][entity->get_type_id()]; }
+	const Texture *getTextureInfo(txm::Type type, txm::Key key) { return _textures[type][key]; }
+    Texture *getTextureInfo(Entity *entity) { return _textures[entity->get_type()][entity->get_type_id()]; }
 
 	friend class ResourceManager;
 private:

@@ -3,7 +3,7 @@
 EntityManager::EntityManager() {
 	_player = new Player(1);
 	ComponentLoader::loadComponents(_player);
-	create(TYPE_OBJECT, 1);
+	//create(TYPE_OBJECT, 1);
 }
 
 EntityManager::~EntityManager() {

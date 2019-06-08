@@ -23,7 +23,7 @@ public:
 	void clear() { SDL_RenderClear(_renderer); }
 
 	SDL_Texture *createTexture(std::string path);
-	void render(Texture *img, const SDL_Rect &pos);
+	void render(const Texture *img, const SDL_Rect &pos);
 	void render(Texture *img, const SDL_Rect &pos, SpriteComponent *sprite);
 
 	void drawRect(const SDL_Rect &rect, const SDL_Color &color, int flag = DRAW_RECT_FULL);

@@ -2,65 +2,6 @@
 
 const char *TEXTURE_BASE_PATH = "Data/Textures/textures.txt";
 
-/*
-TextureManager::TextureManager(std::shared_ptr<Renderer> renderer) {
-	_renderer = renderer;
-
-	FileReader file(TEXTURE_BASE_PATH);
-
-	for (unsigned int i = 0; i < file.size(); i++) {
-		loadTextures(file.first_string(i), file.second_string(i));
-	}
-}
-
-TextureManager::~TextureManager() {
-	for (auto it = _textures.begin(); it != _textures.end(); it++) {
-		for (auto itt = it->second.begin(); itt != it->second.end(); itt++) {
-			delete itt->second;
-		}
-	}
-	_textures.clear();
-}
-
-void TextureManager::loadTextures(txm::Type type, std::string path) {
-	Texture_Map textures;
-	FileReader file(path.c_str());
-
-	for (unsigned int i = 0; i < file.size(); i++) {
-		textures[file.first_int(i)] = loadTextureInfo(file.second_string(i));
-	}
-
-	_textures[type] = textures;
-}
-
-Texture *TextureManager::loadTextureInfo(std::string path) {
-	Texture *img = new Texture();
-	FileReader file(path.c_str());
-
-	for (unsigned int i = 0; i < file.size(); i++) {
-		std::string data = file.first_string(i);
-
-		if (data == FILE_TEXTURE_PATH)						img->texture = _renderer->createTexture(file.second_string(i));
-		else if (data == FILE_TEXTURE_W)					img->rect.w = file.second_int(i);
-		else if (data == FILE_TEXTURE_H)					img->rect.h = file.second_int(i);
-		else if (data == FILE_FRAME_RUN)					img->sprite.run = file.second_int(i);
-		else if (data == FILE_FRAME_CAST)					img->sprite.cast = file.second_int(i);
-		else if (data == FILE_FRAME_SPECIAL)				img->sprite.special = file.second_int(i);
-		else if (data == FILE_FRAME_MIN_UP)					img->sprite.min_up = file.second_int(i);
-		else if (data == FILE_FRAME_MAX_UP)					img->sprite.max_up = file.second_int(i);
-		else if (data == FILE_FRAME_MIN_DOWN)				img->sprite.min_down = file.second_int(i);
-		else if (data == FILE_FRAME_MAX_DOWN)				img->sprite.max_down = file.second_int(i);
-		else if (data == FILE_FRAME_MIN_LEFT)			 	img->sprite.min_left = file.second_int(i);
-		else if (data == FILE_FRAME_MAX_LEFT)			    img->sprite.max_left = file.second_int(i);
-		else if (data == FILE_FRAME_MIN_RIGHT)			    img->sprite.min_right = file.second_int(i);
-		else if (data == FILE_FRAME_MAX_RIGHT)				img->sprite.max_right = file.second_int(i);
-	}
-
-	return img;
-}
-
-*/
-
 TextureManager::TextureManager(std::shared_ptr<Renderer> renderer) {
 	_renderer = renderer;
 

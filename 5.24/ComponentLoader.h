@@ -17,16 +17,16 @@
 #define FILE_MOVEABLE_COMPONENT "Moveable"
 #define FILE_SPRITE_COMPONENT "Sprite"
 
-#define POSITION_WIDTH "iwidth"
-#define POSITION_HEIGHT "iheight"
+#define FILE_POSITION_WIDTH "iwidth"
+#define FILE_POSITION_HEIGHT "iheight"
 
-#define MOVEABLE_WIDTH "iwidth"
-#define MOVEABLE_HEIGHT "iheight"
-#define MOVEABLE_SPEED "moveable_dspeed"
+#define FILE_MOVEABLE_WIDTH "iwidth"
+#define FILE_MOVEABLE_HEIGHT "iheight"
+#define FILE_MOVEABLE_SPEED "moveable_dspeed"
 
-#define SPRITE_WIDTH "iwidth"
-#define SPRITE_HEIGHT "iheight"
-#define SPRITE_TIME "sprite_itime"
+#define FILE_SPRITE_WIDTH "iwidth"
+#define FILE_SPRITE_HEIGHT "iheight"
+#define FILE_SPRITE_TIME "sprite_itime"
 
 
 extern const char *ENTITY_BASE_PATH;

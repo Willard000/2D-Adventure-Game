@@ -25,7 +25,7 @@ SDL_Texture *Renderer::createTexture(std::string path) {
 	return texture;
 }
 
-void Renderer::render(Texture *img, const SDL_Rect &pos) {
+void Renderer::render(const Texture *img, const SDL_Rect &pos) {
 	if (img != nullptr) {
 		SDL_RenderCopy(_renderer, img->texture, NULL, &pos);
 	}

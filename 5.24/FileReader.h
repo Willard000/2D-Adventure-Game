@@ -1,8 +1,6 @@
 #include <string>
-
 #include <fstream>
-//#include <cstdio>
-
+#include <cstdio>
 #include <vector>
 #include <unordered_map>
 
@@ -16,33 +14,6 @@
 
 #define FILE_DELIMITER " "
 #define FILE_COMMENT_CHAR '#'
-
-/*
-namespace freader {
-	typedef std::pair<std::string, std::string> Line;
-	typedef std::vector<Line> Data;
-}
-
-class FileReader {
-public:
-	FileReader(const char *path, bool isRead = true);
-
-	bool read();
-
-	freader::Line &line(unsigned int index)	         { return _data[index];					  }
-	std::string first_string(unsigned int index)     { return _data[index].first;			  }
-	std::string second_string(unsigned int index)    { return _data[index].second;			  }
-	int first_int(unsigned int index)				 { return std::stoi(_data[index].first);  }
-	int second_int(unsigned int index)			     { return std::stoi(_data[index].second); }
-	double second_double(unsigned int index)		 { return std::stod(_data[index].second); }
-	unsigned int size()							     { return _data.size();					  }
-private:
-	bool _isRead;
-	std::string _path;
-	freader::Data _data;
-};
-
-*/
 
 namespace freader {
 	typedef std::unordered_map<std::string, std::string> Data;
