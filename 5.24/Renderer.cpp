@@ -28,7 +28,6 @@ SDL_Texture *Renderer::createTexture(std::string path) {
 SDL_Surface *Renderer::createSurface(std::string path) {
 	SDL_Surface *surface = IMG_Load(path.c_str());
 	if (surface != nullptr) {
-		//SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, COLOR_KEY_R, COLOR_KEY_G, COLOR_KEY_B));
 		return surface;
 	}
 
@@ -69,7 +68,7 @@ SDL_Texture *Renderer::createMapTexture(std::vector<Tile> &tiles, std::map<int, 
 	SDL_Texture *texture = nullptr;
 	for (unsigned int i = 0; i < tiles.size(); i++) {
 		SDL_Rect pos = { 0, 0, 32, 32 };
-		SDL_BlitScaled(tile_surfaces[tiles[i].id], NULL, surface, &tiles[i].pos);
+		SDL_BlitSurface(tile_surfaces[tiles[i].id], NULL, surface, &tiles[i].pos);
 	}
 
 	texture = SDL_CreateTextureFromSurface(_renderer, surface);

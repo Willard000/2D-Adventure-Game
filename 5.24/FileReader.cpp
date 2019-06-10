@@ -41,4 +41,7 @@ bool FileReader::read() {
 	printf("File read in: %f second(s).\n\n", timer.getTime());
 
 	file.close();
+
+	_isRead = true;
+	return true;
 }

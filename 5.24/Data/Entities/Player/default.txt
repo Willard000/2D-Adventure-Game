@@ -2,6 +2,6 @@
 Moveable
 iwidth 32
 iheight 32
-moveable_dspeed .1
+moveable_dspeed 100
 Sprite
 sprite_itime 300

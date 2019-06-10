@@ -18,6 +18,7 @@ public:
 
 	T *getInstance() { return _instance; }
 	MemberFunction getMemberFunction() { return _memberFunction; }
+
 private:
 	T *_instance;
 	MemberFunction _memberFunction;

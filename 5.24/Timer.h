@@ -1,4 +1,4 @@
-#include <time.h>
+#include <SDL.h>
 
 #ifndef TIMER_H
 #define TIMER_H
@@ -6,14 +6,14 @@
 class Timer {
 public:
 	Timer();
-	Timer(int time);
-	void set(int time);
+	Timer(Uint32 time);
+	void set(Uint32 time);
 	void pause();
 
 	bool update();
 
 private:
-	int _time, _prevTime;
+	Uint32 _time, _prevTime;
 	bool _isPaused;
 };
 

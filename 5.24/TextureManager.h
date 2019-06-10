@@ -27,10 +27,11 @@
 #define FILE_FRAME_MAX_LEFT "imax_left"
 #define FILE_FRAME_MIN_RIGHT "imin_right"
 #define FILE_FRAME_MAX_RIGHT "imax_right"
+#define FILE_FRAME_NUM_FRAMES "inum_frames"
 
 extern const char *TEXTURE_BASE_PATH;
 
-namespace txm {
+namespace tmanager {
 	typedef std::string Type;
 	typedef int Key;
 }
@@ -40,13 +41,13 @@ public:
 	TextureManager(std::shared_ptr<Renderer> renderer);
 	~TextureManager();
 
-	void loadTextures(txm::Type type, std::string path);
+	void loadTextures(tmanager::Type type, std::string path);
 	Texture *loadTextureInfo(std::string path);
-	void loadSurfaces(txm::Type type, std::string path);
+	void loadSurfaces(tmanager::Type type, std::string path);
 	SDL_Surface *loadSurfaceInfo(std::string path);
 	void loadMap(std::vector<Tile> &tiles, const int &width, const int &height);
 
-	const Texture *getTextureInfo(txm::Type type, txm::Key key) { return _textures[type][key]; }
+	const Texture *getTextureInfo(tmanager::Type type, tmanager::Key key) { return _textures[type][key]; }
 	Texture *getTextureInfo(Entity *entity) { return _textures[entity->get_type()][entity->get_type_id()]; }
     Sprite *getSpriteInfo(Entity *entity) { return static_cast<Sprite *>(_textures[entity->get_type()][entity->get_type_id()]); }
 
@@ -55,12 +56,12 @@ private:
 	std::shared_ptr<Renderer> _renderer;
 
 	typedef std::map<int, SDL_Surface *> Surface_Map;
-	std::map<txm::Type, Surface_Map> _surfaces;
+	std::map<tmanager::Type, Surface_Map> _surfaces;
 
 	Texture *_map;
 
-	typedef std::map<txm::Key, Texture *> Texture_Map;
-	std::map<txm::Type, Texture_Map> _textures;
+	typedef std::map<tmanager::Key, Texture *> Texture_Map;
+	std::map<tmanager::Type, Texture_Map> _textures;
 };
 
 #endif

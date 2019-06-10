@@ -43,11 +43,12 @@ bool Map::load(int id) {
 			_tiles.push_back(tile);
 		}
 
-		if (_tiles.size() < _width * _width) {
-			printf("Map %d - Too few tiles, loaded: %d, needed: %d", _id, _tiles.size(), _width * _width);
+		int size = _width * _height;
+		if ((int)_tiles.size() < size) {
+			printf("Map %d - Too few tiles, loaded: %d, needed: %d", _id, _tiles.size(), size);
 		}
-		else if (_tiles.size() > _width * _width) {
-			printf("Map %d - Too many tiles, loaded: %d, needed: %d", _id, _tiles.size(), _width * _width);
+		else if ((int)_tiles.size() > size) {
+			printf("Map %d - Too many tiles, loaded: %d, needed: %d", _id, _tiles.size(), size);
 		}
 	}
 

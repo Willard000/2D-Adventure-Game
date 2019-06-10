@@ -55,15 +55,7 @@ void SpriteComponent::update(Sprite *img) {
 	ani_prev = ani;
 	ani = NULL;
 
-	if (frame > Sprite::SPRITE_SHEET_WIDTH - 1) {
-		pos.x = (frame % Sprite::SPRITE_SHEET_WIDTH * img->rect.w);
-		pos.y = (frame / Sprite::SPRITE_SHEET_WIDTH * img->rect.h);
-	}
-	else if (frame > 0) {
-		pos.x = frame * img->rect.w;
-	}
-	else {
-		pos.x = 0;
-		pos.y = 0;
-	}
+	const Sprite::Frame sprite_frame = img->get_frame(frame);
+	pos.x = sprite_frame.x;
+	pos.y = sprite_frame.y;
 }

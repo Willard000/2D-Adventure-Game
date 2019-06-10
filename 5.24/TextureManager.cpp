@@ -37,7 +37,7 @@ TextureManager::~TextureManager() {
 	delete _map;
 }
 
-void TextureManager::loadTextures(txm::Type type, std::string path) {
+void TextureManager::loadTextures(tmanager::Type type, std::string path) {
 	Texture_Map textures;
 	FileReader file(path.c_str());
 
@@ -77,12 +77,15 @@ Texture *TextureManager::loadTextureInfo(std::string path) {
 		if (file.exists(FILE_FRAME_MAX_LEFT)) sprite->max_left = file.get_int(FILE_FRAME_MAX_LEFT);
 		if (file.exists(FILE_FRAME_MIN_RIGHT)) sprite->min_right = file.get_int(FILE_FRAME_MIN_RIGHT);
 		if (file.exists(FILE_FRAME_MAX_RIGHT)) sprite->max_right = file.get_int(FILE_FRAME_MAX_RIGHT);
+		if (file.exists(FILE_FRAME_NUM_FRAMES)) sprite->num_frames = file.get_int(FILE_FRAME_NUM_FRAMES);
+
+		sprite->load_frames();
 	}
 
 	return isSprite ? sprite : img;
 }
 
-void TextureManager::loadSurfaces(txm::Type type, std::string path) {
+void TextureManager::loadSurfaces(tmanager::Type type, std::string path) {
 	Surface_Map surfaces;
 	FileReader file(path.c_str());
 

@@ -59,13 +59,18 @@ public:
 		handlers->push_back(new MemberHandlerFunction<T, EventType>(instance, memberFunction));
 	}
 
-	//might delete all events needs to be debugged
 	template <class T, class EventType>
 	void unsubscribe(T *instance, void (T::*memberFunction)(EventType *)) {
 		HandlerList *handlers = _subscribers[typeid(EventType)];
 
-		if (handlers != nullptr) {
-			_subscribers.erase(typeid(EventType));
+		for (auto it = handlers->begin(); it != handlers->end(); it++) {
+			MemberHandlerFunction<T, EventType> *handler = static_cast<MemberHandlerFunction<T, EventType> *>(*it);
+
+			if (handler->getInstance() == instance && handler->getMemberFunction() == memberFunction) {
+				delete (*it);
+				handlers->erase(it);
+				break;
+			}
 		}
 	}
 private:

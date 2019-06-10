@@ -14,3 +14,4 @@ imin_left 6
 imax_left 7
 imin_right 4
 imax_right 5
+inum_frames 8
