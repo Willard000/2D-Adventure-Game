@@ -1,12 +1,17 @@
 #include "InputHandler.h"
 
 InputHandler::InputHandler() : EventHandler() {
-	subscribe(this, &InputHandler::move);
+	subscribe(this, &InputHandler::moveEntity);
+	subscribe(this, &InputHandler::moveCamera);
 }
 
-void InputHandler::move(MoveEvent *move_event) {
-	MoveableComponent *moveable = GetMoveable(move_event->entity);
+void InputHandler::moveEntity(Event_MoveEntity *event) {
+	MoveableComponent *moveable = GetMoveable(event->entity);
 	if (moveable != nullptr) {
-		moveable->move(move_event->direction, move_event->time);
+		moveable->move(event->direction, event->time);
 	}
+}
+
+void InputHandler::moveCamera(Event_MoveCamera *event) {
+	event->window->moveCamera(event->direction, event->time);
 }

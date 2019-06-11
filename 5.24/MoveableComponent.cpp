@@ -6,16 +6,16 @@ MoveableComponent::MoveableComponent(Entity *entity_, double x_, double y_, int 
 }
 
 void MoveableComponent::move(int dir, double time) {
-	if (dir == MoveEvent::MOVE_UP) {
+	if (dir == Event::UP) {
 		pos_y -= speed * time;
 	}
-	else if (dir == MoveEvent::MOVE_DOWN) {
+	else if (dir == Event::DOWN) {
 		pos_y += speed * time;
 	}
-	else if (dir == MoveEvent::MOVE_LEFT) {
+	else if (dir == Event::LEFT) {
 		pos_x -= speed * time;
 	}
-	else if (dir == MoveEvent::MOVE_RIGHT) {
+	else if (dir == Event::RIGHT) {
 		pos_x += speed * time;
 	}
 
@@ -29,16 +29,16 @@ void MoveableComponent::move(int dir, double time) {
 }
 
 void MoveableComponent::move(int dir, double dis, double time) {
-	if (dir == MoveEvent::MOVE_UP) {
+	if (dir == Event::UP) {
 		pos_y -= dis * time;
 	}
-	else if (dir == MoveEvent::MOVE_DOWN) {
+	else if (dir == Event::DOWN) {
 		pos_y += dis * time;
 	}
-	else if (dir == MoveEvent::MOVE_LEFT) {
+	else if (dir == Event::LEFT) {
 		pos_x -= dis * time;
 	}
-	else if (dir == MoveEvent::MOVE_RIGHT) {
+	else if (dir == Event::RIGHT) {
 		pos_x += dis * time;
 	}
 

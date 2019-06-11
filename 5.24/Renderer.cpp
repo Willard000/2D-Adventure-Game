@@ -1,7 +1,8 @@
 #include "Renderer.h"
 
-Renderer::Renderer(SDL_Window *window, SDL_Rect background, SDL_Color backgroundColor) {
+Renderer::Renderer(SDL_Window *window, Camera *camera, SDL_Rect background, SDL_Color backgroundColor) {
 	_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	_camera = camera;
 	_background = background;
 	_backgroundColor = backgroundColor;
 }
@@ -37,21 +38,23 @@ SDL_Surface *Renderer::createSurface(std::string path) {
 }
 
 void Renderer::render(const Texture *img, const SDL_Rect &pos) {
+	SDL_Rect des = { pos.x - (int)_camera->x, pos.y - (int)_camera->y, pos.w, pos.h };
 	if (img != nullptr) {
-		SDL_RenderCopy(_renderer, img->texture, NULL, &pos);
+		SDL_RenderCopy(_renderer, img->texture, NULL, &des);
 	}
 	else {
-		drawRect(pos, PLACE_HOLDER_COLOR);
+		drawRect(des, PLACE_HOLDER_COLOR);
 	}
 }
 
 void Renderer::render(Sprite *img, const SDL_Rect &pos, SpriteComponent *sprite) {
+	SDL_Rect des = { pos.x - (int)_camera->x, pos.y - (int)_camera->y, pos.w, pos.h };
 	if (img != nullptr) {
 		sprite->update(img);
-		SDL_RenderCopy(_renderer, img->texture, &sprite->pos, &pos);
+		SDL_RenderCopy(_renderer, img->texture, &sprite->pos, &des);
 	}
 	else {
-		drawRect(pos, PLACE_HOLDER_COLOR);
+		drawRect(des, PLACE_HOLDER_COLOR);
 	}
 }
 

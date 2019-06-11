@@ -1,6 +1,7 @@
 #include "EntityManager.h"
 
-EntityManager::EntityManager() {
+EntityManager::EntityManager(std::shared_ptr<System> system) {
+	_system = system;
 	_player = new Player(1);
 	ComponentLoader::loadComponents(_player);
 	//create(TYPE_OBJECT, 1);

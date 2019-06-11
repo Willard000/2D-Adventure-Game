@@ -1,6 +1,7 @@
 
 #include "EventHandler.h"
-#include "MoveEvent.h"
+#include "Event_MoveEntity.h"
+#include "Event_MoveCamera.h"
 #include "MoveableComponent.h"
 
 #ifndef INPUT_HANDLER_H
@@ -10,7 +11,8 @@ class InputHandler : public EventHandler {
 public:
 	InputHandler();
 private:
-	void move(MoveEvent *move_event);
+	void moveEntity(Event_MoveEntity *event);
+	void moveCamera(Event_MoveCamera *event);
 };
 
 #endif

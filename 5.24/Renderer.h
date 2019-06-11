@@ -8,6 +8,7 @@
 #include "Texture.h"
 #include "SpriteComponent.h"
 #include "Map.h"
+#include "Camera.h"
 
 #ifndef RENDERER_H
 #define RENDERER_H
@@ -24,7 +25,7 @@
 
 class Renderer {
 public:
-	Renderer(SDL_Window *window, SDL_Rect background, SDL_Color backgroundColor);
+	Renderer(SDL_Window *window, Camera *camera, SDL_Rect background, SDL_Color backgroundColor);
 	~Renderer();
 
 	void render() { SDL_RenderPresent(_renderer); }
@@ -49,6 +50,7 @@ private:
 	const SDL_Color PLACE_HOLDER_COLOR = { 255, 204, 255, 255 };
 
 	SDL_Renderer *_renderer;
+	Camera *_camera;
 	SDL_Rect _background;
 	SDL_Color _backgroundColor;
 };

@@ -2,7 +2,7 @@
 
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
-#include "MoveEvent.h"
+#include "Event_MoveEntity.h"
 #include "FileReader.h"
 
 #ifndef MOVEABLE_COMPONENT_H

@@ -58,15 +58,30 @@ bool Input::isMouseHeld(int &mouse_x, int &mouse_y, const unsigned int &button) 
 
 void Input::update() {
 	if (isHeld(SDL_SCANCODE_W)) {
-		_inputHandler->publish(new MoveEvent(_player, MoveEvent::MOVE_UP, _clock->getTime()));
+		_inputHandler->publish(new Event_MoveEntity(_player, Event::UP, _clock->getTime()));
 	}
 	if (isHeld(SDL_SCANCODE_S)) {
-		_inputHandler->publish(new MoveEvent(_player, MoveEvent::MOVE_DOWN, _clock->getTime()));
+		_inputHandler->publish(new Event_MoveEntity(_player, Event::DOWN, _clock->getTime()));
 	}
 	if (isHeld(SDL_SCANCODE_A)) {
-		_inputHandler->publish(new MoveEvent(_player, MoveEvent::MOVE_LEFT, _clock->getTime()));
+		_inputHandler->publish(new Event_MoveEntity(_player, Event::LEFT, _clock->getTime()));
 	}
 	if (isHeld(SDL_SCANCODE_D)) {
-		_inputHandler->publish(new MoveEvent(_player, MoveEvent::MOVE_RIGHT, _clock->getTime()));
+		_inputHandler->publish(new Event_MoveEntity(_player, Event::RIGHT, _clock->getTime()));
+	}
+	if (isHeld(SDL_SCANCODE_I)) {
+		_inputHandler->publish(new Event_MoveCamera(_system->getWindow().get(), Event::UP, _clock->getTime()));
+	}
+	if (isHeld(SDL_SCANCODE_K)) {
+		_inputHandler->publish(new Event_MoveCamera(_system->getWindow().get(), Event::DOWN, _clock->getTime()));
+	}
+	if (isHeld(SDL_SCANCODE_J)) {
+		_inputHandler->publish(new Event_MoveCamera(_system->getWindow().get(), Event::LEFT, _clock->getTime()));
+	}
+	if (isHeld(SDL_SCANCODE_L)) {
+		_inputHandler->publish(new Event_MoveCamera(_system->getWindow().get(), Event::RIGHT, _clock->getTime()));
+	}
+	if (isKey(SDL_SCANCODE_O)) {
+		_system->getWindow()->toggleCamera();
 	}
 }

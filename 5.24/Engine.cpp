@@ -1,9 +1,9 @@
 #include "Engine.h"
 
 Engine::Engine() {
-	_system = std::make_shared<System>(true);
+	_system = std::make_shared<System>();
 	_clock = std::make_shared<Clock>(-1);
-	_resourceManager = std::make_shared<ResourceManager>(_system->getWindow()->getRenderer());
+	_resourceManager = std::make_shared<ResourceManager>(_system);
 	_inputHandler = std::make_shared<InputHandler>();
 	_input = std::make_shared<Input>(
 		_system,
@@ -20,7 +20,9 @@ void Engine::run() {
 		_isRunning = _input->get();
 
 		_input->update();
-		_resourceManager->updateEntities();
+
+		_resourceManager->update();
+
 		_resourceManager->render();
 
 		if (_clock->update()) {

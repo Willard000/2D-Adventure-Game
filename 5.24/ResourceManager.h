@@ -1,7 +1,7 @@
 
 #include "EntityManager.h"
 #include "TextureManager.h"
-#include "Renderer.h"
+#include "System.h"
 #include "Map.h"
 
 #ifndef RESOURCE_MANAGER_H
@@ -9,9 +9,9 @@
 
 class ResourceManager {
 public:
-	ResourceManager(std::shared_ptr<Renderer> renderer);
+	ResourceManager(std::shared_ptr<System> system);
 	
-	void updateEntities() { _entityManager->update(); }
+	void update();
 	void renderEntities();
 
 	void renderEntity(Entity *entity);
@@ -26,6 +26,7 @@ public:
 private:
 	std::shared_ptr<EntityManager> _entityManager;
 	std::shared_ptr<TextureManager> _textureManager;
+	std::shared_ptr<System> _system;
 	std::shared_ptr<Renderer> _renderer;
 	Map *_map;
 };

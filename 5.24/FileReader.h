@@ -29,6 +29,7 @@ public:
 	std::string get_string(std::string key) {return _data[key];}
 	int get_int(std::string key) { return std::stoi(_data[key]); }
 	double get_double(std::string key) { return std::stod(_data[key]); }
+	bool get_bool(std::string key) { return (bool)std::stoi(_data[key]); }
 
 	bool exists(std::string key) { return _data.find(key) != _data.end(); }
 

@@ -1,11 +1,17 @@
 #include "ResourceManager.h"
 
-ResourceManager::ResourceManager(std::shared_ptr<Renderer> renderer) {
-	_entityManager = std::make_shared<EntityManager>();
-	_textureManager = std::make_shared<TextureManager>(renderer);
-	_renderer = renderer;
+ResourceManager::ResourceManager(std::shared_ptr<System> system) {
+	_entityManager = std::make_shared<EntityManager>(system);
+	_textureManager = std::make_shared<TextureManager>(system->getWindow()->getRenderer());
+	_system = system;
+	_renderer = system->getWindow()->getRenderer();
 	_map = new Map(0);
 	loadMap(0);
+}
+
+void ResourceManager::update() {
+	_entityManager->update();
+	_system->getWindow()->updateCamera(_entityManager->_player, _map->_pos.w, _map->_pos.h);
 }
 
 void ResourceManager::renderEntities() {

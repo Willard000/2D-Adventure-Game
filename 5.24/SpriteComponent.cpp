@@ -28,22 +28,22 @@ void SpriteComponent::update(Sprite *img) {
 		if (dir == NULL) {
 			frame = 0;
 		}
-		else if (dir == MoveEvent::MOVE_UP) {
+		else if (dir == Event::UP) {
 			if (frame < img->min_up || frame > img->max_up) {
 				frame = img->min_up;
 			}
 		}
-		else if (dir == MoveEvent::MOVE_DOWN) {
+		else if (dir == Event::DOWN) {
 			if (frame < img->min_down || frame > img->max_down) {
 				frame = img->min_down;
 			}
 		}
-		else if (dir == MoveEvent::MOVE_LEFT || dir == MoveEvent::MOVE_UPLEFT|| dir == MoveEvent::MOVE_DOWNLEFT) {
+		else if (dir == Event::LEFT || dir == Event::UPLEFT|| dir == Event::DOWNLEFT) {
 			if (frame < img->min_left || frame > img->max_left) {
 				frame = img->min_left;
 			}
 		}
-		else if (dir == MoveEvent::MOVE_RIGHT || dir == MoveEvent::MOVE_DOWNLEFT || dir == MoveEvent::MOVE_DOWNRIGHT) {
+		else if (dir == Event::RIGHT || dir == Event::DOWNLEFT || dir == Event::DOWNRIGHT) {
 			if (frame < img->min_right || frame > img->max_right) {
 				frame = img->min_right;
 			}

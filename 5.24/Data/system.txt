@@ -1,0 +1,17 @@
+# System
+
+# Console
+iconsole_x -1100
+iconsole_y 450
+iconsole_w 1100
+iconsole_h 600
+bconsole_show 1
+
+# Window
+swindow_title ...
+iwindow_x 150
+iwindow_y 100
+iwindow_w 1600
+iwindow_h 900
+window_color 185 255 255 255
+dcamera_speed 500.0
