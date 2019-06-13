@@ -1,11 +1,14 @@
 #include "TextureManager.h"
 
+#include "Environment.h"
+#include "WindowManager.h"
+
+#include "FileReader.h"
+
 const char *TEXTURE_BASE_PATH = "Data/Textures/textures.txt";
 const char *SURFACE_BASE_PATH = "Data/Textures/surfaces.txt";
 
-TextureManager::TextureManager(std::shared_ptr<Renderer> renderer) {
-	_renderer = renderer;
-
+TextureManager::TextureManager() {
 	FileReader texture_file(TEXTURE_BASE_PATH);
 	for (freader::iterator it = texture_file.begin(); it != texture_file.end(); it++) {
 		loadTextures(it->first, it->second);
@@ -56,14 +59,14 @@ Texture *TextureManager::loadTextureInfo(std::string path) {
 
 	if (!isSprite) {
 		img = new Texture();
-		if (file.exists(FILE_TEXTURE_PATH)) img->texture = _renderer->createTexture(file.get_string(FILE_TEXTURE_PATH));
+		if (file.exists(FILE_TEXTURE_PATH)) img->texture = Environment::get().getWindowManager()->getRenderer()->createTexture(file.get_string(FILE_TEXTURE_PATH));
 		if (file.exists(FILE_TEXTURE_W)) img->rect.w = file.get_int(FILE_TEXTURE_W);
 		if (file.exists(FILE_TEXTURE_H)) img->rect.h = file.get_int(FILE_TEXTURE_H);
 	}
 
 	if (isSprite) {
 		sprite = new Sprite();
-		if (file.exists(FILE_TEXTURE_PATH)) sprite->texture = _renderer->createTexture(file.get_string(FILE_TEXTURE_PATH));
+		if (file.exists(FILE_TEXTURE_PATH)) sprite->texture = Environment::get().getWindowManager()->getWindow()->getRenderer()->createTexture(file.get_string(FILE_TEXTURE_PATH));
 		if (file.exists(FILE_TEXTURE_W)) sprite->rect.w = file.get_int(FILE_TEXTURE_W);
 		if (file.exists(FILE_TEXTURE_H)) sprite->rect.h = file.get_int(FILE_TEXTURE_H);
 		if (file.exists(FILE_FRAME_RUN)) sprite->run = file.get_int(FILE_FRAME_RUN);
@@ -100,11 +103,11 @@ SDL_Surface *TextureManager::loadSurfaceInfo(std::string path) {
 	SDL_Surface *surface = nullptr;
 	FileReader file(path.c_str());
 
-	if (file.exists(FILE_TEXTURE_PATH)) surface = _renderer->createSurface(file.get_string(FILE_TEXTURE_PATH));
+	if (file.exists(FILE_TEXTURE_PATH)) surface = Environment::get().getWindowManager()->getRenderer()->createSurface(file.get_string(FILE_TEXTURE_PATH));
 
 	return surface;
 }
 
 void TextureManager::loadMap(std::vector<Tile> &tiles, const int &width, const int &height) {
-	_map->texture = _renderer->createMapTexture(tiles, _surfaces[TYPE_TILE], width, height);
+	_map->texture = Environment::get().getWindowManager()->getRenderer()->createMapTexture(tiles, _surfaces[TYPE_TILE], width, height);
 }

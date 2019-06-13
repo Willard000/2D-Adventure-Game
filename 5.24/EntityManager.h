@@ -3,18 +3,12 @@
 #include "Entity.h"
 #include "Player.h"
 
-#include "ComponentLoader.h"
-#include "MoveableComponent.h"
-#include "SpriteComponent.h"
-
-#include "System.h"
-
 #ifndef ENTITY_MANAGER_H
 #define ENTITY_MANAGER_H
 
 class EntityManager {
 public:
-	EntityManager(std::shared_ptr<System> system);
+	EntityManager();
 	~EntityManager();
 
 	void create(std::string type, int type_id);
@@ -28,8 +22,6 @@ public:
 
 	friend class ResourceManager;
 private:
-	std::shared_ptr<System> _system;
-
 	std::map<int, Entity *> _entities;
 	Player *_player;
 };

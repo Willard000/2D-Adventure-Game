@@ -1,8 +1,8 @@
 
 #include "EventHandler.h"
+
 #include "Event_MoveEntity.h"
 #include "Event_MoveCamera.h"
-#include "MoveableComponent.h"
 
 #ifndef INPUT_HANDLER_H
 #define INPUT_HANDLER_H

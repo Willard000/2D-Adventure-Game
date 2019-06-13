@@ -4,8 +4,6 @@
 
 #include <SDL.h>
 
-#include "FileReader.h"
-
 #ifndef MAP_H
 #define MAP_H
 
@@ -29,6 +27,10 @@ public:
 	Map(int id);
 
 	bool load(int id);
+
+	int get_id() { return _id; }
+	int getWidth() { return _pos.w; }
+	int getHeight() { return _pos.h; }
 
 	friend class ResourceManager;
 private:

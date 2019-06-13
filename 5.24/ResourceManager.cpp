@@ -1,17 +1,22 @@
 #include "ResourceManager.h"
 
-ResourceManager::ResourceManager(std::shared_ptr<System> system) {
-	_entityManager = std::make_shared<EntityManager>(system);
-	_textureManager = std::make_shared<TextureManager>(system->getWindow()->getRenderer());
-	_system = system;
-	_renderer = system->getWindow()->getRenderer();
+#include "Environment.h"
+#include "WindowManager.h"
+
+#include "PositionComponent.h"
+#include "MoveableComponent.h"
+#include "SpriteComponent.h"
+
+ResourceManager::ResourceManager() {
+	_entityManager = std::make_shared<EntityManager>();
+	_textureManager = std::make_shared<TextureManager>();
 	_map = new Map(0);
 	loadMap(0);
 }
 
 void ResourceManager::update() {
 	_entityManager->update();
-	_system->getWindow()->updateCamera(_entityManager->_player, _map->_pos.w, _map->_pos.h);
+	Environment::get().getWindowManager()->getWindow()->getCamera()->center(_entityManager->_player); // move this
 }
 
 void ResourceManager::renderEntities() {
@@ -27,33 +32,33 @@ void ResourceManager::renderEntity(Entity *entity) {
 	SpriteComponent *sprite = GetSprite(entity);
 
 	if (sprite != nullptr && moveable != nullptr) {
-		_renderer->render(_textureManager->getSpriteInfo(entity), moveable->position, sprite);
+		Environment::get().getWindowManager()->getRenderer()->render(_textureManager->getSpriteInfo(entity), moveable->position, sprite);
 		return;
 	}
 
 	if (moveable != nullptr) {
-		_renderer->render(_textureManager->getTextureInfo(entity), moveable->position);
+		Environment::get().getWindowManager()->getRenderer()->render(_textureManager->getTextureInfo(entity), moveable->position);
 		return;
 	}
 
 	PositionComponent *position = GetPosition(entity);
 	if (position != nullptr) {
-		_renderer->render(_textureManager->getTextureInfo(entity), position->position);
+		Environment::get().getWindowManager()->getRenderer()->render(_textureManager->getTextureInfo(entity), position->position);
 	}
 }
 
 void ResourceManager::renderMap() {
-	_renderer->render(_textureManager->_map, _map->_pos);
+	Environment::get().getWindowManager()->getRenderer()->render(_textureManager->_map, _map->_pos);
 }
 
 void ResourceManager::render() {
-	_renderer->clear();
-	_renderer->drawBackground();
+	Environment::get().getWindowManager()->getRenderer()->clear();
+	Environment::get().getWindowManager()->getRenderer()->drawBackground();
 
 	renderMap();
 	renderEntities();
 
-	_renderer->render();
+	Environment::get().getWindowManager()->getWindow()->getRenderer()->render();
 }
 
 void ResourceManager::loadMap(int id) {

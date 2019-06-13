@@ -38,7 +38,7 @@ SDL_Surface *Renderer::createSurface(std::string path) {
 }
 
 void Renderer::render(const Texture *img, const SDL_Rect &pos) {
-	SDL_Rect des = { pos.x - (int)_camera->x, pos.y - (int)_camera->y, pos.w, pos.h };
+	SDL_Rect des = { pos.x - (int)_camera->_x, pos.y - (int)_camera->_y, pos.w, pos.h };
 	if (img != nullptr) {
 		SDL_RenderCopy(_renderer, img->texture, NULL, &des);
 	}
@@ -48,7 +48,7 @@ void Renderer::render(const Texture *img, const SDL_Rect &pos) {
 }
 
 void Renderer::render(Sprite *img, const SDL_Rect &pos, SpriteComponent *sprite) {
-	SDL_Rect des = { pos.x - (int)_camera->x, pos.y - (int)_camera->y, pos.w, pos.h };
+	SDL_Rect des = { pos.x - (int)_camera->_x, pos.y - (int)_camera->_y, pos.w, pos.h };
 	if (img != nullptr) {
 		sprite->update(img);
 		SDL_RenderCopy(_renderer, img->texture, &sprite->pos, &des);

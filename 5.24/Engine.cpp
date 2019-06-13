@@ -1,38 +1,50 @@
 #include "Engine.h"
 
+#include "Environment.h"
+#include "Clock.h"
+#include "WindowManager.h"
+#include "ScriptManager.h"
+#include "ResourceManager.h"
+#include "InputManager.h"
+
 Engine::Engine() {
-	_system = std::make_shared<System>();
-	_clock = std::make_shared<Clock>(-1);
-	_resourceManager = std::make_shared<ResourceManager>(_system);
-	_inputHandler = std::make_shared<InputHandler>();
-	_input = std::make_shared<Input>(
-		_system,
-		_clock,
-		_inputHandler,
-		_resourceManager->getPlayer()
-	);
+	buildEnvironment();
 
 	_isRunning = true;
 }
 
 void Engine::run() {
 	while (_isRunning) {
-		_isRunning = _input->get();
+		_isRunning = _environment.getInputManager()->get();
 
-		_input->update();
+		_environment.getInputManager()->update();
 
-		_resourceManager->update();
+		_environment.getScriptManager()->run("Data/Lua/test.lua");
 
-		_resourceManager->render();
+		_environment.getResourceManager()->update();
 
-		if (_clock->update()) {
-			updateTitle();
+		_environment.getResourceManager()->render();
+
+		if (_environment.getClock()->update()) {
+			_environment.getWindowManager()->updateWindowTitle();
 		}
 	}
 }
 
-void Engine::updateTitle() {
-	static std::string title;
-	title = WINDOW_TITLE + " fms: " + std::to_string(_clock->getFMS());
-	_system->getWindow()->setTitle(title);
+void Engine::buildEnvironment() {
+	Clock *clock = new Clock();
+	_environment.setClock(clock);
+
+	WindowManager *windowManager = new WindowManager();
+	_environment.setWindowManager(windowManager);
+	
+	ScriptManager *scriptManager = new ScriptManager();
+	_environment.setScriptManager(scriptManager);
+
+	ResourceManager *resourceManager = new ResourceManager();
+	_environment.setResourceManager(resourceManager);
+
+	InputManager *inputManager = new InputManager();
+	_environment.setInputManager(inputManager);
+
 }

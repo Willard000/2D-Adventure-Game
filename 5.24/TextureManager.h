@@ -3,11 +3,10 @@
 
 #include <SDL.h>
 
-#include "FileReader.h"
-#include "Window.h"
 #include "Texture.h"
 #include "Sprite.h"
 #include "Entity.h"
+#include "Map.h"
 
 #ifndef TEXTURE_MANAGER_H
 #define TEXTURE_MANAGER_H
@@ -38,13 +37,15 @@ namespace tmanager {
 
 class TextureManager {
 public:
-	TextureManager(std::shared_ptr<Renderer> renderer);
+	TextureManager();
 	~TextureManager();
 
 	void loadTextures(tmanager::Type type, std::string path);
 	Texture *loadTextureInfo(std::string path);
+
 	void loadSurfaces(tmanager::Type type, std::string path);
 	SDL_Surface *loadSurfaceInfo(std::string path);
+
 	void loadMap(std::vector<Tile> &tiles, const int &width, const int &height);
 
 	const Texture *getTextureInfo(tmanager::Type type, tmanager::Key key) { return _textures[type][key]; }
@@ -53,8 +54,6 @@ public:
 
 	friend class ResourceManager;
 private:
-	std::shared_ptr<Renderer> _renderer;
-
 	typedef std::map<int, SDL_Surface *> Surface_Map;
 	std::map<tmanager::Type, Surface_Map> _surfaces;
 

@@ -1,5 +1,7 @@
 #include "Map.h"
 
+#include "FileReader.h"
+
 const char *MAP_BASE_PATH = "Data/Maps/";
 
 Map::Map(int id) {

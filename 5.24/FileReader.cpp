@@ -15,9 +15,7 @@ bool FileReader::read() {
 		return true;
 	}
 
-	Clock timer(-1);
-
-	printf("\nReading file: \"%s\".\n", _path.c_str());
+	//printf("\nReading file: \"%s\".\n", _path.c_str());
 	std::fstream file(_path.c_str());
 
 	if (!file.is_open()) {
@@ -36,9 +34,6 @@ bool FileReader::read() {
 			_data[key] = data;
 		}
 	}
-
-	timer.update();
-	printf("File read in: %f second(s).\n\n", timer.getTime());
 
 	file.close();
 

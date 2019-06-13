@@ -4,7 +4,6 @@
 #include "Component.h"
 #include "Sprite.h"
 #include "Timer.h"
-#include "Event.h"
 
 #ifndef SPRITE_COMPONENT_H
 #define SPRITE_COMPONENT_H

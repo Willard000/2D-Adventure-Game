@@ -1,5 +1,7 @@
 #include "SpriteComponent.h"
 
+#include "Event.h"
+
 SpriteComponent::SpriteComponent(Entity *entity_, int w, int h, int time_)
 	: Component(entity_) {
 		pos.w = w;

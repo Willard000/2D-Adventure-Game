@@ -1,20 +1,18 @@
 
 #include "Event.h"
-#include "Window.h"
+#include "Camera.h"
 
 #ifndef EVENT_MOVE_CAMERA
 #define EVENT_MOVE_CAMERA
 
 struct Event_MoveCamera : public Event {
-	Event_MoveCamera(Window *window_, int direction_, double time_) {
-		window = window_;
+	Event_MoveCamera(Camera *camera_, int direction_) {
+		camera = camera_;
 		direction = direction_;
-		time = time_;
 	}
 
-	Window *window;
+	Camera *camera;
 	int direction;
-	double time;
 };
 
 #endif

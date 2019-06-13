@@ -14,4 +14,9 @@ iwindow_y 100
 iwindow_w 1600
 iwindow_h 900
 window_color 185 255 255 255
-dcamera_speed 500.0
+
+# Camera
+dcamera_speed 1000.0
+
+# Clock
+iclock_fps -1

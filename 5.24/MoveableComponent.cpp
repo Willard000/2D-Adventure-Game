@@ -1,22 +1,28 @@
 #include "MoveableComponent.h"
 
+#include "Environment.h"
+#include "Clock.h"
+
+#include "Event.h"
+#include "SpriteComponent.h"
+
 MoveableComponent::MoveableComponent(Entity *entity_, double x_, double y_, int w_, int h_, double speed_) 
 	: PositionComponent(entity_, x_, y_, w_, h_) {
 		speed = speed_;
 }
 
-void MoveableComponent::move(int dir, double time) {
+void MoveableComponent::move(int dir) {
 	if (dir == Event::UP) {
-		pos_y -= speed * time;
+		pos_y -= speed * Environment::get().getClock()->getTime();
 	}
 	else if (dir == Event::DOWN) {
-		pos_y += speed * time;
+		pos_y += speed * Environment::get().getClock()->getTime();
 	}
 	else if (dir == Event::LEFT) {
-		pos_x -= speed * time;
+		pos_x -= speed * Environment::get().getClock()->getTime();
 	}
 	else if (dir == Event::RIGHT) {
-		pos_x += speed * time;
+		pos_x += speed * Environment::get().getClock()->getTime();
 	}
 
 	to_SDL_Rect();
@@ -28,18 +34,18 @@ void MoveableComponent::move(int dir, double time) {
 	}
 }
 
-void MoveableComponent::move(int dir, double dis, double time) {
+void MoveableComponent::move(int dir, double dis) {
 	if (dir == Event::UP) {
-		pos_y -= dis * time;
+		pos_y -= dis * Environment::get().getClock()->getTime();
 	}
 	else if (dir == Event::DOWN) {
-		pos_y += dis * time;
+		pos_y += dis * Environment::get().getClock()->getTime();
 	}
 	else if (dir == Event::LEFT) {
-		pos_x -= dis * time;
+		pos_x -= dis * Environment::get().getClock()->getTime();
 	}
 	else if (dir == Event::RIGHT) {
-		pos_x += dis * time;
+		pos_x += dis * Environment::get().getClock()->getTime();
 	}
 
 	to_SDL_Rect();

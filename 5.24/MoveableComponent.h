@@ -1,9 +1,7 @@
 #include <SDL.h>
 
 #include "PositionComponent.h"
-#include "SpriteComponent.h"
-#include "Event_MoveEntity.h"
-#include "FileReader.h"
+#include "Entity.h"
 
 #ifndef MOVEABLE_COMPONENT_H
 #define MOVEABLE_COMPONENT_H
@@ -14,8 +12,8 @@ public:
 
 	virtual void update() {}
 
-	void move(int dir, double time);
-	void move(int dir, double dis, double time);
+	void move(int dir);
+	void move(int dir, double dis);
 
 	double speed;
 };

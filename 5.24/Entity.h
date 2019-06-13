@@ -3,7 +3,6 @@
 #include <string>
 
 #include "Component.h"
-#include "FileReader.h"
 
 #ifndef ENITTY_H
 #define ENITTY_H

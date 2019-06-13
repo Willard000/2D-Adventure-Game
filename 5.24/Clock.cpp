@@ -1,23 +1,19 @@
 #include "Clock.h"
 
+#include "FileReader.h"
+
 Clock::Clock() {
+	FileReader file(FILE_PATH);
+	_cap = _CLOCK_FPS;
+	if (file.exists(FILE_CLOCK_FPS)) _cap = file.get_int(FILE_CLOCK_FPS);
+
+	_ms = 1000.0 / _cap;
+	_isLimit = _cap > 0 ? true : false;
 	_frames = 0;
-	_isLimit = true;
 	_time = 0.0;
 	_updateTicks = 0;
 	_fms = 0.0;
-	_cap = 60;
-	_ms = 1000.0 / _cap;
 	_previousTicks = SDL_GetTicks();
-}
-
-Clock::Clock(int cap)
-	: Clock() {
-	_cap = cap;
-	_ms = 1000.0 / _cap;
-	if (cap <= 0) {
-		_isLimit = false;
-	}
 }
 
 bool Clock::update() {

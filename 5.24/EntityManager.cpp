@@ -1,9 +1,16 @@
 #include "EntityManager.h"
 
-EntityManager::EntityManager(std::shared_ptr<System> system) {
-	_system = system;
+#include "Environment.h"
+#include "ScriptManager.h"
+
+#include "ComponentLoader.h"
+#include "MoveableComponent.h"
+#include "SpriteComponent.h"
+
+EntityManager::EntityManager() {
 	_player = new Player(1);
 	ComponentLoader::loadComponents(_player);
+	Environment::get().getScriptManager()->registerGlobal("player", _player);
 	//create(TYPE_OBJECT, 1);
 }
 

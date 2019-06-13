@@ -1,7 +1,6 @@
 #include <SDL.h>
 
 #include "Component.h"
-#include "FileReader.h"
 
 #ifndef POSITION_COMPONENT_H
 #define POSITION_COMPONENT_H
