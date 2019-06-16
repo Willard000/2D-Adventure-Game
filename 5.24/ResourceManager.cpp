@@ -2,21 +2,30 @@
 
 #include "Environment.h"
 #include "WindowManager.h"
+#include "LogManager.h"
 
 #include "PositionComponent.h"
-#include "MoveableComponent.h"
 #include "SpriteComponent.h"
 
 ResourceManager::ResourceManager() {
-	_entityManager = std::make_shared<EntityManager>();
-	_textureManager = std::make_shared<TextureManager>();
+	Environment::get().getLogManager()->log("Loading Resource Manager");
+
+	_entityManager = new EntityManager();
+	_textureManager = new TextureManager();
 	_map = new Map(0);
 	loadMap(0);
 }
 
+ResourceManager::~ResourceManager() {
+	Environment::get().getLogManager()->log("Closing Resource Manager");
+
+	delete _entityManager;
+	delete _textureManager;
+}
+
 void ResourceManager::update() {
 	_entityManager->update();
-	Environment::get().getWindowManager()->getWindow()->getCamera()->center(_entityManager->_player); // move this
+	Environment::get().getWindowManager()->getWindow()->getCamera()->update(); // move this
 }
 
 void ResourceManager::renderEntities() {
@@ -28,22 +37,17 @@ void ResourceManager::renderEntities() {
 }
 
 void ResourceManager::renderEntity(Entity *entity) {
-	MoveableComponent *moveable = GetMoveable(entity);
-	SpriteComponent *sprite = GetSprite(entity);
-
-	if (sprite != nullptr && moveable != nullptr) {
-		Environment::get().getWindowManager()->getRenderer()->render(_textureManager->getSpriteInfo(entity), moveable->position, sprite);
-		return;
-	}
-
-	if (moveable != nullptr) {
-		Environment::get().getWindowManager()->getRenderer()->render(_textureManager->getTextureInfo(entity), moveable->position);
-		return;
-	}
-
 	PositionComponent *position = GetPosition(entity);
-	if (position != nullptr) {
-		Environment::get().getWindowManager()->getRenderer()->render(_textureManager->getTextureInfo(entity), position->position);
+	SpriteComponent *sprite = GetSprite(entity);
+	if (!position) {
+		return;
+	}
+
+	if (sprite) {
+		Environment::get().getWindowManager()->getRenderer()->render(_textureManager->getSpriteInfo(entity), sprite, position);
+	}
+	else {
+		Environment::get().getWindowManager()->getRenderer()->render(_textureManager->getTextureInfo(entity), position);
 	}
 }
 

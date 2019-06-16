@@ -9,7 +9,6 @@
 
 #include "Entity.h"
 #include "PositionComponent.h"
-#include "MoveableComponent.h"
 
 #include "FileReader.h"
 
@@ -21,6 +20,7 @@ Camera::Camera() {
 	if (file.exists(FILE_CAMERA_SPEED)) _speed = file.get_double(FILE_CAMERA_SPEED);
 
 	_is_locked = true;
+	_entity = nullptr;
 }
 
 void Camera::toggle() {
@@ -46,8 +46,8 @@ void Camera::move(int dir) {
 	}
 }
 
-void Camera::center(Entity *entity) {
-	if (!_is_locked) {
+void Camera::update() {
+	if (!_is_locked || !_entity) {
 		return;
 	}
 
@@ -56,17 +56,14 @@ void Camera::center(Entity *entity) {
 	int max_width = Environment::get().getResourceManager()->getMap()->getWidth() - Environment::get().getWindowManager()->getWindow()->getWidth();
 	int max_height = Environment::get().getResourceManager()->getMap()->getHeight() - Environment::get().getWindowManager()->getWindow()->getHeight();
 
-	PositionComponent *position = GetPosition(entity);
-	MoveableComponent *moveable = GetMoveable(entity);
+	PositionComponent *position = GetPosition(_entity);
 
-	if (position) {
-		_x = position->pos_x - width_half;
-		_y = position->pos_y - height_half;
+	if (!position) {
+		return;
 	}
-	if (moveable) {
-		_x = moveable->pos_x - width_half;
-		_y = moveable->pos_y - height_half;
-	}
+
+	_x = position->m_pos_x - width_half;
+	_y = position->m_pos_y - height_half;
 
 	if (_x < 0) {
 		_x = 0;
@@ -80,4 +77,8 @@ void Camera::center(Entity *entity) {
 	else if (_y > (max_height)) {
 		_y = max_height;
 	}
+}
+
+void Camera::center(Entity *entity) {
+	_entity = entity;
 }

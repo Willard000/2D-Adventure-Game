@@ -2,6 +2,7 @@
 
 #include "Environment.h"
 #include "WindowManager.h"
+#include "LogManager.h"
 
 #include "FileReader.h"
 
@@ -9,20 +10,28 @@ const char *TEXTURE_BASE_PATH = "Data/Textures/textures.txt";
 const char *SURFACE_BASE_PATH = "Data/Textures/surfaces.txt";
 
 TextureManager::TextureManager() {
+	Environment::get().getLogManager()->log("Loading Texture Manager");
+
+	Environment::get().getLogManager()->log("Loading Textures");
 	FileReader texture_file(TEXTURE_BASE_PATH);
 	for (freader::iterator it = texture_file.begin(); it != texture_file.end(); it++) {
 		loadTextures(it->first, it->second);
 	}
+	Environment::get().getLogManager()->log("Finished loading Textures");
 
+	Environment::get().getLogManager()->log("Loading Surfaces");
 	FileReader surface_file(SURFACE_BASE_PATH);
 	for (freader::iterator it = surface_file.begin(); it != surface_file.end(); it++) {
 		loadSurfaces(it->first, it->second);
 	}
+	Environment::get().getLogManager()->log("Finished loading Surfaces");
 
 	_map = new Texture();
 }
 
 TextureManager::~TextureManager() {
+	Environment::get().getLogManager()->log("Closing Texture Manager");
+
 	for (auto it = _textures.begin(); it != _textures.end(); it++) {
 		for (auto itt = it->second.begin(); itt != it->second.end(); itt++) {
 			delete itt->second;
@@ -85,6 +94,8 @@ Texture *TextureManager::loadTextureInfo(std::string path) {
 		sprite->load_frames();
 	}
 
+	Environment::get().getLogManager()->log("Loading Texture - " + path);
+
 	return isSprite ? sprite : img;
 }
 
@@ -104,6 +115,8 @@ SDL_Surface *TextureManager::loadSurfaceInfo(std::string path) {
 	FileReader file(path.c_str());
 
 	if (file.exists(FILE_TEXTURE_PATH)) surface = Environment::get().getWindowManager()->getRenderer()->createSurface(file.get_string(FILE_TEXTURE_PATH));
+
+	Environment::get().getLogManager()->log("Loading Surface - " + path);
 
 	return surface;
 }

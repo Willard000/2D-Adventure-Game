@@ -11,7 +11,6 @@
 #define TYPE_OBJECT "Object"
 
 #define GetPosition(entity) static_cast<PositionComponent *>(entity->getComponent(typeid(PositionComponent)))
-#define GetMoveable(entity) static_cast<MoveableComponent *>(entity->getComponent(typeid(MoveableComponent)))
 #define GetSprite(entity) static_cast<SpriteComponent *>(entity->getComponent(typeid(SpriteComponent)))
 
 class Entity {

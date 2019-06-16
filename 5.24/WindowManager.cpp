@@ -2,19 +2,24 @@
 
 #include "Environment.h"
 #include "Clock.h"
+#include "LogManager.h"
 
 WindowManager::WindowManager() {
+	Environment::get().getLogManager()->log("Loading Window Manager");
+
 	FileReader file(_FILE_PATH);
 	load_console_settings(file);
 	load_window_settings(file);
 }
 
 WindowManager::~WindowManager() {
+	Environment::get().getLogManager()->log("Closing Window Manager");
+
 	delete _window;
 }
 
 void WindowManager::updateWindowTitle() {
-	std::string title = "...      " + std::to_string(Environment::get().getClock()->getFMS());
+	std::string title = "...      " + Environment::get().getClock()->getDisplayTime() + "    " + std::to_string(Environment::get().getClock()->getFMS());
 	_window->setTitle(title);
 }
 

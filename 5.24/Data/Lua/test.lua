@@ -1,1 +1,2 @@
-player:move(4)
+player = GetPlayer()
+player:rotate(10)

@@ -1,5 +1,7 @@
 #include <SDL.h>
 
+#include <string>
+
 #ifndef CLOCK_H
 #define CLOCK_H
 
@@ -18,10 +20,12 @@ public:
 
 	double getTime() { return _time; }
 	double getFMS() { return _fms; }
+
+	std::string getDisplayTime();
 private:
 	void updateTime();
 private:
-	const char *FILE_PATH = "Data/system.txt";
+	const char *_FILE_PATH = "Data/system.txt";
 	const int _CLOCK_FPS = 60;
 	int _frames, _cap;
 	double _fms, _ms, _time;

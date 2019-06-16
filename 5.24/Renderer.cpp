@@ -5,6 +5,8 @@ Renderer::Renderer(SDL_Window *window, Camera *camera, SDL_Rect background, SDL_
 	_camera = camera;
 	_background = background;
 	_backgroundColor = backgroundColor;
+	_uniform_rotation = 0.0;
+	_uniform_scale = 0.0;
 }
 
 Renderer::~Renderer() {
@@ -38,20 +40,40 @@ SDL_Surface *Renderer::createSurface(std::string path) {
 }
 
 void Renderer::render(const Texture *img, const SDL_Rect &pos) {
-	SDL_Rect des = { pos.x - (int)_camera->_x, pos.y - (int)_camera->_y, pos.w, pos.h };
+	SDL_Rect des = { pos.x - (int)_camera->_x, pos.y - (int)_camera->_y, pos.w * (_uniform_scale + 1.0), pos.h * (_uniform_scale + 1.0) };
 	if (img != nullptr) {
-		SDL_RenderCopy(_renderer, img->texture, NULL, &des);
+		SDL_RenderCopyEx(_renderer, img->texture, NULL, &des, _uniform_rotation, NULL, SDL_FLIP_NONE);
 	}
 	else {
 		drawRect(des, PLACE_HOLDER_COLOR);
 	}
 }
 
-void Renderer::render(Sprite *img, const SDL_Rect &pos, SpriteComponent *sprite) {
-	SDL_Rect des = { pos.x - (int)_camera->_x, pos.y - (int)_camera->_y, pos.w, pos.h };
+void Renderer::render(const Texture *img, PositionComponent *position) {
+	SDL_Rect des = { 
+		position->m_rect.x - (int)_camera->_x,
+		position->m_rect.y - (int)_camera->_y,
+		int(position->m_rect.w * (_uniform_scale + position->m_scale)),
+		int(position->m_rect.h * (_uniform_scale + position->m_scale))
+	};
+	if (img != nullptr) {
+		SDL_RenderCopyEx(_renderer, img->texture, NULL, &des, _uniform_rotation + position->m_rotation, NULL, SDL_FLIP_NONE);
+	}
+	else {
+		drawRect(des, PLACE_HOLDER_COLOR);
+	}
+}
+
+void Renderer::render(Sprite *img, SpriteComponent *sprite, PositionComponent *position) {
+	SDL_Rect des = { 
+		position->m_rect.x - (int)_camera->_x,
+		position->m_rect.y - (int)_camera->_y,
+		int(position->m_rect.w * (_uniform_scale + position->m_scale)),
+		int(position->m_rect.h * (_uniform_scale + position->m_scale))
+	};
 	if (img != nullptr) {
 		sprite->update(img);
-		SDL_RenderCopy(_renderer, img->texture, &sprite->pos, &des);
+		SDL_RenderCopyEx(_renderer, img->texture, &sprite->m_pos, &des, _uniform_rotation + position->m_rotation, NULL, SDL_FLIP_NONE);
 	}
 	else {
 		drawRect(des, PLACE_HOLDER_COLOR);
@@ -77,4 +99,12 @@ SDL_Texture *Renderer::createMapTexture(std::vector<Tile> &tiles, std::map<int, 
 	texture = SDL_CreateTextureFromSurface(_renderer, surface);
 	SDL_FreeSurface(surface);
 	return texture;
+}
+
+void Renderer::rotate(double val) {
+	_uniform_rotation = val;
+}
+
+void Renderer::scale(double val) {
+	_uniform_scale = val;
 }

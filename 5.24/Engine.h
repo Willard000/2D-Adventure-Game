@@ -13,8 +13,6 @@ public:
 
 private:
 	void buildEnvironment();
-
-	void updateTitle();
 private:
 	Environment _environment;
 

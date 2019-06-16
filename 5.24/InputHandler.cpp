@@ -1,6 +1,6 @@
 #include "InputHandler.h"
 
-#include "MoveableComponent.h"
+#include "PositionComponent.h"
 
 InputHandler::InputHandler() : EventHandler() {
 	subscribe(this, &InputHandler::moveEntity);
@@ -8,9 +8,9 @@ InputHandler::InputHandler() : EventHandler() {
 }
 
 void InputHandler::moveEntity(Event_MoveEntity *event) {
-	MoveableComponent *moveable = GetMoveable(event->entity);
-	if (moveable != nullptr) {
-		moveable->move(event->direction);
+	PositionComponent *position = GetPosition(event->entity);
+	if (position) {
+		position->move(event->direction);
 	}
 }
 

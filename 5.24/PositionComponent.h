@@ -7,15 +7,20 @@
 
 struct PositionComponent : public Component {
 public:
-	PositionComponent(Entity *entity_, double x_, double y_, int w_, int h_);
+	PositionComponent(Entity *entity, double x, double y, int w, int h, double speed);
 
 	virtual void update() {}
 
-	void to_SDL_Rect();
+	void move(int dir);
+	void move(int dir, double dis);
 
-	double pos_x;
-	double pos_y;
-	SDL_Rect position;
+	void scale(double val);
+	void rotate(double val);
+
+	double m_pos_x, m_pos_y;
+	double m_speed;
+	double m_scale, m_rotation;
+	SDL_Rect m_rect;
 };
 
 #endif

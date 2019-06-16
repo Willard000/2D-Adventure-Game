@@ -14,7 +14,7 @@ public:
 	ScriptManager() {
 		_L = lua_open();
 		luaL_openlibs(_L);
-		lua_openPlayer(_L);
+		lua_init_player(this, _L);
 	}
 
 	~ScriptManager() {
@@ -27,15 +27,19 @@ public:
 	}
 
 	template <class T>
-	void registerGlobal(std::string name, T *obj) { 
+	void registerGlobal(const char *name, T *obj) { 
 		luaW_push<T>(_L, obj);
-		lua_setglobal(_L, name.c_str());
+		lua_setglobal(_L, name);
+	}
+
+	void registerGlobal(const char *name, lua_CFunction func) {
+		lua_pushcfunction(_L, func);
+		lua_setglobal(_L, name);
 	}
 
 	void removeGlobal(std::string name) {
 		lua_pushnil(_L);
 		lua_setglobal(_L, name.c_str());
-		lua_pop(_L, -1);
 	}
 
 private:

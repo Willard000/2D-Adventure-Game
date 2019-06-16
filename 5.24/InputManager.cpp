@@ -3,12 +3,15 @@
 #include "Environment.h"
 #include "WindowManager.h"
 #include "ResourceManager.h"
+#include "LogManager.h"
 
 InputManager::InputManager() {
+	Environment::get().getLogManager()->log("Loading Input Manager");
 	_inputHandler = new InputHandler();
 }
 
 InputManager::~InputManager() {
+	Environment::get().getLogManager()->log("Closing Input Manager");
 	delete _inputHandler;
 }
 

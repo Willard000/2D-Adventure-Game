@@ -11,7 +11,8 @@ public:
 
 	void toggle();
 	void move(int dir);
-	void center(Entity *entity);
+	void update();
+	void center(Entity *entity);  // change camera focus
 
 	friend class Window;
 	friend class Renderer;
@@ -20,6 +21,7 @@ private:
 	const double _SPEED = 500.0;
 	double _x, _y, _speed;
 	bool _is_locked;
+	Entity *_entity;  // entity to center camera on
 };
 
 #endif

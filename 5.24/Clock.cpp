@@ -3,7 +3,7 @@
 #include "FileReader.h"
 
 Clock::Clock() {
-	FileReader file(FILE_PATH);
+	FileReader file(_FILE_PATH);
 	_cap = _CLOCK_FPS;
 	if (file.exists(FILE_CLOCK_FPS)) _cap = file.get_int(FILE_CLOCK_FPS);
 
@@ -51,4 +51,28 @@ void Clock::updateTime() {
 	_ticks = SDL_GetTicks() - _previousTicks;
 	_time = double(_ticks / 1000.0);
 	_previousTicks = SDL_GetTicks();
+}
+
+// Time format (00:00:00:000)
+// days : hours : minutes : seconds : miliseconds
+std::string Clock::getDisplayTime() {
+	double miliseconds = SDL_GetTicks() / 1000.0;
+	miliseconds = miliseconds - floor(miliseconds);
+	miliseconds *= 1000.0;
+
+	int ticks = (int)(SDL_GetTicks() / 1000.0);
+	int seconds = ticks % 60;
+	int minutes = int(ticks / 60) % 60;
+	int hours = int(ticks / 3600) % 24;
+	int days = int(ticks / 86400);
+
+	std::string time = "";
+
+	time += (days > 0) ? std::to_string(days) + ":" : "";
+	time += ((hours < 10) ? "0" : "") + std::to_string(hours) + ":";
+	time += ((minutes < 10) ? "0" : "") + std::to_string(minutes) + ":";
+	time += ((seconds < 10) ? "0" : "") + std::to_string(seconds) + ":";
+	time += std::to_string((int)miliseconds);
+
+	return time;
 }

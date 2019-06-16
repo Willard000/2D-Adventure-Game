@@ -7,22 +7,17 @@
 
 #include "Component.h"
 #include "PositionComponent.h"
-#include "MoveableComponent.h"
 #include "SpriteComponent.h"
 
 #ifndef COMPONENT_LOADER_H
 #define COMPONENT_LOADER_H
 
 #define FILE_POSITION_COMPONENT "Position"
-#define FILE_MOVEABLE_COMPONENT "Moveable"
 #define FILE_SPRITE_COMPONENT "Sprite"
 
 #define FILE_POSITION_WIDTH "iwidth"
 #define FILE_POSITION_HEIGHT "iheight"
-
-#define FILE_MOVEABLE_WIDTH "iwidth"
-#define FILE_MOVEABLE_HEIGHT "iheight"
-#define FILE_MOVEABLE_SPEED "moveable_dspeed"
+#define FILE_POSITION_SPEED "dspeed"
 
 #define FILE_SPRITE_WIDTH "iwidth"
 #define FILE_SPRITE_HEIGHT "iheight"
@@ -36,7 +31,6 @@ public:
 	static void loadComponents(Entity *entity);
 
 	static void loadPosition(FileReader &file, Entity *entity, PositionComponent *&position);
-	static void loadMovable(FileReader &file, Entity *entity, MoveableComponent *&moveable);
 	static void loadSprite(FileReader &file, Entity *entity, SpriteComponent *&sprite);
 private:
 };

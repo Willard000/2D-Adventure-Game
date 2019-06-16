@@ -26,14 +26,6 @@ void ComponentLoader::loadComponents(Entity *entity) {
 		std::cout << "Position ";
 	}
 
-	if (file.exists(FILE_MOVEABLE_COMPONENT)) {
-		MoveableComponent *moveable = nullptr;
-		ComponentLoader::loadMovable(file, entity, moveable);
-		entity->addComponent(moveable);
-		numComponents++;
-		std::cout << "Moveable ";
-	}
-
 	if (file.exists(FILE_SPRITE_COMPONENT)) {
 		SpriteComponent *sprite = nullptr;
 		ComponentLoader::loadSprite(file, entity, sprite);
@@ -48,23 +40,14 @@ void ComponentLoader::loadComponents(Entity *entity) {
 }
 
 void ComponentLoader::loadPosition(FileReader &file, Entity *entity, PositionComponent *&position) {
-	int w = 0, h = 0;
+	int w = 32, h = 32;
+	double speed = 0;
 
-	if (file.exists(FILE_POSITION_WIDTH))		 { w = file.get_int(FILE_POSITION_WIDTH); }
-	if (file.exists(FILE_POSITION_HEIGHT))		 { h = file.get_int(FILE_POSITION_HEIGHT); }
+	if (file.exists(FILE_POSITION_WIDTH))	     { w = file.get_int(FILE_POSITION_WIDTH); }
+	if (file.exists(FILE_POSITION_HEIGHT))	 	 { h = file.get_int(FILE_POSITION_HEIGHT); }
+	if (file.exists(FILE_POSITION_SPEED))		 { speed = file.get_double(FILE_POSITION_SPEED); }
 
-	position = new PositionComponent(entity, 0.0, 0.0, w, h);
-}
-
-void ComponentLoader::loadMovable(FileReader &file, Entity *entity, MoveableComponent *&moveable) {
-	double speed = 0.0;
-	int w = 0, h = 0;
-
-	if (file.exists(FILE_MOVEABLE_WIDTH))		 { w = file.get_int(FILE_MOVEABLE_WIDTH); }
-	if (file.exists(FILE_MOVEABLE_HEIGHT))		 { h = file.get_int(FILE_MOVEABLE_HEIGHT); }
-	if (file.exists(FILE_MOVEABLE_SPEED))		 { speed = file.get_double(FILE_MOVEABLE_SPEED); }
-
-	moveable = new MoveableComponent(entity, 0.0, 0.0, w, h, speed);
+	position = new PositionComponent(entity, 0.0, 0.0, w, h, speed);
 }
 
 void ComponentLoader::loadSprite(FileReader &file, Entity *entity, SpriteComponent *&sprite) {

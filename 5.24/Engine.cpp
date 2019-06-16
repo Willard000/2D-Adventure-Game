@@ -2,6 +2,7 @@
 
 #include "Environment.h"
 #include "Clock.h"
+#include "LogManager.h"
 #include "WindowManager.h"
 #include "ScriptManager.h"
 #include "ResourceManager.h"
@@ -14,6 +15,8 @@ Engine::Engine() {
 }
 
 void Engine::run() {
+	_environment.getLogManager()->log("Main Loop\n");
+
 	while (_isRunning) {
 		_isRunning = _environment.getInputManager()->get();
 
@@ -27,13 +30,21 @@ void Engine::run() {
 
 		if (_environment.getClock()->update()) {
 			_environment.getWindowManager()->updateWindowTitle();
+
+			_environment.getClock()->getDisplayTime();
 		}
 	}
+
+	_environment.getLogManager()->log("Shutting Down\n");
+	_environment.shutdown();
 }
 
 void Engine::buildEnvironment() {
 	Clock *clock = new Clock();
 	_environment.setClock(clock);
+
+	LogManager *logManager = new LogManager();
+	_environment.setLogManager(logManager);
 
 	WindowManager *windowManager = new WindowManager();
 	_environment.setWindowManager(windowManager);
@@ -46,5 +57,4 @@ void Engine::buildEnvironment() {
 
 	InputManager *inputManager = new InputManager();
 	_environment.setInputManager(inputManager);
-
 }

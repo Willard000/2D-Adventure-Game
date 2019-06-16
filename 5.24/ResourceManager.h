@@ -9,6 +9,7 @@
 class ResourceManager {
 public:
 	ResourceManager();
+	~ResourceManager();
 	
 	void update();
 	void renderEntities();
@@ -24,8 +25,8 @@ public:
 	Player *getPlayer()       { return _entityManager->getPlayer(); }
 	Map *getMap() { return _map; }
 private:
-	std::shared_ptr<EntityManager> _entityManager;
-	std::shared_ptr<TextureManager> _textureManager;
+	EntityManager *_entityManager;
+	TextureManager *_textureManager;
 	Map *_map;
 };
 

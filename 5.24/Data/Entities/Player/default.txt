@@ -1,7 +1,9 @@
 # Default
-Moveable
+
+Position
 iwidth 32
 iheight 32
-moveable_dspeed 100
+dspeed 100
+
 Sprite
 sprite_itime 300

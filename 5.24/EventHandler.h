@@ -5,6 +5,8 @@
 #include "HandlerFunction.h"
 #include "MemberHandlerFunction.h"
 
+#include <iostream>
+
 #ifndef EVENT_HANDLER_H
 #define EVENT_HANDLER_H
 
@@ -15,53 +17,33 @@ public:
 	EventHandler() {}
 	~EventHandler() {
 		for (auto it = _subscribers.begin(); it != _subscribers.end(); it++) {
-			for (auto itt = it->second->begin(); itt != it->second->end(); itt++) {
+			for (auto itt = it->second.begin(); itt != it->second.end(); itt++) {
 				delete *itt;
 			}
-			it->second->clear();
-
-			delete it->second;
 		}
-		_subscribers.clear();
 	}
 
 	template <typename EventType>
-	void publish(EventType *event, bool deleteEvent = true) {
-		HandlerList *handlers = _subscribers[typeid(EventType)];
-
-		if (handlers == nullptr) {
-			if (deleteEvent) {
-				delete event;
-			}
+	void publish(EventType *event) {
+		if (_subscribers.find(typeid(EventType)) == _subscribers.end()) {
 			return;
 		}
 
-		for (auto &handler : *handlers) {
+		for (auto &handler : _subscribers[typeid(EventType)]) {
 			if (handler != nullptr) {
 				handler->execute(event);
 			}
-		}
-
-		if (deleteEvent) {
-			delete event;
 		}
 	}
 
 	template<class T, class EventType>
 	void subscribe(T *instance, void (T::*memberFunction)(EventType *)) {
-		HandlerList *handlers = _subscribers[typeid(EventType)];
-
-		if (handlers == nullptr) {
-			handlers = new HandlerList();
-			_subscribers[typeid(EventType)] = handlers;
-		}
-
-		handlers->push_back(new MemberHandlerFunction<T, EventType>(instance, memberFunction));
+		_subscribers[typeid(EventType)].push_back(new MemberHandlerFunction<T, EventType>(instance, memberFunction));
 	}
 
 	template <class T, class EventType>
 	void unsubscribe(T *instance, void (T::*memberFunction)(EventType *)) {
-		HandlerList *handlers = _subscribers[typeid(EventType)];
+		HandlerList *handlers = &_subscribers[typeid(EventType)];
 
 		for (auto it = handlers->begin(); it != handlers->end(); it++) {
 			MemberHandlerFunction<T, EventType> *handler = static_cast<MemberHandlerFunction<T, EventType> *>(*it);
@@ -74,7 +56,7 @@ public:
 		}
 	}
 private:
-	std::map<std::type_index, HandlerList *> _subscribers;
+	std::map<std::type_index, HandlerList> _subscribers;
 };
 
 #endif

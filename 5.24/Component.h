@@ -7,13 +7,13 @@ struct Component {
 public:
 	Component();
 
-	Component(Entity *entity_) {
-		entity = entity_;
+	Component(Entity *entity) {
+		m_entity = entity;
 	}
 
 	virtual void update() = 0;
 
-	Entity *entity;
+	Entity *m_entity;
 };
 
 #endif

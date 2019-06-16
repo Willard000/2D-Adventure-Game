@@ -7,6 +7,7 @@
 
 #include "Texture.h"
 #include "SpriteComponent.h"
+#include "PositionComponent.h"
 #include "Map.h"
 #include "Camera.h"
 
@@ -34,12 +35,16 @@ public:
 	SDL_Texture *createTexture(std::string path);
 	SDL_Surface *createSurface(std::string path);
 	void render(const Texture *img, const SDL_Rect &pos);
-	void render(Sprite *img, const SDL_Rect &pos, SpriteComponent *sprite);
+	void render(const Texture *img, PositionComponent *position);
+	void render(Sprite *img, SpriteComponent *sprite, PositionComponent *position);
 
 	void drawRect(const SDL_Rect &rect, const SDL_Color &color, int flag = DRAW_RECT_FULL);
 	void drawBackground() { drawRect(_background, _backgroundColor); }
 
 	SDL_Texture *createMapTexture(std::vector<Tile> &tiles, std::map<int, SDL_Surface *> &tile_surfaces, const int &width, const int &height);
+
+	void rotate(double val);
+	void scale(double val);
 
 public:
 	enum {
@@ -53,6 +58,9 @@ private:
 	Camera *_camera;
 	SDL_Rect _background;
 	SDL_Color _backgroundColor;
+
+	double _uniform_rotation;
+	double _uniform_scale;
 };
 
 #endif
