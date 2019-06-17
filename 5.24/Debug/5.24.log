@@ -1,2 +1,4 @@
-﻿  PositionComponent.cpp
+﻿  Renderer.cpp
+  SpriteComponent.cpp
+  Generating Code...
   5.24.vcxproj -> D:\Documents\Visual Studio 2017\Projects\5.24\Debug\5.24.exe

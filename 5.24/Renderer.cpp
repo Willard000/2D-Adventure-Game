@@ -1,13 +1,13 @@
 #include "Renderer.h"
 
-Renderer::Renderer(SDL_Window *window, Camera *camera, SDL_Rect background, SDL_Color backgroundColor) {
-	_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	_camera = camera;
-	_background = background;
-	_backgroundColor = backgroundColor;
-	_uniform_rotation = 0.0;
-	_uniform_scale = 0.0;
-}
+Renderer::Renderer(SDL_Window *window, Camera *camera, SDL_Rect background, SDL_Color backgroundColor) :
+	_renderer				( SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED) ),
+	_camera					( camera ),
+	_background				( background ),
+	_backgroundColor		( backgroundColor ),
+	_uniform_rotation		( 0.0 ),
+	_uniform_scale			( 0.0 )
+{}
 
 Renderer::~Renderer() {
 	SDL_DestroyRenderer(_renderer);
@@ -40,7 +40,12 @@ SDL_Surface *Renderer::createSurface(std::string path) {
 }
 
 void Renderer::render(const Texture *img, const SDL_Rect &pos) {
-	SDL_Rect des = { pos.x - (int)_camera->_x, pos.y - (int)_camera->_y, pos.w * (_uniform_scale + 1.0), pos.h * (_uniform_scale + 1.0) };
+	SDL_Rect des = { 
+		pos.x - (int)_camera->_x,
+		pos.y - (int)_camera->_y,
+		int(pos.w * (_uniform_scale + 1.0)),
+		int(pos.h * (_uniform_scale + 1.0))
+	};
 	if (img != nullptr) {
 		SDL_RenderCopyEx(_renderer, img->texture, NULL, &des, _uniform_rotation, NULL, SDL_FLIP_NONE);
 	}
@@ -101,10 +106,18 @@ SDL_Texture *Renderer::createMapTexture(std::vector<Tile> &tiles, std::map<int, 
 	return texture;
 }
 
-void Renderer::rotate(double val) {
-	_uniform_rotation = val;
+void Renderer::rotate(double angle) {
+	_uniform_rotation += angle;
 }
 
-void Renderer::scale(double val) {
-	_uniform_scale = val;
+void Renderer::setRotation(double angle) {
+	_uniform_rotation = angle;
+}
+
+void Renderer::scale(double factor) {
+	_uniform_scale += factor;
+}
+
+void Renderer::setScale(double factor) {
+	_uniform_scale = factor;
 }

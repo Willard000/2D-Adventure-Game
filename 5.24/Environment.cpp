@@ -8,13 +8,13 @@
 
 Environment *Environment::_instance = nullptr;
 
-Environment::Environment()
-	: _clock(0),
-	_logManager(0),
-	_windowManager(0),
-	_scriptManager(0),
-	_resourceManager(0),
-	_inputManager(0)
+Environment::Environment() :
+	_clock					( nullptr ),
+	_logManager				( nullptr ),
+	_windowManager			( nullptr ),
+	_scriptManager			( nullptr ),
+	_resourceManager		( nullptr ),
+	_inputManager			( nullptr )
 {
 	assert(!_instance);
 	_instance = this;
@@ -22,27 +22,27 @@ Environment::Environment()
 
 Environment::~Environment() {
 	shutdown();
-	_instance = 0;
+	_instance = nullptr;
 }
 
 void Environment::shutdown() {
 	delete _inputManager;
-	_inputManager = 0;
+	_inputManager = nullptr;
 
 	delete _resourceManager;
-	_resourceManager = 0;
+	_resourceManager = nullptr;
 
 	delete _scriptManager;
-	_scriptManager = 0;
+	_scriptManager = nullptr;
 
 	delete _windowManager;
-	_windowManager = 0;
+	_windowManager = nullptr;
 
 	delete _logManager;
-	_logManager = 0;
+	_logManager = nullptr;
 
 	delete _clock;
-	_clock = 0;
+	_clock = nullptr;
 }
 
 Environment &Environment::get(){

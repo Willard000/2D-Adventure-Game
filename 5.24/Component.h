@@ -5,11 +5,9 @@ class Entity;
 
 struct Component {
 public:
-	Component();
-
-	Component(Entity *entity) {
-		m_entity = entity;
-	}
+	Component(Entity *entity) :
+		m_entity		(entity)
+	{}
 
 	virtual void update() = 0;
 

@@ -8,15 +8,15 @@
 #include "Environment.h"
 #include "Clock.h"
 
-PositionComponent::PositionComponent(Entity *entity, double x, double y, int w, int h, double speed)
-	: Component(entity) {
-	m_pos_x = x;
-	m_pos_y = y;
-	m_speed = speed;
-	m_scale = 1.0;
-	m_rotation = 0.0;
-	m_rect = { int(m_pos_x), int(m_pos_y), w, h };
-}
+PositionComponent::PositionComponent(Entity *entity, double x, double y, int w, int h, double speed) :
+	Component		(entity),
+	m_pos_x			(x),
+	m_pos_y			(y),
+	m_speed			(speed),
+	m_scale			(1.0),
+	m_rotation		(0.0),
+	m_rect			({ int(m_pos_x), int(m_pos_y), w, h })
+{}
 
 void PositionComponent::move(int dir) {
 	if (dir == Event::UP) {

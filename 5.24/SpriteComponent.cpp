@@ -2,11 +2,11 @@
 
 #include "Event.h"
 
-SpriteComponent::SpriteComponent(Entity *entity, int w, int h, int time)
-	: Component(entity) {
-		m_pos.w = w;
-		m_pos.h = h;
-		m_time.set(time);
+SpriteComponent::SpriteComponent(Entity *entity, int w, int h, int time) : 
+	Component		(entity),
+	m_pos			( { 0, 0, 32, 32 } )
+{
+	m_time.set(time);
 };
 
 void SpriteComponent::update() {
@@ -34,23 +34,23 @@ void SpriteComponent::update(Sprite *img) {
 			m_frame = 0;
 		}
 		else if (m_dir == Event::UP) {
-			if (m_frame < img->min_up || m_frame > img->max_up) {
-				m_frame = img->min_up;
+			if (m_frame < img->m_min_up || m_frame > img->m_max_up) {
+				m_frame = img->m_min_up;
 			}
 		}
 		else if (m_dir == Event::DOWN) {
-			if (m_frame < img->min_down || m_frame > img->max_down) {
-				m_frame = img->min_down;
+			if (m_frame < img->m_min_down || m_frame > img->m_max_down) {
+				m_frame = img->m_min_down;
 			}
 		}
 		else if (m_dir == Event::LEFT || m_dir == Event::UPLEFT|| m_dir == Event::DOWNLEFT) {
-			if (m_frame < img->min_left || m_frame > img->max_left) {
-				m_frame = img->min_left;
+			if (m_frame < img->m_min_left || m_frame > img->m_max_left) {
+				m_frame = img->m_min_left;
 			}
 		}
 		else if (m_dir == Event::RIGHT || m_dir == Event::DOWNLEFT || m_dir == Event::DOWNRIGHT) {
-			if (m_frame < img->min_right || m_frame > img->max_right) {
-				m_frame = img->min_right;
+			if (m_frame < img->m_min_right || m_frame > img->m_max_right) {
+				m_frame = img->m_min_right;
 			}
 		}
 

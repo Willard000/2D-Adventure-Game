@@ -8,7 +8,6 @@ public:
 	LogManager();
 	~LogManager();
 
-	
 	void log(std::string val, const char *end = "\n");
 
 	template <class T>

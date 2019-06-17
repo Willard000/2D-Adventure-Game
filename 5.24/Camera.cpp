@@ -12,15 +12,15 @@
 
 #include "FileReader.h"
 
-Camera::Camera() {
-	_x = 0, _y = 0;
-
-	_speed = _SPEED;
+Camera::Camera(bool is_locked) :
+	_x				( 0 ),
+	_y				( 0 ),
+	_speed			( _SPEED ),
+	_is_locked		( is_locked ),
+	_entity			( nullptr )
+{
 	FileReader file(_FILE_PATH);
 	if (file.exists(FILE_CAMERA_SPEED)) _speed = file.get_double(FILE_CAMERA_SPEED);
-
-	_is_locked = true;
-	_entity = nullptr;
 }
 
 void Camera::toggle() {
@@ -77,6 +77,11 @@ void Camera::update() {
 	else if (_y > (max_height)) {
 		_y = max_height;
 	}
+}
+
+void Camera::update(int x, int y) {
+	_x += x;
+	_y += y;
 }
 
 void Camera::center(Entity *entity) {

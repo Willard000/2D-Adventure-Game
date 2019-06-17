@@ -1,7 +1,8 @@
 #include "FileReader.h"
 
-FileReader::FileReader(const char *path, bool isRead) {
-	_path = path;
+FileReader::FileReader(const char *path, bool isRead) :
+	_path		(path)
+{
 	if (!isRead) {
 		_isRead = false;
 		return;

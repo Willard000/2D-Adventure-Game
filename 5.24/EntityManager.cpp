@@ -8,11 +8,12 @@
 #include "ComponentLoader.h"
 #include "SpriteComponent.h"
 
-EntityManager::EntityManager() {
+EntityManager::EntityManager() :
+	_player			( new Player(1) )
+{
 	Environment::get().getLogManager()->log("Loading Entity Manager");
 
-	_player = new Player(1);
-	ComponentLoader::loadComponents(_player);
+	loadComponents(_player);
 	Environment::get().getWindowManager()->getWindow()->getCamera()->center(_player); // move this?
 	create(TYPE_OBJECT, 1);
 }
@@ -37,7 +38,7 @@ void EntityManager::create(std::string type, int type_id) {
 void EntityManager::add(Entity *entity) {
 	_entities[entity->get_id()] = entity;
 	if (!entity->get_loaded()) {
-		ComponentLoader::loadComponents(entity);
+		loadComponents(entity);
 	}
 }
 

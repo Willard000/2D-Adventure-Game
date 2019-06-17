@@ -8,10 +8,10 @@
 #include "ResourceManager.h"
 #include "InputManager.h"
 
-Engine::Engine() {
+Engine::Engine() :
+	_isRunning		( true )
+{
 	buildEnvironment();
-
-	_isRunning = true;
 }
 
 void Engine::run() {
@@ -30,8 +30,6 @@ void Engine::run() {
 
 		if (_environment.getClock()->update()) {
 			_environment.getWindowManager()->updateWindowTitle();
-
-			_environment.getClock()->getDisplayTime();
 		}
 	}
 
@@ -46,7 +44,7 @@ void Engine::buildEnvironment() {
 	LogManager *logManager = new LogManager();
 	_environment.setLogManager(logManager);
 
-	WindowManager *windowManager = new WindowManager();
+	WindowManager *windowManager = new WindowManager(false);
 	_environment.setWindowManager(windowManager);
 	
 	ScriptManager *scriptManager = new ScriptManager();

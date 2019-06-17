@@ -4,12 +4,13 @@
 
 const char *MAP_BASE_PATH = "Data/Maps/";
 
-Map::Map(int id) {
-	_pos.x = 0, _pos.y = 0;
-	_pos.w = 0, _pos.h = 0;
-	_width = 0, _height = 0;
-	_isLoaded = load(id);
-}
+Map::Map(int id) :
+	_id				( id ),
+	_width			( 0 ),
+	_height			( 0 ),
+	_pos			( { 0, 0, 0, 0 } ),
+	_isLoaded		( load(id) )
+{}
 
 bool Map::load(int id) {
 	std::string path = MAP_BASE_PATH + std::to_string(id) + ".txt";

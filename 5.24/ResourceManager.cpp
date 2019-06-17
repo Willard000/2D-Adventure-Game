@@ -7,12 +7,12 @@
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
 
-ResourceManager::ResourceManager() {
+ResourceManager::ResourceManager() :
+	_entityManager			( new EntityManager () ),
+	_textureManager		    ( new TextureManager() ),
+	_map					( nullptr )
+{
 	Environment::get().getLogManager()->log("Loading Resource Manager");
-
-	_entityManager = new EntityManager();
-	_textureManager = new TextureManager();
-	_map = new Map(0);
 	loadMap(0);
 }
 
@@ -66,6 +66,11 @@ void ResourceManager::render() {
 }
 
 void ResourceManager::loadMap(int id) {
-	_map->load(id);
+	if (!_map) {
+		_map = new Map(id);
+	}
+	else {
+		_map->load(id);
+	}
 	_textureManager->loadMap(_map->_tiles, _map->_pos.w, _map->_pos.h);
 }

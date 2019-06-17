@@ -1,16 +1,17 @@
 #include "Timer.h"
 
-Timer::Timer() {
-	_time = 0;
-	_prevTime = SDL_GetTicks();
-	_isPaused = true;
-}
+Timer::Timer() :
+	_time			( 0 ),
+	_prevTime		( SDL_GetTicks() ),
+	_isPaused		( true )
+{}
 
-Timer::Timer(Uint32 time) {
-	_time = time;
-	_prevTime = SDL_GetTicks();
-	_isPaused = false;
-}
+Timer::Timer(Uint32 time) :
+	_time			( time ),
+	_prevTime		( SDL_GetTicks() ),
+	_isPaused		( false )
+
+{}
 
 void Timer::set(Uint32 time) {
 	_time = time;

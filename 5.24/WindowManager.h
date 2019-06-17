@@ -24,7 +24,7 @@
 
 class WindowManager {
 public:
-	WindowManager();
+	WindowManager(bool is_editor);
 	~WindowManager();
 
 	void toggleConsole();
@@ -34,14 +34,13 @@ public:
 	Renderer *getRenderer() { return _window->getRenderer(); }
 private:
 	void load_console_settings(FileReader &file);
-	void load_window_settings(FileReader &file);
+	void load_window_settings(FileReader &file, bool is_editor);
 private:
 	const char *_FILE_PATH = "Data/system.txt";
 	const char *_WINDOW_TITLE = "...";
 	const int _CONSOLE_X = -1100, _CONSOLE_Y = 450, _CONSOLE_W = 1100, _CONSOLE_H = 600;
 	const int _WINDOW_X = 150, _WINDOW_Y = 100, _WINDOW_W = 1600, _WINDOW_H = 900;
 	const SDL_Color _WINDOW_COLOR = { 185, 255, 255, 255 };
-	const double _CAMERA_SPEED = 390.0;
 
 	HWND _console;
 	bool _showConsole;

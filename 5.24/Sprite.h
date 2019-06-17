@@ -12,16 +12,17 @@ struct Sprite : public Texture {
 		int y;
 	};
 
-	Sprite() : Texture() {
-		run = 0;
-		cast = 0;
-		special = 0;
-		min_up = 0, max_up = 0;
-		min_down = 0, max_down = 0;
-		min_left = 0, max_left = 0;
-		min_right = 0, max_right = 0;
-		_frames = nullptr;
-	}
+	Sprite() :
+		Texture(),
+		m_run		( 0 ),
+		m_cast		( 0 ),
+		m_special	( 0 ),
+		m_min_up	( 0 ),	 m_max_up	 ( 0 ),
+		m_min_down	( 0 ),	 m_max_down	 ( 0 ),
+		m_min_left	( 0 ),	 m_max_left	 ( 0 ),
+		m_min_right	( 0 ),	 m_max_right ( 0 ),
+		_frames		( nullptr )
+	{}
 
 	~Sprite() {
 		if (_frames != nullptr) {
@@ -31,22 +32,21 @@ struct Sprite : public Texture {
 
 	static const unsigned int SPRITE_SHEET_WIDTH = 8;
 	unsigned int
-		run, cast, special,
-		min_up, max_up,
-		min_down, max_down,
-		min_left, max_left,
-		min_right, max_right,
-		num_frames;
+		m_run, m_cast, m_special,
+		m_min_up, m_max_up,
+		m_min_down, m_max_down,
+		m_min_left, m_max_left,
+		m_min_right, m_max_right,
+		m_num_frames;
 
 private:
-	Sprite::Frame *_frames; 
-
+	Frame *_frames; 
 public:
 	void load_frames() {
-		_frames = new Sprite::Frame[num_frames];
+		_frames = new Frame[m_num_frames];
 		int x = 0, y = 0;
 
-		for (unsigned int i = 0; i < num_frames; i++) {
+		for (unsigned int i = 0; i < m_num_frames; i++) {
 			_frames[i].x = x;
 			_frames[i].y = y;
 
@@ -58,8 +58,8 @@ public:
 		}
 	}
 
-	Sprite::Frame get_frame(unsigned int index) const {
-		if (index < num_frames && index >= 0) {
+	Frame get_frame(unsigned int index) const {
+		if (index < m_num_frames && index >= 0) {
 			return _frames[index];
 		}
 		printf("Sprite Index at: %d doesn't exist.", index);

@@ -57,10 +57,10 @@ private:
 	typedef std::map<int, SDL_Surface *> Surface_Map;
 	std::map<tmanager::Type, Surface_Map> _surfaces;
 
-	Texture *_map;
-
 	typedef std::map<tmanager::Key, Texture *> Texture_Map;
 	std::map<tmanager::Type, Texture_Map> _textures;
+
+	Texture *_map;
 };
 
 #endif

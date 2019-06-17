@@ -14,7 +14,9 @@ std::string LogManager::system_time() {
 	return (Environment::get().getClock()->getDisplayTime() + " - ");
 }
 
-LogManager::LogManager() {
+LogManager::LogManager() :
+	_logNum			( 0 )
+{
 	int logNum = 0;
 	std::string path = "";
 	do {

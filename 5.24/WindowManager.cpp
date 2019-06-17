@@ -4,12 +4,16 @@
 #include "Clock.h"
 #include "LogManager.h"
 
-WindowManager::WindowManager() {
+WindowManager::WindowManager(bool is_editor) :
+	_console			( GetConsoleWindow() ),
+	_showConsole		( false ),
+	_window			    ( nullptr )
+{
 	Environment::get().getLogManager()->log("Loading Window Manager");
 
 	FileReader file(_FILE_PATH);
 	load_console_settings(file);
-	load_window_settings(file);
+	load_window_settings(file, is_editor);
 }
 
 WindowManager::~WindowManager() {
@@ -38,17 +42,15 @@ void WindowManager::load_console_settings(FileReader &file) {
 	if (file.exists(FILE_CONSOLE_H)) console_h = file.get_int(FILE_CONSOLE_H);
 	if (file.exists(FILE_CONSOLE_SHOW)) _showConsole = file.get_bool(FILE_CONSOLE_SHOW);
 
-	_console = GetConsoleWindow();
 	MoveWindow(_console, console_x, console_y, console_w, console_h, TRUE);
 	ShowWindow(_console, _showConsole);
 }
 
-void WindowManager::load_window_settings(FileReader &file) {
+void WindowManager::load_window_settings(FileReader &file, bool is_editor) {
 	std::string window_title = _WINDOW_TITLE;
 	int window_x = _WINDOW_X, window_y = _WINDOW_Y;
 	int window_w = _WINDOW_W, window_h = _WINDOW_H;
 	SDL_Color window_color = _WINDOW_COLOR;
-	double camera_speed = _CAMERA_SPEED;
 
 	if (file.exists(FILE_WINDOW_TITLE)) window_title = file.get_string(FILE_WINDOW_TITLE);
 	if (file.exists(FILE_WINDOW_X)) window_x = file.get_int(FILE_WINDOW_X);
@@ -64,13 +66,12 @@ void WindowManager::load_window_settings(FileReader &file) {
 		window_color.b = blue;
 		window_color.a = alpha;
 	}
-	if (file.exists(FILE_CAMERA_SPEED)) camera_speed = file.get_double(FILE_CAMERA_SPEED);
 
 	_window = new Window(
 		window_title,
 		window_x, window_y,
 		window_w, window_h,
 		window_color,
-		camera_speed
+		!is_editor
 		);
 }

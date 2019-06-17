@@ -7,7 +7,9 @@
 
 class Player : public Entity {
 public:
-	Player(int type_id) : Entity(TYPE_PLAYER, type_id) {};
+	Player(int type_id) : 
+		Entity		(TYPE_PLAYER, type_id)
+	{};
 private:
 };
 

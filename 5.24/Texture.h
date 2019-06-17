@@ -5,10 +5,10 @@
 #define TEXTURE_H
 
 struct Texture {
-	Texture() {
-		texture = nullptr;
-		rect = { 0, 0, 0, 0 };
-	}
+	Texture() :
+		texture(nullptr),
+		rect({ 0, 0, 0, 0 })
+	{}
 
 	~Texture() {
 		if (texture != nullptr) {

@@ -9,7 +9,9 @@
 const char *TEXTURE_BASE_PATH = "Data/Textures/textures.txt";
 const char *SURFACE_BASE_PATH = "Data/Textures/surfaces.txt";
 
-TextureManager::TextureManager() {
+TextureManager::TextureManager() :
+	_map		( new Texture() )
+{
 	Environment::get().getLogManager()->log("Loading Texture Manager");
 
 	Environment::get().getLogManager()->log("Loading Textures");
@@ -25,8 +27,6 @@ TextureManager::TextureManager() {
 		loadSurfaces(it->first, it->second);
 	}
 	Environment::get().getLogManager()->log("Finished loading Surfaces");
-
-	_map = new Texture();
 }
 
 TextureManager::~TextureManager() {
@@ -78,18 +78,18 @@ Texture *TextureManager::loadTextureInfo(std::string path) {
 		if (file.exists(FILE_TEXTURE_PATH)) sprite->texture = Environment::get().getWindowManager()->getWindow()->getRenderer()->createTexture(file.get_string(FILE_TEXTURE_PATH));
 		if (file.exists(FILE_TEXTURE_W)) sprite->rect.w = file.get_int(FILE_TEXTURE_W);
 		if (file.exists(FILE_TEXTURE_H)) sprite->rect.h = file.get_int(FILE_TEXTURE_H);
-		if (file.exists(FILE_FRAME_RUN)) sprite->run = file.get_int(FILE_FRAME_RUN);
-		if (file.exists(FILE_FRAME_CAST)) sprite->cast = file.get_int(FILE_FRAME_CAST);
-		if (file.exists(FILE_FRAME_SPECIAL)) sprite->special = file.get_int(FILE_FRAME_SPECIAL);
-		if (file.exists(FILE_FRAME_MIN_UP)) sprite->min_up = file.get_int(FILE_FRAME_MIN_UP);
-		if (file.exists(FILE_FRAME_MAX_UP)) sprite->max_up = file.get_int(FILE_FRAME_MAX_UP);
-		if (file.exists(FILE_FRAME_MIN_DOWN)) sprite->min_down = file.get_int(FILE_FRAME_MIN_DOWN);
-		if (file.exists(FILE_FRAME_MAX_DOWN)) sprite->max_down = file.get_int(FILE_FRAME_MAX_DOWN);
-		if (file.exists(FILE_FRAME_MIN_LEFT)) sprite->min_left = file.get_int(FILE_FRAME_MIN_LEFT);
-		if (file.exists(FILE_FRAME_MAX_LEFT)) sprite->max_left = file.get_int(FILE_FRAME_MAX_LEFT);
-		if (file.exists(FILE_FRAME_MIN_RIGHT)) sprite->min_right = file.get_int(FILE_FRAME_MIN_RIGHT);
-		if (file.exists(FILE_FRAME_MAX_RIGHT)) sprite->max_right = file.get_int(FILE_FRAME_MAX_RIGHT);
-		if (file.exists(FILE_FRAME_NUM_FRAMES)) sprite->num_frames = file.get_int(FILE_FRAME_NUM_FRAMES);
+		if (file.exists(FILE_FRAME_RUN)) sprite->m_run = file.get_int(FILE_FRAME_RUN);
+		if (file.exists(FILE_FRAME_CAST)) sprite->m_cast = file.get_int(FILE_FRAME_CAST);
+		if (file.exists(FILE_FRAME_SPECIAL)) sprite->m_special = file.get_int(FILE_FRAME_SPECIAL);
+		if (file.exists(FILE_FRAME_MIN_UP)) sprite->m_min_up = file.get_int(FILE_FRAME_MIN_UP);
+		if (file.exists(FILE_FRAME_MAX_UP)) sprite->m_max_up = file.get_int(FILE_FRAME_MAX_UP);
+		if (file.exists(FILE_FRAME_MIN_DOWN)) sprite->m_min_down = file.get_int(FILE_FRAME_MIN_DOWN);
+		if (file.exists(FILE_FRAME_MAX_DOWN)) sprite->m_max_down = file.get_int(FILE_FRAME_MAX_DOWN);
+		if (file.exists(FILE_FRAME_MIN_LEFT)) sprite->m_min_left = file.get_int(FILE_FRAME_MIN_LEFT);
+		if (file.exists(FILE_FRAME_MAX_LEFT)) sprite->m_max_left = file.get_int(FILE_FRAME_MAX_LEFT);
+		if (file.exists(FILE_FRAME_MIN_RIGHT)) sprite->m_min_right = file.get_int(FILE_FRAME_MIN_RIGHT);
+		if (file.exists(FILE_FRAME_MAX_RIGHT)) sprite->m_max_right = file.get_int(FILE_FRAME_MAX_RIGHT);
+		if (file.exists(FILE_FRAME_NUM_FRAMES)) sprite->m_num_frames = file.get_int(FILE_FRAME_NUM_FRAMES);
 
 		sprite->load_frames();
 	}

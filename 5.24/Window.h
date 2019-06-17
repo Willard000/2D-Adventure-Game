@@ -16,7 +16,7 @@ public:
 		std::string title,
 		int x, int y, int w, int h,
 		SDL_Color backgroundColor,
-		double camera_speed
+		bool camera_locked
 	);
 	~Window();
 

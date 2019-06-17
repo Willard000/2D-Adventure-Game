@@ -7,11 +7,12 @@ class Entity;
 
 class Camera {
 public:
-	Camera();
+	Camera(bool is_locked);
 
 	void toggle();
 	void move(int dir);
 	void update();
+	void update(int x, int y);
 	void center(Entity *entity);  // change camera focus
 
 	friend class Window;

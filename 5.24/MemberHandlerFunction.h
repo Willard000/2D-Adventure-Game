@@ -11,7 +11,9 @@ public:
 	typedef void (T::*MemberFunction)(EventType *);
 
 	MemberHandlerFunction(T *instance, MemberFunction memberFunction) :
-		_instance(instance), _memberFunction(memberFunction) {};
+		_instance			( instance ),
+		_memberFunction		( memberFunction )
+	{}
 
 	// call function of instance class 
 	void call(Event *event) { (_instance->*_memberFunction)(static_cast<EventType *>(event)); }

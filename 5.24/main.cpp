@@ -5,6 +5,7 @@
 #include <SDL_ttf.h>
 
 #include "Engine.h"
+#include "Editor.h"
 
 int main(int args, char *argc[]) {
 
@@ -15,8 +16,17 @@ int main(int args, char *argc[]) {
 		std::cout << "SDL_TTF_LOADED" << std::endl;
 	}
 
-	Engine engine;
-	engine.run();
+	int input = 0;
+	std::cin >> input;
+
+	if (input == 1) {
+		Editor editor;
+		editor.run();
+	}
+	else {
+		Engine engine;
+		engine.run();
+	}
 
 	TTF_Quit();
 	SDL_Quit();

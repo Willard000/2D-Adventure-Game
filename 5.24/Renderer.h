@@ -43,8 +43,10 @@ public:
 
 	SDL_Texture *createMapTexture(std::vector<Tile> &tiles, std::map<int, SDL_Surface *> &tile_surfaces, const int &width, const int &height);
 
-	void rotate(double val);
-	void scale(double val);
+	void rotate(double angle);
+	void setRotation(double angle);
+	void scale(double factor);
+	void setScale(double factor);
 
 public:
 	enum {

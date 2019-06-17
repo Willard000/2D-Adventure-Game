@@ -11,8 +11,9 @@
 
 class ScriptManager {
 public:
-	ScriptManager() {
-		_L = lua_open();
+	ScriptManager() :
+		_L ( lua_open() )
+	{
 		luaL_openlibs(_L);
 		lua_init_player(this, _L);
 	}
