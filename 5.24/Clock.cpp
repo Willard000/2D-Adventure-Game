@@ -2,6 +2,10 @@
 
 #include "FileReader.h"
 
+#define UPDATE_INTERVAL 1000
+
+#define FILE_CLOCK_FPS "iclock_fps"
+
 Clock::Clock() :
 	_cap				(_CLOCK_FPS ),
 	_ms					( 1000.0 / _cap ),

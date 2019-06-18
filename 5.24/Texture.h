@@ -5,18 +5,13 @@
 #define TEXTURE_H
 
 struct Texture {
-	Texture() :
-		texture(nullptr),
-		rect({ 0, 0, 0, 0 })
-	{}
-
 	~Texture() {
 		if (texture != nullptr) {
 			SDL_DestroyTexture(texture);
 		}
 	}
 
-	SDL_Texture *texture;
-	SDL_Rect rect;
+	SDL_Texture *texture = nullptr;
+	SDL_Rect rect = { 0, 0, 0, 0 };
 };
 #endif

@@ -1,10 +1,14 @@
 #include "Environment.h"
+
+#include <cassert>
+
 #include "Clock.h"
 #include "LogManager.h"
 #include "WindowManager.h"
 #include "ScriptManager.h"
 #include "ResourceManager.h"
 #include "InputManager.h"
+#include "UIManager.h"
 
 Environment *Environment::_instance = nullptr;
 
@@ -14,7 +18,8 @@ Environment::Environment() :
 	_windowManager			( nullptr ),
 	_scriptManager			( nullptr ),
 	_resourceManager		( nullptr ),
-	_inputManager			( nullptr )
+	_inputManager			( nullptr ),
+	_uiManager				( nullptr )
 {
 	assert(!_instance);
 	_instance = this;
@@ -26,6 +31,9 @@ Environment::~Environment() {
 }
 
 void Environment::shutdown() {
+	delete _uiManager;
+	_uiManager = nullptr;
+
 	delete _inputManager;
 	_inputManager = nullptr;
 
@@ -74,6 +82,10 @@ void Environment::setInputManager(InputManager *inputManager) {
 	_inputManager = inputManager;
 }
 
+void Environment::setUIManager(UIManager *uiManager) {
+	_uiManager = uiManager;
+}
+
 Clock *Environment::getClock() {
 	return _clock;
 }
@@ -96,4 +108,8 @@ ResourceManager *Environment::getResourceManager() {
 
 InputManager *Environment::getInputManager() {
 	return _inputManager;
+}
+
+UIManager *Environment::getUIManager() {
+	return _uiManager;
 }

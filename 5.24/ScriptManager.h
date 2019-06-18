@@ -1,6 +1,5 @@
 #include <string>
 #include <stdio.h>
-#include <cassert>
 
 #include "lua5.1/luawrapper.hpp"
 

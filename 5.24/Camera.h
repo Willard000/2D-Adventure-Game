@@ -15,6 +15,8 @@ public:
 	void update(int x, int y);
 	void center(Entity *entity);  // change camera focus
 
+	bool getLocked();
+
 	friend class Window;
 	friend class Renderer;
 private:

@@ -1,5 +1,4 @@
 #include <string>
-#include <memory>
 
 #include <SDL.h>
 
@@ -16,7 +15,8 @@ public:
 		std::string title,
 		int x, int y, int w, int h,
 		SDL_Color backgroundColor,
-		bool camera_locked
+		bool camera_locked,
+		int window_mode
 	);
 	~Window();
 
@@ -24,6 +24,7 @@ public:
 	void hide() { SDL_HideWindow(_window); }
 	void show() { SDL_ShowWindow(_window); }
 	void setTitle(std::string title) { SDL_SetWindowTitle(_window, title.c_str()); }
+	void setWindowMode(int window_mode);
 
 	bool isFocused() { return SDL_GetMouseFocus() == _window; }
 

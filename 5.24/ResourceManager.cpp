@@ -56,13 +56,8 @@ void ResourceManager::renderMap() {
 }
 
 void ResourceManager::render() {
-	Environment::get().getWindowManager()->getRenderer()->clear();
-	Environment::get().getWindowManager()->getRenderer()->drawBackground();
-
 	renderMap();
 	renderEntities();
-
-	Environment::get().getWindowManager()->getWindow()->getRenderer()->render();
 }
 
 void ResourceManager::loadMap(int id) {

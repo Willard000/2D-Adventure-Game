@@ -5,23 +5,15 @@
 #include "HandlerFunction.h"
 #include "MemberHandlerFunction.h"
 
-#include <iostream>
-
 #ifndef EVENT_HANDLER_H
 #define EVENT_HANDLER_H
 
-typedef std::list<HandlerFunction *> HandlerList;
-
 class EventHandler {
 public:
+	typedef std::list<HandlerFunction *> HandlerList;
+
 	EventHandler() {}
-	~EventHandler() {
-		for (auto it = _subscribers.begin(); it != _subscribers.end(); it++) {
-			for (auto itt = it->second.begin(); itt != it->second.end(); itt++) {
-				delete *itt;
-			}
-		}
-	}
+	~EventHandler();
 
 	template <typename EventType>
 	void publish(EventType *event) {
@@ -34,6 +26,8 @@ public:
 				handler->execute(event);
 			}
 		}
+
+		delete event;
 	}
 
 	template<class T, class EventType>

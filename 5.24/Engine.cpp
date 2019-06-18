@@ -18,6 +18,8 @@ void Engine::run() {
 	_environment.getLogManager()->log("Main Loop\n");
 
 	while (_isRunning) {
+		_environment.getWindowManager()->getRenderer()->clear();
+
 		_isRunning = _environment.getInputManager()->get();
 
 		_environment.getInputManager()->update();
@@ -25,8 +27,9 @@ void Engine::run() {
 		_environment.getScriptManager()->run("Data/Lua/test.lua");
 
 		_environment.getResourceManager()->update();
-
 		_environment.getResourceManager()->render();
+
+		_environment.getWindowManager()->getWindow()->getRenderer()->render();
 
 		if (_environment.getClock()->update()) {
 			_environment.getWindowManager()->updateWindowTitle();

@@ -53,7 +53,7 @@ static int player_set_scale(lua_State *L) {
 	Player *player = luaW_check<Player>(L, 1);
 	double factor = (double)lua_tonumber(L, 2);
 
-	GetPosition(player)->m_scale = factor;
+	GetPosition(player)->setScale(factor);
 	return 0;
 }
 
@@ -71,7 +71,7 @@ static int player_set_rotation(lua_State *L) {
 	Player *player = luaW_check<Player>(L, 1);
 	double angle = (double)lua_tonumber(L, 2);
 
-	GetPosition(player)->m_rotation = angle;
+	GetPosition(player)->setRotation(angle);
 	return 0;
 }
 

@@ -1,5 +1,4 @@
 #include <map>
-#include <memory>
 
 #include <SDL.h>
 
@@ -8,7 +7,7 @@
 #ifndef INPUT_MANAGER_H
 #define INPUT_MANAGER_H
 
-#define EDITOR_MOUSE_SCROLL_FACTOR 0.05
+#define MOUSE_SCROLL_FACTOR 0.05f
 
 class InputManager {
 public:
@@ -18,8 +17,8 @@ public:
 	bool get();
 	bool isKey(const SDL_Keycode &key);
 	bool isHeld(const SDL_Keycode &key);
-	bool isMouse(int &mouse_x, int &mouse_y, const unsigned int &button);
-	bool isMouseHeld(int &mouse_x, int &mouse_y, const unsigned int &button);
+	bool isMouse(const unsigned int &button);
+	bool isMouseHeld(const unsigned int &button);
 
 	void update();
 	void updateEditor();

@@ -15,6 +15,11 @@ EntityManager::EntityManager() :
 
 	loadComponents(_player);
 	Environment::get().getWindowManager()->getWindow()->getCamera()->center(_player); // move this?
+	GetPosition(_player)->pos_x = 200;
+	GetPosition(_player)->rect.x = 200;
+	GetPosition(_player)->pos_y = 200;
+	GetPosition(_player)->rect.y = 200;
+
 	create(TYPE_OBJECT, 1);
 }
 

@@ -1,5 +1,3 @@
-#include <cassert>
-
 #ifndef ENVIRONMENT_H
 #define ENVIRONMENT_H
 
@@ -9,6 +7,7 @@ class WindowManager;
 class ScriptManager;
 class ResourceManager;
 class InputManager;
+class UIManager;
 
 class Environment {
 public:
@@ -21,6 +20,7 @@ public:
 	void setScriptManager(ScriptManager *scriptManager);
 	void setResourceManager(ResourceManager *resourceManager);
 	void setInputManager(InputManager *inputManager);
+	void setUIManager(UIManager *uiManager);
 
 	Clock *getClock();
 	LogManager *getLogManager();
@@ -28,6 +28,7 @@ public:
 	ScriptManager *getScriptManager();
 	ResourceManager *getResourceManager();
 	InputManager *getInputManager();
+	UIManager *getUIManager();
 
 	void shutdown();
 	static Environment &get();
@@ -38,6 +39,7 @@ private:
 	ScriptManager *_scriptManager;
 	ResourceManager *_resourceManager;
 	InputManager *_inputManager;
+	UIManager *_uiManager;
 
 	static Environment *_instance;
 };

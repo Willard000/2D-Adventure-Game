@@ -1,17 +1,8 @@
 #include <string>
-#include <fstream>
-#include <cstdio>
-#include <vector>
 #include <unordered_map>
 
 #ifndef FILE_READER_H
 #define FILE_READER_H
-
-#define MAX_TYPE_LENGTH 30
-#define MAX_PATH_LENGTH 125
-
-#define FILE_DELIMITER " "
-#define FILE_COMMENT_CHAR '#'
 
 namespace freader {
 	typedef std::unordered_map<std::string, std::string> Data;

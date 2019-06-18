@@ -7,9 +7,6 @@
 #ifndef MAP_H
 #define MAP_H
 
-#define FILE_MAP_WIDTH "iwidth"
-#define FILE_MAP_HEIGHT "iheight"
-
 #define TYPE_TILE "Tile"
 
 #define TILE_WIDTH 32
@@ -17,13 +14,14 @@
 
 extern const char *MAP_BASE_PATH;
 
-struct Tile {
-	int id = 0;
-	SDL_Rect pos = { 0, 0, TILE_WIDTH, TILE_HEIGHT };
-};
-
 class Map {
 public:
+
+	struct Tile {
+		int id = 0;
+		SDL_Rect pos = { 0, 0, TILE_WIDTH, TILE_HEIGHT };
+	};
+
 	Map(int id);
 
 	bool load(int id);

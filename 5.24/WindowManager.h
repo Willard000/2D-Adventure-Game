@@ -8,20 +8,6 @@
 #ifndef WINDOW_MANAGER_H
 #define WINDOW_MANAGER_H
 
-#define FILE_CONSOLE_X "iconsole_x"
-#define FILE_CONSOLE_Y "iconsole_y"
-#define FILE_CONSOLE_W "iconsole_w"
-#define FILE_CONSOLE_H "iconsole_h"
-#define FILE_CONSOLE_SHOW "bconsole_show"
-
-#define FILE_WINDOW_TITLE "swindow_title"
-#define FILE_WINDOW_X "iwindow_x"
-#define FILE_WINDOW_Y "iwindow_y"
-#define FILE_WINDOW_W "iwindow_w"
-#define FILE_WINDOW_H "iwindow_h"
-#define FILE_WINDOW_COLOR "window_color"
-#define FILE_CAMERA_SPEED "dcamera_speed"
-
 class WindowManager {
 public:
 	WindowManager(bool is_editor);
@@ -29,6 +15,9 @@ public:
 
 	void toggleConsole();
 	void updateWindowTitle();
+	void zoom(const float &amount, const int &mouse_x, const int &mouse_y);
+
+	void printDisplaySettings();
 
 	Window *getWindow() { return _window; }
 	Renderer *getRenderer() { return _window->getRenderer(); }

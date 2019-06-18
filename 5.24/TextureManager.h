@@ -11,23 +11,6 @@
 #ifndef TEXTURE_MANAGER_H
 #define TEXTURE_MANAGER_H
 
-#define FILE_SPRITE "Sprite"
-#define FILE_TEXTURE_PATH "stexture"
-#define FILE_TEXTURE_W "iwidth"
-#define FILE_TEXTURE_H "iheight"
-#define FILE_FRAME_RUN "irun"
-#define FILE_FRAME_CAST "icast"
-#define FILE_FRAME_SPECIAL "ispecial"
-#define FILE_FRAME_MIN_UP "imin_up"
-#define FILE_FRAME_MAX_UP "imax_up"
-#define FILE_FRAME_MIN_DOWN "imin_down"
-#define FILE_FRAME_MAX_DOWN "imax_down"
-#define FILE_FRAME_MIN_LEFT "imin_left"
-#define FILE_FRAME_MAX_LEFT "imax_left"
-#define FILE_FRAME_MIN_RIGHT "imin_right"
-#define FILE_FRAME_MAX_RIGHT "imax_right"
-#define FILE_FRAME_NUM_FRAMES "inum_frames"
-
 extern const char *TEXTURE_BASE_PATH;
 
 namespace tmanager {
@@ -46,7 +29,7 @@ public:
 	void loadSurfaces(tmanager::Type type, std::string path);
 	SDL_Surface *loadSurfaceInfo(std::string path);
 
-	void loadMap(std::vector<Tile> &tiles, const int &width, const int &height);
+	void loadMap(std::vector<Map::Tile> &tiles, const int &width, const int &height);
 
 	const Texture *getTextureInfo(tmanager::Type type, tmanager::Key key) { return _textures[type][key]; }
 	Texture *getTextureInfo(Entity *entity) { return _textures[entity->get_type()][entity->get_type_id()]; }

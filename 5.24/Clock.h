@@ -5,10 +5,6 @@
 #ifndef CLOCK_H
 #define CLOCK_H
 
-#define UPDATE_INTERVAL 1000
-
-#define FILE_CLOCK_FPS "iclock_fps"
-
 class Clock {
 public:
 	Clock();

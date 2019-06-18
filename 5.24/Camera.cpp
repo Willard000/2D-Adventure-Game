@@ -62,8 +62,8 @@ void Camera::update() {
 		return;
 	}
 
-	_x = position->m_pos_x - width_half;
-	_y = position->m_pos_y - height_half;
+	_x = position->pos_x - width_half;
+	_y = position->pos_y - height_half;
 
 	if (_x < 0) {
 		_x = 0;
@@ -80,10 +80,18 @@ void Camera::update() {
 }
 
 void Camera::update(int x, int y) {
+	if (_is_locked) {
+		return;
+	}
+
 	_x += x;
 	_y += y;
 }
 
 void Camera::center(Entity *entity) {
 	_entity = entity;
+}
+
+bool Camera::getLocked() {
+	return _is_locked;
 }

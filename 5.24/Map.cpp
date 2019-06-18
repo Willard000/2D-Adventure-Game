@@ -2,6 +2,9 @@
 
 #include "FileReader.h"
 
+#define FILE_MAP_WIDTH "iwidth"
+#define FILE_MAP_HEIGHT "iheight"
+
 const char *MAP_BASE_PATH = "Data/Maps/";
 
 Map::Map(int id) :

@@ -4,6 +4,7 @@
 #include "WindowManager.h"
 #include "ResourceManager.h"
 #include "LogManager.h"
+#include "UIManager.h"
 
 InputManager::InputManager() :
 	_inputHandler		( new InputHandler() )
@@ -50,8 +51,8 @@ bool InputManager::isHeld(const SDL_Keycode &key) {
 	return false;
 }
 
-bool InputManager::isMouse(int &mouse_x, int &mouse_y, const unsigned int &button) {
-	if (SDL_GetMouseState(&mouse_x, &mouse_y) & SDL_BUTTON(button) && Environment::get().getWindowManager()->getWindow()->isFocused()) {
+bool InputManager::isMouse(const unsigned int &button) {
+	if (SDL_GetMouseState(&_mouse_x, &_mouse_y) & SDL_BUTTON(button) && Environment::get().getWindowManager()->getWindow()->isFocused()) {
 		if (!_mouse_map[button]) {
 			_mouse_map[button] = true;
 			return true;
@@ -62,8 +63,8 @@ bool InputManager::isMouse(int &mouse_x, int &mouse_y, const unsigned int &butto
 	return false;
 }
 
-bool InputManager::isMouseHeld(int &mouse_x, int &mouse_y, const unsigned int &button) {
-	if (SDL_GetMouseState(&mouse_x, &mouse_y) & SDL_BUTTON(button) && Environment::get().getWindowManager()->getWindow()->isFocused()) {
+bool InputManager::isMouseHeld(const unsigned int &button) {
+	if (SDL_GetMouseState(&_mouse_x, &_mouse_y) & SDL_BUTTON(button) && Environment::get().getWindowManager()->getWindow()->isFocused()) {
 		return true;
 	}
 	return false;
@@ -121,6 +122,24 @@ void InputManager::update() {
 	if (isKey(SDL_SCANCODE_O)) {
 		Environment::get().getWindowManager()->getWindow()->getCamera()->toggle();
 	}
+
+	if (isMouse(SDL_BUTTON_MIDDLE)) {
+		_mouse_x_prev = _mouse_x;
+		_mouse_y_prev = _mouse_y;
+	}
+
+	if (isMouseHeld(SDL_BUTTON_MIDDLE)) {
+		Environment::get().getWindowManager()->getWindow()->getCamera()->update((_mouse_x_prev - _mouse_x), (_mouse_y_prev - _mouse_y));
+		_mouse_x_prev = _mouse_x;
+		_mouse_y_prev = _mouse_y;
+	}
+
+	if (_mouse_wheel > 0 && !Environment::get().getWindowManager()->getWindow()->getCamera()->getLocked()) {
+		Environment::get().getWindowManager()->zoom(MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
+	}
+	else if (_mouse_wheel < 0 && !Environment::get().getWindowManager()->getWindow()->getCamera()->getLocked()) {
+		Environment::get().getWindowManager()->zoom(-MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
+	}
 }
 
 void InputManager::updateEditor() {
@@ -149,22 +168,26 @@ void InputManager::updateEditor() {
 		);
 	}
 
+	if (isMouse(SDL_BUTTON_LEFT)) {
+		Environment::get().getUIManager()->check(_mouse_x, _mouse_y);
+	}
 
-	if (isMouse(_mouse_x, _mouse_y, SDL_BUTTON_MIDDLE)) {
+
+	if (isMouse(SDL_BUTTON_MIDDLE)) {
 		_mouse_x_prev = _mouse_x;
 		_mouse_y_prev = _mouse_y;
 	}
 
-	if (isMouseHeld(_mouse_x, _mouse_y, SDL_BUTTON_MIDDLE)) {
+	if (isMouseHeld(SDL_BUTTON_MIDDLE)) {
 		Environment::get().getWindowManager()->getWindow()->getCamera()->update((_mouse_x_prev - _mouse_x), (_mouse_y_prev - _mouse_y));
 		_mouse_x_prev = _mouse_x;
 		_mouse_y_prev = _mouse_y;
 	}
 
 	if (_mouse_wheel > 0) {
-		Environment::get().getWindowManager()->getRenderer()->scale(EDITOR_MOUSE_SCROLL_FACTOR);
+		Environment::get().getWindowManager()->zoom(MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
 	}
-	if (_mouse_wheel < 0) {
-		Environment::get().getWindowManager()->getRenderer()->scale(-EDITOR_MOUSE_SCROLL_FACTOR);
+	else if (_mouse_wheel < 0) {
+		Environment::get().getWindowManager()->zoom(-MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
 	}
 }

@@ -12,19 +12,20 @@
 #define CAST 2
 
 struct SpriteComponent : public Component {
-	SpriteComponent(Entity *entity, int w, int h, int time_);
+	SpriteComponent(Entity *entity_, int x_, int h_, int time_);
 
 	void update();
 
 	void update(Sprite *img);
 
 	Uint8
-		m_frame = 0, 
-		m_ani = 0, m_ani_prev = 0, 
-		m_dir = 0, m_dir_prev = 0;
-	SDL_Rect m_pos = { 0, 0, 32, 32 };
-	bool m_is_update = false;
-	Timer m_time;
+		frame = 0, 
+		ani = 0, ani_prev = 0, 
+		dir = 0, dir_prev = 0;
+
+	SDL_Rect pos = { 0, 0, 32, 32 };
+	bool is_update = false;
+	Timer time;
 };
 
 #endif

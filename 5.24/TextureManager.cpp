@@ -6,6 +6,23 @@
 
 #include "FileReader.h"
 
+#define FILE_SPRITE "Sprite"
+#define FILE_TEXTURE_PATH "stexture"
+#define FILE_TEXTURE_W "iwidth"
+#define FILE_TEXTURE_H "iheight"
+#define FILE_FRAME_RUN "irun"
+#define FILE_FRAME_CAST "icast"
+#define FILE_FRAME_SPECIAL "ispecial"
+#define FILE_FRAME_MIN_UP "imin_up"
+#define FILE_FRAME_MAX_UP "imax_up"
+#define FILE_FRAME_MIN_DOWN "imin_down"
+#define FILE_FRAME_MAX_DOWN "imax_down"
+#define FILE_FRAME_MIN_LEFT "imin_left"
+#define FILE_FRAME_MAX_LEFT "imax_left"
+#define FILE_FRAME_MIN_RIGHT "imin_right"
+#define FILE_FRAME_MAX_RIGHT "imax_right"
+#define FILE_FRAME_NUM_FRAMES "inum_frames"
+
 const char *TEXTURE_BASE_PATH = "Data/Textures/textures.txt";
 const char *SURFACE_BASE_PATH = "Data/Textures/surfaces.txt";
 
@@ -78,18 +95,18 @@ Texture *TextureManager::loadTextureInfo(std::string path) {
 		if (file.exists(FILE_TEXTURE_PATH)) sprite->texture = Environment::get().getWindowManager()->getWindow()->getRenderer()->createTexture(file.get_string(FILE_TEXTURE_PATH));
 		if (file.exists(FILE_TEXTURE_W)) sprite->rect.w = file.get_int(FILE_TEXTURE_W);
 		if (file.exists(FILE_TEXTURE_H)) sprite->rect.h = file.get_int(FILE_TEXTURE_H);
-		if (file.exists(FILE_FRAME_RUN)) sprite->m_run = file.get_int(FILE_FRAME_RUN);
-		if (file.exists(FILE_FRAME_CAST)) sprite->m_cast = file.get_int(FILE_FRAME_CAST);
-		if (file.exists(FILE_FRAME_SPECIAL)) sprite->m_special = file.get_int(FILE_FRAME_SPECIAL);
-		if (file.exists(FILE_FRAME_MIN_UP)) sprite->m_min_up = file.get_int(FILE_FRAME_MIN_UP);
-		if (file.exists(FILE_FRAME_MAX_UP)) sprite->m_max_up = file.get_int(FILE_FRAME_MAX_UP);
-		if (file.exists(FILE_FRAME_MIN_DOWN)) sprite->m_min_down = file.get_int(FILE_FRAME_MIN_DOWN);
-		if (file.exists(FILE_FRAME_MAX_DOWN)) sprite->m_max_down = file.get_int(FILE_FRAME_MAX_DOWN);
-		if (file.exists(FILE_FRAME_MIN_LEFT)) sprite->m_min_left = file.get_int(FILE_FRAME_MIN_LEFT);
-		if (file.exists(FILE_FRAME_MAX_LEFT)) sprite->m_max_left = file.get_int(FILE_FRAME_MAX_LEFT);
-		if (file.exists(FILE_FRAME_MIN_RIGHT)) sprite->m_min_right = file.get_int(FILE_FRAME_MIN_RIGHT);
-		if (file.exists(FILE_FRAME_MAX_RIGHT)) sprite->m_max_right = file.get_int(FILE_FRAME_MAX_RIGHT);
-		if (file.exists(FILE_FRAME_NUM_FRAMES)) sprite->m_num_frames = file.get_int(FILE_FRAME_NUM_FRAMES);
+		if (file.exists(FILE_FRAME_RUN)) sprite->run = file.get_int(FILE_FRAME_RUN);
+		if (file.exists(FILE_FRAME_CAST)) sprite->cast = file.get_int(FILE_FRAME_CAST);
+		if (file.exists(FILE_FRAME_SPECIAL)) sprite->special = file.get_int(FILE_FRAME_SPECIAL);
+		if (file.exists(FILE_FRAME_MIN_UP)) sprite->min_up = file.get_int(FILE_FRAME_MIN_UP);
+		if (file.exists(FILE_FRAME_MAX_UP)) sprite->max_up = file.get_int(FILE_FRAME_MAX_UP);
+		if (file.exists(FILE_FRAME_MIN_DOWN)) sprite->min_down = file.get_int(FILE_FRAME_MIN_DOWN);
+		if (file.exists(FILE_FRAME_MAX_DOWN)) sprite->max_down = file.get_int(FILE_FRAME_MAX_DOWN);
+		if (file.exists(FILE_FRAME_MIN_LEFT)) sprite->min_left = file.get_int(FILE_FRAME_MIN_LEFT);
+		if (file.exists(FILE_FRAME_MAX_LEFT)) sprite->max_left = file.get_int(FILE_FRAME_MAX_LEFT);
+		if (file.exists(FILE_FRAME_MIN_RIGHT)) sprite->min_right = file.get_int(FILE_FRAME_MIN_RIGHT);
+		if (file.exists(FILE_FRAME_MAX_RIGHT)) sprite->max_right = file.get_int(FILE_FRAME_MAX_RIGHT);
+		if (file.exists(FILE_FRAME_NUM_FRAMES)) sprite->num_frames = file.get_int(FILE_FRAME_NUM_FRAMES);
 
 		sprite->load_frames();
 	}
@@ -121,6 +138,6 @@ SDL_Surface *TextureManager::loadSurfaceInfo(std::string path) {
 	return surface;
 }
 
-void TextureManager::loadMap(std::vector<Tile> &tiles, const int &width, const int &height) {
+void TextureManager::loadMap(std::vector<Map::Tile> &tiles, const int &width, const int &height) {
 	_map->texture = Environment::get().getWindowManager()->getRenderer()->createMapTexture(tiles, _surfaces[TYPE_TILE], width, height);
 }

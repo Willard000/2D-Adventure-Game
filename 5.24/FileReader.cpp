@@ -1,5 +1,13 @@
 #include "FileReader.h"
 
+#include <fstream>
+
+#define MAX_TYPE_LENGTH 30
+#define MAX_PATH_LENGTH 125
+
+#define FILE_DELIMITER " "
+#define FILE_COMMENT_CHAR '#'
+
 FileReader::FileReader(const char *path, bool isRead) :
 	_path		(path)
 {

@@ -4,6 +4,21 @@
 #include "Clock.h"
 #include "LogManager.h"
 
+#define FILE_CONSOLE_X "iconsole_x"
+#define FILE_CONSOLE_Y "iconsole_y"
+#define FILE_CONSOLE_W "iconsole_w"
+#define FILE_CONSOLE_H "iconsole_h"
+#define FILE_CONSOLE_SHOW "bconsole_show"
+
+#define FILE_WINDOW_TITLE "swindow_title"
+#define FILE_WINDOW_X "iwindow_x"
+#define FILE_WINDOW_Y "iwindow_y"
+#define FILE_WINDOW_W "iwindow_w"
+#define FILE_WINDOW_H "iwindow_h"
+#define FILE_WINDOW_MODE "iwindow_mode"
+#define FILE_WINDOW_COLOR "window_color"
+#define FILE_CAMERA_SPEED "dcamera_speed"
+
 WindowManager::WindowManager(bool is_editor) :
 	_console			( GetConsoleWindow() ),
 	_showConsole		( false ),
@@ -50,6 +65,7 @@ void WindowManager::load_window_settings(FileReader &file, bool is_editor) {
 	std::string window_title = _WINDOW_TITLE;
 	int window_x = _WINDOW_X, window_y = _WINDOW_Y;
 	int window_w = _WINDOW_W, window_h = _WINDOW_H;
+	int window_mode = 0;
 	SDL_Color window_color = _WINDOW_COLOR;
 
 	if (file.exists(FILE_WINDOW_TITLE)) window_title = file.get_string(FILE_WINDOW_TITLE);
@@ -57,6 +73,7 @@ void WindowManager::load_window_settings(FileReader &file, bool is_editor) {
 	if (file.exists(FILE_WINDOW_Y)) window_y = file.get_int(FILE_WINDOW_Y);
 	if (file.exists(FILE_WINDOW_W)) window_w = file.get_int(FILE_WINDOW_W);
 	if (file.exists(FILE_WINDOW_H)) window_h = file.get_int(FILE_WINDOW_H);
+	if (file.exists(FILE_WINDOW_MODE)) window_mode = file.get_int(FILE_WINDOW_MODE);
 	if (file.exists(FILE_WINDOW_COLOR)) {
 		std::istringstream stream(file.get_string(FILE_WINDOW_COLOR));
 		int red, green, blue, alpha;
@@ -72,6 +89,23 @@ void WindowManager::load_window_settings(FileReader &file, bool is_editor) {
 		window_x, window_y,
 		window_w, window_h,
 		window_color,
-		!is_editor
+		!is_editor,
+		window_mode
 		);
+}
+
+void WindowManager::zoom(const float &amount, const int &mouse_x, const int &mouse_y) {
+	_window->getRenderer()->scale(amount);
+	if (amount < 0) {
+		_window->getCamera()->update(-(mouse_x - _window->getWidthHalf()) / 10, -(mouse_y - _window->getHeightHalf()) / 10);
+	}
+	else {
+		_window->getCamera()->update((mouse_x - _window->getWidthHalf()) / 10, (mouse_y - _window->getHeightHalf()) / 10);
+	}
+}
+
+void WindowManager::printDisplaySettings() {
+		SDL_DisplayMode mode;
+		SDL_GetWindowDisplayMode(_window->getWindow(), &mode);
+		printf("Window Display Mode\nformat: %d\nrefresh_rate: %d\nwidth: %d\nheight: %d\n", mode.format, mode.refresh_rate, mode.w, mode.h);
 }

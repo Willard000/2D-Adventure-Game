@@ -5,13 +5,13 @@ class Entity;
 
 struct Component {
 public:
-	Component(Entity *entity) :
-		m_entity		(entity)
+	Component(Entity *entity_) :
+		entity		(entity_)
 	{}
 
 	virtual void update() = 0;
 
-	Entity *m_entity;
+	Entity *entity;
 };
 
 #endif
