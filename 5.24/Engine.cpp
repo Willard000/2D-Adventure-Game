@@ -15,7 +15,7 @@ Engine::Engine() :
 }
 
 void Engine::run() {
-	_environment.getLogManager()->log("Main Loop\n");
+	_environment.getLogManager()->log("Engine Main Loop\n");
 
 	while (_isRunning) {
 		_environment.getWindowManager()->getRenderer()->clear();
@@ -36,7 +36,7 @@ void Engine::run() {
 		}
 	}
 
-	_environment.getLogManager()->log("Shutting Down\n");
+	_environment.getLogManager()->log("Shutting Down Engine\n");
 	_environment.shutdown();
 }
 

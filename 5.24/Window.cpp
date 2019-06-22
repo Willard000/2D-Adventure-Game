@@ -13,7 +13,7 @@ Window::Window(
 	_height_half		( h / 2 ),
 	_window				( SDL_CreateWindow(title.c_str(), x, y, w, h, NULL) ),
 	_camera				( new Camera(camera_locked) ),
-	_renderer			( new Renderer(_window, _camera, backgroundColor) )
+	_renderer			( new Renderer(_window, backgroundColor, _camera) )
 {
 	setWindowMode(window_mode);
 }

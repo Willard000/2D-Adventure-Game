@@ -5,11 +5,13 @@
 #ifndef CLOCK_H
 #define CLOCK_H
 
+#define UPDATE_INTERVAL 1000.0
+
 class Clock {
 public:
 	Clock();
 
-	bool update();
+	bool update(double interval = UPDATE_INTERVAL);
 
 	void limit(bool limit);
 	void setCap(int cap);

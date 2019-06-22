@@ -1,43 +1,32 @@
 
 #include <SDL.h>
 
-#ifndef BUTTON_H
-#define BUTTON_H
+#include <string>
+
+#include "Text.h"
+
+#ifndef UI_BUTTON_H
+#define UI_BUTTON_H
 
 namespace UI {
 
 	class Button {
 	public:
-		Button(SDL_Rect rect, SDL_Color color) :
+		Button(std::string text, SDL_Color text_color, int font_size, Uint32 wrap_length, SDL_Rect rect, SDL_Color color) :
+			_text		( Text(text, text_color, font_size, wrap_length, rect.x + (rect.w / 2), rect.y + (rect.h / 4)) ),
 			_rect		( rect ),
 			_color		( color )
 		{}
 
 		virtual void execute() {}
 
-		virtual const SDL_Rect getRect() { return _rect; }
-		virtual const SDL_Color getColor() { return _color; }
+	    const Text &getText() { return _text; }
+		const SDL_Rect &getRect() { return _rect; }
+		const SDL_Color &getColor() { return _color; }
 	private:
+		Text _text;
 		SDL_Rect _rect;
-		SDL_Color _color;
-	};
-
-	template <class T>
-	class ButtonPress : public Button {
-	public:
-		typedef void (T::*MemberFunction)(void);
-
-		ButtonPress(T *instance, MemberFunction onPress, SDL_Rect rect, SDL_Color color) :
-			Button(rect, color),
-			_instance(instance),
-			_onPress(onPress)
-		{}
-
-		void execute() { (_instance->*_onPress)(); }
-
-	private:
-		T *_instance;
-		MemberFunction _onPress;
+ 		SDL_Color _color;
 	};
 
 }

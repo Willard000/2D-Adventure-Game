@@ -2,8 +2,6 @@
 
 #include "FileReader.h"
 
-#define UPDATE_INTERVAL 1000
-
 #define FILE_CLOCK_FPS "iclock_fps"
 
 Clock::Clock() :
@@ -24,7 +22,7 @@ Clock::Clock() :
 	}
 }
 
-bool Clock::update() {
+bool Clock::update(double interval) {
 	updateTime();
 	_frames++;
 
@@ -39,7 +37,7 @@ bool Clock::update() {
 	if (_previousTicks >= _updateTicks) {
 		_fms = 1000.0 / double(_frames);
 		_frames = 0;
-		_updateTicks += UPDATE_INTERVAL;
+		_updateTicks += interval;
 		return true;
 	}
 

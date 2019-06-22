@@ -12,7 +12,7 @@ public:
 	void toggle();
 	void move(int dir);
 	void update();
-	void update(int x, int y);
+	void update(double x, double y);
 	void center(Entity *entity);  // change camera focus
 
 	bool getLocked();

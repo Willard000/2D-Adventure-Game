@@ -19,6 +19,8 @@
 #define FILE_WINDOW_COLOR "window_color"
 #define FILE_CAMERA_SPEED "dcamera_speed"
 
+#define CAMERA_ZOOM_SPEED 1
+
 WindowManager::WindowManager(bool is_editor) :
 	_console			( GetConsoleWindow() ),
 	_showConsole		( false ),
@@ -97,10 +99,10 @@ void WindowManager::load_window_settings(FileReader &file, bool is_editor) {
 void WindowManager::zoom(const float &amount, const int &mouse_x, const int &mouse_y) {
 	_window->getRenderer()->scale(amount);
 	if (amount < 0) {
-		_window->getCamera()->update(-(mouse_x - _window->getWidthHalf()) / 10, -(mouse_y - _window->getHeightHalf()) / 10);
+		_window->getCamera()->update(-CAMERA_ZOOM_SPEED, -CAMERA_ZOOM_SPEED);
 	}
 	else {
-		_window->getCamera()->update((mouse_x - _window->getWidthHalf()) / 10, (mouse_y - _window->getHeightHalf()) / 10);
+		_window->getCamera()->update(CAMERA_ZOOM_SPEED, CAMERA_ZOOM_SPEED);
 	}
 }
 

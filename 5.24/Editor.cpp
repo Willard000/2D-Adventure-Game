@@ -16,6 +16,7 @@ Editor::Editor() :
 }
 
 void Editor::run() {
+	_environment.getLogManager()->log("Editor Main Loop\n");
 
 	while (_isRunning) {
 		_environment.getWindowManager()->getRenderer()->clear();
@@ -23,6 +24,7 @@ void Editor::run() {
 		_isRunning = _environment.getInputManager()->get();
 
 		_environment.getInputManager()->updateEditor();
+
 		_environment.getUIManager()->update();
 
 		_environment.getResourceManager()->render();
@@ -34,6 +36,9 @@ void Editor::run() {
 			_environment.getWindowManager()->updateWindowTitle();
 		}
 	}
+
+	_environment.getLogManager()->log("Shutting Down Editor\n");
+	_environment.shutdown();
 }
 
 void Editor::buildEnvironment() {

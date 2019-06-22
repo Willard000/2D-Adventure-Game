@@ -17,8 +17,6 @@ public:
 private:
 	std::string system_time();
 private:
-	const char *_LOG_PATH = "Data/Log/";
-
 	int _logNum;
 	std::ofstream _log;
 };

@@ -79,7 +79,7 @@ void Camera::update() {
 	}
 }
 
-void Camera::update(int x, int y) {
+void Camera::update(double x, double y) {
 	if (_is_locked) {
 		return;
 	}

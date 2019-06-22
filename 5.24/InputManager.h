@@ -22,6 +22,13 @@ public:
 
 	void update();
 	void updateEditor();
+
+	std::string start_text_input();
+public:
+	enum {
+		STATE_IDLE = 1,
+		STATE_TEXT_INPUT
+	};
 private:
 	InputHandler *_inputHandler;
 
@@ -32,6 +39,10 @@ private:
 	int _mouse_x, _mouse_y;
 	int _mouse_x_prev, _mouse_y_prev;
 	int _mouse_wheel;
+
+	int _state;
+	bool _get_text_input;
+	std::string _text_input;
 };
 
 #endif

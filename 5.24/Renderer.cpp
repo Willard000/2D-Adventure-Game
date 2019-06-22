@@ -1,5 +1,7 @@
 #include "Renderer.h"
 
+#include <cassert>
+
 #define COLOR_KEY_R 0x00
 #define COLOR_KEY_G 0x00
 #define COLOR_KEY_B 0x0ff
@@ -13,19 +15,30 @@
 #define LOGICAL_SIZE_W 1920
 #define LOGICAL_SIZE_H 1080
 
-Renderer::Renderer(SDL_Window *window, Camera *camera, SDL_Color backgroundColor) :
+#define FONT_BASE_PATH "Data/Font/font.ttf"
+#define FONT_PT_SIZE 92
+
+// centers the text position depending on its length
+// ex. pos.x -= pos.w / TEXT_OFFSET_FECTOR_X
+#define TEXT_OFFSET_FACTOR_X 2
+#define TEXT_OFFSET_FACTOR_Y 8
+
+Renderer::Renderer(SDL_Window *window, SDL_Color backgroundColor, Camera *camera) :
 	_renderer				( SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED) ),
-	_camera					( camera ),
 	_backgroundColor		( backgroundColor ),
+	_font					( TTF_OpenFont(FONT_BASE_PATH, FONT_PT_SIZE) ),
+	_camera					( camera ),
 	_uniform_rotation		( 0.0 ),
 	_uniform_scale			( 1.0 )
 {
+	assert(_font);
 	SDL_SetRenderDrawBlendMode(_renderer, SDL_BLENDMODE_BLEND);
 	SDL_RenderSetLogicalSize(_renderer, LOGICAL_SIZE_W, LOGICAL_SIZE_H);
 	SDL_RenderSetScale(_renderer, _uniform_scale, _uniform_scale);
 }
 
 Renderer::~Renderer() {
+	TTF_CloseFont(_font);
 	SDL_DestroyRenderer(_renderer);
 }
 
@@ -65,49 +78,53 @@ SDL_Surface *Renderer::createSurface(std::string path) {
 }
 
 void Renderer::render(const Texture *img, const SDL_Rect &pos) {
-	SDL_Rect des = { 
-		pos.x - (int)_camera->_x,
-		pos.y - (int)_camera->_y,
-		pos.w,
-		pos.h
-	};
 	if (img != nullptr) {
-		SDL_RenderCopyEx(_renderer, img->texture, NULL, &des, _uniform_rotation, NULL, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(_renderer, img->texture, NULL, &getDestination(pos), _uniform_rotation, NULL, SDL_FLIP_NONE);
 	}
 	else {
-		drawRect(des, NULL_TEXTURE_COLOR);
+		drawRect(getDestination(pos), NULL_TEXTURE_COLOR);
 	}
 }
 
 void Renderer::render(const Texture *img, PositionComponent *position) {
-	SDL_Rect des = { 
-		position->rect.x - (int)_camera->_x,
-		position->rect.y - (int)_camera->_y,
-		position->rect.w,
-		position->rect.h
-	};
 	if (img != nullptr) {
-		SDL_RenderCopyEx(_renderer, img->texture, NULL, &des, _uniform_rotation + position->rotation, NULL, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(_renderer, img->texture, NULL, &getDestination(position->rect), _uniform_rotation + position->rotation, NULL, SDL_FLIP_NONE);
 	}
 	else {
-		drawRect(des, NULL_TEXTURE_COLOR);
+		drawRect(getDestination(position->rect), NULL_TEXTURE_COLOR);
 	}
 }
 
 void Renderer::render(Sprite *img, SpriteComponent *sprite, PositionComponent *position) {
-	SDL_Rect des = { 
-		position->rect.x - (int)_camera->_x,
-		position->rect.y - (int)_camera->_y,
-		position->rect.w,
-		position->rect.h
-	};
-
 	if (img != nullptr) {
 		sprite->update(img);
-		SDL_RenderCopyEx(_renderer, img->texture, &sprite->pos, &des, _uniform_rotation + position->rotation, NULL, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(_renderer, img->texture, &sprite->pos, &getDestination(position->rect), _uniform_rotation + position->rotation, NULL, SDL_FLIP_NONE);
 	}
 	else {
-		drawRect(des, NULL_TEXTURE_COLOR);
+		drawRect(getDestination(position->rect), NULL_TEXTURE_COLOR);
+	}
+}
+
+void Renderer::drawText(const Text &text, bool ui_element) {
+	if (text.texture != nullptr) {
+		if (ui_element) {
+			SDL_RenderSetScale(_renderer, 1.0f, 1.0f);
+			SDL_RenderCopy(_renderer, text.texture, NULL, &text.rect);
+			SDL_RenderSetScale(_renderer, _uniform_scale, _uniform_scale);
+		}
+		else {
+			SDL_RenderCopyEx(_renderer, text.texture, NULL, &getDestination(text.rect), _uniform_rotation, NULL, SDL_FLIP_NONE);
+		}
+	}
+	else {
+		if (ui_element) {
+			SDL_RenderSetScale(_renderer, 1.0f, 1.0f);
+			drawRect(text.rect, NULL_TEXT_COLOR);
+			SDL_RenderSetScale(_renderer, _uniform_scale, _uniform_scale);
+		}
+		else {
+			drawRect(getDestination(text.rect), NULL_TEXT_COLOR);
+		}
 	}
 }
 
@@ -134,6 +151,19 @@ SDL_Texture *Renderer::createMapTexture(std::vector<Map::Tile> &tiles, std::map<
 	return texture;
 }
 
+void Renderer::createText(Text &text) {
+	if (text.text == "") {
+		return;
+	}
+	SDL_Surface *surface = TTF_RenderText_Blended_Wrapped(_font, text.text.c_str(), text.color, text.wrap_length);
+	text.texture = SDL_CreateTextureFromSurface(_renderer, surface);
+	text.rect.w = int((float)surface->clip_rect.w * ((float)text.font_size / (float)FONT_PT_SIZE));
+	text.rect.h = int((float)surface->clip_rect.h * ((float)text.font_size / (float)FONT_PT_SIZE));
+	text.rect.x -= text.rect.w / TEXT_OFFSET_FACTOR_X;
+	text.rect.y -= text.rect.h / TEXT_OFFSET_FACTOR_Y;
+	SDL_FreeSurface(surface);
+}
+
 void Renderer::rotate(double angle) {
 	_uniform_rotation += angle;
 }
@@ -150,4 +180,13 @@ void Renderer::scale(float factor) {
 void Renderer::setScale(float factor) {
 	_uniform_scale = factor;
 	SDL_RenderSetScale(_renderer, _uniform_scale, _uniform_scale);
+}
+
+SDL_Rect Renderer::getDestination(const SDL_Rect &pos) {
+	return {
+		pos.x - (int)_camera->_x,
+		pos.y - (int)_camera->_y,
+		pos.w,
+		pos.h
+	};
 }
