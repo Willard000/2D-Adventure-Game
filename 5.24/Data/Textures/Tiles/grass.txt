@@ -1,2 +1,0 @@
-# Grass
-stexture Data/Textures/Tiles/Images/grass.png

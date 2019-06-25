@@ -1,23 +1,20 @@
-#include "LogManager.h"
+#include "Log.h"
 
 #include <string>
 
 #include "Environment.h"
 #include "Clock.h"
 
+#include "FileReader.h"
+
 #define LOCATE_FILE_PATH "Data/Log/logNum.txt" 
 #define LOG_PATH "Data/Log/"
 
-bool file_exists(const char *path) {
-	std::ifstream file(path);
-	return file.good();
-}
-
-std::string LogManager::system_time() {
+std::string Log::system_time() {
 	return (Environment::get().getClock()->getDisplayTime() + " - ");
 }
 
-LogManager::LogManager() :
+Log::Log() :
 	_logNum			( 0 )
 {
 	std::string path = "";
@@ -32,14 +29,14 @@ LogManager::LogManager() :
 	path = LOG_PATH + std::string("log") + std::to_string(_logNum) + ".txt";
 	_log.open(path.c_str());
 
-	log("Starting log");
+	print("Starting log");
 }
 
-LogManager::~LogManager() {
-	log("Closing log");
+Log::~Log() {
+	print("Closing log");
 	_log.close();
 }
 
-void LogManager::log(std::string val, const char *end) {
+void Log::print(std::string val, const char *end) {
 	_log << system_time() << val << end;
 }

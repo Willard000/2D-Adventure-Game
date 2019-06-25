@@ -23,6 +23,9 @@ public:
 	void update();
 	void updateEditor();
 
+	void get_text_input(int *val);
+	void get_text_input(std::string *val);
+private:
 	std::string start_text_input();
 public:
 	enum {

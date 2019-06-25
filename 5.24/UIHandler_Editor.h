@@ -8,6 +8,8 @@ public:
 	UIHandler_Editor();
 
 	void button_new_map();
+	void button_save_map();
+	void button_load_map();
 private:
 };
 #endif

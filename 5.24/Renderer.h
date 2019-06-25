@@ -14,6 +14,12 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#define RMASK 0xff000000
+#define GMASK 0x00ff0000
+#define BMASK 0x0000ff00
+#define AMASK 0x000000ff
+#define RGB_DEPTH 32
+
 class Renderer {
 public:
 	Renderer(SDL_Window *window, SDL_Color backgroundColor, Camera *camera);
@@ -25,14 +31,21 @@ public:
 	SDL_Texture *createTexture(std::string path);
 	SDL_Surface *createSurface(std::string path);
 
-	void render(const Texture *img, const SDL_Rect &pos);
+	void render(const Texture *img);
+	void render(const Texture *img, const SDL_Rect &pos, bool ui_element = false);
 	void render(const Texture *img, PositionComponent *position);
 	void render(Sprite *img, SpriteComponent *sprite, PositionComponent *position);
 
-	void drawText(const Text &text, bool ui_element = false);
+	void drawText(Text &text, bool ui_element = false);
 	void drawRect(const SDL_Rect &rect, const SDL_Color &color, int flag = DRAW_RECT_FULL);
+	void drawLine(const SDL_Rect &rect, const SDL_Color &color);
 
-	SDL_Texture *createMapTexture(std::vector<Map::Tile> &tiles, std::map<int, SDL_Surface *> &tile_surfaces, const int &width, const int &height);
+	SDL_Texture *makeBlitTexture(SDL_Surface *&main_surface, std::map<int, SDL_Surface *> &surfaces, std::vector<Map::Tile> &tiles, const int &width, const int &height);
+	SDL_Texture *makeBlitTexture(std::map<int, SDL_Surface *> &surfaces, const int &width, const int &height, const int &surface_size);
+	SDL_Texture *blitTexture(SDL_Surface *&main_surface, SDL_Surface *surface, SDL_Rect &pos);
+
+	SDL_Texture *makeEditorLineBackground(const int &width, const int &height, const int &tile_width, const int &tile_height, const SDL_Color &color);
+
 	void createText(Text &text);
 
 	void rotate(double angle);

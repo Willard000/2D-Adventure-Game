@@ -2,11 +2,13 @@
 
 #include "Environment.h"
 #include "Clock.h"
-#include "LogManager.h"
-#include "WindowManager.h"
+#include "Log.h"
+#include "Window.h"
 #include "ScriptManager.h"
 #include "ResourceManager.h"
 #include "InputManager.h"
+
+#include "WindowLoader.h"
 
 Engine::Engine() :
 	_isRunning		( true )
@@ -15,10 +17,10 @@ Engine::Engine() :
 }
 
 void Engine::run() {
-	_environment.getLogManager()->log("Engine Main Loop\n");
+	_environment.getLog()->print("Engine Main Loop\n");
 
 	while (_isRunning) {
-		_environment.getWindowManager()->getRenderer()->clear();
+		_environment.getWindow()->getRenderer()->clear();
 
 		_isRunning = _environment.getInputManager()->get();
 
@@ -27,28 +29,33 @@ void Engine::run() {
 		_environment.getScriptManager()->run("Data/Lua/test.lua");
 
 		_environment.getResourceManager()->update();
+
 		_environment.getResourceManager()->render();
 
-		_environment.getWindowManager()->getWindow()->getRenderer()->render();
+		_environment.getWindow()->getRenderer()->render();
 
 		if (_environment.getClock()->update()) {
-			_environment.getWindowManager()->updateWindowTitle();
+			std::string title = "Engine      Map: " + std::to_string(_environment.getResourceManager()->getMap()->get_id()) + "     " +
+				_environment.getClock()->getDisplayTime() + "    " + std::to_string(_environment.getClock()->getFMS());
+			_environment.getWindow()->setTitle(title);
 		}
 	}
 
-	_environment.getLogManager()->log("Shutting Down Engine\n");
+	_environment.getLog()->print("Shutting Down Engine\n");
 	_environment.shutdown();
 }
 
 void Engine::buildEnvironment() {
+	_environment.setMode(MODE_GAME);
+
 	Clock *clock = new Clock();
 	_environment.setClock(clock);
 
-	LogManager *logManager = new LogManager();
-	_environment.setLogManager(logManager);
+	Log *log = new Log();
+	_environment.setLog(log);
 
-	WindowManager *windowManager = new WindowManager(false);
-	_environment.setWindowManager(windowManager);
+	Window *window = loadWindow();
+	_environment.setWindow(window);
 	
 	ScriptManager *scriptManager = new ScriptManager();
 	_environment.setScriptManager(scriptManager);

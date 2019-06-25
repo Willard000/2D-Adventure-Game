@@ -9,20 +9,34 @@
 #ifndef UI_MANAGER_H
 #define UI_MANAGER_H
 
+#define ELEMENT_WIDTH 32
+#define ELEMENT_HEIGHT 32
+#define ELEMENT_ROW_SIZE 8
+#define ELEMENT_AREA_WIDTH ELEMENT_ROW_SIZE * ELEMENT_WIDTH
+
 namespace UI {
+
+	struct Element_Area {
+		SDL_Rect background;
+		SDL_Color color;
+		SDL_Rect element_area;
+		SDL_Rect selection_area;
+	};
+
 	enum {
-		STATE_IDLE = 1,
+		STATE_IDLE,
 		STATE_CONFIRM,
 		STATE_DENY,
-		STATE_WAITING
+		STATE_WAITING,
 	};
+
 }
 
 class UIManager {
 public:
 	typedef void(*Callback)(void);
 
-	UIManager(bool editor);
+	UIManager();
 	~UIManager();
 
 	template <class T>
@@ -42,7 +56,7 @@ public:
 	void remove_button(std::string key);
 
 	int update();
-	void check(const int &mouse_x, const int &mouse_y);
+	bool check(const int &mouse_x, const int &mouse_y);
 	void render();
 
 	void set_state(int flag);
@@ -50,13 +64,22 @@ public:
 
 	void push_confirmation(Callback on_confirm = nullptr, Callback on_deny = nullptr);
 	void pop_confirmation();
+
+	// returns element id ( -1 if mouse is not hovering an element)
+	int select_element(const int &mouse_x, const int &mouse_y);
 private:
 	int _state;
+
+	bool _element_selected;
+	std::string _element_type;
+	int _element_index;
 
 	Text _current_text;
 
 	Callback _on_confirm;
 	Callback _on_deny;
+
+	Element_Area _element_area;
 
 	UIHandler *_uiHandler;
 };

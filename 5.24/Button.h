@@ -5,8 +5,8 @@
 
 #include "Text.h"
 
-#ifndef UI_BUTTON_H
-#define UI_BUTTON_H
+#ifndef BUTTON_H
+#define BUTTON_H
 
 namespace UI {
 
@@ -20,7 +20,7 @@ namespace UI {
 
 		virtual void execute() {}
 
-	    const Text &getText() { return _text; }
+	    Text &getText() { return _text; }
 		const SDL_Rect &getRect() { return _rect; }
 		const SDL_Color &getColor() { return _color; }
 	private:

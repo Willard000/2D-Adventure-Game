@@ -21,7 +21,8 @@ public:
 
 	double pos_x, pos_y;
 	double speed;
-	float scale_f, rotation;
+	float scale_f;
+	double rotation;
 	SDL_Rect rect;
 	int base_width;
 	int base_height;

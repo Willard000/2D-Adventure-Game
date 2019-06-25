@@ -1,21 +1,43 @@
 #include "Window.h"
 
-Window::Window(
-	std::string title,
-	int x, int y, int w, int h,
-	SDL_Color backgroundColor,
-	bool camera_locked,
-	int window_mode)
-	:
-	_width				( w ),
-	_height				( h ),
-	_width_half			( w / 2 ),
-	_height_half		( h / 2 ),
-	_window				( SDL_CreateWindow(title.c_str(), x, y, w, h, NULL) ),
-	_camera				( new Camera(camera_locked) ),
-	_renderer			( new Renderer(_window, backgroundColor, _camera) )
+#include <sstream>
+
+#define CAMERA_ZOOM_SPEED 1
+
+Window::Window(Console_Settings console, Window_Settings window) :
+	_width						( window.w ),
+	_height						( window.h ),
+	_width_half					( window.w / 2 ),
+	_height_half				( window.h / 2 ),
+	_window(SDL_CreateWindow	( window.title.c_str(), window.x, window.y, window.w, window.h, NULL) ),
+	_camera						( new Camera() ),
+	_renderer					( new Renderer(_window, window.color, _camera) )
 {
-	setWindowMode(window_mode);
+	_console = GetConsoleWindow();
+	MoveWindow(_console, console.x, console.y, console.w, console.h, TRUE);
+	ShowWindow(_console, console.show);
+	setWindowMode(window.mode);
+}
+
+Window::~Window() {
+	delete _renderer;
+	delete _camera;
+	SDL_DestroyWindow(_window);
+}
+
+void Window::toggleConsole() {
+	_showConsole = !_showConsole;
+	ShowWindow(_console, _showConsole);
+}
+
+void Window::zoom(const float &amount, const int &mouse_x, const int &mouse_y) {
+	_renderer->scale(amount);
+	if (amount < 0) {
+		_camera->update(-CAMERA_ZOOM_SPEED, -CAMERA_ZOOM_SPEED);
+	}
+	else {
+		_camera->update(CAMERA_ZOOM_SPEED, CAMERA_ZOOM_SPEED);
+	}
 }
 
 void Window::setWindowMode(int window_mode) {
@@ -55,8 +77,8 @@ void Window::setWindowMode(int window_mode) {
 	}
 }
 
-Window::~Window() {
-	delete _renderer;
-	delete _camera;
-	SDL_DestroyWindow(_window);
+void Window::printDisplaySettings() {
+	SDL_DisplayMode mode;
+	SDL_GetWindowDisplayMode(_window, &mode);
+	printf("Window Display Mode\nformat: %d\nrefresh_rate: %d\nwidth: %d\nheight: %d\n", mode.format, mode.refresh_rate, mode.w, mode.h);
 }

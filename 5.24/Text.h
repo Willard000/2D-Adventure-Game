@@ -18,7 +18,9 @@ struct Text {
 	int font_size;
 	Uint32 wrap_length;
 	SDL_Texture *texture;
+	int x, y;
 	SDL_Rect rect;
+	bool loaded;
 };
 
 #endif

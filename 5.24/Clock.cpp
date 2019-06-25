@@ -22,7 +22,7 @@ Clock::Clock() :
 	}
 }
 
-bool Clock::update(double interval) {
+bool Clock::update(Uint32 interval) {
 	updateTime();
 	_frames++;
 

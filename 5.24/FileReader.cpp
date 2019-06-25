@@ -8,6 +8,11 @@
 #define FILE_DELIMITER " "
 #define FILE_COMMENT_CHAR '#'
 
+bool file_exists(const char *path) {
+	std::ifstream file(path);
+	return file.good();
+}
+
 FileReader::FileReader(const char *path, bool isRead) :
 	_path		(path)
 {

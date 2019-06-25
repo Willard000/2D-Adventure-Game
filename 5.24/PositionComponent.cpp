@@ -70,8 +70,8 @@ void PositionComponent::move(int dir_, double dis_) {
 
 void PositionComponent::scale(float factor_) {
 	scale_f += factor_;
-	rect.w = base_width * scale_f;
-	rect.h = base_height * scale_f;
+	rect.w = int(base_width * scale_f);
+	rect.h = int(base_height * scale_f);
 }
 
 void PositionComponent::setScale(float factor_) {

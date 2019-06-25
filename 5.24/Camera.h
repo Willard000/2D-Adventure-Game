@@ -7,7 +7,7 @@ class Entity;
 
 class Camera {
 public:
-	Camera(bool is_locked);
+	Camera();
 
 	void toggle();
 	void move(int dir);

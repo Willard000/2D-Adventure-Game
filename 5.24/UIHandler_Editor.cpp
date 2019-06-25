@@ -2,25 +2,66 @@
 
 #include "Environment.h"
 #include "UIManager.h"
-#include "WindowManager.h"
+#include "Window.h"
 #include "InputManager.h"
+#include "ResourceManager.h"
+#include "Log.h"
 
 #include "Button_Pressable.h"
 
-#include <iostream>
-void create_new_map() {
-	std::string name = " ";
-	int width = 0, height = 0;
-	int base_tile_id = 0;
+#include "Map.h"
 
+#include <SDL.h>
+
+void create_new_map() {
+	int id;
+	std::string name;
+	int width, height;
+	int base_tile_id;
+
+	Environment::get().getUIManager()->set_current_text("Enter Map id:");
+	Environment::get().getInputManager()->get_text_input(&id);
+	if (id == -1) {
+		return;
+	}
+	
 	Environment::get().getUIManager()->set_current_text("Enter Map Name:");
-	name = Environment::get().getInputManager()->start_text_input();
+	Environment::get().getInputManager()->get_text_input(&name);
+
 	Environment::get().getUIManager()->set_current_text("Enter Map Width:");
-	width = std::stoi(Environment::get().getInputManager()->start_text_input());
+	Environment::get().getInputManager()->get_text_input(&width);
+	if (width == -1 || width > MAP_MAX_WIDTH) {
+		return;
+	}
+
 	Environment::get().getUIManager()->set_current_text("Enter Map Height:");
-	height = std::stoi(Environment::get().getInputManager()->start_text_input());
+	Environment::get().getInputManager()->get_text_input(&height);
+	if (height == -1 || height > MAP_MAX_HEIGHT) {
+		return;
+	}
+
 	Environment::get().getUIManager()->set_current_text("Enter Base Tile:");
-	base_tile_id = std::stoi(Environment::get().getInputManager()->start_text_input());
+	Environment::get().getInputManager()->get_text_input(&base_tile_id);
+	if (base_tile_id == -1) {
+		return;
+	}
+
+	Environment::get().getResourceManager()->getMap()->create_new(id, name, width, height, base_tile_id);
+}
+
+void save_map() {
+	Environment::get().getResourceManager()->getMap()->save();
+}
+
+void load_map() {
+	int id;
+	Environment::get().getUIManager()->set_current_text("Enter Map id:");
+	Environment::get().getInputManager()->get_text_input(&id);
+	if (id == -1) {
+		return;
+	}
+
+	Environment::get().getResourceManager()->loadMap(id);
 }
 
 UIHandler_Editor::UIHandler_Editor(){
@@ -28,6 +69,16 @@ UIHandler_Editor::UIHandler_Editor(){
 }
 
 void UIHandler_Editor::button_new_map() {
-	Environment::get().getUIManager()->set_current_text("Are you sure you want to create a new map?");
-	Environment::get().getUIManager()->push_confirmation(create_new_map, nullptr);
+	Environment::get().getUIManager()->set_current_text("Create New Map?");
+	Environment::get().getUIManager()->push_confirmation(create_new_map);
+}
+
+void UIHandler_Editor::button_save_map() {
+	Environment::get().getUIManager()->set_current_text("Save Map?");
+	Environment::get().getUIManager()->push_confirmation(save_map);
+}
+
+void UIHandler_Editor::button_load_map() {
+	Environment::get().getUIManager()->set_current_text("Load New Map?");
+	Environment::get().getUIManager()->push_confirmation(load_map);
 }

@@ -3,8 +3,8 @@
 #include <cassert>
 
 #include "Clock.h"
-#include "LogManager.h"
-#include "WindowManager.h"
+#include "Log.h"
+#include "Window.h"
 #include "ScriptManager.h"
 #include "ResourceManager.h"
 #include "InputManager.h"
@@ -13,9 +13,10 @@
 Environment *Environment::_instance = nullptr;
 
 Environment::Environment() :
+	_mode					( NULL ),
 	_clock					( nullptr ),
-	_logManager				( nullptr ),
-	_windowManager			( nullptr ),
+	_log					( nullptr ),
+	_window					( nullptr ),
 	_scriptManager			( nullptr ),
 	_resourceManager		( nullptr ),
 	_inputManager			( nullptr ),
@@ -43,11 +44,11 @@ void Environment::shutdown() {
 	delete _scriptManager;
 	_scriptManager = nullptr;
 
-	delete _windowManager;
-	_windowManager = nullptr;
+	delete _window;
+	_window = nullptr;
 
-	delete _logManager;
-	_logManager = nullptr;
+	delete _log;
+	_log = nullptr;
 
 	delete _clock;
 	_clock = nullptr;
@@ -58,16 +59,20 @@ Environment &Environment::get(){
 	return *_instance;
 }
 
+void Environment::setMode(int mode) {
+	_mode = mode;
+}
+
 void Environment::setClock(Clock *clock) {
 	_clock = clock;
 }
 
-void Environment::setLogManager(LogManager *logManager) {
-	_logManager = logManager;
+void Environment::setLog(Log *log) {
+	_log = log;
 }
 
-void Environment::setWindowManager(WindowManager *windowManager) {
-	_windowManager = windowManager;
+void Environment::setWindow(Window *window) {
+	_window = window;
 }
 
 void Environment::setScriptManager(ScriptManager *scriptManager) {
@@ -86,16 +91,20 @@ void Environment::setUIManager(UIManager *uiManager) {
 	_uiManager = uiManager;
 }
 
+int Environment::getMode() {
+	return _mode;
+}
+
 Clock *Environment::getClock() {
 	return _clock;
 }
 
-LogManager *Environment::getLogManager() {
-	return _logManager;
+Log *Environment::getLog() {
+	return _log;
 }
 
-WindowManager *Environment::getWindowManager() {
-	return _windowManager;
+Window *Environment::getWindow() {
+	return _window;
 }
 
 ScriptManager *Environment::getScriptManager() {

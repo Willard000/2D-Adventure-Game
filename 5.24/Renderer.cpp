@@ -2,15 +2,12 @@
 
 #include <cassert>
 
+#include "Environment.h"
+#include "Log.h"
+
 #define COLOR_KEY_R 0x00
 #define COLOR_KEY_G 0x00
 #define COLOR_KEY_B 0x0ff
-
-#define RMASK 0xff000000
-#define GMASK 0x00ff0000
-#define BMASK 0x0000ff00
-#define AMASK 0x000000ff
-#define RGB_DEPTH 32
 
 #define LOGICAL_SIZE_W 1920
 #define LOGICAL_SIZE_H 1080
@@ -35,6 +32,7 @@ Renderer::Renderer(SDL_Window *window, SDL_Color backgroundColor, Camera *camera
 	SDL_SetRenderDrawBlendMode(_renderer, SDL_BLENDMODE_BLEND);
 	SDL_RenderSetLogicalSize(_renderer, LOGICAL_SIZE_W, LOGICAL_SIZE_H);
 	SDL_RenderSetScale(_renderer, _uniform_scale, _uniform_scale);
+	SDL_SetRenderTarget(_renderer, NULL);
 }
 
 Renderer::~Renderer() {
@@ -77,12 +75,32 @@ SDL_Surface *Renderer::createSurface(std::string path) {
 	return surface;
 }
 
-void Renderer::render(const Texture *img, const SDL_Rect &pos) {
+void Renderer::render(const Texture *img) {
 	if (img != nullptr) {
-		SDL_RenderCopyEx(_renderer, img->texture, NULL, &getDestination(pos), _uniform_rotation, NULL, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(_renderer, img->texture, NULL, NULL, _uniform_rotation, NULL, SDL_FLIP_NONE);
+	}
+}
+
+void Renderer::render(const Texture *img, const SDL_Rect &pos, bool ui_element) {
+	if (img != nullptr) {
+		if (ui_element) {
+			SDL_RenderSetScale(_renderer, 1.0f, 1.0f);
+			SDL_RenderCopyEx(_renderer, img->texture, NULL, &pos, _uniform_rotation, NULL, SDL_FLIP_NONE);
+			SDL_RenderSetScale(_renderer, _uniform_scale, _uniform_scale);
+		}
+		else {
+			SDL_RenderCopyEx(_renderer, img->texture, NULL, &getDestination(pos), _uniform_rotation, NULL, SDL_FLIP_NONE);
+		}
 	}
 	else {
-		drawRect(getDestination(pos), NULL_TEXTURE_COLOR);
+		if (ui_element) {
+			SDL_RenderSetScale(_renderer, 1.0f, 1.0f);
+			drawRect(pos, NULL_TEXTURE_COLOR);
+			SDL_RenderSetScale(_renderer, _uniform_scale, _uniform_scale);
+		}
+		else {
+			drawRect(getDestination(pos), NULL_TEXTURE_COLOR);
+		}
 	}
 }
 
@@ -105,7 +123,10 @@ void Renderer::render(Sprite *img, SpriteComponent *sprite, PositionComponent *p
 	}
 }
 
-void Renderer::drawText(const Text &text, bool ui_element) {
+void Renderer::drawText(Text &text, bool ui_element) {
+	if (!text.loaded) {
+		createText(text);
+	}
 	if (text.texture != nullptr) {
 		if (ui_element) {
 			SDL_RenderSetScale(_renderer, 1.0f, 1.0f);
@@ -138,17 +159,81 @@ void Renderer::drawRect(const SDL_Rect &rect, const SDL_Color &color, int flag) 
 	SDL_RenderSetScale(_renderer, _uniform_scale, _uniform_scale); // change scale back 
 }
 
-SDL_Texture *Renderer::createMapTexture(std::vector<Map::Tile> &tiles, std::map<int, SDL_Surface *> &tile_surfaces, const int &width, const int &height) {
-	SDL_Surface *surface = SDL_CreateRGBSurface(NULL, width, height, RGB_DEPTH, RMASK, GMASK, BMASK, AMASK);
+// rect.x - x1
+// rect.y - y1
+// rect.w - x2
+// rect.h - y2
+void Renderer::drawLine(const SDL_Rect &rect, const SDL_Color &color) {
+	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
+	SDL_RenderSetScale(_renderer, 1.0f, 1.0f);
+	SDL_RenderDrawLine(_renderer, rect.x, rect.y, rect.w, rect.h);
+	SDL_RenderSetScale(_renderer, _uniform_scale, _uniform_scale);
+}
+
+SDL_Texture *Renderer::makeBlitTexture(SDL_Surface *&main_surface, std::map<int, SDL_Surface *> &surfaces, std::vector<Map::Tile> &tiles, const int &width, const int &height) {
+	if (main_surface) {
+		SDL_FreeSurface(main_surface);
+	}
+	main_surface = SDL_CreateRGBSurface(NULL, width, height, RGB_DEPTH, RMASK, GMASK, BMASK, AMASK);
 	SDL_Texture *texture = nullptr;
 	for (unsigned int i = 0; i < tiles.size(); i++) {
-		SDL_Rect pos = { 0, 0, 32, 32 };
-		SDL_BlitSurface(tile_surfaces[tiles[i].id], NULL, surface, &tiles[i].pos);
+		SDL_BlitSurface(surfaces[tiles[i].id], NULL, main_surface, &tiles[i].pos);
 	}
 
-	texture = SDL_CreateTextureFromSurface(_renderer, surface);
-	SDL_FreeSurface(surface);
+	texture = SDL_CreateTextureFromSurface(_renderer, main_surface);
 	return texture;
+}
+
+SDL_Texture *Renderer::makeBlitTexture(std::map<int, SDL_Surface *> &surfaces, const int &width, const int &height, const int &surface_size) {
+	SDL_Surface *surface = SDL_CreateRGBSurface(NULL, width, height, RGB_DEPTH, RMASK, GMASK, BMASK, AMASK);
+	SDL_Rect pos = { 0, 0, surface_size, surface_size };
+	int i = 0;
+	for (auto it = surfaces.begin(); it != surfaces.end(); it++, i++) {
+		pos.x = int(i * surface_size);
+		if (pos.x > width) {
+			pos.x = 0;
+			pos.y += surface_size;
+			i = 0;
+		}
+		SDL_BlitSurface(it->second, NULL, surface, &pos);
+	}
+
+	return SDL_CreateTextureFromSurface(_renderer, surface);
+}
+
+SDL_Texture *Renderer::blitTexture(SDL_Surface *&main_surface, SDL_Surface *surface, SDL_Rect &pos) {
+	SDL_BlitSurface(surface, NULL, main_surface, &pos);
+	return SDL_CreateTextureFromSurface(_renderer, main_surface);
+}
+
+// width - window width
+// height - window height
+SDL_Texture *Renderer::makeEditorLineBackground(const int &width, const int &height, const int &tile_width, const int &tile_height, const SDL_Color &color) {
+	SDL_Surface *surface = SDL_CreateRGBSurface(NULL, width, height, RGB_DEPTH, RMASK, GMASK, BMASK, AMASK);
+
+	SDL_Surface *line = SDL_CreateRGBSurface(NULL, 1, height, RGB_DEPTH, RMASK, GMASK, BMASK, AMASK);
+	SDL_FillRect(line, NULL, SDL_MapRGB(line->format, color.r, color.g, color.b));
+
+	SDL_Rect pos = { 0, 0, 0,0 };
+	for (int i = 0; i <= width; i++) {
+		pos.x = int(i * tile_width);
+		SDL_BlitSurface(line, NULL, surface, &pos);
+	}
+	SDL_FreeSurface(line);
+
+	line = SDL_CreateRGBSurface(NULL, width, 1, RGB_DEPTH, RMASK, GMASK, BMASK, AMASK);
+	SDL_FillRect(line, NULL, SDL_MapRGB(line->format, color.r, color.g, color.b));
+
+	pos = { 0, 0, 0, 0 };
+	for (int i = 0; i <= height; i++) {
+		pos.y = int(i * tile_height);
+		SDL_BlitSurface(line, NULL, surface, &pos);
+	}
+	SDL_FreeSurface(line);
+
+	SDL_SetSurfaceAlphaMod(surface, color.a);
+
+	return SDL_CreateTextureFromSurface(_renderer, surface);
 }
 
 void Renderer::createText(Text &text) {
@@ -162,6 +247,7 @@ void Renderer::createText(Text &text) {
 	text.rect.x -= text.rect.w / TEXT_OFFSET_FACTOR_X;
 	text.rect.y -= text.rect.h / TEXT_OFFSET_FACTOR_Y;
 	SDL_FreeSurface(surface);
+	text.loaded = true;
 }
 
 void Renderer::rotate(double angle) {

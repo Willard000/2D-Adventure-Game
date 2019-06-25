@@ -39,19 +39,19 @@ static int player_move(lua_State *L) {
 	return 0;
 }
 
-//Player:scale(double factor)
+//Player:scale(float factor)
 static int player_scale(lua_State *L) {
 	Player *player = luaW_check<Player>(L, 1);
-	double factor = (double)lua_tonumber(L, 2);
+	float factor = (float)lua_tonumber(L, 2);
 
 	GetPosition(player)->scale(factor);
 	return 0;
 }
 
-// Player:set_scale(double factor)
+// Player:set_scale(float factor)
 static int player_set_scale(lua_State *L) {
 	Player *player = luaW_check<Player>(L, 1);
-	double factor = (double)lua_tonumber(L, 2);
+	float factor = (float)lua_tonumber(L, 2);
 
 	GetPosition(player)->setScale(factor);
 	return 0;

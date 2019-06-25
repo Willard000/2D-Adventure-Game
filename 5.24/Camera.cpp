@@ -2,7 +2,7 @@
 
 #include "Environment.h"
 #include "Clock.h"
-#include "WindowManager.h"
+#include "Window.h"
 #include "ResourceManager.h"
 
 #include "Event.h"
@@ -12,11 +12,11 @@
 
 #include "FileReader.h"
 
-Camera::Camera(bool is_locked) :
+Camera::Camera() :
 	_x				( 0 ),
 	_y				( 0 ),
 	_speed			( _SPEED ),
-	_is_locked		( is_locked ),
+	_is_locked		( Environment::get().getMode() == MODE_EDITOR ? false : true  ),
 	_entity			( nullptr )
 {
 	FileReader file(_FILE_PATH);
@@ -51,10 +51,10 @@ void Camera::update() {
 		return;
 	}
 
-	int width_half = Environment::get().getWindowManager()->getWindow()->getWidthHalf();
-	int height_half = Environment::get().getWindowManager()->getWindow()->getHeightHalf();
-	int max_width = Environment::get().getResourceManager()->getMap()->getWidth() - Environment::get().getWindowManager()->getWindow()->getWidth();
-	int max_height = Environment::get().getResourceManager()->getMap()->getHeight() - Environment::get().getWindowManager()->getWindow()->getHeight();
+	int width_half = Environment::get().getWindow()->getWidthHalf();
+	int height_half = Environment::get().getWindow()->getHeightHalf();
+	int max_width = Environment::get().getResourceManager()->getMap()->getWidth() - Environment::get().getWindow()->getWidth();
+	int max_height = Environment::get().getResourceManager()->getMap()->getHeight() - Environment::get().getWindow()->getHeight();
 
 	PositionComponent *position = GetPosition(_entity);
 

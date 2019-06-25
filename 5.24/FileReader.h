@@ -4,6 +4,8 @@
 #ifndef FILE_READER_H
 #define FILE_READER_H
 
+bool file_exists(const char *path);
+
 namespace freader {
 	typedef std::unordered_map<std::string, std::string> Data;
 	typedef Data::iterator iterator;

@@ -24,6 +24,7 @@ public:
 	~TextureManager();
 
 	void loadTextures(tmanager::Type type, std::string path);
+	Texture *loadTextureInfoTile(std::string path);
 	Texture *loadTextureInfo(std::string path);
 
 	void loadSurfaces(tmanager::Type type, std::string path);
@@ -31,9 +32,14 @@ public:
 
 	void loadMap(std::vector<Map::Tile> &tiles, const int &width, const int &height);
 
+
 	const Texture *getTextureInfo(tmanager::Type type, tmanager::Key key) { return _textures[type][key]; }
 	Texture *getTextureInfo(Entity *entity) { return _textures[entity->get_type()][entity->get_type_id()]; }
+	SDL_Surface *getSurfaceInfo(tmanager::Type type, tmanager::Key key) { return _surfaces[type][key]; }
     Sprite *getSpriteInfo(Entity *entity) { return static_cast<Sprite *>(_textures[entity->get_type()][entity->get_type_id()]); }
+
+	unsigned int getTextureSize(tmanager::Type type) { return _textures[type].size(); }
+	unsigned int getSurfaceSize(tmanager::Type type) { return _surfaces[type].size(); }
 
 	friend class ResourceManager;
 private:
@@ -44,6 +50,10 @@ private:
 	std::map<tmanager::Type, Texture_Map> _textures;
 
 	Texture *_map;
+	SDL_Surface *_map_surface;
+
+	SDL_Surface *_editor_tiles_surface;
+	Texture *_editor_tiles_texture;
 };
 
 #endif

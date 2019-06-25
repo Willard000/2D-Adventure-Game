@@ -2,8 +2,8 @@
 
 #include "Environment.h"
 #include "UIManager.h"
-#include "WindowManager.h"
-#include "LogManager.h"
+#include "Window.h"
+#include "Log.h"
 
 UIHandler::~UIHandler() {
 	for (auto it = _buttons.begin(); it != _buttons.end(); it++) {
