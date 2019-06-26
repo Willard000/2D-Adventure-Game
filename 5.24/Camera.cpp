@@ -13,11 +13,13 @@
 #include "FileReader.h"
 
 Camera::Camera() :
-	_x				( 0 ),
-	_y				( 0 ),
-	_speed			( _SPEED ),
-	_is_locked		( Environment::get().getMode() == MODE_EDITOR ? false : true  ),
-	_entity			( nullptr )
+	_x						( 0 ),
+	_y						( 0 ),
+	_speed					( _SPEED ),
+	_uniform_scale			( 1.0f ),
+	_uniform_rotation		( 0.0 ),
+	_is_locked				( Environment::get().getMode() == MODE_EDITOR ? false : true  ),
+	_entity					( nullptr )
 {
 	FileReader file(_FILE_PATH);
 	if (file.exists(FILE_CAMERA_SPEED)) _speed = file.get_double(FILE_CAMERA_SPEED);
@@ -90,6 +92,24 @@ void Camera::update(double x, double y) {
 
 void Camera::center(Entity *entity) {
 	_entity = entity;
+}
+
+void Camera::rotate(double angle) {
+	_uniform_rotation += angle;
+}
+
+void Camera::set_rotation(double angle) {
+	_uniform_rotation = angle;
+}
+
+void Camera::scale(float factor) {
+	_uniform_scale += factor;
+	SDL_RenderSetScale(Environment::get().getWindow()->getRenderer()->getRenderer(), _uniform_scale, _uniform_scale);
+}
+
+void Camera::set_scale(float factor) {
+	_uniform_scale = factor;
+	SDL_RenderSetScale(Environment::get().getWindow()->getRenderer()->getRenderer(), _uniform_scale, _uniform_scale);
 }
 
 bool Camera::getLocked() {

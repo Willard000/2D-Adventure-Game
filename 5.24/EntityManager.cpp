@@ -13,10 +13,10 @@ EntityManager::EntityManager() :
 {
 	Environment::get().getLog()->print("Loading Entity Manager");
 
-	//loadComponents(_player);
-	//Environment::get().getWindowManager()->getWindow()->getCamera()->center(_player); // move this?
+	loadComponents(_player);
+	Environment::get().getWindow()->getCamera()->center(_player); // move this?
 
-	//create(TYPE_OBJECT, 1);
+	create(TYPE_OBJECT, 1);
 }
 
 EntityManager::~EntityManager() {

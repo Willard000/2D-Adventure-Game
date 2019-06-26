@@ -16,6 +16,11 @@
 
 extern const char *MAP_BASE_PATH;
 
+struct Map_Surface {
+	SDL_Surface *surfaces;
+	int size;
+};
+
 class Map {
 public:
 
@@ -32,9 +37,11 @@ public:
 
 	int get_id() { return _id; }
 	// in pixels
-	int getWidth() { return _pos.w; }
+	int getWidth() { return _rect.w; }
 	// in pixels
-	int getHeight() { return _pos.h; }
+	int getHeight() { return _rect.h; }
+
+	SDL_Rect get_rect() { return _rect; }
 
 	friend class ResourceManager;
 private:
@@ -44,7 +51,7 @@ private:
 
 	int _id;
 	int _width, _height;
-	SDL_Rect _pos;
+	SDL_Rect _rect;
 	std::string _name;
 	bool _isLoaded;
 };

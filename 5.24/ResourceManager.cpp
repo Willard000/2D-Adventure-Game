@@ -53,12 +53,18 @@ void ResourceManager::renderEntity(Entity *entity) {
 }
 
 void ResourceManager::renderMap() {
-	Environment::get().getWindow()->getRenderer()->render(_textureManager->_map, _map->_pos);
+	Environment::get().getWindow()->getRenderer()->render(_textureManager->_map, _map->_rect);
 }
 
-void ResourceManager::renderEditor(const UI::Element_Area &element_area) {
-	Environment::get().getWindow()->getRenderer()->drawRect(element_area.background, element_area.color, true);
-	Environment::get().getWindow()->getRenderer()->render(_textureManager->_editor_tiles_texture, element_area.element_area, true);
+void ResourceManager::renderEditor(const UI::Element_Area &element_area, const UI::Selection &selection) {
+	Renderer *renderer = Environment::get().getWindow()->getRenderer();
+	
+	renderer->drawRect(element_area.background, element_area.color, true);
+	renderer->render(_textureManager->_editor_tiles_texture, element_area.area, true);
+
+	if (selection.is) {
+		renderer->render(_textureManager->getTextureInfo(selection.type, selection.id), element_area.info, true);
+	}
 }
 
 void ResourceManager::render() {
@@ -68,17 +74,13 @@ void ResourceManager::render() {
 
 void ResourceManager::loadMap(int id) {
 	_map->load(id);
-	_textureManager->loadMap(_map->_tiles, _map->_pos.w, _map->_pos.h);
+	_textureManager->loadMap(_map->_tiles, _map->_rect.w, _map->_rect.h);
 }
 
 void ResourceManager::editMap(int index, int id) {
-	if (_map->_tiles[index].id == id) {
+	if (_map->_tiles[index].id == id || index < 0 || index > _map->_tiles.size() - 1) {
 		return;
 	}
 	_map->_tiles[index].id = id;
-	_textureManager->_map->texture = Environment::get().getWindow()->getRenderer()->blitTexture(
-		_textureManager->_map_surface,
-		_textureManager->getSurfaceInfo(TYPE_TILE, id),
-		_map->_tiles[index].pos
-	);
+	_textureManager->updateMap(_map->_tiles[index].pos, id);
 }

@@ -1,10 +1,8 @@
 #include <SDL.h>
 
-#include <vector>
+#include <map>
 
-#include "UIHandler.h"
-
-#include "UIHandler.h"
+#include "Button.h"
 
 #ifndef UI_MANAGER_H
 #define UI_MANAGER_H
@@ -19,8 +17,14 @@ namespace UI {
 	struct Element_Area {
 		SDL_Rect background;
 		SDL_Color color;
-		SDL_Rect element_area;
-		SDL_Rect selection_area;
+		SDL_Rect area;
+		SDL_Rect info;
+	};
+
+	struct Selection {
+		bool is;
+		std::string type;
+		int id;
 	};
 
 	enum {
@@ -32,6 +36,8 @@ namespace UI {
 
 }
 
+using namespace UI;
+
 class UIManager {
 public:
 	typedef void(*Callback)(void);
@@ -39,24 +45,13 @@ public:
 	UIManager();
 	~UIManager();
 
-	template <class T>
-	void add_button(
-		T *obj,
-		void (T::*MemberFunction)(void),
-		std::string text = { "TEXT" },
-		SDL_Rect rect = { 0, 0, 80, 20 },
-		int font_size = 16,
-		Uint32 wrap_size = 1000,
-		SDL_Color text_color = { 255, 255, 255, 255 },
-		SDL_Color color = { 30, 30, 30, 120 })
-	{
-		_uiHandler->_buttons[text] = (new Button_Pressable<T>(obj, MemberFunction, text, text_color, font_size, wrap_size, rect, color));
-	}
+	void add_button(Button *button);
 
 	void remove_button(std::string key);
 
 	int update();
-	bool check(const int &mouse_x, const int &mouse_y);
+	bool check_buttons(const int &mouse_x, const int &mouse_y);
+	bool check_selection(const int &mouse_x, const int &mouse_y);
 	void render();
 
 	void set_state(int flag);
@@ -67,12 +62,12 @@ public:
 
 	// returns element id ( -1 if mouse is not hovering an element)
 	int select_element(const int &mouse_x, const int &mouse_y);
+
+	bool place_element(const int &mouse_x, const int &mouse_Y);
+
+	int get_state() { return _state; }
 private:
 	int _state;
-
-	bool _element_selected;
-	std::string _element_type;
-	int _element_index;
 
 	Text _current_text;
 
@@ -80,8 +75,10 @@ private:
 	Callback _on_deny;
 
 	Element_Area _element_area;
+	Selection _selection;
 
-	UIHandler *_uiHandler;
+	std::map<std::string, Button *> _buttons;
 };
+
 
 #endif

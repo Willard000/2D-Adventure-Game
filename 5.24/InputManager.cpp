@@ -158,7 +158,7 @@ void InputManager::update() {
 	}
 	if (isKey(SDL_SCANCODE_O)) {
 		Environment::get().getWindow()->getCamera()->toggle();
-		Environment::get().getWindow()->getRenderer()->setScale(1.0f);
+		Environment::get().getWindow()->getCamera()->set_scale(1.0f);
 	}
 
 	if (isMouse(SDL_BUTTON_MIDDLE)) {
@@ -207,12 +207,17 @@ void InputManager::updateEditor() {
 	}
 
 	if (isKey(SDL_SCANCODE_O)) {
-		Environment::get().getWindow()->getRenderer()->setScale(1.0f);
+		Environment::get().getWindow()->getCamera()->set_scale(1.0f);
 	}
 
+	static bool clicked_button = false;
 	if (isMouse(SDL_BUTTON_LEFT)) {
-		if (!Environment::get().getUIManager()->check(_mouse_x, _mouse_y)) {
-			Environment::get().getResourceManager()->editMap(2, 2);
+		clicked_button = Environment::get().getUIManager()->check_buttons(_mouse_x, _mouse_y);
+	}
+
+	if (!clicked_button && Environment::get().getUIManager()->get_state() != UI::STATE_WAITING) {
+		if (isMouseHeld(SDL_BUTTON_LEFT)) {
+			Environment::get().getUIManager()->check_selection(_mouse_x, _mouse_y);
 		}
 	}
 

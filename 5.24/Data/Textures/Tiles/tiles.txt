@@ -1,5 +1,5 @@
 # Tiles
-0 Data/Textures/Tiles/empty.png
+0 Data/Textures/Tiles/none.png
 1 Data/Textures/Tiles/grass.png
 2 Data/Textures/Tiles/grass2.png
 3 Data/Textures/Tiles/grass3.png

@@ -2,19 +2,14 @@
 
 #include "Environment.h"
 #include "UIManager.h"
-#include "Window.h"
-#include "Log.h"
 
-UIHandler::~UIHandler() {
-	for (auto it = _buttons.begin(); it != _buttons.end(); it++) {
-		delete it->second;
-	}
-}
 
-void UIHandler::confirm_yes() {
+using namespace UI;
+
+void UI::confirm_yes() {
 	Environment::get().getUIManager()->set_state(STATE_CONFIRM);
 }
 
-void UIHandler::confirm_no() {
+void UI::confirm_no() {
 	Environment::get().getUIManager()->set_state(STATE_DENY);
 }

@@ -79,7 +79,7 @@ TextureManager::~TextureManager() {
 	delete _map;
 }
 
-void TextureManager::loadTextures(tmanager::Type type, std::string path) {
+void TextureManager::loadTextures(Type type, std::string path) {
 	Texture_Map textures;
 	FileReader file(path.c_str());
 
@@ -144,7 +144,7 @@ Texture *TextureManager::loadTextureInfo(std::string path) {
 	return isSprite ? sprite : img;
 }
 
-void TextureManager::loadSurfaces(tmanager::Type type, std::string path) {
+void TextureManager::loadSurfaces(Type type, std::string path) {
 	Surface_Map surfaces;
 	FileReader file(path.c_str());
 
@@ -160,10 +160,34 @@ SDL_Surface *TextureManager::loadSurfaceInfo(std::string path) {
 
 	FileReader file(path.c_str());
 	SDL_Surface *surface = Environment::get().getWindow()->getRenderer()->createSurface(path);
+
 	return surface;
 }
 
 void TextureManager::loadMap(std::vector<Map::Tile> &tiles, const int &width, const int &height) {
 	SDL_DestroyTexture(_map->texture);
-	_map->texture = Environment::get().getWindow()->getRenderer()->makeBlitTexture(_map_surface, _surfaces[TYPE_TILE], tiles, width, height);
+	_map->texture = makeMapBlitTexture(_map_surface, _surfaces[TYPE_TILE], tiles, width, height);
+}
+
+void TextureManager::updateMap(SDL_Rect &pos, int id) {
+	SDL_DestroyTexture(_map->texture);
+
+	_map->texture = Environment::get().getWindow()->getRenderer()->blitTexture(
+		_map_surface,
+		getSurfaceInfo(TYPE_TILE, id),
+		pos
+	);
+}
+
+SDL_Texture *TextureManager::makeMapBlitTexture(SDL_Surface *&main_surface, std::map<int, SDL_Surface *> &surfaces, std::vector<Map::Tile> &tiles, const int &width, const int &height) {
+	if (main_surface) {
+		SDL_FreeSurface(main_surface);
+	}
+	main_surface = SDL_CreateRGBSurface(NULL, width, height, RGB_DEPTH, RMASK, GMASK, BMASK, AMASK);
+
+	for (unsigned int i = 0; i < tiles.size(); i++) {
+		SDL_BlitSurface(surfaces[tiles[i].id], NULL, main_surface, &tiles[i].pos);
+	}
+
+	return SDL_CreateTextureFromSurface(Environment::get().getWindow()->getRenderer()->getRenderer(), main_surface);
 }

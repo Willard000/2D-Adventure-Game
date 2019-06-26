@@ -23,7 +23,7 @@ public:
 	void loadMap(int id);
 	void editMap(int index, int id);
 
-	void renderEditor(const UI::Element_Area &element_area);
+	void renderEditor(const UI::Element_Area &element_area, const UI::Selection &selection);
 
 	Entity *getEntity(int id) { return _entityManager->get(id); }
 	Player *getPlayer()       { return _entityManager->getPlayer(); }

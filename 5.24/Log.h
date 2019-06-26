@@ -8,10 +8,10 @@ public:
 	Log();
 	~Log();
 
-	void print(std::string val, const char *end = "\n");
+	void print(std::string val, const char *end = "\n", bool time = true);
 
 	template <class T>
-	void print(const char *name, T val, const char *end = "\n") {
+	void print_pair(const char *name, T val, const char *end = "\n") {
 		_log << "               " << name << ": " << val << end;
 	}
 private:

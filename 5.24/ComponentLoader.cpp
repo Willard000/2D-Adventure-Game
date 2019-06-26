@@ -9,6 +9,9 @@
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
 
+#include "Environment.h"
+#include "Log.h"
+
 #define FILE_POSITION_COMPONENT "Position"
 #define FILE_SPRITE_COMPONENT "Sprite"
 
@@ -44,27 +47,38 @@ void loadSprite(FileReader &file, Entity *entity, SpriteComponent *&sprite) {
 }
 
 void loadComponents(Entity *entity) {
-	std::cout << "Loading Entity with type: " << entity->get_type() << " type_id: " << entity->get_type_id() << std::endl;
+	Environment::get().getLog()->print(
+		"Loading Entity with type: \n "
+		+ entity->get_type()
+		+ "\n type_id: "
+		+ std::to_string(entity->get_type_id())
+	);
+
 	std::string locate_file_path = ENTITY_BASE_PATH + entity->get_type() + "/" + entity->get_type() + ".txt";
 	FileReader locate_file(locate_file_path.c_str());
 	std::string entity_type_id = std::to_string(entity->get_type_id());
 
 	if (!locate_file.exists(entity_type_id)) {
-		std::cout << "No entity with type_id of: \"" << entity->get_type_id() << "\" exits." << std::endl;
+		Environment::get().getLog()->print(
+			"No entity with type_id of: \""
+			+ std::to_string(entity->get_type_id())
+			+ "\" exits."
+		);
 		return;
 	}
 
 	FileReader file(locate_file.get_string(entity_type_id).c_str());
 
-	std::cout << "Loaded: ";
 	int numComponents = 0;
+
+	Environment::get().getLog()->print("Loading Components: ", "\n", false);
 
 	if (file.exists(FILE_POSITION_COMPONENT)) {
 		PositionComponent *position = nullptr;
 		loadPosition(file, entity, position);
 		entity->addComponent(position);
 		numComponents++;
-		std::cout << "Position ";
+		Environment::get().getLog()->print("Position ", "", false);
 	}
 
 	if (file.exists(FILE_SPRITE_COMPONENT)) {
@@ -72,10 +86,10 @@ void loadComponents(Entity *entity) {
 		loadSprite(file, entity, sprite);
 		entity->addComponent(sprite);
 		numComponents++;
-		std::cout << "Sprite ";
+		Environment::get().getLog()->print("Sprite ", "", false);
 	}
 
-	std::cout << "- " << numComponents << " Component(s)." << std::endl;
+	Environment::get().getLog()->print("- " + std::to_string(numComponents) + " Component(s).", "\n", false);
 
 	entity->is_loaded();
 }

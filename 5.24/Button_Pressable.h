@@ -1,27 +1,30 @@
 #include "Button.h"
 
-#include <string>
-
 #ifndef BUTTON_PRESSABLE_H
 #define BUTTON_PRESSABLE_H
 
 namespace UI {
 
-	template <class T>
 	class Button_Pressable : public Button {
 	public:
-		typedef void (T::*MemberFunction)(void);
+		typedef void (*CallBack)(void);
 
-		Button_Pressable(T *instance, MemberFunction onPress, std::string text, SDL_Color text_color, int font_size, Uint32 wrap_length, SDL_Rect rect, SDL_Color color) :
+		Button_Pressable(
+			CallBack on_press,
+			std::string text = "Text",
+			SDL_Rect rect = { 0, 0, 0, 20 },
+			int font_size = 16,
+			Uint32 wrap_length = 1000,
+			SDL_Color text_color = { 255, 255, 255, 255 },
+			SDL_Color color = {30, 30, 30, 120}
+		) :
 			Button			( text, text_color, font_size, wrap_length, rect, color ),
-			_instance		( instance ),
-			_onPress		( onPress )
+			_on_press		( on_press )
 		{}
 
-		void execute() { (_instance->*_onPress)(); }
+		void execute() { _on_press(); }
 	private:
-		T *_instance;
-		MemberFunction _onPress;
+		CallBack _on_press;
 	};
 
 }

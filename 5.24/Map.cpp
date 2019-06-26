@@ -19,7 +19,7 @@ Map::Map() :
 	_name			( "untitled" ),
 	_width			( 0 ),
 	_height			( 0 ),
-	_pos			( { 0, 0, 0, 0 } ),
+	_rect			( { 0, 0, 0, 0 } ),
 	_isLoaded		( false )
 {}
 
@@ -86,8 +86,8 @@ bool Map::load(int id) {
 		}
 	}
 
-	_pos.w = _width * TILE_WIDTH;
-	_pos.h = _height * TILE_HEIGHT;
+	_rect.w = _width * TILE_WIDTH;
+	_rect.h = _height * TILE_HEIGHT;
 
 	Environment::get().getLog()->print("Map Loaded");
 
@@ -139,8 +139,8 @@ bool Map::create_new(int id, std::string name, int width, int height, int base_t
 	_tiles.clear();
 	_width = width;
 	_height = height;
-	_pos.w = _width * TILE_WIDTH;
-	_pos.h = _height * TILE_HEIGHT;
+	_rect.w = _width * TILE_WIDTH;
+	_rect.h = _height * TILE_HEIGHT;
 
 	Tile tile;
 	tile.id = base_tile_id;

@@ -37,6 +37,6 @@ Log::~Log() {
 	_log.close();
 }
 
-void Log::print(std::string val, const char *end) {
-	_log << system_time() << val << end;
+void Log::print(std::string val, const char *end, bool time) {
+	_log << (time ? system_time() : "") << val << end;
 }

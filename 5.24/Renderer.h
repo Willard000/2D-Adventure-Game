@@ -40,18 +40,12 @@ public:
 	void drawRect(const SDL_Rect &rect, const SDL_Color &color, int flag = DRAW_RECT_FULL);
 	void drawLine(const SDL_Rect &rect, const SDL_Color &color);
 
-	SDL_Texture *makeBlitTexture(SDL_Surface *&main_surface, std::map<int, SDL_Surface *> &surfaces, std::vector<Map::Tile> &tiles, const int &width, const int &height);
 	SDL_Texture *makeBlitTexture(std::map<int, SDL_Surface *> &surfaces, const int &width, const int &height, const int &surface_size);
 	SDL_Texture *blitTexture(SDL_Surface *&main_surface, SDL_Surface *surface, SDL_Rect &pos);
 
-	SDL_Texture *makeEditorLineBackground(const int &width, const int &height, const int &tile_width, const int &tile_height, const SDL_Color &color);
-
 	void createText(Text &text);
 
-	void rotate(double angle);
-	void setRotation(double angle);
-	void scale(float factor);
-	void setScale(float factor);
+	SDL_Renderer *getRenderer() { return _renderer; }
 public:
 	enum {
 		DRAW_RECT_EMPTY,
@@ -70,9 +64,6 @@ private:
 	TTF_Font *_font;
 
 	Camera *_camera;
-
-	double _uniform_rotation;
-	float _uniform_scale;
 };
 
 #endif

@@ -11,9 +11,12 @@ public:
 
 	void run();
 
-	void drawLines();
+	void draw_lines();
 private:
-	void buildEnvironment();
+	void build_environment();
+	void load_buttons();
+
+	SDL_Texture *makeEditorLineBackground(const int &width, const int &height, const int &tile_width, const int &tile_height, const SDL_Color &color);
 private:
 	Environment _environment;
 

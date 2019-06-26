@@ -31,7 +31,7 @@ void Window::toggleConsole() {
 }
 
 void Window::zoom(const float &amount, const int &mouse_x, const int &mouse_y) {
-	_renderer->scale(amount);
+	_camera->scale(amount);
 	if (amount < 0) {
 		_camera->update(-CAMERA_ZOOM_SPEED, -CAMERA_ZOOM_SPEED);
 	}
