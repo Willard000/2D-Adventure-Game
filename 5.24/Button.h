@@ -20,9 +20,9 @@ namespace UI {
 
 		virtual void execute() {}
 
-	    Text &getText() { return _text; }
-		const SDL_Rect &getRect() { return _rect; }
-		const SDL_Color &getColor() { return _color; }
+	    Text &get_text() { return _text; }
+		const SDL_Rect &get_rect() { return _rect; }
+		const SDL_Color &get_color() { return _color; }
 	private:
 		Text _text;
 		SDL_Rect _rect;

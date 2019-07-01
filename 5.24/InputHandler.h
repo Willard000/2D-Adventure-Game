@@ -11,8 +11,8 @@ class InputHandler : public EventHandler {
 public:
 	InputHandler();
 private:
-	void moveEntity(Event_MoveEntity *event);
-	void moveCamera(Event_MoveCamera *event);
+	void move_entity(Event_MoveEntity *event);
+	void move_camera(Event_MoveCamera *event);
 };
 
 #endif

@@ -1,0 +1,4 @@
+# Tree
+stexture Data/Textures/Objects/bush.png
+iwidth 50
+iheight 50

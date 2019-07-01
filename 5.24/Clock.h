@@ -14,21 +14,21 @@ public:
 	bool update(Uint32 interval = UPDATE_INTERVAL);
 
 	void limit(bool limit);
-	void setCap(int cap);
+	void set_cap(int cap);
 
-	double getTime() { return _time; }
-	double getFMS() { return _fms; }
+	double get_time() { return _time; }
+	double get_fms() { return _fms; }
 
-	std::string getDisplayTime();
+	std::string get_display_time();
 private:
-	void updateTime();
+	void update_time();
 private:
 	const char *_FILE_PATH = "Data/system.txt";
 	const int _CLOCK_FPS = 60;
 	int _frames, _cap;
 	double _fms, _ms, _time;
-	Uint32 _ticks, _previousTicks, _updateTicks;
-	bool _isLimit;
+	Uint32 _ticks, _previous_ticks, _update_ticks;
+	bool _is_limit;
 };
 
 #endif

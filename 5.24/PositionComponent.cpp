@@ -22,16 +22,16 @@ PositionComponent::PositionComponent(Entity *entity_, double x_, double y_, int 
 
 void PositionComponent::move(int dir_) {
 	if (dir_ == Event::UP) {
-		pos_y -= speed * Environment::get().getClock()->getTime();
+		pos_y -= speed * Environment::get().get_clock()->get_time();
 	}
 	else if (dir_ == Event::DOWN) {
-		pos_y += speed * Environment::get().getClock()->getTime();
+		pos_y += speed * Environment::get().get_clock()->get_time();
 	}
 	else if (dir_ == Event::LEFT) {
-		pos_x -= speed * Environment::get().getClock()->getTime();
+		pos_x -= speed * Environment::get().get_clock()->get_time();
 	}
 	else if (dir_ == Event::RIGHT) {
-		pos_x += speed * Environment::get().getClock()->getTime();
+		pos_x += speed * Environment::get().get_clock()->get_time();
 	}
 
 	rect.x = int(pos_x);
@@ -46,16 +46,16 @@ void PositionComponent::move(int dir_) {
 
 void PositionComponent::move(int dir_, double dis_) {
 	if (dir_ == Event::UP) {
-		pos_y -= dis_ * Environment::get().getClock()->getTime();
+		pos_y -= dis_ * Environment::get().get_clock()->get_time();
 	}
 	else if (dir_ == Event::DOWN) {
-		pos_y += dis_ * Environment::get().getClock()->getTime();
+		pos_y += dis_ * Environment::get().get_clock()->get_time();
 	}
 	else if (dir_ == Event::LEFT) {
-		pos_x -= dis_ * Environment::get().getClock()->getTime();
+		pos_x -= dis_ * Environment::get().get_clock()->get_time();
 	}
 	else if (dir_ == Event::RIGHT) {
-		pos_x += dis_ * Environment::get().getClock()->getTime();
+		pos_x += dis_ * Environment::get().get_clock()->get_time();
 	}
 
 	rect.x = int(pos_x);
@@ -74,7 +74,7 @@ void PositionComponent::scale(float factor_) {
 	rect.h = int(base_height * scale_f);
 }
 
-void PositionComponent::setScale(float factor_) {
+void PositionComponent::set_scale(float factor_) {
 	scale_f = factor_;
 	rect.w = int(base_width * scale_f);
 	rect.h = int(base_height * scale_f);
@@ -84,6 +84,6 @@ void PositionComponent::rotate(double angle_) {
 	rotation += angle_;
 }
 
-void PositionComponent::setRotation(double angle_) {
+void PositionComponent::set_rotation(double angle_) {
 	rotation = angle_;
 }

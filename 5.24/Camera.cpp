@@ -18,7 +18,7 @@ Camera::Camera() :
 	_speed					( _SPEED ),
 	_uniform_scale			( 1.0f ),
 	_uniform_rotation		( 0.0 ),
-	_is_locked				( Environment::get().getMode() == MODE_EDITOR ? false : true  ),
+	_is_locked				( Environment::get().get_mode() == MODE_EDITOR ? false : true  ),
 	_entity					( nullptr )
 {
 	FileReader file(_FILE_PATH);
@@ -35,16 +35,16 @@ void Camera::move(int dir) {
 	}
 
 	if (dir == Event::UP) {
-		_y -= _speed * Environment::get().getClock()->getTime();
+		_y -= _speed * Environment::get().get_clock()->get_time();
 	}
 	else if (dir == Event::DOWN) {
-		_y += _speed * Environment::get().getClock()->getTime();
+		_y += _speed * Environment::get().get_clock()->get_time();
 	}
 	else if (dir == Event::LEFT) {
-		_x -= _speed * Environment::get().getClock()->getTime();
+		_x -= _speed * Environment::get().get_clock()->get_time();
 	}
 	else if (dir == Event::RIGHT) {
-		_x += _speed * Environment::get().getClock()->getTime();
+		_x += _speed * Environment::get().get_clock()->get_time();
 	}
 }
 
@@ -53,10 +53,10 @@ void Camera::update() {
 		return;
 	}
 
-	int width_half = Environment::get().getWindow()->getWidthHalf();
-	int height_half = Environment::get().getWindow()->getHeightHalf();
-	int max_width = Environment::get().getResourceManager()->getMap()->getWidth() - Environment::get().getWindow()->getWidth();
-	int max_height = Environment::get().getResourceManager()->getMap()->getHeight() - Environment::get().getWindow()->getHeight();
+	int width_half = Environment::get().get_window()->get_width_half();
+	int height_half = Environment::get().get_window()->get_height_half();
+	int max_width = Environment::get().get_resource_manager()->get_map()->get_rect().w - Environment::get().get_window()->get_width();
+	int max_height = Environment::get().get_resource_manager()->get_map()->get_rect().h - Environment::get().get_window()->get_height();
 
 	PositionComponent *position = GetPosition(_entity);
 
@@ -104,14 +104,14 @@ void Camera::set_rotation(double angle) {
 
 void Camera::scale(float factor) {
 	_uniform_scale += factor;
-	SDL_RenderSetScale(Environment::get().getWindow()->getRenderer()->getRenderer(), _uniform_scale, _uniform_scale);
+	SDL_RenderSetScale(Environment::get().get_window()->get_renderer()->get_renderer(), _uniform_scale, _uniform_scale);
 }
 
 void Camera::set_scale(float factor) {
 	_uniform_scale = factor;
-	SDL_RenderSetScale(Environment::get().getWindow()->getRenderer()->getRenderer(), _uniform_scale, _uniform_scale);
+	SDL_RenderSetScale(Environment::get().get_window()->get_renderer()->get_renderer(), _uniform_scale, _uniform_scale);
 }
 
-bool Camera::getLocked() {
+bool Camera::get_locked() {
 	return _is_locked;
 }

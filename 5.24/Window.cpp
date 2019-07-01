@@ -16,7 +16,7 @@ Window::Window(Console_Settings console, Window_Settings window) :
 	_console = GetConsoleWindow();
 	MoveWindow(_console, console.x, console.y, console.w, console.h, TRUE);
 	ShowWindow(_console, console.show);
-	setWindowMode(window.mode);
+	set_window_mode(window.mode);
 }
 
 Window::~Window() {
@@ -25,9 +25,9 @@ Window::~Window() {
 	SDL_DestroyWindow(_window);
 }
 
-void Window::toggleConsole() {
-	_showConsole = !_showConsole;
-	ShowWindow(_console, _showConsole);
+void Window::toggle_console() {
+	_show_console = !_show_console;
+	ShowWindow(_console, _show_console);
 }
 
 void Window::zoom(const float &amount, const int &mouse_x, const int &mouse_y) {
@@ -40,7 +40,7 @@ void Window::zoom(const float &amount, const int &mouse_x, const int &mouse_y) {
 	}
 }
 
-void Window::setWindowMode(int window_mode) {
+void Window::set_window_mode(int window_mode) {
 	SDL_DisplayMode mode;
 	SDL_GetDesktopDisplayMode(0, &mode);
 	SDL_SetWindowPosition(_window, (mode.w - _width) / 2, (mode.h - _height) / 2);
@@ -77,7 +77,7 @@ void Window::setWindowMode(int window_mode) {
 	}
 }
 
-void Window::printDisplaySettings() {
+void Window::print_display_settings() {
 	SDL_DisplayMode mode;
 	SDL_GetWindowDisplayMode(_window, &mode);
 	printf("Window Display Mode\nformat: %d\nrefresh_rate: %d\nwidth: %d\nheight: %d\n", mode.format, mode.refresh_rate, mode.w, mode.h);

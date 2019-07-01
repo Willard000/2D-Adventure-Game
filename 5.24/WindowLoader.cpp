@@ -55,7 +55,7 @@ Window::Window_Settings load_window_settings(FileReader &file) {
 	return window;
 }
 
-Window *loadWindow() {
+Window *load_window() {
 	FileReader file(BASE_FILE_PATH);
 	Window::Console_Settings console = load_console_settings(file);
 	Window::Window_Settings window = load_window_settings(file);

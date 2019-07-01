@@ -7,37 +7,37 @@
 Clock::Clock() :
 	_cap				(_CLOCK_FPS ),
 	_ms					( 1000.0 / _cap ),
-	_isLimit			( _cap > 0 ? true : false ),
+	_is_limit			( _cap > 0 ? true : false ),
 	_frames				( 0 ),
 	_time				( 0.0 ),
-	_updateTicks		( 0 ),
+	_update_ticks		( 0 ),
 	_fms				( 0.0 ),
-	_previousTicks		( SDL_GetTicks() )
+	_previous_ticks		( SDL_GetTicks() )
 {
 	FileReader file(_FILE_PATH);
 	if (file.exists(FILE_CLOCK_FPS)) {
 		_cap = file.get_int(FILE_CLOCK_FPS);
 		_ms = 1000.0 / _cap;
-		_isLimit = _cap > 0 ? true : false;
+		_is_limit = _cap > 0 ? true : false;
 	}
 }
 
 bool Clock::update(Uint32 interval) {
-	updateTime();
+	update_time();
 	_frames++;
 
-	if (_isLimit && (_time < _ms)) {
+	if (_is_limit && (_time < _ms)) {
 		double delay = _ms - _time;
 		if (delay > 0.0) {
 			SDL_Delay(Uint32(delay));
-			updateTime();
+			update_time();
 		}
 	}
 
-	if (_previousTicks >= _updateTicks) {
+	if (_previous_ticks >= _update_ticks) {
 		_fms = 1000.0 / double(_frames);
 		_frames = 0;
-		_updateTicks += interval;
+		_update_ticks += interval;
 		return true;
 	}
 
@@ -45,23 +45,23 @@ bool Clock::update(Uint32 interval) {
 }
 
 void Clock::limit(bool limit) {
-	_isLimit = limit;
+	_is_limit = limit;
 }
 
-void Clock::setCap(int cap) {
+void Clock::set_cap(int cap) {
 	_cap = cap;
 	_ms = 1000.0 / _cap;
 }
 
-void Clock::updateTime() {
-	_ticks = SDL_GetTicks() - _previousTicks;
+void Clock::update_time() {
+	_ticks = SDL_GetTicks() - _previous_ticks;
 	_time = double(_ticks / 1000.0);
-	_previousTicks = SDL_GetTicks();
+	_previous_ticks = SDL_GetTicks();
 }
 
 // Time format (00:00:00:000)
 // days : hours : minutes : seconds : miliseconds
-std::string Clock::getDisplayTime() {
+std::string Clock::get_display_time() {
 	double miliseconds = SDL_GetTicks() / 1000.0;
 	miliseconds = miliseconds - floor(miliseconds);
 	miliseconds *= 1000.0;

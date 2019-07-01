@@ -15,9 +15,9 @@ public:
 	void move(int dir_, double dis_);
 
 	void scale(float factor_);
-	void setScale(float factor_);
+	void set_scale(float factor_);
 	void rotate(double angle_);
-	void setRotation(double angle_);
+	void set_rotation(double angle_);
 
 	double pos_x, pos_y;
 	double speed;

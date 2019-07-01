@@ -11,7 +11,7 @@
 #define LOG_PATH "Data/Log/"
 
 std::string Log::system_time() {
-	return (Environment::get().getClock()->getDisplayTime() + " - ");
+	return (Environment::get().get_clock()->get_display_time() + " - ");
 }
 
 Log::Log() :

@@ -13,8 +13,8 @@ public:
 	bool update();
 
 private:
-	Uint32 _time, _prevTime;
-	bool _isPaused;
+	Uint32 _time, _prev_time;
+	bool _is_paused;
 };
 
 #endif

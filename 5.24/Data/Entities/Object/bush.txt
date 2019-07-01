@@ -1,0 +1,5 @@
+# Bush
+
+Position
+iwidth 50
+iheight 50

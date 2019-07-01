@@ -11,14 +11,17 @@ public:
 	EntityManager();
 	~EntityManager();
 
-	void create(std::string type, int type_id);
+	void create(std::string type, int type_id, double x = 0, double y = 0);
 	void add(Entity *entity);
 	void remove(Entity *entity);
+	void remove(std::string type, int id);
 
 	void update();
 
-	Entity *get(int id) { return _entities[id]; }
-	Player *getPlayer() { return _player; }
+	Entity *get_entity(int id) { return _entities[id]; }
+	Player *get_player() { return _player; }
+
+	std::map<int, Entity *> *get_entities() { return &_entities; }
 
 	friend class ResourceManager;
 private:

@@ -25,7 +25,7 @@
 
 const char *ENTITY_BASE_PATH = "Data/Entities/";
 
-void loadPosition(FileReader &file, Entity *entity, PositionComponent *&position) {
+void load_position(FileReader &file, Entity *entity, PositionComponent *&position) {
 	int w = 32, h = 32;
 	double speed = 0.0;
 
@@ -36,7 +36,7 @@ void loadPosition(FileReader &file, Entity *entity, PositionComponent *&position
 	position = new PositionComponent(entity, 0.0, 0.0, w, h, speed);
 }
 
-void loadSprite(FileReader &file, Entity *entity, SpriteComponent *&sprite) {
+void load_sprite(FileReader &file, Entity *entity, SpriteComponent *&sprite) {
 	int w = 0, h = 0, time = 0;
 
 	if (file.exists(FILE_SPRITE_WIDTH)) { w = file.get_int(FILE_SPRITE_WIDTH); }
@@ -46,8 +46,8 @@ void loadSprite(FileReader &file, Entity *entity, SpriteComponent *&sprite) {
 	sprite = new SpriteComponent(entity, w, h, time);
 }
 
-void loadComponents(Entity *entity) {
-	Environment::get().getLog()->print(
+bool load_components(Entity *entity) {
+	Environment::get().get_log()->print(
 		"Loading Entity with type: \n "
 		+ entity->get_type()
 		+ "\n type_id: "
@@ -59,37 +59,37 @@ void loadComponents(Entity *entity) {
 	std::string entity_type_id = std::to_string(entity->get_type_id());
 
 	if (!locate_file.exists(entity_type_id)) {
-		Environment::get().getLog()->print(
+		Environment::get().get_log()->print(
 			"No entity with type_id of: \""
 			+ std::to_string(entity->get_type_id())
 			+ "\" exits."
 		);
-		return;
+		return false;
 	}
 
 	FileReader file(locate_file.get_string(entity_type_id).c_str());
 
 	int numComponents = 0;
 
-	Environment::get().getLog()->print("Loading Components: ", "\n", false);
+	Environment::get().get_log()->print("Loading Components: ", "\n", false);
 
 	if (file.exists(FILE_POSITION_COMPONENT)) {
 		PositionComponent *position = nullptr;
-		loadPosition(file, entity, position);
-		entity->addComponent(position);
+		load_position(file, entity, position);
+		entity->add_component(position);
 		numComponents++;
-		Environment::get().getLog()->print("Position ", "", false);
+		Environment::get().get_log()->print("Position ", "", false);
 	}
 
 	if (file.exists(FILE_SPRITE_COMPONENT)) {
 		SpriteComponent *sprite = nullptr;
-		loadSprite(file, entity, sprite);
-		entity->addComponent(sprite);
+		load_sprite(file, entity, sprite);
+		entity->add_component(sprite);
 		numComponents++;
-		Environment::get().getLog()->print("Sprite ", "", false);
+		Environment::get().get_log()->print("Sprite ", "", false);
 	}
 
-	Environment::get().getLog()->print("- " + std::to_string(numComponents) + " Component(s).", "\n", false);
+	Environment::get().get_log()->print("- " + std::to_string(numComponents) + " Component(s).", "\n", false);
 
-	entity->is_loaded();
+	return true;
 }

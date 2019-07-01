@@ -11,16 +11,13 @@
 EntityManager::EntityManager() :
 	_player			( new Player(1) )
 {
-	Environment::get().getLog()->print("Loading Entity Manager");
+	Environment::get().get_log()->print("Loading Entity Manager");
 
-	loadComponents(_player);
-	Environment::get().getWindow()->getCamera()->center(_player); // move this?
-
-	create(TYPE_OBJECT, 1);
+	Environment::get().get_window()->get_camera()->center(_player); // move this?
 }
 
 EntityManager::~EntityManager() {
-	Environment::get().getLog()->print("Closing Entity Manager");
+	Environment::get().get_log()->print("Closing Entity Manager");
 
 	delete _player;
 	for (auto it = _entities.begin(); it != _entities.end(); it++) {
@@ -29,26 +26,38 @@ EntityManager::~EntityManager() {
 	_entities.clear();
 }
 
-void EntityManager::create(std::string type, int type_id) {
+void EntityManager::create(std::string type, int type_id, double x, double y) {
 	Entity *entity = new Entity(type, type_id);
+
+	if (PositionComponent *position = GetPosition(entity)) {
+		position->pos_x = x - (position->rect.w / 2);
+		position->pos_y = y - (position->rect.h / 2);
+		position->rect.x = int(x - position->rect.w / 2);
+		position->rect.y = int(y - position->rect.h / 2);
+	}
+
 	add(entity);
 
-	Environment::get().getLog()->print("Creating Entity - " + type + " " + std::to_string(type_id) + " " + std::to_string(entity->get_id()));
+	Environment::get().get_log()->print("Creating Entity - " + type + " " + std::to_string(type_id) + " " + std::to_string(entity->get_id()));
 }
 
 void EntityManager::add(Entity *entity) {
 	_entities[entity->get_id()] = entity;
-	if (!entity->get_loaded()) {
-		loadComponents(entity);
-	}
 }
 
 void EntityManager::remove(Entity *entity) {
-	Environment::get().getLog()->print("Deleting Entity - " + entity->get_type() + " " + std::to_string(entity->get_type_id()) + " " + std::to_string(entity->get_id()));
+	Environment::get().get_log()->print("Deleting Entity - " + entity->get_type() + " " + std::to_string(entity->get_type_id()) + " " + std::to_string(entity->get_id()));
 
 	int key = entity->get_id();
 	delete _entities[key];
 	_entities.erase(key);
+}
+
+void EntityManager::remove(std::string type, int id) {
+	Environment::get().get_log()->print("Deleting Entity - " + type + " " + std::to_string(id));
+
+	delete _entities[id];
+	_entities.erase(id);
 }
 
 void EntityManager::update() {

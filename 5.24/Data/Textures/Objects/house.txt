@@ -1,0 +1,4 @@
+# Tree
+stexture Data/Textures/Objects/house.png
+iwidth 200
+iheight 225

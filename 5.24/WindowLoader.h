@@ -3,6 +3,6 @@
 #ifndef WINDOW_LOADER_H
 #define WINDOW_LOADER_H
 
-Window *loadWindow();
+Window *load_window();
 
 #endif

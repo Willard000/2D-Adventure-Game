@@ -1,2 +1,5 @@
 # Object
-1 Data/Entities/Object/tree.txt
+0 Data/Entities/Object/tree.txt
+1 Data/Entities/Object/stump.txt
+2 Data/Entities/Object/bush.txt
+3 Data/Entities/Object/house.txt

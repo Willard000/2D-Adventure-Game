@@ -7,32 +7,29 @@
 #ifndef RESOURCE_MANAGER_H
 #define RESOURCE_MANAGER_H
 
-class ResourceManager {
+class ResourceManager : 
+	public EntityManager,
+	public TextureManager
+{
 public:
 	ResourceManager();
 	~ResourceManager();
 	
 	void update();
-	void renderEntities();
+	void render_entities();
 
-	void renderEntity(Entity *entity);
-	void renderMap();
+	void render_entity(Entity *entity);
+	void render_map();
 
 	void render();
 
-	void loadMap(int id);
-	void editMap(int index, int id);
+	void load_map(int id);
+	void edit_map(int index, int id);
 
-	void renderEditor(const UI::Element_Area &element_area, const UI::Selection &selection);
+	void render_editor(const UI::Element_Area &element_area, const UI::Element &placement);
 
-	Entity *getEntity(int id) { return _entityManager->get(id); }
-	Player *getPlayer()       { return _entityManager->getPlayer(); }
-	Map *getMap() { return _map; }
-
-	unsigned int getSurfaceSize(std::string type) { return _textureManager->getSurfaceSize(type); }
+	Map *get_map() { return _map; }
 private:
-	EntityManager *_entityManager;
-	TextureManager *_textureManager;
 	Map *_map;
 };
 

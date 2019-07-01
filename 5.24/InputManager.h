@@ -15,13 +15,13 @@ public:
 	~InputManager();
 
 	bool get();
-	bool isKey(const SDL_Keycode &key);
-	bool isHeld(const SDL_Keycode &key);
-	bool isMouse(const unsigned int &button);
-	bool isMouseHeld(const unsigned int &button);
+	bool is_key(const SDL_Keycode &key);
+	bool is_held(const SDL_Keycode &key);
+	bool is_mouse(const unsigned int &button);
+	bool is_mouse_held(const unsigned int &button);
 
 	void update();
-	void updateEditor();
+	void update_editor();
 
 	void get_text_input(int *val);
 	void get_text_input(std::string *val);
@@ -33,7 +33,7 @@ public:
 		STATE_TEXT_INPUT
 	};
 private:
-	InputHandler *_inputHandler;
+	InputHandler *_input_handler;
 
 	const Uint8 *_keys;
 	std::map<SDL_Keycode, bool> _key_map;

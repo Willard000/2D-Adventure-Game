@@ -53,7 +53,7 @@ static int player_set_scale(lua_State *L) {
 	Player *player = luaW_check<Player>(L, 1);
 	float factor = (float)lua_tonumber(L, 2);
 
-	GetPosition(player)->setScale(factor);
+	GetPosition(player)->set_scale(factor);
 	return 0;
 }
 
@@ -71,7 +71,7 @@ static int player_set_rotation(lua_State *L) {
 	Player *player = luaW_check<Player>(L, 1);
 	double angle = (double)lua_tonumber(L, 2);
 
-	GetPosition(player)->setRotation(angle);
+	GetPosition(player)->set_rotation(angle);
 	return 0;
 }
 
@@ -92,7 +92,7 @@ static luaL_Reg player_metatable[] = {
 // Global Functions
 // GetPlayer()
 static int player_get(lua_State *L) {
-	luaW_push<Player>(L, Environment::get().getResourceManager()->getPlayer());
+	luaW_push<Player>(L, Environment::get().get_resource_manager()->get_player());
 	return 1;
 }
 

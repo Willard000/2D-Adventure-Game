@@ -5,17 +5,17 @@
 InputHandler::InputHandler() :
 	EventHandler() 
 {
-	subscribe(this, &InputHandler::moveEntity);
-	subscribe(this, &InputHandler::moveCamera);
+	subscribe(this, &InputHandler::move_entity);
+	subscribe(this, &InputHandler::move_camera);
 }
 
-void InputHandler::moveEntity(Event_MoveEntity *event) {
-	PositionComponent *position = GetPosition(event->m_entity);
+void InputHandler::move_entity(Event_MoveEntity *event) {
+	PositionComponent *position = GetPosition(event->entity);
 	if (position) {
-		position->move(event->m_direction);
+		position->move(event->direction);
 	}
 }
 
-void InputHandler::moveCamera(Event_MoveCamera *event) {
-	event->m_camera->move(event->m_direction);
+void InputHandler::move_camera(Event_MoveCamera *event) {
+	event->camera->move(event->direction);
 }

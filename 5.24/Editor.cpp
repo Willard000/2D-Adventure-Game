@@ -13,131 +13,93 @@
 
 #include "WindowLoader.h"
 
-#define LINE_COLOR {200, 200, 200, 50}
-
 #define BUTTON_NEW_POSITION {0, 0, 80, 20}
 #define BUTTON_LOAD_POSITION {0, 20, 80, 20}
 #define BUTTON_SAVE_POSITION {0, 40, 80, 20}
 
+#define BUTTON_TILES_POSITION {700, 0, 80, 20}
+#define BUTTON_OBJECTS_POSITION {780, 0, 80, 20}
+
+#define BUTTON_SELECT_FREE {620, 0, 80, 20}
+
+#define BUTTON_CENTER_PLACEMENT { 80, 0, 80, 20}
+
 Editor::Editor() :
-	_isRunning		( true ),
-	_lineBackground ( new Texture() )
+	_isRunning		( true )
 {
 	build_environment();
-	//_environment.getResourceManager()->loadMap(0);
-
-	_lineBackground->texture = makeEditorLineBackground(
-		_environment.getResourceManager()->getMap()->getWidth(),
-		_environment.getResourceManager()->getMap()->getHeight(),
-		TILE_WIDTH,
-		TILE_HEIGHT,
-		LINE_COLOR
-	);
-
-	_lineBackground->rect = { 0, 0, _environment.getResourceManager()->getMap()->getWidth(), _environment.getResourceManager()->getMap()->getHeight()};
 
 	load_buttons();
+
+	_environment.get().get_resource_manager()->load_map(0);
 }
 
 void Editor::run() {
-	_environment.getLog()->print("Editor Main Loop\n");
+	_environment.get_log()->print("Editor Main Loop\n");
 
 
 	while (_isRunning) {
-		_environment.getWindow()->getRenderer()->clear();
+		_environment.get_window()->get_renderer()->clear();
 
-		_isRunning = _environment.getInputManager()->get();
+		_isRunning = _environment.get_input_manager()->get();
 
-		_environment.getInputManager()->updateEditor();
+		_environment.get_input_manager()->update_editor();
 
-		_environment.getUIManager()->update();
+		_environment.get_ui_manager()->update();
 
-		_environment.getResourceManager()->render();
+		_environment.get_resource_manager()->render();
 
-		draw_lines();
+		_environment.get_ui_manager()->render();
 
-		_environment.getUIManager()->render();
+		_environment.get_window()->get_renderer()->render();
 
-		_environment.getWindow()->getRenderer()->render();
-
-		if (_environment.getClock()->update()) {
-			std::string title = "Editor      Map: " + std::to_string(_environment.getResourceManager()->getMap()->get_id()) + "     " +
-				_environment.getClock()->getDisplayTime() + "    " + std::to_string(_environment.getClock()->getFMS());
-			_environment.getWindow()->setTitle(title);
+		if (_environment.get_clock()->update()) {
+			std::string title = "Editor      Map: " + std::to_string(_environment.get_resource_manager()->get_map()->get_id()) + "     " +
+				_environment.get_clock()->get_display_time() + "    " + std::to_string(_environment.get_clock()->get_fms());
+			_environment.get_window()->set_title(title);
 		}
 	}
 
-	_environment.getLog()->print("Shutting Down Editor\n");
+	_environment.get_log()->print("Shutting Down Editor\n");
 	_environment.shutdown();
 }
 
 void Editor::build_environment() {
-	_environment.setMode(MODE_EDITOR);
+	_environment.set_mode(MODE_EDITOR);
 
 	Clock *clock = new Clock();
-	_environment.setClock(clock);
+	_environment.set_clock(clock);
 
 	Log *log = new Log();
-	_environment.setLog(log);
+	_environment.set_log(log);
 
-	Window *window = loadWindow();
-	_environment.setWindow(window);
+	Window *window = load_window();
+	_environment.set_window(window);
 
-	ScriptManager *scriptManager = new ScriptManager();
-	_environment.setScriptManager(scriptManager);
+	ScriptManager *script_manager = new ScriptManager();
+	_environment.set_script_manager(script_manager);
 
-	ResourceManager *resourceManager = new ResourceManager();
-	_environment.setResourceManager(resourceManager);
+	ResourceManager *resource_manager = new ResourceManager();
+	_environment.set_resource_manager(resource_manager);
 
-	InputManager *inputManager = new InputManager();
-	_environment.setInputManager(inputManager);
+	InputManager *input_manager = new InputManager();
+	_environment.set_input_manager(input_manager);
 
-	UIManager *uiManager = new UIManager();
-	_environment.setUIManager(uiManager);
-}
-
-void Editor::draw_lines() {
-	_environment.get().getWindow()->getRenderer()->render(_lineBackground, _lineBackground->rect);
+	UIManager *ui_manager = new UIManager();
+	_environment.set_ui_manager(ui_manager);
 }
 
 void Editor::load_buttons() {
-	UIManager* ui_manager = Environment::get().getUIManager();
+	UIManager* ui_manager = Environment::get().get_ui_manager();
 
-	UI::Button_Pressable *button_new = new UI::Button_Pressable(&UI::button_new_map, "New", BUTTON_NEW_POSITION);
-	UI::Button_Pressable *button_save = new UI::Button_Pressable(&UI::button_save_map, "Save", BUTTON_SAVE_POSITION);
-	UI::Button_Pressable *button_load = new UI::Button_Pressable(&UI::button_load_map, "Load", BUTTON_LOAD_POSITION);
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_new_map, "New", BUTTON_NEW_POSITION));
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_save_map, "Save", BUTTON_SAVE_POSITION));
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_load_map, "Load", BUTTON_LOAD_POSITION));
 
-	ui_manager->add_button(button_new);
-	ui_manager->add_button(button_save);
-	ui_manager->add_button(button_load);
-}
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_tiles, "Tiles", BUTTON_TILES_POSITION));
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_objects, "Objects", BUTTON_OBJECTS_POSITION));
 
-// width - window width
-// height - window height
-SDL_Texture *Editor::makeEditorLineBackground(const int &width, const int &height, const int &tile_width, const int &tile_height, const SDL_Color &color) {
-	SDL_Surface *surface = SDL_CreateRGBSurface(NULL, width, height, RGB_DEPTH, RMASK, GMASK, BMASK, AMASK);
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_free, "Select", BUTTON_SELECT_FREE));
 
-	SDL_Surface *line = SDL_CreateRGBSurface(NULL, 1, height, RGB_DEPTH, RMASK, GMASK, BMASK, AMASK);
-	SDL_FillRect(line, NULL, SDL_MapRGB(line->format, color.r, color.g, color.b));
-
-	SDL_Rect pos = { 0, 0, 0,0 };
-	for (int i = 0; i <= width; i++) {
-		pos.x = int(i * tile_width);
-		SDL_BlitSurface(line, NULL, surface, &pos);
-	}
-	SDL_FreeSurface(line);
-
-	line = SDL_CreateRGBSurface(NULL, width, 1, RGB_DEPTH, RMASK, GMASK, BMASK, AMASK);
-	SDL_FillRect(line, NULL, SDL_MapRGB(line->format, color.r, color.g, color.b));
-
-	pos = { 0, 0, 0, 0 };
-	for (int i = 0; i <= height; i++) {
-		pos.y = int(i * tile_height);
-		SDL_BlitSurface(line, NULL, surface, &pos);
-	}
-	SDL_FreeSurface(line);
-
-	SDL_SetSurfaceAlphaMod(surface, color.a);
-
-	return SDL_CreateTextureFromSurface(_environment.getWindow()->getRenderer()->getRenderer(), surface);
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_center_placement, "Center", BUTTON_CENTER_PLACEMENT));
 }

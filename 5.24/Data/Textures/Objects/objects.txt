@@ -1,2 +1,5 @@
 # Objects
-1 Data/Textures/Objects/tree.txt
+0 Data/Textures/Objects/tree.txt
+1 Data/Textures/Objects/stump.txt
+2 Data/Textures/Objects/bush.txt
+3 Data/Textures/Objects/house.txt

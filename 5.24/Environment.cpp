@@ -17,10 +17,10 @@ Environment::Environment() :
 	_clock					( nullptr ),
 	_log					( nullptr ),
 	_window					( nullptr ),
-	_scriptManager			( nullptr ),
-	_resourceManager		( nullptr ),
-	_inputManager			( nullptr ),
-	_uiManager				( nullptr )
+	_script_manager			( nullptr ),
+	_resource_manager		( nullptr ),
+	_input_manager			( nullptr ),
+	_ui_manager				( nullptr )
 {
 	assert(!_instance);
 	_instance = this;
@@ -32,17 +32,17 @@ Environment::~Environment() {
 }
 
 void Environment::shutdown() {
-	delete _uiManager;
-	_uiManager = nullptr;
+	delete _ui_manager;
+	_ui_manager = nullptr;
 
-	delete _inputManager;
-	_inputManager = nullptr;
+	delete _input_manager;
+	_input_manager = nullptr;
 
-	delete _resourceManager;
-	_resourceManager = nullptr;
+	delete _resource_manager;
+	_resource_manager = nullptr;
 
-	delete _scriptManager;
-	_scriptManager = nullptr;
+	delete _script_manager;
+	_script_manager = nullptr;
 
 	delete _window;
 	_window = nullptr;
@@ -59,66 +59,66 @@ Environment &Environment::get(){
 	return *_instance;
 }
 
-void Environment::setMode(int mode) {
+void Environment::set_mode(int mode) {
 	_mode = mode;
 }
 
-void Environment::setClock(Clock *clock) {
+void Environment::set_clock(Clock *clock) {
 	_clock = clock;
 }
 
-void Environment::setLog(Log *log) {
+void Environment::set_log(Log *log) {
 	_log = log;
 }
 
-void Environment::setWindow(Window *window) {
+void Environment::set_window(Window *window) {
 	_window = window;
 }
 
-void Environment::setScriptManager(ScriptManager *scriptManager) {
-	_scriptManager = scriptManager;
+void Environment::set_script_manager(ScriptManager *scriptManager) {
+	_script_manager = scriptManager;
 }
 
-void Environment::setResourceManager(ResourceManager *resourceManager) {
-	_resourceManager = resourceManager;
+void Environment::set_resource_manager(ResourceManager *resourceManager) {
+	_resource_manager = resourceManager;
 }
 
-void Environment::setInputManager(InputManager *inputManager) {
-	_inputManager = inputManager;
+void Environment::set_input_manager(InputManager *inputManager) {
+	_input_manager = inputManager;
 }
 
-void Environment::setUIManager(UIManager *uiManager) {
-	_uiManager = uiManager;
+void Environment::set_ui_manager(UIManager *uiManager) {
+	_ui_manager = uiManager;
 }
 
-int Environment::getMode() {
+int Environment::get_mode() {
 	return _mode;
 }
 
-Clock *Environment::getClock() {
+Clock *Environment::get_clock() {
 	return _clock;
 }
 
-Log *Environment::getLog() {
+Log *Environment::get_log() {
 	return _log;
 }
 
-Window *Environment::getWindow() {
+Window *Environment::get_window() {
 	return _window;
 }
 
-ScriptManager *Environment::getScriptManager() {
-	return _scriptManager;
+ScriptManager *Environment::get_script_manager() {
+	return _script_manager;
 }
 
-ResourceManager *Environment::getResourceManager() {
-	return _resourceManager;
+ResourceManager *Environment::get_resource_manager() {
+	return _resource_manager;
 }
 
-InputManager *Environment::getInputManager() {
-	return _inputManager;
+InputManager *Environment::get_input_manager() {
+	return _input_manager;
 }
 
-UIManager *Environment::getUIManager() {
-	return _uiManager;
+UIManager *Environment::get_ui_manager() {
+	return _ui_manager;
 }

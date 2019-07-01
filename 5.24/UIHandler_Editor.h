@@ -5,6 +5,13 @@ namespace UI {
 	void button_new_map();
 	void button_save_map();
 	void button_load_map();
+	
+	void button_select_tiles();
+	void button_select_objects();
+
+	void button_select_free();
+
+	void button_center_placement();
 }
 
 #endif

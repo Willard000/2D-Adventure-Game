@@ -6,13 +6,13 @@
 #define EVENT_MOVE_ENTITY
 
 struct Event_MoveEntity : public Event {
-	Event_MoveEntity(Entity *entity, int direction) :
-		m_entity		( entity ),
-		m_direction		( direction )
+	Event_MoveEntity(Entity *entity_, int direction_) :
+		entity			( entity_ ),
+		direction		( direction_ )
 	{}
 
-	Entity *m_entity;
-	int m_direction;
+	Entity *entity;
+	int direction;
 };
 
 #endif

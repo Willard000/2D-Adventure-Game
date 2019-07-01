@@ -14,9 +14,9 @@ void create_new_map() {
 	int width, height;
 	int base_tile_id;
 
-	UIManager *ui_manager = Environment::get().getUIManager();
-	InputManager *input_manager = Environment::get().getInputManager();
-	ResourceManager *resource_manager = Environment::get().getResourceManager();
+	UIManager *ui_manager = Environment::get().get_ui_manager();
+	InputManager *input_manager = Environment::get().get_input_manager();
+	ResourceManager *resource_manager = Environment::get().get_resource_manager();
 
 	ui_manager->set_current_text("Enter Map id:");
 	input_manager->get_text_input(&id);
@@ -45,37 +45,55 @@ void create_new_map() {
 		return;
 	}
 
-	if (resource_manager->getMap()->create_new(id, name, width, height, base_tile_id)) {
-		resource_manager->loadMap(id);
+	if (resource_manager->get_map()->create_new(id, name, width, height, base_tile_id)) {
+		resource_manager->load_map(id);
 	}
 }
 
 void save_map() {
-	Environment::get().getResourceManager()->getMap()->save();
+	Environment::get().get_resource_manager()->get_map()->save();
 }
 
 void load_map() {
 	int id;
-	Environment::get().getUIManager()->set_current_text("Enter Map id:");
-	Environment::get().getInputManager()->get_text_input(&id);
+	Environment::get().get_ui_manager()->set_current_text("Enter Map id:");
+	Environment::get().get_input_manager()->get_text_input(&id);
 	if (id == -1) {
 		return;
 	}
 
-	Environment::get().getResourceManager()->loadMap(id);
+	Environment::get().get_resource_manager()->load_map(id);
 }
 
 void UI::button_new_map() {
-	Environment::get().getUIManager()->set_current_text("Create New Map?");
-	Environment::get().getUIManager()->push_confirmation(create_new_map);
+	Environment::get().get_ui_manager()->set_current_text("Create New Map?");
+	Environment::get().get_ui_manager()->push_confirmation(create_new_map);
 }
 
 void UI::button_save_map() {
-	Environment::get().getUIManager()->set_current_text("Save Map?");
-	Environment::get().getUIManager()->push_confirmation(save_map);
+	Environment::get().get_ui_manager()->set_current_text("Save Map?");
+	Environment::get().get_ui_manager()->push_confirmation(save_map);
 }
 
 void UI::button_load_map() {
-	Environment::get().getUIManager()->set_current_text("Load New Map?");
-	Environment::get().getUIManager()->push_confirmation(load_map);
+	Environment::get().get_ui_manager()->set_current_text("Load New Map?");
+	Environment::get().get_ui_manager()->push_confirmation(load_map);
+}
+
+void UI::button_select_tiles() {
+	Environment::get().get_ui_manager()->set_state(STATE_PLACING);
+	Environment::get().get_ui_manager()->set_placement_type(TYPE_TILE);
+}
+
+void UI::button_select_objects() {
+	Environment::get().get_ui_manager()->set_state(STATE_PLACING);
+	Environment::get().get_ui_manager()->set_placement_type(TYPE_OBJECT);
+}
+
+void UI::button_select_free() {
+	Environment::get().get_ui_manager()->set_state(STATE_SELECTING);
+}
+
+void UI::button_center_placement() {
+	Environment::get().get_ui_manager()->toggle_center_placement();
 }

@@ -1,0 +1,4 @@
+# Tree
+stexture Data/Textures/Objects/stump.png
+iwidth 30
+iheight 30

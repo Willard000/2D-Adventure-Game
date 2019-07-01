@@ -11,7 +11,7 @@ public:
 	void run();
 
 private:
-	void buildEnvironment();
+	void build_environment();
 private:
 	Environment _environment;
 

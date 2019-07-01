@@ -21,8 +21,7 @@ namespace UI {
 		SDL_Rect info;
 	};
 
-	struct Selection {
-		bool is;
+	struct Element {
 		std::string type;
 		int id;
 	};
@@ -32,6 +31,8 @@ namespace UI {
 		STATE_CONFIRM,
 		STATE_DENY,
 		STATE_WAITING,
+		STATE_PLACING,
+		STATE_SELECTING
 	};
 
 }
@@ -60,14 +61,21 @@ public:
 	void push_confirmation(Callback on_confirm = nullptr, Callback on_deny = nullptr);
 	void pop_confirmation();
 
-	// returns element id ( -1 if mouse is not hovering an element)
-	int select_element(const int &mouse_x, const int &mouse_y);
+	Element select_element(const int &mouse_x, const int &mouse_y);
+	void delete_element();
 
+	// returns element id ( -1 if mouse is not hovering an element)
+	int select_placement(const int &mouse_x, const int &mouse_y);
 	bool place_element(const int &mouse_x, const int &mouse_Y);
+	void set_placement_type(std::string type);
+	std::string get_placement_type();
+
+	void toggle_center_placement();
 
 	int get_state() { return _state; }
 private:
 	int _state;
+	int _state_prev;
 
 	Text _current_text;
 
@@ -75,7 +83,10 @@ private:
 	Callback _on_deny;
 
 	Element_Area _element_area;
-	Selection _selection;
+	Element _placement;
+	Element _selection;
+
+	bool _center_placement;
 
 	std::map<std::string, Button *> _buttons;
 };

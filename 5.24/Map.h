@@ -37,9 +37,9 @@ public:
 
 	int get_id() { return _id; }
 	// in pixels
-	int getWidth() { return _rect.w; }
+	int get_width() { return _width; }
 	// in pixels
-	int getHeight() { return _rect.h; }
+	int get_height() { return _height; }
 
 	SDL_Rect get_rect() { return _rect; }
 
@@ -53,7 +53,7 @@ private:
 	int _width, _height;
 	SDL_Rect _rect;
 	std::string _name;
-	bool _isLoaded;
+	bool _is_loaded;
 };
 
 #endif

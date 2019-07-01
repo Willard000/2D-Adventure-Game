@@ -2,29 +2,29 @@
 
 Timer::Timer() :
 	_time			( 0 ),
-	_prevTime		( SDL_GetTicks() ),
-	_isPaused		( true )
+	_prev_time		( SDL_GetTicks() ),
+	_is_paused		( true )
 {}
 
 Timer::Timer(Uint32 time) :
 	_time			( time ),
-	_prevTime		( SDL_GetTicks() ),
-	_isPaused		( false )
+	_prev_time		( SDL_GetTicks() ),
+	_is_paused		( false )
 
 {}
 
 void Timer::set(Uint32 time) {
 	_time = time;
-	_isPaused = false;
+	_is_paused = false;
 }
 
 void Timer::pause() {
-	_isPaused = !_isPaused;
+	_is_paused = !_is_paused;
 }
 
 bool Timer::update() {
-	if (!_isPaused && ((SDL_GetTicks() - _prevTime) > _time)) {
-		_prevTime = SDL_GetTicks();
+	if (!_is_paused && ((SDL_GetTicks() - _prev_time) > _time)) {
+		_prev_time = SDL_GetTicks();
 		return true;
 	}
 	return false;

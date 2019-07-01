@@ -6,6 +6,6 @@
 
 extern const char *ENTITY_BASE_PATH;
 
-void loadComponents(Entity *entity);
+bool load_components(Entity *entity);
 
 #endif

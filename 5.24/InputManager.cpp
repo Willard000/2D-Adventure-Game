@@ -23,7 +23,7 @@ bool valid_string_to_int(std::string str) {
 
 InputManager::InputManager() :
 	_state				( STATE_IDLE ),
-	_inputHandler		( new InputHandler() ),
+	_input_handler		( new InputHandler() ),
 	_mouse_x			( 0 ),
 	_mouse_y			( 0 ),
 	_mouse_x_prev		( 0 ),
@@ -32,12 +32,12 @@ InputManager::InputManager() :
 	_get_text_input		( false ),
 	_text_input			( "" )
 {
-	Environment::get().getLog()->print("Loading Input Manager");
+	Environment::get().get_log()->print("Loading Input Manager");
 }
 
 InputManager::~InputManager() {
-	Environment::get().getLog()->print("Closing Input Manager");
-	delete _inputHandler;
+	Environment::get().get_log()->print("Closing Input Manager");
+	delete _input_handler;
 }
 
 bool InputManager::get() {
@@ -46,7 +46,7 @@ bool InputManager::get() {
 	_mouse_wheel = 0;
 
 	while (SDL_PollEvent(&event)) {
-		if (event.window.event == SDL_WINDOWEVENT_CLOSE || isKey(SDL_SCANCODE_ESCAPE)) {
+		if (event.window.event == SDL_WINDOWEVENT_CLOSE || is_key(SDL_SCANCODE_ESCAPE)) {
 			return false;
 		}
 		if (event.type == SDL_MOUSEWHEEL) {
@@ -57,19 +57,19 @@ bool InputManager::get() {
 		}
 	}
 	
-	if (_state == STATE_TEXT_INPUT && isKey(SDL_SCANCODE_BACKSPACE)) {
+	if (_state == STATE_TEXT_INPUT && is_key(SDL_SCANCODE_BACKSPACE)) {
 		if (_text_input.size() > 0) {
 			_text_input.pop_back();
 		}
 	}
-	if (_state == STATE_TEXT_INPUT && isKey(SDL_SCANCODE_RETURN)) {
+	if (_state == STATE_TEXT_INPUT && is_key(SDL_SCANCODE_RETURN)) {
 		_state = STATE_IDLE;
 	}
 
 	return true;
 }
 
-bool InputManager::isKey(const SDL_Keycode &key) {
+bool InputManager::is_key(const SDL_Keycode &key) {
 	if (_keys[key]) {
 		if (!_key_map[key]) {
 			_key_map[key] = true;
@@ -81,15 +81,15 @@ bool InputManager::isKey(const SDL_Keycode &key) {
 	return false;
 }
 
-bool InputManager::isHeld(const SDL_Keycode &key) {
+bool InputManager::is_held(const SDL_Keycode &key) {
 	if (_keys[key]) {
 		return true;
 	}
 	return false;
 }
 
-bool InputManager::isMouse(const unsigned int &button) {
-	if (SDL_GetMouseState(&_mouse_x, &_mouse_y) & SDL_BUTTON(button) && Environment::get().getWindow()->isFocused()) {
+bool InputManager::is_mouse(const unsigned int &button) {
+	if (SDL_GetMouseState(&_mouse_x, &_mouse_y) & SDL_BUTTON(button) && Environment::get().get_window()->is_focused()) {
 		if (!_mouse_map[button]) {
 			_mouse_map[button] = true;
 			return true;
@@ -100,144 +100,151 @@ bool InputManager::isMouse(const unsigned int &button) {
 	return false;
 }
 
-bool InputManager::isMouseHeld(const unsigned int &button) {
-	if (SDL_GetMouseState(&_mouse_x, &_mouse_y) & SDL_BUTTON(button) && Environment::get().getWindow()->isFocused()) {
+bool InputManager::is_mouse_held(const unsigned int &button) {
+	if (SDL_GetMouseState(&_mouse_x, &_mouse_y) & SDL_BUTTON(button) && Environment::get().get_window()->is_focused()) {
 		return true;
 	}
 	return false;
 }
 
 void InputManager::update() {
-	if (isHeld(SDL_SCANCODE_W)) {
-		_inputHandler->publish(new Event_MoveEntity(
-			Environment::get().getResourceManager()->getPlayer(),
+	if (is_held(SDL_SCANCODE_W)) {
+		_input_handler->publish(new Event_MoveEntity(
+			Environment::get().get_resource_manager()->get_player(),
 			Event::UP)
 		);
 	}
-	if (isHeld(SDL_SCANCODE_S)) {
-		_inputHandler->publish(new Event_MoveEntity(
-			Environment::get().getResourceManager()->getPlayer(),
+	if (is_held(SDL_SCANCODE_S)) {
+		_input_handler->publish(new Event_MoveEntity(
+			Environment::get().get_resource_manager()->get_player(),
 			Event::DOWN)
 		);
 	}
-	if (isHeld(SDL_SCANCODE_A)) {
-		_inputHandler->publish(new Event_MoveEntity(
-			Environment::get().getResourceManager()->getPlayer(),
+	if (is_held(SDL_SCANCODE_A)) {
+		_input_handler->publish(new Event_MoveEntity(
+			Environment::get().get_resource_manager()->get_player(),
 			Event::LEFT)
 		);
 	}
-	if (isHeld(SDL_SCANCODE_D)) {
-		_inputHandler->publish(new Event_MoveEntity(
-			Environment::get().getResourceManager()->getPlayer(),
+	if (is_held(SDL_SCANCODE_D)) {
+		_input_handler->publish(new Event_MoveEntity(
+			Environment::get().get_resource_manager()->get_player(),
 			Event::RIGHT)
 		);
 	}
-	if (isHeld(SDL_SCANCODE_I)) {
-		_inputHandler->publish(new Event_MoveCamera(
-			Environment::get().getWindow()->getCamera(),
+	if (is_held(SDL_SCANCODE_I)) {
+		_input_handler->publish(new Event_MoveCamera(
+			Environment::get().get_window()->get_camera(),
 			Event::UP)
 		);
 	}
-	if (isHeld(SDL_SCANCODE_K)) {
-		_inputHandler->publish(new Event_MoveCamera(
-			Environment::get().getWindow()->getCamera(),
+	if (is_held(SDL_SCANCODE_K)) {
+		_input_handler->publish(new Event_MoveCamera(
+			Environment::get().get_window()->get_camera(),
 			Event::DOWN)
 		);
 	}
-	if (isHeld(SDL_SCANCODE_J)) {
-		_inputHandler->publish(new Event_MoveCamera(
-			Environment::get().getWindow()->getCamera(),
+	if (is_held(SDL_SCANCODE_J)) {
+		_input_handler->publish(new Event_MoveCamera(
+			Environment::get().get_window()->get_camera(),
 			Event::LEFT)
 		);
 	}
-	if (isHeld(SDL_SCANCODE_L)) {
-		_inputHandler->publish(new Event_MoveCamera(
-			Environment::get().getWindow()->getCamera(),
+	if (is_held(SDL_SCANCODE_L)) {
+		_input_handler->publish(new Event_MoveCamera(
+			Environment::get().get_window()->get_camera(),
 			Event::RIGHT)
 		);
 	}
-	if (isKey(SDL_SCANCODE_O)) {
-		Environment::get().getWindow()->getCamera()->toggle();
-		Environment::get().getWindow()->getCamera()->set_scale(1.0f);
+	if (is_key(SDL_SCANCODE_O)) {
+		Environment::get().get_window()->get_camera()->toggle();
+		Environment::get().get_window()->get_camera()->set_scale(1.0f);
 	}
 
-	if (isMouse(SDL_BUTTON_MIDDLE)) {
+	if (is_mouse(SDL_BUTTON_MIDDLE)) {
 		_mouse_x_prev = _mouse_x;
 		_mouse_y_prev = _mouse_y;
 	}
 
-	if (isMouseHeld(SDL_BUTTON_MIDDLE)) {
-		Environment::get().getWindow()->getCamera()->update((_mouse_x_prev - _mouse_x), (_mouse_y_prev - _mouse_y));
+	if (is_mouse_held(SDL_BUTTON_MIDDLE)) {
+		Environment::get().get_window()->get_camera()->update((_mouse_x_prev - _mouse_x), (_mouse_y_prev - _mouse_y));
 		_mouse_x_prev = _mouse_x;
 		_mouse_y_prev = _mouse_y;
 	}
 
-	if (_mouse_wheel > 0 && !Environment::get().getWindow()->getCamera()->getLocked()) {
-		Environment::get().getWindow()->zoom(MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
+	if (_mouse_wheel > 0 && !Environment::get().get_window()->get_camera()->get_locked()) {
+		Environment::get().get_window()->zoom(MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
 	}
-	else if (_mouse_wheel < 0 && !Environment::get().getWindow()->getCamera()->getLocked()) {
-		Environment::get().getWindow()->zoom(-MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
+	else if (_mouse_wheel < 0 && !Environment::get().get_window()->get_camera()->get_locked()) {
+		Environment::get().get_window()->zoom(-MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
 	}
 }
 
-void InputManager::updateEditor() {
-	if (isHeld(SDL_SCANCODE_W)) {
-		_inputHandler->publish(new Event_MoveCamera(
-			Environment::get().getWindow()->getCamera(),
+void InputManager::update_editor() {
+	if (is_held(SDL_SCANCODE_W)) {
+		_input_handler->publish(new Event_MoveCamera(
+			Environment::get().get_window()->get_camera(),
 			Event::UP)
 		);
 	}
-	if (isHeld(SDL_SCANCODE_S)) {
-		_inputHandler->publish(new Event_MoveCamera(
-			Environment::get().getWindow()->getCamera(),
+	if (is_held(SDL_SCANCODE_S)) {
+		_input_handler->publish(new Event_MoveCamera(
+			Environment::get().get_window()->get_camera(),
 			Event::DOWN)
 		);
 	}
-	if (isHeld(SDL_SCANCODE_A)) {
-		_inputHandler->publish(new Event_MoveCamera(
-			Environment::get().getWindow()->getCamera(),
+	if (is_held(SDL_SCANCODE_A)) {
+		_input_handler->publish(new Event_MoveCamera(
+			Environment::get().get_window()->get_camera(),
 			Event::LEFT)
 		);
 	}
-	if (isHeld(SDL_SCANCODE_D)) {
-		_inputHandler->publish(new Event_MoveCamera(
-			Environment::get().getWindow()->getCamera(),
+	if (is_held(SDL_SCANCODE_D)) {
+		_input_handler->publish(new Event_MoveCamera(
+			Environment::get().get_window()->get_camera(),
 			Event::RIGHT)
 		);
 	}
 
-	if (isKey(SDL_SCANCODE_O)) {
-		Environment::get().getWindow()->getCamera()->set_scale(1.0f);
+	if (is_key(SDL_SCANCODE_O)) {
+		Environment::get().get_window()->get_camera()->set_scale(1.0f);
+	}
+
+	if (is_key(SDL_SCANCODE_Q)) {
+		Environment::get().get_ui_manager()->delete_element();
 	}
 
 	static bool clicked_button = false;
-	if (isMouse(SDL_BUTTON_LEFT)) {
-		clicked_button = Environment::get().getUIManager()->check_buttons(_mouse_x, _mouse_y);
+	if (is_mouse(SDL_BUTTON_LEFT)) {
+		clicked_button = Environment::get().get_ui_manager()->check_buttons(_mouse_x, _mouse_y);
+		if (!clicked_button && Environment::get().get_ui_manager()->get_placement_type() != TYPE_TILE) {
+			Environment::get().get_ui_manager()->check_selection(_mouse_x, _mouse_y);
+		}
 	}
 
-	if (!clicked_button && Environment::get().getUIManager()->get_state() != UI::STATE_WAITING) {
-		if (isMouseHeld(SDL_BUTTON_LEFT)) {
-			Environment::get().getUIManager()->check_selection(_mouse_x, _mouse_y);
+	if (!clicked_button && Environment::get().get_ui_manager()->get_state() != UI::STATE_WAITING) {
+		if (Environment::get().get_ui_manager()->get_placement_type() == TYPE_TILE && is_mouse_held(SDL_BUTTON_LEFT)) {
+			Environment::get().get_ui_manager()->check_selection(_mouse_x, _mouse_y);
 		}
 	}
 
 
-	if (isMouse(SDL_BUTTON_MIDDLE)) {
+	if (is_mouse(SDL_BUTTON_MIDDLE)) {
 		_mouse_x_prev = _mouse_x;
 		_mouse_y_prev = _mouse_y;
 	}
 
-	if (isMouseHeld(SDL_BUTTON_MIDDLE)) {
-		Environment::get().getWindow()->getCamera()->update((_mouse_x_prev - _mouse_x), (_mouse_y_prev - _mouse_y));
+	if (is_mouse_held(SDL_BUTTON_MIDDLE)) {
+		Environment::get().get_window()->get_camera()->update((_mouse_x_prev - _mouse_x), (_mouse_y_prev - _mouse_y));
 		_mouse_x_prev = _mouse_x;
 		_mouse_y_prev = _mouse_y;
 	}
 
 	if (_mouse_wheel > 0) {
-		Environment::get().getWindow()->zoom(MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
+		Environment::get().get_window()->zoom(MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
 	}
 	else if (_mouse_wheel < 0) {
-		Environment::get().getWindow()->zoom(-MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
+		Environment::get().get_window()->zoom(-MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
 	}
 }
 
@@ -260,34 +267,34 @@ std::string InputManager::start_text_input() {
 	bool end_input = false;
 	_text_input = "";
 	_state = STATE_TEXT_INPUT;
-	int width = Environment::get().getWindow()->getWidthHalf();
-	int height = Environment::get().getWindow()->getHeightHalf() - 100;
+	int width = Environment::get().get_window()->get_width_half();
+	int height = Environment::get().get_window()->get_height_half() - 100;
 
 	SDL_StartTextInput();
 
 	Text text;
 
 	while ((end_input = get()) && _state == STATE_TEXT_INPUT) {
-		Environment::get().getWindow()->getRenderer()->clear();
+		Environment::get().get_window()->get_renderer()->clear();
 
-		Environment::get().getUIManager()->update();
+		Environment::get().get_ui_manager()->update();
 
-		Environment::get().getResourceManager()->render();
-		Environment::get().getUIManager()->render();
+		Environment::get().get_resource_manager()->render();
+		Environment::get().get_ui_manager()->render();
 
 		if (text_size != _text_input.size()) {		// update text when it changes
 			text_size = _text_input.size();
 			text = Text(_text_input, { 255, 255, 255, 255 }, 24, 3000, width, height);
 		}
 
-		Environment::get().getWindow()->getRenderer()->drawText(text, true);
+		Environment::get().get_window()->get_renderer()->draw_text(text, true);
 
-		Environment::get().getWindow()->getRenderer()->render();
+		Environment::get().get_window()->get_renderer()->render();
 
-		if (Environment::get().getClock()->update()) {
-			std::string title = "Input      Map: " + std::to_string(Environment::get().getResourceManager()->getMap()->get_id()) + "     " +
-				Environment::get().getClock()->getDisplayTime() + "    " + std::to_string(Environment::get().getClock()->getFMS());
-			Environment::get().getWindow()->setTitle(title);
+		if (Environment::get().get_clock()->update()) {
+			std::string title = "Input      Map: " + std::to_string(Environment::get().get_resource_manager()->get_map()->get_id()) + "     " +
+				Environment::get().get_clock()->get_display_time() + "    " + std::to_string(Environment::get().get_clock()->get_fms());
+			Environment::get().get_window()->set_title(title);
 		}
 	}
 

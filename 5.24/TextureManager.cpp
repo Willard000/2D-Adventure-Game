@@ -24,43 +24,53 @@
 #define FILE_FRAME_MAX_RIGHT "imax_right"
 #define FILE_FRAME_NUM_FRAMES "inum_frames"
 
+#define EDITOR_LINE_COLOR {255, 255, 255, 50}
+
 const char *TEXTURE_BASE_PATH = "Data/Textures/textures.txt";
 const char *SURFACE_BASE_PATH = "Data/Textures/surfaces.txt";
 
 TextureManager::TextureManager() :
-	_map						( new Texture() ),
+	_map_texture				( new Texture() ),
 	_map_surface				( nullptr ),
-	_editor_tiles_texture	    ( new Texture() )
+	_editor_tiles_texture	    ( new Texture() ),
+	_editor_objects_texture		( new Texture() ),
+	_editor_line_background		( new Texture() )
 {
-	Environment::get().getLog()->print("Loading Texture Manager");
+	Environment::get().get_log()->print("Loading Texture Manager");
 
-	Environment::get().getLog()->print("Loading Textures");
+	Environment::get().get_log()->print("Loading Textures");
 	FileReader texture_file(TEXTURE_BASE_PATH);
 	for (freader::iterator it = texture_file.begin(); it != texture_file.end(); it++) {
-		loadTextures(it->first, it->second);
+		load_textures(it->first, it->second);
 	}
-	Environment::get().getLog()->print("Finished loading Textures");
+	Environment::get().get_log()->print("Finished loading Textures");
 
-	Environment::get().getLog()->print("Loading Surfaces");
+	Environment::get().get_log()->print("Loading Surfaces");
 	FileReader surface_file(SURFACE_BASE_PATH);
 	for (freader::iterator it = surface_file.begin(); it != surface_file.end(); it++) {
-		loadSurfaces(it->first, it->second);
+		load_surfaces(it->first, it->second);
 	}
-	Environment::get().getLog()->print("Finished loading Surfaces");
+	Environment::get().get_log()->print("Finished loading Surfaces");
 
-
-	if (Environment::get().getMode() == MODE_EDITOR) {
-		_editor_tiles_texture->texture = Environment::get().getWindow()->getRenderer()->makeBlitTexture(
+	if (Environment::get().get_mode() == MODE_EDITOR) {
+		_editor_tiles_texture->texture = Environment::get().get_window()->get_renderer()->make_blit_texture(
 			_surfaces[TYPE_TILE],
 			ELEMENT_AREA_WIDTH,
-			Environment::get().getWindow()->getHeight(),
+			Environment::get().get_window()->get_height(),
+			TILE_WIDTH
+		);
+
+		_editor_objects_texture->texture = Environment::get().get_window()->get_renderer()->make_blit_texture(
+			_surfaces[TYPE_OBJECT],
+			ELEMENT_AREA_WIDTH,
+			Environment::get().get_window()->get_height(),
 			TILE_WIDTH
 		);
 	}
 }
 
 TextureManager::~TextureManager() {
-	Environment::get().getLog()->print("Closing Texture Manager");
+	Environment::get().get_log()->print("Closing Texture Manager");
 
 	for (auto it = _textures.begin(); it != _textures.end(); it++) {
 		for (auto itt = it->second.begin(); itt != it->second.end(); itt++) {
@@ -76,37 +86,37 @@ TextureManager::~TextureManager() {
 	}
 	_surfaces.clear();
 
-	delete _map;
+	delete _map_texture;
 }
 
-void TextureManager::loadTextures(Type type, std::string path) {
+void TextureManager::load_textures(Type type, std::string path) {
 	Texture_Map textures;
 	FileReader file(path.c_str());
 
 	for (freader::iterator it = file.begin(); it != file.end(); it++) {
 		if (type == TYPE_TILE) {
-			textures[std::stoi(it->first)] = loadTextureInfoTile(it->second);
+			textures[std::stoi(it->first)] = load_texture_info_tile(it->second);
 		}
 		else {
-			textures[std::stoi(it->first)] = loadTextureInfo(it->second);
+			textures[std::stoi(it->first)] = load_texture_info(it->second);
 		}
 	}
 
 	_textures[type] = textures;
 }
 
-Texture *TextureManager::loadTextureInfoTile(std::string path) {
-	Environment::get().getLog()->print("Loading Texture Tile - " + path);
+Texture *TextureManager::load_texture_info_tile(std::string path) {
+	Environment::get().get_log()->print("Loading Texture Tile - " + path);
 
 	Texture *img = new Texture();
-	img->texture = Environment::get().getWindow()->getRenderer()->createTexture(path);
+	img->texture = Environment::get().get_window()->get_renderer()->create_texture(path);
 	img->rect.w = TILE_WIDTH;
 	img->rect.h = TILE_HEIGHT;
 	return img;
 }
 
-Texture *TextureManager::loadTextureInfo(std::string path) {
-	Environment::get().getLog()->print("Loading Texture - " + path);
+Texture *TextureManager::load_texture_info(std::string path) {
+	Environment::get().get_log()->print("Loading Texture - " + path);
 
 	Texture *img = nullptr;
 	Sprite *sprite = nullptr;
@@ -115,14 +125,14 @@ Texture *TextureManager::loadTextureInfo(std::string path) {
 
 	if (!isSprite) {
 		img = new Texture();
-		if (file.exists(FILE_TEXTURE_PATH)) img->texture = Environment::get().getWindow()->getRenderer()->createTexture(file.get_string(FILE_TEXTURE_PATH));
+		if (file.exists(FILE_TEXTURE_PATH)) img->texture = Environment::get().get_window()->get_renderer()->create_texture(file.get_string(FILE_TEXTURE_PATH));
 		if (file.exists(FILE_TEXTURE_W)) img->rect.w = file.get_int(FILE_TEXTURE_W);
 		if (file.exists(FILE_TEXTURE_H)) img->rect.h = file.get_int(FILE_TEXTURE_H);
 	}
 
 	if (isSprite) {
 		sprite = new Sprite();
-		if (file.exists(FILE_TEXTURE_PATH)) sprite->texture = Environment::get().getWindow()->getRenderer()->createTexture(file.get_string(FILE_TEXTURE_PATH));
+		if (file.exists(FILE_TEXTURE_PATH)) sprite->texture = Environment::get().get_window()->get_renderer()->create_texture(file.get_string(FILE_TEXTURE_PATH));
 		if (file.exists(FILE_TEXTURE_W)) sprite->rect.w = file.get_int(FILE_TEXTURE_W);
 		if (file.exists(FILE_TEXTURE_H)) sprite->rect.h = file.get_int(FILE_TEXTURE_H);
 		if (file.exists(FILE_FRAME_RUN)) sprite->run = file.get_int(FILE_FRAME_RUN);
@@ -144,42 +154,48 @@ Texture *TextureManager::loadTextureInfo(std::string path) {
 	return isSprite ? sprite : img;
 }
 
-void TextureManager::loadSurfaces(Type type, std::string path) {
+void TextureManager::load_surfaces(Type type, std::string path) {
 	Surface_Map surfaces;
 	FileReader file(path.c_str());
 
 	for (freader::iterator it = file.begin(); it != file.end(); it++) {
-		surfaces[std::stoi(it->first)] = loadSurfaceInfo(it->second);
+		surfaces[std::stoi(it->first)] = load_surface_info(it->second);
 	}
 
 	_surfaces[type] = surfaces;
 }
 
-SDL_Surface *TextureManager::loadSurfaceInfo(std::string path) {
-	Environment::get().getLog()->print("Loading Surface - " + path);
+SDL_Surface *TextureManager::load_surface_info(std::string path) {
+	Environment::get().get_log()->print("Loading Surface - " + path);
 
 	FileReader file(path.c_str());
-	SDL_Surface *surface = Environment::get().getWindow()->getRenderer()->createSurface(path);
+	SDL_Surface *surface = Environment::get().get_window()->get_renderer()->create_surface(path);
 
 	return surface;
 }
 
-void TextureManager::loadMap(std::vector<Map::Tile> &tiles, const int &width, const int &height) {
-	SDL_DestroyTexture(_map->texture);
-	_map->texture = makeMapBlitTexture(_map_surface, _surfaces[TYPE_TILE], tiles, width, height);
+void TextureManager::load_map_texture(std::vector<Map::Tile> &tiles, const int &width, const int &height) {
+	SDL_DestroyTexture(_map_texture->texture);
+	_map_texture->texture = make_map_blit_texture(_map_surface, _surfaces[TYPE_TILE], tiles, width, height);
+
+	if (Environment::get().get_mode() == MODE_EDITOR) {
+		_editor_line_background->texture = make_editor_line_background(width, height, TILE_WIDTH, TILE_HEIGHT, EDITOR_LINE_COLOR);
+		_editor_line_background->rect.w = width;
+		_editor_line_background->rect.h = height;
+	}
 }
 
-void TextureManager::updateMap(SDL_Rect &pos, int id) {
-	SDL_DestroyTexture(_map->texture);
+void TextureManager::update_map_texture(SDL_Rect &pos, int id) {
+	SDL_DestroyTexture(_map_texture->texture);
 
-	_map->texture = Environment::get().getWindow()->getRenderer()->blitTexture(
+	_map_texture->texture = Environment::get().get_window()->get_renderer()->blit_texture(
 		_map_surface,
-		getSurfaceInfo(TYPE_TILE, id),
+		get_surface_info(TYPE_TILE, id),
 		pos
 	);
 }
 
-SDL_Texture *TextureManager::makeMapBlitTexture(SDL_Surface *&main_surface, std::map<int, SDL_Surface *> &surfaces, std::vector<Map::Tile> &tiles, const int &width, const int &height) {
+SDL_Texture *TextureManager::make_map_blit_texture(SDL_Surface *&main_surface, std::map<int, SDL_Surface *> &surfaces, std::vector<Map::Tile> &tiles, const int &width, const int &height) {
 	if (main_surface) {
 		SDL_FreeSurface(main_surface);
 	}
@@ -189,5 +205,33 @@ SDL_Texture *TextureManager::makeMapBlitTexture(SDL_Surface *&main_surface, std:
 		SDL_BlitSurface(surfaces[tiles[i].id], NULL, main_surface, &tiles[i].pos);
 	}
 
-	return SDL_CreateTextureFromSurface(Environment::get().getWindow()->getRenderer()->getRenderer(), main_surface);
+	return SDL_CreateTextureFromSurface(Environment::get().get_window()->get_renderer()->get_renderer(), main_surface);
+}
+
+SDL_Texture *TextureManager::make_editor_line_background(const int &width, const int &height, const int &tile_width, const int &tile_height, const SDL_Color &color) {
+	SDL_Surface *surface = SDL_CreateRGBSurface(NULL, width, height, RGB_DEPTH, RMASK, GMASK, BMASK, AMASK);
+
+	SDL_Surface *line = SDL_CreateRGBSurface(NULL, 1, height, RGB_DEPTH, RMASK, GMASK, BMASK, AMASK);
+	SDL_FillRect(line, NULL, SDL_MapRGB(line->format, color.r, color.g, color.b));
+
+	SDL_Rect pos = { 0, 0, 0,0 };
+	for (int i = 0; i <= width; i++) {
+		pos.x = int(i * tile_width);
+		SDL_BlitSurface(line, NULL, surface, &pos);
+	}
+	SDL_FreeSurface(line);
+
+	line = SDL_CreateRGBSurface(NULL, width, 1, RGB_DEPTH, RMASK, GMASK, BMASK, AMASK);
+	SDL_FillRect(line, NULL, SDL_MapRGB(line->format, color.r, color.g, color.b));
+
+	pos = { 0, 0, 0, 0 };
+	for (int i = 0; i <= height; i++) {
+		pos.y = int(i * tile_height);
+		SDL_BlitSurface(line, NULL, surface, &pos);
+	}
+	SDL_FreeSurface(line);
+
+	SDL_SetSurfaceAlphaMod(surface, color.a);
+
+	return SDL_CreateTextureFromSurface(Environment::get().get_window()->get_renderer()->get_renderer(), surface);
 }

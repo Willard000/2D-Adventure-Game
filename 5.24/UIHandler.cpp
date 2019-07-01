@@ -7,9 +7,9 @@
 using namespace UI;
 
 void UI::confirm_yes() {
-	Environment::get().getUIManager()->set_state(STATE_CONFIRM);
+	Environment::get().get_ui_manager()->set_state(STATE_CONFIRM);
 }
 
 void UI::confirm_no() {
-	Environment::get().getUIManager()->set_state(STATE_DENY);
+	Environment::get().get_ui_manager()->set_state(STATE_DENY);
 }

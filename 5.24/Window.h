@@ -28,27 +28,27 @@ public:
 
 	~Window();
 
-	void toggleConsole();
+	void toggle_console();
 	void move(int x, int y)				{ SDL_SetWindowPosition(_window, x, y); }
 	void hide()							{ SDL_HideWindow(_window); }
 	void show()							{ SDL_ShowWindow(_window); }
-	void setTitle(std::string title)	{ SDL_SetWindowTitle(_window, title.c_str()); }
-	void setWindowMode(int window_mode);
+	void set_title(std::string title)	{ SDL_SetWindowTitle(_window, title.c_str()); }
+	void set_window_mode(int window_mode);
 
-	bool isFocused()					{ return SDL_GetMouseFocus() == _window; }
+	bool is_focused()					{ return SDL_GetMouseFocus() == _window; }
 
 	void zoom(const float &amount, const int &mouse_x, const int &mouse_y);
 
-	Camera *getCamera()			  { return _camera;		 }
-	SDL_Window *getWindow()		  { return _window;          }
-	Renderer *getRenderer()		  { return _renderer;        }
+	Camera *get_camera()			  { return _camera;			 }
+	SDL_Window *get_window()		  { return _window;          }
+	Renderer *get_renderer()		  { return _renderer;        }
 
-	int getWidth() { return _width; }
-	int getHeight() { return _height; }
-	int getWidthHalf() { return _width_half; }
-	int getHeightHalf() { return _height_half; }
+	int get_width() { return _width; }
+	int get_height() { return _height; }
+	int get_width_half() { return _width_half; }
+	int get_height_half() { return _height_half; }
 
-	void printDisplaySettings();
+	void print_display_settings();
 private:
 	SDL_Window *_window;
 	Camera *_camera;
@@ -58,7 +58,7 @@ private:
 	int _width_half, _height_half;
 
 	HWND _console;
-	bool _showConsole;
+	bool _show_console;
 };
 
 #endif

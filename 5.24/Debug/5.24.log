@@ -1,20 +1,2 @@
-﻿  Camera.cpp
-  Editor.cpp
-  Engine.cpp
-  EntityManager.cpp
-  Environment.cpp
-  InputManager.cpp
-  Map.cpp
-  Player_Lua.cpp
-  Quadtree.cpp
-  Renderer.cpp
-  ResourceManager.cpp
-d:\documents\visual studio 2017\projects\5.24\5.24\resourcemanager.cpp(81): warning C4018: '>': signed/unsigned mismatch
-  Text.cpp
-  UIHandler_Editor.cpp
-  UIManager.cpp
-  WindowLoader.cpp
-  TextureManager.cpp
-  Window.cpp
-  Generating Code...
+﻿  UIManager.cpp
   5.24.vcxproj -> D:\Documents\Visual Studio 2017\Projects\5.24\Debug\5.24.exe

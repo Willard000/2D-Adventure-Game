@@ -1,0 +1,5 @@
+# House
+
+Position
+iwidth 200
+iheight 225

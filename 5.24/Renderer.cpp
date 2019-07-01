@@ -20,9 +20,9 @@
 #define TEXT_OFFSET_FACTOR_X 2
 #define TEXT_OFFSET_FACTOR_Y 8
 
-Renderer::Renderer(SDL_Window *window, SDL_Color backgroundColor, Camera *camera) :
+Renderer::Renderer(SDL_Window *window, SDL_Color background_color, Camera *camera) :
 	_renderer				( SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED) ),
-	_backgroundColor		( backgroundColor ),
+	_background_color		( background_color ),
 	_font					( TTF_OpenFont(FONT_BASE_PATH, FONT_PT_SIZE) ),
 	_camera					( camera )
 {
@@ -42,11 +42,11 @@ void Renderer::render() {
 }
 
 void Renderer::clear() {
-	SDL_SetRenderDrawColor(_renderer, _backgroundColor.r, _backgroundColor.g, _backgroundColor.b, _backgroundColor.a);
+	SDL_SetRenderDrawColor(_renderer, _background_color.r, _background_color.g, _background_color.b, _background_color.a);
 	SDL_RenderClear(_renderer);
 }
 
-SDL_Texture *Renderer::createTexture(std::string path) {
+SDL_Texture *Renderer::create_texture(std::string path) {
 	SDL_Texture *texture = nullptr;
 	SDL_Surface *surface = IMG_Load(path.c_str());
 	if (surface != nullptr) {
@@ -61,7 +61,7 @@ SDL_Texture *Renderer::createTexture(std::string path) {
 	return texture;
 }
 
-SDL_Surface *Renderer::createSurface(std::string path) {
+SDL_Surface *Renderer::create_surface(std::string path) {
 	SDL_Surface *surface = IMG_Load(path.c_str());
 	if (surface != nullptr) {
 		SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, COLOR_KEY_R, COLOR_KEY_G, COLOR_KEY_B));
@@ -73,9 +73,17 @@ SDL_Surface *Renderer::createSurface(std::string path) {
 	return surface;
 }
 
-void Renderer::render(const Texture *img) {
+void Renderer::render(const Texture *img, bool ui_element) {
 	if (img != nullptr) {
-		SDL_RenderCopyEx(_renderer, img->texture, NULL, NULL, _camera->_uniform_rotation, NULL, SDL_FLIP_NONE);
+		if (ui_element) {
+			SDL_RenderSetScale(_renderer, 1.0f, 1.0f);
+			SDL_RenderCopyEx(_renderer, img->texture, NULL, &img->rect, _camera->_uniform_rotation, NULL, SDL_FLIP_NONE);
+			SDL_RenderSetScale(_renderer, _camera->_uniform_scale, _camera->_uniform_scale);
+
+		}
+		else {
+			SDL_RenderCopyEx(_renderer, img->texture, NULL, &get_des(img->rect), _camera->_uniform_rotation, NULL, SDL_FLIP_NONE);
+		}
 	}
 }
 
@@ -87,43 +95,43 @@ void Renderer::render(const Texture *img, const SDL_Rect &pos, bool ui_element) 
 			SDL_RenderSetScale(_renderer, _camera->_uniform_scale, _camera->_uniform_scale);
 		}
 		else {
-			SDL_RenderCopyEx(_renderer, img->texture, NULL, &getDestination(pos), _camera->_uniform_rotation, NULL, SDL_FLIP_NONE);
+			SDL_RenderCopyEx(_renderer, img->texture, NULL, &get_des(pos), _camera->_uniform_rotation, NULL, SDL_FLIP_NONE);
 		}
 	}
 	else {
 		if (ui_element) {
 			SDL_RenderSetScale(_renderer, 1.0f, 1.0f);
-			drawRect(pos, NULL_TEXTURE_COLOR);
+			draw_rect(pos, NULL_TEXTURE_COLOR);
 			SDL_RenderSetScale(_renderer, _camera->_uniform_scale, _camera->_uniform_scale);
 		}
 		else {
-			drawRect(getDestination(pos), NULL_TEXTURE_COLOR);
+			draw_rect(get_des(pos), NULL_TEXTURE_COLOR);
 		}
 	}
 }
 
 void Renderer::render(const Texture *img, PositionComponent *position) {
 	if (img != nullptr) {
-		SDL_RenderCopyEx(_renderer, img->texture, NULL, &getDestination(position->rect), _camera->_uniform_rotation + position->rotation, NULL, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(_renderer, img->texture, NULL, &get_des(position->rect), _camera->_uniform_rotation + position->rotation, NULL, SDL_FLIP_NONE);
 	}
 	else {
-		drawRect(getDestination(position->rect), NULL_TEXTURE_COLOR);
+		draw_rect(get_des(position->rect), NULL_TEXTURE_COLOR);
 	}
 }
 
 void Renderer::render(Sprite *img, SpriteComponent *sprite, PositionComponent *position) {
 	if (img != nullptr) {
 		sprite->update(img);
-		SDL_RenderCopyEx(_renderer, img->texture, &sprite->pos, &getDestination(position->rect), _camera->_uniform_rotation + position->rotation, NULL, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(_renderer, img->texture, &sprite->pos, &get_des(position->rect), _camera->_uniform_rotation + position->rotation, NULL, SDL_FLIP_NONE);
 	}
 	else {
-		drawRect(getDestination(position->rect), NULL_TEXTURE_COLOR);
+		draw_rect(get_des(position->rect), NULL_TEXTURE_COLOR);
 	}
 }
 
-void Renderer::drawText(Text &text, bool ui_element) {
+void Renderer::draw_text(Text &text, bool ui_element) {
 	if (!text.loaded) {
-		createText(text);
+		create_text(text);
 	}
 	if (text.texture != nullptr) {
 		if (ui_element) {
@@ -132,22 +140,22 @@ void Renderer::drawText(Text &text, bool ui_element) {
 			SDL_RenderSetScale(_renderer, _camera->_uniform_scale, _camera->_uniform_scale);
 		}
 		else {
-			SDL_RenderCopyEx(_renderer, text.texture, NULL, &getDestination(text.rect), _camera->_uniform_rotation, NULL, SDL_FLIP_NONE);
+			SDL_RenderCopyEx(_renderer, text.texture, NULL, &get_des(text.rect), _camera->_uniform_rotation, NULL, SDL_FLIP_NONE);
 		}
 	}
 	else {
 		if (ui_element) {
 			SDL_RenderSetScale(_renderer, 1.0f, 1.0f);
-			drawRect(text.rect, NULL_TEXT_COLOR);
+			draw_rect(text.rect, NULL_TEXT_COLOR);
 			SDL_RenderSetScale(_renderer, _camera->_uniform_scale, _camera->_uniform_scale);
 		}
 		else {
-			drawRect(getDestination(text.rect), NULL_TEXT_COLOR);
+			draw_rect(get_des(text.rect), NULL_TEXT_COLOR);
 		}
 	}
 }
 
-void Renderer::drawRect(const SDL_Rect &rect, const SDL_Color &color, int flag) {
+void Renderer::draw_rect(const SDL_Rect &rect, const SDL_Color &color, int flag) {
 	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderSetScale(_renderer, 1.0f, 1.0f);						// dont apply scale to ui 
 	SDL_RenderDrawRect(_renderer, &rect);
@@ -161,7 +169,7 @@ void Renderer::drawRect(const SDL_Rect &rect, const SDL_Color &color, int flag) 
 // rect.y - y1
 // rect.w - x2
 // rect.h - y2
-void Renderer::drawLine(const SDL_Rect &rect, const SDL_Color &color) {
+void Renderer::draw_line(const SDL_Rect &rect, const SDL_Color &color) {
 	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderSetScale(_renderer, 1.0f, 1.0f);
 	SDL_RenderDrawLine(_renderer, rect.x, rect.y, rect.w, rect.h);
@@ -169,29 +177,31 @@ void Renderer::drawLine(const SDL_Rect &rect, const SDL_Color &color) {
 }
 
 
-SDL_Texture *Renderer::makeBlitTexture(std::map<int, SDL_Surface *> &surfaces, const int &width, const int &height, const int &surface_size) {
+SDL_Texture *Renderer::make_blit_texture(std::map<int, SDL_Surface *> &surfaces, const int &width, const int &height, const int &surface_size) {
 	SDL_Surface *surface = SDL_CreateRGBSurface(NULL, width, height, RGB_DEPTH, RMASK, GMASK, BMASK, AMASK);
 	SDL_Rect pos = { 0, 0, surface_size, surface_size };
 	int i = 0;
 	for (auto it = surfaces.begin(); it != surfaces.end(); it++, i++) {
 		pos.x = int(i * surface_size);
-		if (pos.x > width) {
+		it->second->clip_rect.w = surface_size;
+		it->second->clip_rect.h = surface_size;
+		if (pos.x >= width) {
 			pos.x = 0;
 			pos.y += surface_size;
 			i = 0;
 		}
-		SDL_BlitSurface(it->second, NULL, surface, &pos);
+		SDL_BlitScaled(it->second, NULL, surface, &pos);
 	}
 
 	return SDL_CreateTextureFromSurface(_renderer, surface);
 }
 
-SDL_Texture *Renderer::blitTexture(SDL_Surface *&main_surface, SDL_Surface *surface, SDL_Rect &pos) {
+SDL_Texture *Renderer::blit_texture(SDL_Surface *&main_surface, SDL_Surface *surface, SDL_Rect &pos) {
 	SDL_BlitSurface(surface, NULL, main_surface, &pos);
 	return SDL_CreateTextureFromSurface(_renderer, main_surface);
 }
 
-void Renderer::createText(Text &text) {
+void Renderer::create_text(Text &text) {
 	if (text.text == "") {
 		return;
 	}
@@ -205,7 +215,7 @@ void Renderer::createText(Text &text) {
 	text.loaded = true;
 }
 
-SDL_Rect Renderer::getDestination(const SDL_Rect &pos) {
+SDL_Rect Renderer::get_des(const SDL_Rect &pos) {
 	return {
 		pos.x - (int)_camera->_x,
 		pos.y - (int)_camera->_y,

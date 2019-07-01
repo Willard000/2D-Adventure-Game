@@ -20,7 +20,7 @@ public:
 	void scale(float factor);
 	void set_scale(float factor);
 
-	bool getLocked();
+	bool get_locked();
 
 	double get_x() { return _x; }
 	double get_y() { return _y; }

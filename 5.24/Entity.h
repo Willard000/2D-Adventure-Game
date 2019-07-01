@@ -10,17 +10,17 @@
 #define TYPE_PLAYER "Player"
 #define TYPE_OBJECT "Object"
 
-#define GetPosition(entity) static_cast<PositionComponent *>(entity->getComponent(typeid(PositionComponent)))
-#define GetSprite(entity) static_cast<SpriteComponent *>(entity->getComponent(typeid(SpriteComponent)))
+#define GetPosition(entity) static_cast<PositionComponent *>(entity->get_component(typeid(PositionComponent)))
+#define GetSprite(entity) static_cast<SpriteComponent *>(entity->get_component(typeid(SpriteComponent)))
 
 class Entity {
 public:
 	Entity(std::string type, int type_id);
 
 	template <class ComponentType>
-	void addComponent(ComponentType *component) { _components[typeid(ComponentType)] = component; }
+	void add_component(ComponentType *component) { _components[typeid(ComponentType)] = component; }
 
-	Component *getComponent(std::type_index type) { return _components[type]; }
+	Component *get_component(std::type_index type) { return _components[type]; }
 
 	void update();
 
@@ -29,15 +29,14 @@ public:
 	std::string get_type() { return _type; }
 	int get_type_id() { return _type_id; }
 
-	void is_loaded() { _isLoaded = true; }
-	bool get_loaded() { return _isLoaded; }
+	bool get_is_loaded() { return _is_loaded; }
 private:
 	int _id; // unique id
 
 	std::string _type;
 	int _type_id;
 
-	bool _isLoaded;
+	bool _is_loaded;
 
 	typedef std::unordered_map<std::type_index, Component *> Components;
 	Components _components;
