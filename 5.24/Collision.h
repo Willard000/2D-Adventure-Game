@@ -4,7 +4,7 @@
 #ifndef COLLISION_H
 #define COLLISION_H
 
-bool collision(const SDL_Rect &a, const SDL_Rect &b) {
+inline bool collision(const SDL_Rect &a, const SDL_Rect &b) {
 	if ((a.x + a.w) <= b.x) {
 		return false;
 	}

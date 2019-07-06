@@ -27,7 +27,7 @@ public:
 	freader::iterator begin() { return _data.begin(); }
 	freader::iterator end() { return _data.end(); }
 private:
-	bool _isRead;
+	bool _is_read;
 	std::string _path;
 	freader::Data _data;
 };

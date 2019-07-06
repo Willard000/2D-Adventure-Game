@@ -75,20 +75,20 @@ void Environment::set_window(Window *window) {
 	_window = window;
 }
 
-void Environment::set_script_manager(ScriptManager *scriptManager) {
-	_script_manager = scriptManager;
+void Environment::set_script_manager(ScriptManager *script_manager) {
+	_script_manager = script_manager;
 }
 
-void Environment::set_resource_manager(ResourceManager *resourceManager) {
-	_resource_manager = resourceManager;
+void Environment::set_resource_manager(ResourceManager *resource_manager) {
+	_resource_manager = resource_manager;
 }
 
-void Environment::set_input_manager(InputManager *inputManager) {
-	_input_manager = inputManager;
+void Environment::set_input_manager(InputManager *input_manager) {
+	_input_manager = input_manager;
 }
 
-void Environment::set_ui_manager(UIManager *uiManager) {
-	_ui_manager = uiManager;
+void Environment::set_ui_manager(UIManager *ui_manager) {
+	_ui_manager = ui_manager;
 }
 
 int Environment::get_mode() {

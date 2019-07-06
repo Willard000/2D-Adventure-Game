@@ -216,15 +216,15 @@ void InputManager::update_editor() {
 
 	static bool clicked_button = false;
 	if (is_mouse(SDL_BUTTON_LEFT)) {
-		clicked_button = Environment::get().get_ui_manager()->check_buttons(_mouse_x, _mouse_y);
+		clicked_button = Environment::get().get_ui_manager()->check_buttons();
 		if (!clicked_button && Environment::get().get_ui_manager()->get_placement_type() != TYPE_TILE) {
-			Environment::get().get_ui_manager()->check_selection(_mouse_x, _mouse_y);
+			Environment::get().get_ui_manager()->check_selection();
 		}
 	}
 
 	if (!clicked_button && Environment::get().get_ui_manager()->get_state() != UI::STATE_WAITING) {
 		if (Environment::get().get_ui_manager()->get_placement_type() == TYPE_TILE && is_mouse_held(SDL_BUTTON_LEFT)) {
-			Environment::get().get_ui_manager()->check_selection(_mouse_x, _mouse_y);
+			Environment::get().get_ui_manager()->check_selection();
 		}
 	}
 
@@ -244,6 +244,55 @@ void InputManager::update_editor() {
 		Environment::get().get_window()->zoom(MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
 	}
 	else if (_mouse_wheel < 0) {
+		Environment::get().get_window()->zoom(-MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
+	}
+}
+
+void InputManager::update_editor_camera() {
+	if (is_held(SDL_SCANCODE_W)) {
+		_input_handler->publish(new Event_MoveCamera(
+			Environment::get().get_window()->get_camera(),
+			Event::UP)
+		);
+	}
+	if (is_held(SDL_SCANCODE_S)) {
+		_input_handler->publish(new Event_MoveCamera(
+			Environment::get().get_window()->get_camera(),
+			Event::DOWN)
+		);
+	}
+	if (is_held(SDL_SCANCODE_A)) {
+		_input_handler->publish(new Event_MoveCamera(
+			Environment::get().get_window()->get_camera(),
+			Event::LEFT)
+		);
+	}
+	if (is_held(SDL_SCANCODE_D)) {
+		_input_handler->publish(new Event_MoveCamera(
+			Environment::get().get_window()->get_camera(),
+			Event::RIGHT)
+		);
+	}
+	if (is_key(SDL_SCANCODE_O)) {
+		Environment::get().get_window()->get_camera()->toggle();
+		Environment::get().get_window()->get_camera()->set_scale(1.0f);
+	}
+
+	if (is_mouse(SDL_BUTTON_MIDDLE)) {
+		_mouse_x_prev = _mouse_x;
+		_mouse_y_prev = _mouse_y;
+	}
+
+	if (is_mouse_held(SDL_BUTTON_MIDDLE)) {
+		Environment::get().get_window()->get_camera()->update((_mouse_x_prev - _mouse_x), (_mouse_y_prev - _mouse_y));
+		_mouse_x_prev = _mouse_x;
+		_mouse_y_prev = _mouse_y;
+	}
+
+	if (_mouse_wheel > 0 && !Environment::get().get_window()->get_camera()->get_locked()) {
+		Environment::get().get_window()->zoom(MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
+	}
+	else if (_mouse_wheel < 0 && !Environment::get().get_window()->get_camera()->get_locked()) {
 		Environment::get().get_window()->zoom(-MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
 	}
 }

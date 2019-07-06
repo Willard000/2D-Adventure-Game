@@ -17,7 +17,7 @@ FileReader::FileReader(const char *path, bool isRead) :
 	_path		(path)
 {
 	if (!isRead) {
-		_isRead = false;
+		_is_read = false;
 		return;
 	}
 
@@ -25,7 +25,7 @@ FileReader::FileReader(const char *path, bool isRead) :
 }
 
 bool FileReader::read() {
-	if (_isRead) {
+	if (_is_read) {
 		return true;
 	}
 
@@ -34,7 +34,7 @@ bool FileReader::read() {
 
 	if (!file.is_open()) {
 		printf("Couldn't open file: \"%s\".\n", _path.c_str());
-		_isRead = false;
+		_is_read = false;
 		return false;
 	}
 
@@ -51,6 +51,6 @@ bool FileReader::read() {
 
 	file.close();
 
-	_isRead = true;
+	_is_read = true;
 	return true;
 }

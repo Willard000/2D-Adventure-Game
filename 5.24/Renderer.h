@@ -20,6 +20,10 @@
 #define AMASK 0x000000ff
 #define RGB_DEPTH 32
 
+#define DRAW_RECT_EMPTY 0001
+#define DRAW_RECT_FULL 0010
+#define DRAW_RECT_CAMERA 0100
+
 class Renderer {
 public:
 	Renderer(SDL_Window *window, SDL_Color background_color, Camera *camera);
@@ -48,12 +52,6 @@ public:
 	void create_text(Text &text);
 
 	SDL_Renderer *get_renderer() { return _renderer; }
-public:
-	enum {
-		DRAW_RECT_EMPTY,
-		DRAW_RECT_FULL
-	};
-
 private:
 	// Offsets rect with camera coordinates
 	SDL_Rect get_des(const SDL_Rect &position);

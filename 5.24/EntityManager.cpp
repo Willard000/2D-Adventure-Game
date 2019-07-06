@@ -60,6 +60,13 @@ void EntityManager::remove(std::string type, int id) {
 	_entities.erase(id);
 }
 
+void EntityManager::clear_entities() {
+	for (auto it = _entities.begin(); it != _entities.end(); it++) {
+		delete it->second;
+	}
+	_entities.clear();
+}
+
 void EntityManager::update() {
 	_player->update();
 	for (auto it = _entities.begin(); it != _entities.end(); it++) {

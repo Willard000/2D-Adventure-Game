@@ -3,7 +3,7 @@
 Position
 iwidth 32
 iheight 32
-dspeed 100
+dspeed 1000
 
 Sprite
 sprite_itime 300

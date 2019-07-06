@@ -15,7 +15,7 @@ Engine::Engine() :
 {
 	build_environment();
 
-	_environment.get().get_resource_manager()->load_map(0);
+	_environment.get().get_resource_manager()->load_map(1);
 }
 
 void Engine::run() {

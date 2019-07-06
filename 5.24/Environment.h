@@ -23,10 +23,10 @@ public:
 	void set_clock(Clock *clock);
 	void set_log(Log *log);
 	void set_window(Window *window);
-	void set_script_manager(ScriptManager *scriptManager);
-	void set_resource_manager(ResourceManager *resourceManager);
-	void set_input_manager(InputManager *inputManager);
-	void set_ui_manager(UIManager *uiManager);
+	void set_script_manager(ScriptManager *script_manager);
+	void set_resource_manager(ResourceManager *resource_manager);
+	void set_input_manager(InputManager *input_manager);
+	void set_ui_manager(UIManager *ui_manager);
 
 	int get_mode();
 	Clock *get_clock();

@@ -7,6 +7,8 @@ namespace UI {
 	void button_load_map();
 	
 	void button_select_tiles();
+	void button_select_solids();
+	void button_select_warps();
 	void button_select_objects();
 
 	void button_select_free();

@@ -7,10 +7,13 @@
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
 
+#define SOLIDS_COLOR {255, 0, 50, 50}
+#define WARPS_COLOR {0, 255, 50, 50}
+
 ResourceManager::ResourceManager() :
 	TextureManager(),
 	EntityManager(),
-	_map					( new Map() )
+	_map(new Map())
 {
 	Environment::get().get_log()->print("Loading Resource Manager");
 }
@@ -55,13 +58,21 @@ void ResourceManager::render_map() {
 void ResourceManager::render_editor(const UI::Element_Area &element_area, const UI::Element &placement) {
 	Renderer *renderer = Environment::get().get_window()->get_renderer();
 
-	renderer->render(_editor_line_background);
-	
-	renderer->draw_rect(element_area.background, element_area.color, true);
+	for (auto it = _map->_solids.begin(); it != _map->_solids.end(); it++) {
+		renderer->draw_rect(it->second, SOLIDS_COLOR, DRAW_RECT_CAMERA);
+	}
 
-	if(placement.type == TYPE_TILE)
+	for (auto it = _map->_warps.begin(); it != _map->_warps.end(); it++) {
+		renderer->draw_rect(it->from, WARPS_COLOR, DRAW_RECT_CAMERA);
+	}
+
+	renderer->render(_editor_line_background);
+
+	renderer->draw_rect(element_area.background, element_area.color);
+
+	if (placement.type == TYPE_TILE)
 		renderer->render(_editor_tiles_texture, element_area.area, true);
-	else if (placement.type == TYPE_OBJECT) 
+	else if (placement.type == TYPE_OBJECT)
 		renderer->render(_editor_objects_texture, element_area.area, true);
 
 	if (placement.id != -1) {
@@ -74,9 +85,13 @@ void ResourceManager::render() {
 	render_entities();
 }
 
-void ResourceManager::load_map(int id) {
-	_map->load(id);
+bool ResourceManager::load_map(int id) {
+	if (!_map->load(id)) {
+		return false;
+	}
 	load_map_texture(_map->_tiles, _map->_rect.w, _map->_rect.h);
+
+	return true;
 }
 
 void ResourceManager::edit_map(int index, int id) {
@@ -85,4 +100,26 @@ void ResourceManager::edit_map(int index, int id) {
 	}
 	_map->_tiles[index].id = id;
 	update_map_texture(_map->_tiles[index].pos, id);
+}
+
+void ResourceManager::edit_solid(int index) {
+	if (index < 0 || index > (_map->_width * _map->_height)) {
+		return;
+	}
+
+	for (auto it = _map->_solids.begin(); it != _map->_solids.end(); it++) {
+		if (it->first == index) {
+			_map->_solids.erase(it);
+			return;
+		}
+	}
+
+	SDL_Rect solid = {
+		(index % _map->get_width()) * TILE_WIDTH,
+		(index / _map->get_height()) * TILE_HEIGHT,
+		TILE_WIDTH,
+		TILE_HEIGHT
+	};
+
+	_map->_solids[index] = solid;
 }

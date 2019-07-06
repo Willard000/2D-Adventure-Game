@@ -22,6 +22,7 @@ public:
 
 	void update();
 	void update_editor();
+	void update_editor_camera();
 
 	void get_text_input(int *val);
 	void get_text_input(std::string *val);

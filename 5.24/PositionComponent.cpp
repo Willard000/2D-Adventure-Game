@@ -6,6 +6,7 @@
 #include "SpriteComponent.h"
 
 #include "Environment.h"
+#include "ResourceManager.h"
 #include "Clock.h"
 
 PositionComponent::PositionComponent(Entity *entity_, double x_, double y_, int w_, int h_, double speed_) :
@@ -20,7 +21,14 @@ PositionComponent::PositionComponent(Entity *entity_, double x_, double y_, int 
 	base_height     ( h_ )
 {}
 
+void PositionComponent::update() {
+
+}
+
 void PositionComponent::move(int dir_) {
+	double prev_pos_x = pos_x;
+	double prev_pos_y = pos_y;
+
 	if (dir_ == Event::UP) {
 		pos_y -= speed * Environment::get().get_clock()->get_time();
 	}
@@ -34,17 +42,27 @@ void PositionComponent::move(int dir_) {
 		pos_x += speed * Environment::get().get_clock()->get_time();
 	}
 
-	rect.x = int(pos_x);
-	rect.y = int(pos_y);
-
 	SpriteComponent *sprite = GetSprite(entity);
 	if (sprite != nullptr) {
 		sprite->ani = MOVE;
 		sprite->dir = dir_;
 	}
+
+	rect.x = int(pos_x);
+	rect.y = int(pos_y);
+
+	if (Environment::get().get_resource_manager()->get_map()->solid_collision(rect)) {
+		pos_x = prev_pos_x;
+		pos_y = prev_pos_y;
+		rect.x = int(pos_x);
+		rect.y = int(pos_y);
+	}
 }
 
 void PositionComponent::move(int dir_, double dis_) {
+	double prev_pos_x = pos_x;
+	double prev_pos_y = pos_y;
+
 	if (dir_ == Event::UP) {
 		pos_y -= dis_ * Environment::get().get_clock()->get_time();
 	}
@@ -58,13 +76,20 @@ void PositionComponent::move(int dir_, double dis_) {
 		pos_x += dis_ * Environment::get().get_clock()->get_time();
 	}
 
-	rect.x = int(pos_x);
-	rect.y = int(pos_y);
-
 	SpriteComponent *sprite = GetSprite(entity);
 	if (sprite != nullptr) {
 		sprite->ani = MOVE;
 		sprite->dir = dir_;
+	}
+
+	rect.x = int(pos_x);
+	rect.y = int(pos_y);
+
+	if (Environment::get().get_resource_manager()->get_map()->solid_collision(rect)) {
+		pos_x = prev_pos_x;
+		pos_y = prev_pos_y;
+		rect.x = int(pos_x);
+		rect.y = int(pos_y);
 	}
 }
 

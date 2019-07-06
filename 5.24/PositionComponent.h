@@ -9,7 +9,7 @@ struct PositionComponent : public Component {
 public:
 	PositionComponent(Entity *entity_, double x_, double y_, int w_, int h_, double speed_);
 
-	virtual void update() {}
+	virtual void update();
 
 	void move(int dir_);
 	void move(int dir_, double dis_);

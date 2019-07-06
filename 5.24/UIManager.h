@@ -12,6 +12,9 @@
 #define ELEMENT_ROW_SIZE 8
 #define ELEMENT_AREA_WIDTH ELEMENT_ROW_SIZE * ELEMENT_WIDTH
 
+#define TYPE_SOLID "Solid"
+#define TYPE_WARP "Warp"
+
 namespace UI {
 
 	struct Element_Area {
@@ -32,7 +35,8 @@ namespace UI {
 		STATE_DENY,
 		STATE_WAITING,
 		STATE_PLACING,
-		STATE_SELECTING
+		STATE_SELECTING,
+		STATE_PLACE_WARP
 	};
 
 }
@@ -51,8 +55,11 @@ public:
 	void remove_button(std::string key);
 
 	int update();
-	bool check_buttons(const int &mouse_x, const int &mouse_y);
-	bool check_selection(const int &mouse_x, const int &mouse_y);
+
+	void update_mouse_location();
+
+	bool check_buttons();
+	bool check_selection();
 	void render();
 
 	void set_state(int flag);
@@ -61,23 +68,33 @@ public:
 	void push_confirmation(Callback on_confirm = nullptr, Callback on_deny = nullptr);
 	void pop_confirmation();
 
-	Element select_element(const int &mouse_x, const int &mouse_y);
+	Element select_element();
 	void delete_element();
 
 	// returns element id ( -1 if mouse is not hovering an element)
-	int select_placement(const int &mouse_x, const int &mouse_y);
-	bool place_element(const int &mouse_x, const int &mouse_Y);
+	int select_placement();
+	bool place_element();
 	void set_placement_type(std::string type);
 	std::string get_placement_type();
 
 	void toggle_center_placement();
 
+	void place_warp();
+
+
 	int get_state() { return _state; }
+private:
+	void calc_real_mouse_location(int &x, int &y);
+	SDL_Rect place_warp_rect();
 private:
 	int _state;
 	int _state_prev;
 
+	int _mouse_x;
+	int _mouse_y;
+
 	Text _current_text;
+	Text _mouse_location;
 
 	Callback _on_confirm;
 	Callback _on_deny;

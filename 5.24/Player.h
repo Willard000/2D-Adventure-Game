@@ -10,6 +10,8 @@ public:
 	Player(int type_id) : 
 		Entity		(TYPE_PLAYER, type_id)
 	{};
+
+	virtual void update();
 private:
 };
 

@@ -16,3 +16,16 @@
 14 Data/Textures/Tiles/water11.png
 15 Data/Textures/Tiles/water12.png
 16 Data/Textures/Tiles/water13.png
+17 Data/Textures/Tiles/path.png
+18 Data/Textures/Tiles/path2.png
+19 Data/Textures/Tiles/path3.png
+20 Data/Textures/Tiles/path4.png
+21 Data/Textures/Tiles/path5.png
+22 Data/Textures/Tiles/path6.png
+23 Data/Textures/Tiles/path7.png
+24 Data/Textures/Tiles/path8.png
+25 Data/Textures/Tiles/path9.png
+26 Data/Textures/Tiles/path10.png
+27 Data/Textures/Tiles/path11.png
+28 Data/Textures/Tiles/path12.png
+29 Data/Textures/Tiles/path13.png

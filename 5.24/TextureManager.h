@@ -35,7 +35,7 @@ public:
 	void load_map_texture(std::vector<Map::Tile> &tiles, const int &width, const int &height);
 	void update_map_texture(SDL_Rect &pos, int id);
 
-	const Texture *get_texture_info(Type type, Key key) { return _textures[type][key]; }
+	Texture *get_texture_info(Type type, Key key) { return _textures[type][key]; }
 	Texture *get_texture_info(Entity *entity) { return _textures[entity->get_type()][entity->get_type_id()]; }
 	SDL_Surface *get_surface_info(Type type, Key key) { return _surfaces[type][key]; }
     Sprite *get_sprite_info(Entity *entity) { return static_cast<Sprite *>(_textures[entity->get_type()][entity->get_type_id()]); }

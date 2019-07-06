@@ -85,6 +85,16 @@ void UI::button_select_tiles() {
 	Environment::get().get_ui_manager()->set_placement_type(TYPE_TILE);
 }
 
+void UI::button_select_solids() {
+	Environment::get().get_ui_manager()->set_state(STATE_PLACING);
+	Environment::get().get_ui_manager()->set_placement_type(TYPE_SOLID);
+}
+
+void UI::button_select_warps() {
+	Environment::get().get_ui_manager()->set_state(STATE_PLACING);
+	Environment::get().get_ui_manager()->set_placement_type(TYPE_WARP);
+}
+
 void UI::button_select_objects() {
 	Environment::get().get_ui_manager()->set_state(STATE_PLACING);
 	Environment::get().get_ui_manager()->set_placement_type(TYPE_OBJECT);

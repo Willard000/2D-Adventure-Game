@@ -1,7 +1,10 @@
 #include <vector>
 #include <string>
+#include <map>
 
 #include <SDL.h>
+
+#include "FileReader.h"
 
 #ifndef MAP_H
 #define MAP_H
@@ -29,11 +32,23 @@ public:
 		SDL_Rect pos = { 0, 0, TILE_WIDTH, TILE_HEIGHT };
 	};
 
+	struct Warp {
+		int from_id = 0, to_id = 0;
+		SDL_Rect from = { 0, 0, 0, 0 };
+		SDL_Rect to = { 0, 0, 0, 0 };
+	};
+
 	Map();
 
 	bool load(int id);
 	void save();
 	bool create_new(int id, std::string name, int width, int height, int base_tile_id);
+
+	bool solid_collision(const SDL_Rect &pos);
+	Warp *warp_collision(const SDL_Rect &pos);
+
+	void add_warp(Warp warp);
+	void remove_warp(Warp *warp);
 
 	int get_id() { return _id; }
 	// in pixels
@@ -46,8 +61,13 @@ public:
 	friend class ResourceManager;
 private:
 	std::string get_path(int id);
+	void load_tiles(FileReader &file);
+	void load_solids(FileReader &file);
+	void load_warps(FileReader &file);
 private:
 	std::vector<Tile> _tiles;
+	std::map<int, SDL_Rect> _solids;
+	std::vector<Warp> _warps;
 
 	int _id;
 	int _width, _height;

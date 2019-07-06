@@ -18,7 +18,9 @@
 #define BUTTON_SAVE_POSITION {0, 40, 80, 20}
 
 #define BUTTON_TILES_POSITION {700, 0, 80, 20}
-#define BUTTON_OBJECTS_POSITION {780, 0, 80, 20}
+#define BUTTON_SOLIDS_POSITION {780, 0, 80, 20}
+#define BUTTON_OBJECTS_POSITION {860, 0, 80, 20}
+#define BUTTON_WARPS_POSITION {940, 0, 80, 20}
 
 #define BUTTON_SELECT_FREE {620, 0, 80, 20}
 
@@ -31,7 +33,7 @@ Editor::Editor() :
 
 	load_buttons();
 
-	_environment.get().get_resource_manager()->load_map(0);
+	_environment.get().get_resource_manager()->load_map(1);
 }
 
 void Editor::run() {
@@ -97,7 +99,9 @@ void Editor::load_buttons() {
 	ui_manager->add_button(new UI::Button_Pressable(&UI::button_load_map, "Load", BUTTON_LOAD_POSITION));
 
 	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_tiles, "Tiles", BUTTON_TILES_POSITION));
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_solids, "Solids", BUTTON_SOLIDS_POSITION));
 	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_objects, "Objects", BUTTON_OBJECTS_POSITION));
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_warps, "Warps", BUTTON_WARPS_POSITION));
 
 	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_free, "Select", BUTTON_SELECT_FREE));
 

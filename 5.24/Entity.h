@@ -22,7 +22,7 @@ public:
 
 	Component *get_component(std::type_index type) { return _components[type]; }
 
-	void update();
+	virtual void update();
 
 	int get_id() { return _id; }
 

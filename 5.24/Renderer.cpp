@@ -155,14 +155,25 @@ void Renderer::draw_text(Text &text, bool ui_element) {
 	}
 }
 
+// flags
+// DRAW_RECT_EMPTY // doesnt not fill rectangle
+// DRAW_RECT_CAMERA // applys camera
 void Renderer::draw_rect(const SDL_Rect &rect, const SDL_Color &color, int flag) {
 	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
-	SDL_RenderSetScale(_renderer, 1.0f, 1.0f);						// dont apply scale to ui 
-	SDL_RenderDrawRect(_renderer, &rect);
-	if (flag != DRAW_RECT_EMPTY) {
-		SDL_RenderFillRect(_renderer, &rect);
+	if (flag & DRAW_RECT_CAMERA) {
+		SDL_RenderDrawRect(_renderer, &get_des(rect));
+		if (!(flag & DRAW_RECT_EMPTY)) {
+			SDL_RenderFillRect(_renderer, &get_des(rect));
+		}
 	}
-	SDL_RenderSetScale(_renderer, _camera->_uniform_scale, _camera->_uniform_scale); // change scale back 
+	else {
+		SDL_RenderSetScale(_renderer, 1.0f, 1.0f);
+		SDL_RenderDrawRect(_renderer, &rect);
+		if (!(flag & DRAW_RECT_EMPTY)) {
+			SDL_RenderFillRect(_renderer, &rect);
+		}
+		SDL_RenderSetScale(_renderer, _camera->_uniform_scale, _camera->_uniform_scale);
+	}
 }
 
 // rect.x - x1
