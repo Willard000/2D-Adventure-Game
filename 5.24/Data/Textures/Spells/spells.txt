@@ -1,0 +1,2 @@
+# Objects
+0 Data/Textures/Spells/fireball.txt

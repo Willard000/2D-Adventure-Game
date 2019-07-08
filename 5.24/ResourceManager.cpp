@@ -28,11 +28,13 @@ void ResourceManager::update() {
 }
 
 void ResourceManager::render_entities() {
-	render_entity(_player);
-
 	for (auto it = _entities.begin(); it != _entities.end(); it++) {
-		render_entity(it->second);
+		for (auto itt = it->second.begin(); itt != it->second.end(); itt++) {
+			render_entity(itt->second);
+		}
 	}
+
+	render_entity(_player);
 }
 
 void ResourceManager::render_entity(Entity *entity) {

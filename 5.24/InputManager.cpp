@@ -7,6 +7,12 @@
 #include "UIManager.h"
 #include "Clock.h"
 
+#include "InputHandler.h"
+
+#include "Globals.h"
+
+#include "MagicComponent.h"
+
 bool valid_string_to_int(std::string str) {
 	if (str == "") {
 		return false;
@@ -23,7 +29,6 @@ bool valid_string_to_int(std::string str) {
 
 InputManager::InputManager() :
 	_state				( STATE_IDLE ),
-	_input_handler		( new InputHandler() ),
 	_mouse_x			( 0 ),
 	_mouse_y			( 0 ),
 	_mouse_x_prev		( 0 ),
@@ -37,7 +42,6 @@ InputManager::InputManager() :
 
 InputManager::~InputManager() {
 	Environment::get().get_log()->print("Closing Input Manager");
-	delete _input_handler;
 }
 
 bool InputManager::get() {
@@ -109,56 +113,37 @@ bool InputManager::is_mouse_held(const unsigned int &button) {
 
 void InputManager::update() {
 	if (is_held(SDL_SCANCODE_W)) {
-		_input_handler->publish(new Event_MoveEntity(
-			Environment::get().get_resource_manager()->get_player(),
-			Event::UP)
-		);
+		move_entity(Environment::get().get_resource_manager()->get_player(), MOVE_UP);
 	}
 	if (is_held(SDL_SCANCODE_S)) {
-		_input_handler->publish(new Event_MoveEntity(
-			Environment::get().get_resource_manager()->get_player(),
-			Event::DOWN)
-		);
+		move_entity(Environment::get().get_resource_manager()->get_player(), MOVE_DOWN);
 	}
 	if (is_held(SDL_SCANCODE_A)) {
-		_input_handler->publish(new Event_MoveEntity(
-			Environment::get().get_resource_manager()->get_player(),
-			Event::LEFT)
-		);
+		move_entity(Environment::get().get_resource_manager()->get_player(), MOVE_LEFT);
 	}
 	if (is_held(SDL_SCANCODE_D)) {
-		_input_handler->publish(new Event_MoveEntity(
-			Environment::get().get_resource_manager()->get_player(),
-			Event::RIGHT)
-		);
+		move_entity(Environment::get().get_resource_manager()->get_player(), MOVE_RIGHT);
 	}
+
 	if (is_held(SDL_SCANCODE_I)) {
-		_input_handler->publish(new Event_MoveCamera(
-			Environment::get().get_window()->get_camera(),
-			Event::UP)
-		);
+		move_camera(MOVE_UP);
 	}
 	if (is_held(SDL_SCANCODE_K)) {
-		_input_handler->publish(new Event_MoveCamera(
-			Environment::get().get_window()->get_camera(),
-			Event::DOWN)
-		);
+		move_camera(MOVE_DOWN);
 	}
 	if (is_held(SDL_SCANCODE_J)) {
-		_input_handler->publish(new Event_MoveCamera(
-			Environment::get().get_window()->get_camera(),
-			Event::LEFT)
-		);
+		move_camera(MOVE_LEFT);
 	}
 	if (is_held(SDL_SCANCODE_L)) {
-		_input_handler->publish(new Event_MoveCamera(
-			Environment::get().get_window()->get_camera(),
-			Event::RIGHT)
-		);
+		move_camera(MOVE_RIGHT);
 	}
+
 	if (is_key(SDL_SCANCODE_O)) {
-		Environment::get().get_window()->get_camera()->toggle();
-		Environment::get().get_window()->get_camera()->set_scale(1.0f);
+		toggle_camera();
+	}
+
+	if (is_mouse_held(SDL_BUTTON_LEFT)) {
+		cast_spell(_mouse_x, _mouse_y);
 	}
 
 	if (is_mouse(SDL_BUTTON_MIDDLE)) {
@@ -182,28 +167,16 @@ void InputManager::update() {
 
 void InputManager::update_editor() {
 	if (is_held(SDL_SCANCODE_W)) {
-		_input_handler->publish(new Event_MoveCamera(
-			Environment::get().get_window()->get_camera(),
-			Event::UP)
-		);
+		move_camera(MOVE_UP);
 	}
 	if (is_held(SDL_SCANCODE_S)) {
-		_input_handler->publish(new Event_MoveCamera(
-			Environment::get().get_window()->get_camera(),
-			Event::DOWN)
-		);
+		move_camera(MOVE_DOWN);
 	}
 	if (is_held(SDL_SCANCODE_A)) {
-		_input_handler->publish(new Event_MoveCamera(
-			Environment::get().get_window()->get_camera(),
-			Event::LEFT)
-		);
+		move_camera(MOVE_LEFT);
 	}
 	if (is_held(SDL_SCANCODE_D)) {
-		_input_handler->publish(new Event_MoveCamera(
-			Environment::get().get_window()->get_camera(),
-			Event::RIGHT)
-		);
+		move_camera(MOVE_RIGHT);
 	}
 
 	if (is_key(SDL_SCANCODE_O)) {
@@ -250,32 +223,20 @@ void InputManager::update_editor() {
 
 void InputManager::update_editor_camera() {
 	if (is_held(SDL_SCANCODE_W)) {
-		_input_handler->publish(new Event_MoveCamera(
-			Environment::get().get_window()->get_camera(),
-			Event::UP)
-		);
+		move_camera(MOVE_UP);
 	}
 	if (is_held(SDL_SCANCODE_S)) {
-		_input_handler->publish(new Event_MoveCamera(
-			Environment::get().get_window()->get_camera(),
-			Event::DOWN)
-		);
+		move_camera(MOVE_DOWN);
 	}
 	if (is_held(SDL_SCANCODE_A)) {
-		_input_handler->publish(new Event_MoveCamera(
-			Environment::get().get_window()->get_camera(),
-			Event::LEFT)
-		);
+		move_camera(MOVE_LEFT);
 	}
 	if (is_held(SDL_SCANCODE_D)) {
-		_input_handler->publish(new Event_MoveCamera(
-			Environment::get().get_window()->get_camera(),
-			Event::RIGHT)
-		);
+		move_camera(MOVE_RIGHT);
 	}
+
 	if (is_key(SDL_SCANCODE_O)) {
-		Environment::get().get_window()->get_camera()->toggle();
-		Environment::get().get_window()->get_camera()->set_scale(1.0f);
+		toggle_camera();
 	}
 
 	if (is_mouse(SDL_BUTTON_MIDDLE)) {

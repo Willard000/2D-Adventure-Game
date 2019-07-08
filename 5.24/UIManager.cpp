@@ -48,11 +48,13 @@ SDL_Rect get_mouse_rect(const int &x, const int &y) {
 bool element_collision(const int &x, const int &y) {
 	SDL_Rect placement = get_mouse_rect(x, y);
 
-	std::map<int, Entity *> *entities = Environment::get().get_resource_manager()->get_entities();
+	std::map<std::string, EntityManager::Entity_Map> *entities = Environment::get().get_resource_manager()->get_entities();
 	for (auto it = entities->begin(); it != entities->end(); it++) {
-		if (PositionComponent *position = GetPosition(it->second)) {
-			if (collision(placement, position->rect)) {
-				return true;
+		for (auto itt = it->second.begin(); itt != it->second.end(); itt++) {
+			if (PositionComponent *position = GetPosition(itt->second)) {
+				if (collision(placement, position->rect)) {
+					return true;
+				}
 			}
 		}
 	}
@@ -203,7 +205,7 @@ void UIManager::render() {
 	}
 	else if (_state == STATE_SELECTING) {
 		if (_selection.id != -1) {
-			Entity *entity = Environment::get().get_resource_manager()->get_entity(_selection.id);
+			Entity *entity = Environment::get().get_resource_manager()->get_entity(_selection.type, _selection.id);
 			if (PositionComponent *position = GetPosition(entity)) {
 				renderer->draw_rect(position->rect, ELEMENT_SELECTION_COLOR, DRAW_RECT_CAMERA);
 			}
@@ -396,15 +398,16 @@ Element UIManager::select_element() {
 	int x, y;
 	calc_real_mouse_location(x, y);
 
-	std::map<int, Entity *> *entities = Environment::get().get_resource_manager()->get_entities();
+	std::map<std::string, EntityManager::Entity_Map> *entities = Environment::get().get_resource_manager()->get_entities();
 	SDL_Rect mouse = get_mouse_rect((int)x, (int)y);
 	for (auto it = entities->begin(); it != entities->end(); it++) {
-		if (PositionComponent *position = GetPosition(it->second)) {
-			if (collision(mouse, position->rect)) {
-				return { it->second->get_type(), it->second->get_id() };
+		for (auto itt = it->second.begin(); itt != it->second.end(); itt++) {
+			if (PositionComponent *position = GetPosition(itt->second)) {
+				if (collision(mouse, position->rect)) {
+					return { itt->second->get_type(), itt->second->get_id() };
+				}
 			}
 		}
-
 	}
 
 	return { " " , -1 };

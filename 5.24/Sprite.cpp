@@ -22,6 +22,5 @@ const Sprite::Frame Sprite::get_frame(unsigned int index) {
 	if (index < num_frames && index >= 0) {
 		return _frames[index];
 	}
-	printf("Sprite Index at: %d doesn't exist.", index);
 	return { 0, 0 };
 }

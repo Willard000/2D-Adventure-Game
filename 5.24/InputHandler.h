@@ -1,18 +1,12 @@
 
-#include "EventHandler.h"
-
-#include "Event_MoveEntity.h"
-#include "Event_MoveCamera.h"
+#include "Entity.h"
 
 #ifndef INPUT_HANDLER_H
 #define INPUT_HANDLER_H
 
-class InputHandler : public EventHandler {
-public:
-	InputHandler();
-private:
-	void move_entity(Event_MoveEntity *event);
-	void move_camera(Event_MoveCamera *event);
-};
+void move_entity(Entity *entity, int dir);
+void move_camera(int dir);
+void toggle_camera();
+void cast_spell(double x, double y);
 
 #endif

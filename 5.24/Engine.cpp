@@ -28,7 +28,7 @@ void Engine::run() {
 
 		_environment.get_input_manager()->update();
 
-		_environment.get_script_manager()->run("Data/Lua/test.lua");
+	//	_environment.get_script_manager()->run("Data/Lua/test.lua");
 
 		_environment.get_resource_manager()->update();
 
@@ -38,7 +38,8 @@ void Engine::run() {
 
 		if (_environment.get_clock()->update()) {
 			std::string title = "Engine      Map: " + std::to_string(_environment.get_resource_manager()->get_map()->get_id()) + "     " +
-				_environment.get_clock()->get_display_time() + "    " + std::to_string(_environment.get_clock()->get_fms());
+				_environment.get_clock()->get_display_time() + "    " + std::to_string(_environment.get_clock()->get_fms())
+				+ " spells: " + std::to_string(_environment.get_resource_manager()->get_entities(TYPE_SPELL)->size());
 			_environment.get_window()->set_title(title);
 		}
 	}

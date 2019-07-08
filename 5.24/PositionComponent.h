@@ -11,8 +11,9 @@ public:
 
 	virtual void update();
 
-	void move(int dir_);
-	void move(int dir_, double dis_);
+	void move(int dir_, double dis_ = 0);
+
+	void set(double x, double y);
 
 	void scale(float factor_);
 	void set_scale(float factor_);

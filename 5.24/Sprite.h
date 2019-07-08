@@ -20,6 +20,7 @@ struct Sprite : public Texture {
 		min_down	( 0 ),	 max_down	 ( 0 ),
 		min_left	( 0 ),	 max_left	 ( 0 ),
 		min_right	( 0 ),	 max_right	 ( 0 ),
+		num_frames	( 0 ),
 		_frames		( nullptr )
 	{}
 

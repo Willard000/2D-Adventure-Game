@@ -7,3 +7,7 @@ dspeed 1000
 
 Sprite
 sprite_itime 300
+
+Magic
+imain_spell_id 0
+icast_speed 1

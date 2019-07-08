@@ -1,0 +1,5 @@
+# Fireball
+Sprite
+stexture Data/Textures/Spells/fireball.png
+iwidth 20
+iheight 20

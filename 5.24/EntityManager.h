@@ -8,6 +8,8 @@
 
 class EntityManager {
 public:
+	typedef std::map<int, Entity *> Entity_Map;
+
 	EntityManager();
 	~EntityManager();
 
@@ -16,17 +18,19 @@ public:
 	void remove(Entity *entity);
 	void remove(std::string type, int id);
 	void clear_entities();
+	void clear_spells();
 
 	void update();
 
-	Entity *get_entity(int id) { return _entities[id]; }
+	Entity *get_entity(std::string type, int id) { return _entities[type][id]; }
 	Player *get_player() { return _player; }
 
-	std::map<int, Entity *> *get_entities() { return &_entities; }
+	std::map<int, Entity *> *get_entities(std::string type) { return &_entities[type]; }
+	std::map<std::string, Entity_Map> *get_entities() { return &_entities; }
 
 	friend class ResourceManager;
 private:
-	std::map<int, Entity *> _entities;
+	std::map<std::string, Entity_Map> _entities;
 	Player *_player;
 };
 

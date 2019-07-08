@@ -5,12 +5,12 @@
 #include "Window.h"
 #include "ResourceManager.h"
 
-#include "Event.h"
-
 #include "Entity.h"
 #include "PositionComponent.h"
 
 #include "FileReader.h"
+
+#include "Globals.h"
 
 Camera::Camera() :
 	_x						( 0 ),
@@ -29,22 +29,24 @@ void Camera::toggle() {
 	_is_locked = !_is_locked;
 }
 
-void Camera::move(int dir) {
+void Camera::move(int dir, double dis) {
 	if (_is_locked) {
 		return;
 	}
 
-	if (dir == Event::UP) {
-		_y -= _speed * Environment::get().get_clock()->get_time();
+	double distance = dis == 0 ? _speed : dis;
+
+	if (dir == MOVE_UP) {
+		_y -= distance * Environment::get().get_clock()->get_time();
 	}
-	else if (dir == Event::DOWN) {
-		_y += _speed * Environment::get().get_clock()->get_time();
+	else if (dir == MOVE_DOWN) {
+		_y += distance * Environment::get().get_clock()->get_time();
 	}
-	else if (dir == Event::LEFT) {
-		_x -= _speed * Environment::get().get_clock()->get_time();
+	else if (dir == MOVE_LEFT) {
+		_x -= distance * Environment::get().get_clock()->get_time();
 	}
-	else if (dir == Event::RIGHT) {
-		_x += _speed * Environment::get().get_clock()->get_time();
+	else if (dir == MOVE_RIGHT) {
+		_x += distance * Environment::get().get_clock()->get_time();
 	}
 }
 

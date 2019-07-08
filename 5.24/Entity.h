@@ -1,4 +1,4 @@
-#include <unordered_map>
+#include <map>
 #include <typeindex>
 #include <string>
 
@@ -9,13 +9,19 @@
 
 #define TYPE_PLAYER "Player"
 #define TYPE_OBJECT "Object"
+#define TYPE_SPELL "Spell"
 
 #define GetPosition(entity) static_cast<PositionComponent *>(entity->get_component(typeid(PositionComponent)))
 #define GetSprite(entity) static_cast<SpriteComponent *>(entity->get_component(typeid(SpriteComponent)))
+#define GetSpell(entity) static_cast<SpellComponent *>(entity->get_component(typeid(SpellComponent)))
+#define GetMagic(entity) static_cast<MagicComponent *>(entity->get_component(typeid(MagicComponent)))
 
 class Entity {
 public:
+	Entity();
 	Entity(std::string type, int type_id);
+	Entity(const Entity &rhs);
+	Entity &operator=(const Entity &rhs);
 
 	template <class ComponentType>
 	void add_component(ComponentType *component) { _components[typeid(ComponentType)] = component; }
@@ -38,7 +44,7 @@ private:
 
 	bool _is_loaded;
 
-	typedef std::unordered_map<std::type_index, Component *> Components;
+	typedef std::map<std::type_index, Component *> Components;
 	Components _components;
 };
 

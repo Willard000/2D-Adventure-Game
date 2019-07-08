@@ -1,0 +1,11 @@
+# Fireball
+
+Position
+iwidth 20
+iheight 20
+
+Spell
+dmax_dis 500
+dspell_speed .2
+
+Sprite

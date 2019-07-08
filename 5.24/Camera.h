@@ -10,7 +10,7 @@ public:
 	Camera();
 
 	void toggle();
-	void move(int dir);
+	void move(int dir, double dis = 0);
 	void update();
 	void update(double x, double y);
 	void center(Entity *entity);  // change camera focus

@@ -2,8 +2,6 @@
 
 #include <SDL.h>
 
-#include "InputHandler.h"
-
 #ifndef INPUT_MANAGER_H
 #define INPUT_MANAGER_H
 
@@ -34,8 +32,6 @@ public:
 		STATE_TEXT_INPUT
 	};
 private:
-	InputHandler *_input_handler;
-
 	const Uint8 *_keys;
 	std::map<SDL_Keycode, bool> _key_map;
 	std::map<unsigned int, bool> _mouse_map;

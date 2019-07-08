@@ -1,0 +1,2 @@
+# Spells
+0 Data/Entities/Spell/fireball.txt

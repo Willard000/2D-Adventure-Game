@@ -1,0 +1,15 @@
+#ifndef GLOBALS_H
+#define GLOBALS_H
+
+enum {
+	MOVE_UP = 1,
+	MOVE_DOWN,
+	MOVE_LEFT,
+	MOVE_RIGHT,
+	MOVE_UPLEFT,
+	MOVE_UPRIGHT,
+	MOVE_DOWNLEFT,
+	MOVE_DOWNRIGHT
+};
+
+#endif

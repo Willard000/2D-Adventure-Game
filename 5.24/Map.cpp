@@ -43,17 +43,19 @@ const char *MAP_BASE_PATH = "Data/Maps/";
 
 void save_entities(std::ostream &file) {
 	file << FILE_MAP_ENTITIES << " ";
-	std::map<int, Entity *> *entities = Environment::get().get_resource_manager()->get_entities();
-	for (auto it = entities->begin(); it != entities->end(); it++) {
-		file << FILE_ENTITY_TYPE << " " << it->second->get_type() << " "
-			 << FILE_ENTITY_TYPE_ID << " " << it->second->get_type_id() << " ";
+	std::map<std::string, EntityManager::Entity_Map> *entities = Environment::get().get_resource_manager()->get_entities();
+	for (auto it = entities->begin(); it != entities->end() && it->first != TYPE_SPELL; it++) {
+		for (auto itt = it->second.begin(); itt != it->second.end(); itt++) {
+			file << FILE_ENTITY_TYPE << " " << itt->second->get_type() << " "
+				<< FILE_ENTITY_TYPE_ID << " " << itt->second->get_type_id() << " ";
 
-		if (PositionComponent *position = GetPosition(it->second)) {
-			file << FILE_ENTITY_POSITION_X << " " << position->pos_x << " "
-				 << FILE_ENTITY_POSITION_Y << " " << position->pos_y << " ";
+			if (PositionComponent *position = GetPosition(itt->second)) {
+				file << FILE_ENTITY_POSITION_X << " " << position->pos_x << " "
+					<< FILE_ENTITY_POSITION_Y << " " << position->pos_y << " ";
+			}
+
+			file << FILE_MAP_SEPERATOR << " ";
 		}
-
-		file << FILE_MAP_SEPERATOR << " ";
 	}
 }
 
@@ -73,10 +75,7 @@ void load_entities(FileReader &file) {
 		if (key == FILE_MAP_SEPERATOR) {
 			Entity *entity = new Entity(type, type_id);
 			if (PositionComponent *position = GetPosition(entity)) {
-				position->pos_x = position_x;
-				position->pos_y = position_y;
-				position->rect.x = (int)position_x;
-				position->rect.y = (int)position_y;
+				position->set(position_x, position_y);
 			}
 			Environment::get().get_resource_manager()->add(entity);
 		}
@@ -132,6 +131,8 @@ bool Map::load(int id) {
 	_height = height;
 
 	_id = id;
+
+	Environment::get().get_resource_manager()->clear_spells();
 
 	load_tiles(file);
 	load_solids(file);

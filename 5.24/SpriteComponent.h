@@ -12,7 +12,7 @@
 #define CAST 2
 
 struct SpriteComponent : public Component {
-	SpriteComponent(Entity *entity_, int x_, int h_, int time_);
+	SpriteComponent(Entity *entity_, int w_, int h_, int time_);
 
 	void update();
 
