@@ -6,14 +6,14 @@ Timer::Timer() :
 	_is_paused		( true )
 {}
 
-Timer::Timer(Uint32 time) :
+Timer::Timer(int time) :
 	_time			( time ),
 	_prev_time		( SDL_GetTicks() ),
 	_is_paused		( false )
 
 {}
 
-void Timer::set(Uint32 time) {
+void Timer::set(int time) {
 	_time = time;
 	_is_paused = false;
 }
@@ -23,7 +23,7 @@ void Timer::pause() {
 }
 
 bool Timer::update() {
-	if (!_is_paused && ((SDL_GetTicks() - _prev_time) > _time)) {
+	if (_time > -1 && !_is_paused && ((int)(SDL_GetTicks() - _prev_time) > _time)) {
 		_prev_time = SDL_GetTicks();
 		return true;
 	}

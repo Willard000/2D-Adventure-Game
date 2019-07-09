@@ -6,8 +6,8 @@ iheight 32
 dspeed 1000
 
 Sprite
-sprite_itime 300
+isprite_time 300
 
 Magic
 imain_spell_id 0
-icast_speed 1
+icast_speed 100

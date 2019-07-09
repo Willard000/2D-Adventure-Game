@@ -24,14 +24,14 @@ void SpriteComponent::update(Sprite *img) {
 	}
 
 	if (ani == NULL) {
-		frame = 0;
+		frame = img->idle;
 		is_update = false;
 	}
 	else if (ani == MOVE) {
 		frame++;
 		is_update = false;
 		if (dir == NULL) {
-			frame = 0;
+			frame = img->idle;
 		}
 		else if (dir == MOVE_UP) {
 			if (frame < img->min_up || frame > img->max_up) {

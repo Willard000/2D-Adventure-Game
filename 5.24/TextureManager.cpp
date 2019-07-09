@@ -11,6 +11,8 @@
 #define FILE_TEXTURE_PATH "stexture"
 #define FILE_TEXTURE_W "iwidth"
 #define FILE_TEXTURE_H "iheight"
+#define FILE_FRAME_IDLE "iidle"
+#define FILE_FRAME_END "iend"
 #define FILE_FRAME_RUN "irun"
 #define FILE_FRAME_CAST "icast"
 #define FILE_FRAME_SPECIAL "ispecial"
@@ -135,6 +137,8 @@ Texture *TextureManager::load_texture_info(std::string path) {
 		if (file.exists(FILE_TEXTURE_PATH)) sprite->texture = Environment::get().get_window()->get_renderer()->create_texture(file.get_string(FILE_TEXTURE_PATH));
 		if (file.exists(FILE_TEXTURE_W)) sprite->rect.w = file.get_int(FILE_TEXTURE_W);
 		if (file.exists(FILE_TEXTURE_H)) sprite->rect.h = file.get_int(FILE_TEXTURE_H);
+		if (file.exists(FILE_FRAME_IDLE)) sprite->idle = file.get_int(FILE_FRAME_IDLE);
+		if (file.exists(FILE_FRAME_END)) sprite->end = file.get_int(FILE_FRAME_END);
 		if (file.exists(FILE_FRAME_RUN)) sprite->run = file.get_int(FILE_FRAME_RUN);
 		if (file.exists(FILE_FRAME_CAST)) sprite->cast = file.get_int(FILE_FRAME_CAST);
 		if (file.exists(FILE_FRAME_SPECIAL)) sprite->special = file.get_int(FILE_FRAME_SPECIAL);

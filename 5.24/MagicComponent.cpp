@@ -25,17 +25,10 @@ void MagicComponent::update() {
 void MagicComponent::cast_main(double x_, double y_) {
 	if (can_cast) {
 		Entity *spell = new Entity(main_spell);
-		SpellComponent *spell_comp = GetSpell(spell); 
-		PositionComponent *spell_position = GetPosition(spell);
-		PositionComponent *entity_position = GetPosition(entity);
-		if (spell_position && entity_position) {
-			spell_position->set(
-				entity_position->pos_x + (entity_position->rect.w / 2) - (spell_position->rect.w / 2),
-				entity_position->pos_y + (entity_position->rect.h / 2) - (spell_position->rect.h / 2)
-			);
-			spell_comp->cast(x_, y_);
-			Environment::get().get_resource_manager()->add(spell);
-			can_cast = false;
-		}
+		SpellComponent *spell_comp = GetSpell(spell);
+		spell_comp->owner = entity;
+		spell_comp->cast();
+		Environment::get().get_resource_manager()->add(spell);
+		can_cast = false;
 	}
 }

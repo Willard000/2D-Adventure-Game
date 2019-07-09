@@ -3,6 +3,8 @@ Sprite
 stexture Data/Textures/Player/link.png
 iwidth 32
 iheight 32
+iidle 0
+iend 0
 irun 1
 icast 1
 ispecial 1

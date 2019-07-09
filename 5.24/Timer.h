@@ -6,14 +6,15 @@
 class Timer {
 public:
 	Timer();
-	Timer(Uint32 time);
-	void set(Uint32 time);
+	Timer(int time);
+	void set(int time);
 	void pause();
 
 	bool update();
 
 private:
-	Uint32 _time, _prev_time;
+	int _time;
+	Uint32 _prev_time;
 	bool _is_paused;
 };
 

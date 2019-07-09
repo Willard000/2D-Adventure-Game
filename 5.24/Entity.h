@@ -22,6 +22,7 @@ public:
 	Entity(std::string type, int type_id);
 	Entity(const Entity &rhs);
 	Entity &operator=(const Entity &rhs);
+	~Entity();
 
 	template <class ComponentType>
 	void add_component(ComponentType *component) { _components[typeid(ComponentType)] = component; }
@@ -35,12 +36,17 @@ public:
 	std::string get_type() { return _type; }
 	int get_type_id() { return _type_id; }
 
+	bool get_is_destroyed() { return _is_destroyed; }
+	void destroy() { _is_destroyed = true; }
+
 	bool get_is_loaded() { return _is_loaded; }
 private:
 	int _id; // unique id
 
 	std::string _type;
 	int _type_id;
+
+	bool _is_destroyed;
 
 	bool _is_loaded;
 

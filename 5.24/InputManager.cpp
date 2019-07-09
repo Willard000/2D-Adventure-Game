@@ -317,3 +317,11 @@ std::string InputManager::start_text_input() {
 
 	return _text_input;
 }
+
+int InputManager::get_mouse_x() {
+	return _mouse_x;
+}
+
+int InputManager::get_mouse_y() {
+	return _mouse_y;
+}

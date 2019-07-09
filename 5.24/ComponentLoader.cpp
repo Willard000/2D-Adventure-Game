@@ -25,10 +25,12 @@
 
 #define FILE_SPRITE_WIDTH "iwidth"
 #define FILE_SPRITE_HEIGHT "iheight"
-#define FILE_SPRITE_TIME "sprite_itime"
+#define FILE_SPRITE_TIME "isprite_time"
 
 #define FILE_SPELL_MAX_DIS "dmax_dis"
 #define FILE_SPELL_SPEED "dspell_speed"
+#define FILE_SPELL_DEATH_TIME "ideath_time"
+#define FILE_SPELL_SCRIPT "sscript"
 
 #define FILE_MAGIC_MAIN_SPELL_ID "imain_spell_id"
 #define FILE_MAGIC_CAST_SPEED "icast_speed"
@@ -47,7 +49,7 @@ void load_position(FileReader &file, Entity *entity, PositionComponent *&positio
 }
 
 void load_sprite(FileReader &file, Entity *entity, SpriteComponent *&sprite) {
-	int w = 0, h = 0, time = 0;
+	int w = 0, h = 0, time = -1;
 
 	if (file.exists(FILE_SPRITE_WIDTH))  w = file.get_int(FILE_SPRITE_WIDTH); 
 	if (file.exists(FILE_SPRITE_HEIGHT))  h = file.get_int(FILE_SPRITE_HEIGHT); 
@@ -59,11 +61,15 @@ void load_sprite(FileReader &file, Entity *entity, SpriteComponent *&sprite) {
 void load_spell(FileReader &file, Entity *entity, SpellComponent *&spell) {
 	double max_dis = 0;
 	double speed = 0;
+	int death_time = 0;
+	std::string script = " ";
 
 	if (file.exists(FILE_SPELL_MAX_DIS)) max_dis = file.get_double(FILE_SPELL_MAX_DIS);
 	if (file.exists(FILE_SPELL_SPEED)) speed = file.get_double(FILE_SPELL_SPEED);
+	if (file.exists(FILE_SPELL_DEATH_TIME)) death_time = file.get_int(FILE_SPELL_DEATH_TIME);
+	if (file.exists(FILE_SPELL_SCRIPT)) script = file.get_string(FILE_SPELL_SCRIPT);
 
-	spell = new SpellComponent(entity, max_dis, speed);
+	spell = new SpellComponent(entity, max_dis, speed, death_time, script);
 }
 
 void load_magic(FileReader &file, Entity *entity, MagicComponent *&magic) {

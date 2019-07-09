@@ -13,6 +13,8 @@ struct Sprite : public Texture {
 
 	Sprite() :
 		Texture(),
+		idle		( 0 ),
+		end			( 0 ),
 		run			( 0 ),
 		cast		( 0 ),
 		special		( 0 ),
@@ -32,6 +34,7 @@ struct Sprite : public Texture {
 
 	static const unsigned int SPRITE_SHEET_WIDTH = 8;
 	unsigned int
+		idle, end,
 		run, cast, special,
 		min_up, max_up,
 		min_down, max_down,

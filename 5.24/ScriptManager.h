@@ -3,7 +3,12 @@
 
 #include "lua5.1/luawrapper.hpp"
 
+#include "Globals_Lua.h"
 #include "Player_Lua.h"
+#include "Spell_Lua.h"
+
+#include "Environment.h"
+#include "Log.h"
 
 #ifndef SCRIPT_MANAGER_H
 #define SCRIPT_MANAGER_H
@@ -14,7 +19,10 @@ public:
 		_L ( lua_open() )
 	{
 		luaL_openlibs(_L);
+
+		lua_init_globals(this, _L);
 		lua_init_player(this, _L);
+		lua_init_spell(this, _L);
 	}
 
 	~ScriptManager() {
@@ -22,7 +30,7 @@ public:
 	}
 
 	void run(std::string filename) { 
-		//printf("Running script: %s\n", filename.c_str());
+		Environment::get().get_log()->print("Running script: " + filename);
 		luaL_dofile(_L, filename.c_str());
 	}
 
@@ -41,6 +49,8 @@ public:
 		lua_pushnil(_L);
 		lua_setglobal(_L, name.c_str());
 	}
+
+	lua_State *getL() { return _L; }
 
 private:
 	lua_State *_L;

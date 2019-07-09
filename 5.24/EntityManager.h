@@ -1,4 +1,5 @@
 #include <map>
+#include <vector>
 
 #include "Entity.h"
 #include "Player.h"
@@ -30,8 +31,13 @@ public:
 
 	friend class ResourceManager;
 private:
+	void remove_destroyed_entities();
+private:
 	std::map<std::string, Entity_Map> _entities;
 	Player *_player;
+
+	// if entity->end
+	std::vector<Entity *> _entities_to_remove;
 };
 
 #endif

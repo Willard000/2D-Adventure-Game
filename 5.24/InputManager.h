@@ -24,6 +24,9 @@ public:
 
 	void get_text_input(int *val);
 	void get_text_input(std::string *val);
+
+	int get_mouse_x();
+	int get_mouse_y();
 private:
 	std::string start_text_input();
 public:

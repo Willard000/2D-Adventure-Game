@@ -3,3 +3,6 @@ Sprite
 stexture Data/Textures/Spells/fireball.png
 iwidth 20
 iheight 20
+iidle 0
+iend 1
+inum_frames 2

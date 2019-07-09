@@ -4,8 +4,11 @@ Position
 iwidth 20
 iheight 20
 
-Spell
-dmax_dis 500
-dspell_speed .2
-
 Sprite
+isprite_time -1
+
+Spell
+dmax_dis 1000
+dspell_speed 100
+ideath_time 100
+sscript Data/Lua/Spells/fireball.lua

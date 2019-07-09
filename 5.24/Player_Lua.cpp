@@ -10,6 +10,7 @@
 
 // Member Functions
 // Lua Constructor
+// Player:new(int type_id)
 static Player *player_new(lua_State *L) {
 	int type_id = (int)luaL_checknumber(L, -1);
 	return new Player(type_id);
@@ -99,5 +100,5 @@ static int player_get(lua_State *L) {
 void lua_init_player(ScriptManager *scriptManager, lua_State *L) {
 	luaW_register<Player>(L, "Player", player_table, player_metatable, player_new);
 
-	scriptManager->registerGlobal("GetPlayer", player_get);
+	scriptManager->registerGlobal("get_player", player_get);
 }
