@@ -38,11 +38,13 @@ public:
 	void registerGlobal(const char *name, T *obj) { 
 		luaW_push<T>(_L, obj);
 		lua_setglobal(_L, name);
+		lua_pop(_L, -1);
 	}
 
 	void registerGlobal(const char *name, lua_CFunction func) {
 		lua_pushcfunction(_L, func);
 		lua_setglobal(_L, name);
+		lua_pop(_L, -1);
 	}
 
 	void removeGlobal(std::string name) {

@@ -5,6 +5,7 @@
 #include <SDL.h>
 
 #include "FileReader.h"
+#include "Quadtree.h"
 
 #ifndef MAP_H
 #define MAP_H
@@ -58,6 +59,8 @@ public:
 
 	SDL_Rect get_rect() { return _rect; }
 
+	void test();
+
 	friend class ResourceManager;
 private:
 	std::string get_path(int id);
@@ -67,6 +70,9 @@ private:
 private:
 	std::vector<Tile> _tiles;
 	std::map<int, SDL_Rect> _solids;
+
+	QuadTree _solids_tree;
+
 	std::vector<Warp> _warps;
 
 	int _id;

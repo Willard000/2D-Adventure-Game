@@ -129,6 +129,7 @@ static int spell_get_owner(lua_State *L) {
 
 // Spell:move(double x, double y)
 static int spell_move(lua_State *L) {
+
 	Entity *spell = luaW_check<Entity>(L, -3);
 	double x = (double)luaL_checknumber(L, -2);
 	double y = (double)luaL_checknumber(L, -1);

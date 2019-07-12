@@ -33,7 +33,7 @@ Editor::Editor() :
 
 	load_buttons();
 
-	_environment.get().get_resource_manager()->load_map(1);
+	_environment.get().get_resource_manager()->load_map(101);
 }
 
 void Editor::run() {

@@ -49,6 +49,7 @@ void SpellComponent::update() {
 		if (death_timer.update()) {
 			entity->destroy();
 		}
+
 	}
 
 }

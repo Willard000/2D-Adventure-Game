@@ -10,12 +10,51 @@
 
 #include "WindowLoader.h"
 
+#include "Quadtree.h"
+
+static QuadTree *quad = nullptr;
+
+#include <iostream>			// test
 Engine::Engine() :
 	_isRunning		( true )
 {
 	build_environment();
 
-	_environment.get().get_resource_manager()->load_map(1);
+	_environment.get().get_resource_manager()->load_map(101);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//test
+	quad = new QuadTree({ 0, 0, _environment.get_resource_manager()->get_map()->get_rect().w, _environment.get_resource_manager()->get_map()->get_rect().h }, 6);
+
+	EntityManager::Entity_Map *objs = _environment.get_resource_manager()->get_entities(TYPE_OBJECT);
+	
+	std::cout << objs->size() << std::endl;
+
+	for (auto it = objs->begin(); it != objs->end(); it++) {
+		std::cout << quad->insert(&GetPosition(it->second)->rect) << std::endl;
+	}
+
+	quad->print();
 }
 
 void Engine::run() {
@@ -30,9 +69,15 @@ void Engine::run() {
 
 	//	_environment.get_script_manager()->run("Data/Lua/test.lua");
 
+	//	std::cout << quad->find(GetPosition(_environment.get_resource_manager()->get_player())->rect) << std::endl;
+
 		_environment.get_resource_manager()->update();
 
 		_environment.get_resource_manager()->render();
+
+	//	quad->draw();
+
+		_environment.get_resource_manager()->get_map()->test();
 
 		_environment.get_window()->get_renderer()->render();
 

@@ -18,7 +18,7 @@ void Sprite::load_frames() {
 	}
 }
 
-const Sprite::Frame Sprite::get_frame(unsigned int index) {
+const Sprite::Frame Sprite::get_frame(Uint8 index) {
 	if (index < num_frames && index >= 0) {
 		return _frames[index];
 	}

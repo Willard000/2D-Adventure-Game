@@ -95,7 +95,10 @@ Map::Map() :
 	_width			( 0 ),
 	_height			( 0 ),
 	_rect			( { 0, 0, 0, 0 } ),
-	_is_loaded		( false )
+	_is_loaded		( false ),
+
+
+	_solids_tree	({ 0, 0, 0, 0 }, 5)		// add changeing of width and height to quad tree
 {}
 
 bool Map::load(int id) {
@@ -130,6 +133,9 @@ bool Map::load(int id) {
 	}
 	_height = height;
 
+	_rect.w = _width * TILE_WIDTH;
+	_rect.h = _height * TILE_HEIGHT;
+
 	_id = id;
 
 	Environment::get().get_resource_manager()->clear_spells();
@@ -138,9 +144,6 @@ bool Map::load(int id) {
 	load_solids(file);
 	load_warps(file);
 	load_entities(file);
-
-	_rect.w = _width * TILE_WIDTH;
-	_rect.h = _height * TILE_HEIGHT;
 
 	Environment::get().get_log()->print("Map Loaded");
 
@@ -243,12 +246,20 @@ bool Map::create_new(int id, std::string name, int width, int height, int base_t
 }
 
 bool Map::solid_collision(const SDL_Rect &pos) {
+	/*
 	for (auto it = _solids.begin(); it != _solids.end(); it++) {
 		if (collision(pos, it->second)) {
 			return true;
 		}
 	}
 	return false;
+	*/
+
+	return _solids_tree.find(pos);
+}
+
+void Map::test() {
+	_solids_tree.draw();
 }
 
 
@@ -328,6 +339,8 @@ void Map::load_solids(FileReader &file) {
 	}
 
 	_solids.clear();
+	_solids_tree.clear();
+	_solids_tree.set_new_rect({ 0, 0, _rect.w, _rect.h });
 
 	std::istringstream stream(file.get_string(FILE_MAP_SOLIDS));
 	int tile_num = 0;
@@ -336,6 +349,9 @@ void Map::load_solids(FileReader &file) {
 		solid.x = (tile_num % _width) * TILE_WIDTH;
 		solid.y = (tile_num / _height) * TILE_HEIGHT;
 		_solids[tile_num] = solid;
+
+
+		_solids_tree.insert(&_solids[tile_num]);				// test
 	}
 }
 

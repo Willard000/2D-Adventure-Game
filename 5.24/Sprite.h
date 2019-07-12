@@ -33,7 +33,8 @@ struct Sprite : public Texture {
 	}
 
 	static const unsigned int SPRITE_SHEET_WIDTH = 8;
-	unsigned int
+
+	Uint8
 		idle, end,
 		run, cast, special,
 		min_up, max_up,
@@ -43,7 +44,7 @@ struct Sprite : public Texture {
 		num_frames;
 public:
 	void load_frames();
-	const Frame get_frame(unsigned int index);
+	const Frame get_frame(Uint8 index);
 private:
 	Frame *_frames;
 };
