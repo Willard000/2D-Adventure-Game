@@ -144,7 +144,7 @@ static int spell_move(lua_State *L) {
 		position->pos_y += ydis;
 		position->rect.x = (int)position->pos_x;
 		position->rect.y = (int)position->pos_y;
-		if (spell_collisions(position->rect)) {
+		if (Environment::get().get_resource_manager()->get_map()->entity_collision(position->rect)) {
 			spell_comp->death();
 		}
 	}

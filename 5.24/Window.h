@@ -37,8 +37,6 @@ public:
 
 	bool is_focused()					{ return SDL_GetMouseFocus() == _window; }
 
-	void zoom(const float &amount, const int &mouse_x, const int &mouse_y);
-
 	Camera *get_camera()			  { return _camera;			 }
 	SDL_Window *get_window()		  { return _window;          }
 	Renderer *get_renderer()		  { return _renderer;        }

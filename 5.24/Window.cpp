@@ -2,8 +2,6 @@
 
 #include <sstream>
 
-#define CAMERA_ZOOM_SPEED 1
-
 Window::Window(Console_Settings console, Window_Settings window) :
 	_width						( window.w ),
 	_height						( window.h ),
@@ -28,16 +26,6 @@ Window::~Window() {
 void Window::toggle_console() {
 	_show_console = !_show_console;
 	ShowWindow(_console, _show_console);
-}
-
-void Window::zoom(const float &amount, const int &mouse_x, const int &mouse_y) {
-	_camera->scale(amount);
-	if (amount < 0) {
-		_camera->update(-CAMERA_ZOOM_SPEED, -CAMERA_ZOOM_SPEED);
-	}
-	else {
-		_camera->update(CAMERA_ZOOM_SPEED, CAMERA_ZOOM_SPEED);
-	}
 }
 
 void Window::set_window_mode(int window_mode) {

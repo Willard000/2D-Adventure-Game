@@ -21,10 +21,10 @@ public:
 
 	std::string get_display_time();
 private:
+	int load_cap();
 	void update_time();
 private:
 	const char *_FILE_PATH = "Data/system.txt";
-	const int _CLOCK_FPS = 60;
 	int _frames, _cap;
 	double _fms, _ms, _time;
 	Uint32 _ticks, _previous_ticks, _update_ticks;

@@ -1,3 +1,4 @@
+/*
 #include "Quadtree.h"
 
 #include "Entity.h"
@@ -10,7 +11,8 @@
 #include "Window.h"
 
 
-QuadTree::QuadTree(SDL_Rect rect, Uint8 max_capacity, unsigned int depth) :
+template <class T>
+QuadTree<T>::QuadTree(SDL_Rect rect, Uint8 max_capacity, unsigned int depth) :
 	_rect				( rect ),
 	_max_capacity		( max_capacity ),
 	_depth				( depth ),
@@ -20,12 +22,13 @@ QuadTree::QuadTree(SDL_Rect rect, Uint8 max_capacity, unsigned int depth) :
 	_southwest			( nullptr )
 {}
 
-
-QuadTree::~QuadTree(){
+template <class T>
+QuadTree<T>::~QuadTree(){
 	clear();
 }
 
-bool QuadTree::insert(SDL_Rect *position) {
+template <class T>
+bool QuadTree<T>::insert(T object, SDL_Rect *position) {
 	if (!position) {
 		return false;
 	}
@@ -34,44 +37,112 @@ bool QuadTree::insert(SDL_Rect *position) {
 		return false;
 	}
 
-	if (_positions.size() < _max_capacity
+	if (_objects.size() < _max_capacity
 		&& _northeast == nullptr) {
-		_positions.push_back(position);
+		_objects.push_back(Tree_Object(object, position));
 		return true;
 	}
 
-	if (_northeast == nullptr) {
+	if (!_northeast) {
 		subdivide();
 	}
 
-	if (_northeast->insert(position)) return true;
-	if (_northwest->insert(position)) return true;
-	if (_southeast->insert(position)) return true;
-	if (_southwest->insert(position)) return true;
+	if (_northeast->insert(object, position)) return true;
+	if (_northwest->insert(object, position)) return true;
+	if (_southeast->insert(object, position)) return true;
+	if (_southwest->insert(object, position)) return true;
 
 	return false;
 }
 
-bool QuadTree::find(const SDL_Rect &position) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+template <class T>
+T *QuadTree<T>::get_first_collision(const SDL_Rect &position) {
 	if (!collision(position, _rect)) {
 		return false;
 	}
 
-	for (auto it = _positions.begin(); it != _positions.end(); it++) {
-		if (collision(position, *(*it))) {
+	for (auto it = _objects.begin(); it != _objects.end(); it++) {
+		if (collision(position, *(it->second))) {
+			return it->first;
+		}
+	}
+
+	if (!_northeast) {
+		return nullptr;
+	}
+
+	Entity *entity;
+	if (entity = _northeast->get_first_collision(position))	return entity;
+	if (entity = _northwest->get_first_collision(position)) return entity;
+	if (entity = _southeast->get_first_collision(position)) return entity;
+	if (entity = _southwest->get_first_collision(position)) return entity;
+
+	return nullptr;
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+template <class T>
+bool QuadTree<T>::check_collision(const SDL_Rect &position) {
+	if (!collision(position, _rect)) {
+		return false;
+	}
+
+	for (auto it = _objects.begin(); it != _objects.end(); it++) {
+		if (collision(position, *(it->second))) {
 			return true;
 		}
 	}
 
-	if (_northeast && _northeast->find(position)) return true;
-	if (_northwest && _northwest->find(position)) return true;
-	if (_southeast && _southeast->find(position)) return true;
-	if (_southwest && _southwest->find(position)) return true;
+	if (!_northeast)
+		return false;
+
+	if (_northeast->check_collision(position)) return true;
+	if (_northwest->check_collision(position)) return true;
+	if (_southeast->check_collision(position)) return true;
+	if (_southwest->check_collision(position)) return true;
 
 	return false;
 }
 
-void QuadTree::clear() {
+template <class T>
+void QuadTree<T>::clear() {
 	if (_northeast) {
 		_northeast->clear();
 		delete _northeast;
@@ -93,16 +164,18 @@ void QuadTree::clear() {
 		_southwest = nullptr;
 	}
 
-	_positions.clear();
+	_objects.clear();
 }
 
-void QuadTree::set_new_rect(SDL_Rect rect) {
+template <class T>
+void QuadTree<T>::set_new_rect(SDL_Rect rect) {
 	_rect = rect;
 
 	// re build tree???
 }
 
-void QuadTree::subdivide() {
+template <class T>
+void QuadTree<T>::subdivide() {
 	int width = _rect.w / 2;
 	int height = _rect.h / 2;
 	_northeast = new QuadTree({ _rect.x, _rect.y, width, height }, _depth + 1, _max_capacity);
@@ -110,19 +183,20 @@ void QuadTree::subdivide() {
 	_southeast = new QuadTree({ _rect.x, _rect.y + height, width, height }, _depth + 1, _max_capacity);
 	_southwest = new QuadTree({ _rect.x + width, _rect.y + height, width, height }, _depth + 1, _max_capacity);
 
-	for (auto it = _positions.begin(); it != _positions.end(); it++) {
-		insert(*it);
+	for (auto it = _objects.begin(); it != _objects.end(); it++) {
+		insert(it->first, it->second);
 	}
 
-	_positions.clear();
+	_objects.clear();
 }
 
 #include <iostream>
-void QuadTree::print() {
+template <class T>
+void QuadTree<T>::print() {
 	std::cout << "D: " << _depth << std::endl;
-	for (auto it = _positions.begin(); it != _positions.end(); it++) {
+	for (auto it = _objects.begin(); it != _objects.end(); it++) {
 //		std::cout << "E: " << (*it)->entity->get_id() << " " << (*it)->entity->get_type() << " " << (*it)->entity->get_type_id() << std::endl;
-		std::cout << (*it)->x << " " << (*it)->y << " " << (*it)->w << " " << (*it)->h << std::endl;
+//		std::cout << it->second->x << " " << (*it)->y << " " << (*it)->w << " " << (*it)->h << std::endl;
 	}
 
 	if (_northeast) {
@@ -143,7 +217,8 @@ void QuadTree::print() {
 	}
 }
 
-void QuadTree::draw(SDL_Color color) {
+template <class T>
+void QuadTree<T>::draw(SDL_Color color) {
 	Renderer *renderer = Environment::get().get_window()->get_renderer();
 
 	renderer->draw_rect(_rect, color, DRAW_RECT_CAMERA);
@@ -153,3 +228,5 @@ void QuadTree::draw(SDL_Color color) {
 	if (_southeast) _southeast->draw({ 200, 0, 200, 50 });
 	if (_southwest) _southwest->draw({ 0, 200, 200, 50 });
 }
+
+*/

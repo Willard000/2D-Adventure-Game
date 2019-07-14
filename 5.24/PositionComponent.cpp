@@ -50,7 +50,8 @@ void PositionComponent::move(int dir_, double dis_) {
 	rect.x = int(pos_x);
 	rect.y = int(pos_y);
 
-	if (Environment::get().get_resource_manager()->get_map()->solid_collision(rect)) {
+	if (Environment::get().get_resource_manager()->get_map()->solid_collision(rect) || 
+		Environment::get().get_resource_manager()->get_map()->entity_collision(rect)) {
 		set(prev_pos_x, prev_pos_y);
 	}
 }

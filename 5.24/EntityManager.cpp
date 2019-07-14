@@ -83,6 +83,7 @@ void EntityManager::clear_spells() {
 
 void EntityManager::update() {
 	_player->update();
+
 	for (auto it = _entities.begin(); it != _entities.end(); it++) {
 		for (auto itt = it->second.begin(); itt != it->second.end(); itt++) {
 			itt->second->update();

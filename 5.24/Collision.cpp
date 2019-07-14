@@ -21,16 +21,3 @@ bool collision(const SDL_Rect &a, const SDL_Rect &b) {
 	}
 	return true;
 }
-
-bool spell_collisions(const SDL_Rect &spell_pos) {
-	EntityManager::Entity_Map *objects = Environment::get().get_resource_manager()->get_entities(TYPE_OBJECT);
-	PositionComponent *position = nullptr;
-	for (auto it = objects->begin(); it != objects->end(); it++) {
-		if (position = GetPosition(it->second)) {
-			if (collision(spell_pos, position->rect)) {
-				return true;
-			}
-		}
-	}
-	return false;
-}

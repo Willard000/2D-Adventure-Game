@@ -12,6 +12,8 @@
 
 #include "Globals.h"
 
+#define CAMERA_ZOOM_SPEED 1
+
 Camera::Camera() :
 	_x						( 0 ),
 	_y						( 0 ),
@@ -94,6 +96,16 @@ void Camera::update(double x, double y) {
 
 void Camera::center(Entity *entity) {
 	_entity = entity;
+}
+
+void Camera::zoom(const float &amount) {
+	scale(amount);
+	if (amount < 0) {
+		update(-CAMERA_ZOOM_SPEED, -CAMERA_ZOOM_SPEED);
+	}
+	else {
+		update(CAMERA_ZOOM_SPEED, CAMERA_ZOOM_SPEED);
+	}
 }
 
 void Camera::rotate(double angle) {

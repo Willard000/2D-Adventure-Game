@@ -4,8 +4,10 @@
 
 #define FILE_CLOCK_FPS "iclock_fps"
 
+#define DEFAULT_FPS_LIMIT 60
+
 Clock::Clock() :
-	_cap				(_CLOCK_FPS ),
+	_cap				( load_cap() ),
 	_ms					( 1000.0 / _cap ),
 	_is_limit			( _cap > 0 ? true : false ),
 	_frames				( 0 ),
@@ -13,14 +15,7 @@ Clock::Clock() :
 	_update_ticks		( 0 ),
 	_fms				( 0.0 ),
 	_previous_ticks		( SDL_GetTicks() )
-{
-	FileReader file(_FILE_PATH);
-	if (file.exists(FILE_CLOCK_FPS)) {
-		_cap = file.get_int(FILE_CLOCK_FPS);
-		_ms = 1000.0 / _cap;
-		_is_limit = _cap > 0 ? true : false;
-	}
-}
+{}
 
 bool Clock::update(Uint32 interval) {
 	update_time();
@@ -57,6 +52,14 @@ void Clock::update_time() {
 	_ticks = SDL_GetTicks() - _previous_ticks;
 	_time = double(_ticks / 1000.0);
 	_previous_ticks = SDL_GetTicks();
+}
+
+int Clock::load_cap() {
+	FileReader file(_FILE_PATH);
+	if (file.exists(FILE_CLOCK_FPS))
+		return file.get_int(FILE_CLOCK_FPS);
+
+	return DEFAULT_FPS_LIMIT;
 }
 
 // Time format (00:00:00:000)

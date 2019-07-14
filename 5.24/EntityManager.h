@@ -4,6 +4,8 @@
 #include "Entity.h"
 #include "Player.h"
 
+#include "Quadtree.h"
+
 #ifndef ENTITY_MANAGER_H
 #define ENTITY_MANAGER_H
 
@@ -36,7 +38,6 @@ private:
 	std::map<std::string, Entity_Map> _entities;
 	Player *_player;
 
-	// if entity->end
 	std::vector<Entity *> _entities_to_remove;
 };
 

@@ -10,4 +10,4 @@ isprite_time 300
 
 Magic
 imain_spell_id 0
-icast_speed 100
+icast_speed 300

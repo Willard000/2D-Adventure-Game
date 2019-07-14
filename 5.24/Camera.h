@@ -14,6 +14,7 @@ public:
 	void update();
 	void update(double x, double y);
 	void center(Entity *entity);  // change camera focus
+	void zoom(const float &amount);
 
 	void rotate(double angle);
 	void set_rotation(double angle);

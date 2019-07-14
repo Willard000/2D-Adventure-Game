@@ -158,10 +158,10 @@ void InputManager::update() {
 	}
 
 	if (_mouse_wheel > 0 && !Environment::get().get_window()->get_camera()->get_locked()) {
-		Environment::get().get_window()->zoom(MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
+		Environment::get().get_window()->get_camera()->zoom(MOUSE_SCROLL_FACTOR);
 	}
 	else if (_mouse_wheel < 0 && !Environment::get().get_window()->get_camera()->get_locked()) {
-		Environment::get().get_window()->zoom(-MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
+		Environment::get().get_window()->get_camera()->zoom(-MOUSE_SCROLL_FACTOR);
 	}
 }
 
@@ -214,10 +214,10 @@ void InputManager::update_editor() {
 	}
 
 	if (_mouse_wheel > 0) {
-		Environment::get().get_window()->zoom(MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
+		Environment::get().get_window()->get_camera()->zoom(MOUSE_SCROLL_FACTOR);
 	}
 	else if (_mouse_wheel < 0) {
-		Environment::get().get_window()->zoom(-MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
+		Environment::get().get_window()->get_camera()->zoom(-MOUSE_SCROLL_FACTOR);
 	}
 }
 
@@ -251,10 +251,10 @@ void InputManager::update_editor_camera() {
 	}
 
 	if (_mouse_wheel > 0 && !Environment::get().get_window()->get_camera()->get_locked()) {
-		Environment::get().get_window()->zoom(MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
+		Environment::get().get_window()->get_camera()->zoom(MOUSE_SCROLL_FACTOR);
 	}
 	else if (_mouse_wheel < 0 && !Environment::get().get_window()->get_camera()->get_locked()) {
-		Environment::get().get_window()->zoom(-MOUSE_SCROLL_FACTOR, _mouse_x, _mouse_y);
+		Environment::get().get_window()->get_camera()->zoom(-MOUSE_SCROLL_FACTOR);
 	}
 }
 

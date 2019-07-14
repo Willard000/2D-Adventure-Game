@@ -6,6 +6,4 @@
 
 bool collision(const SDL_Rect &a, const SDL_Rect &b);
 
-bool spell_collisions(const SDL_Rect &pos);
-
 #endif

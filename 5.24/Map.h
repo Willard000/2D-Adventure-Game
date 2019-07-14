@@ -4,6 +4,7 @@
 
 #include <SDL.h>
 
+#include "Entity.h"
 #include "FileReader.h"
 #include "Quadtree.h"
 
@@ -47,6 +48,7 @@ public:
 
 	bool solid_collision(const SDL_Rect &pos);
 	Warp *warp_collision(const SDL_Rect &pos);
+	Entity *entity_collision(const SDL_Rect &pos);
 
 	void add_warp(Warp warp);
 	void remove_warp(Warp *warp);
@@ -61,19 +63,28 @@ public:
 
 	void test();
 
+	void draw_warps();
+	void draw_solids();
+
 	friend class ResourceManager;
 private:
 	std::string get_path(int id);
 	void load_tiles(FileReader &file);
 	void load_solids(FileReader &file);
 	void load_warps(FileReader &file);
+	void load_entities(FileReader &file);
+
+	void save_entities(std::ostream &file);
 private:
 	std::vector<Tile> _tiles;
-	std::map<int, SDL_Rect> _solids;
 
-	QuadTree _solids_tree;
+	std::map<int, SDL_Rect> _solids;
+	QuadTree<int> _solids_tree;
 
 	std::vector<Warp> _warps;
+	QuadTree<Warp *> _warps_tree;
+
+	QuadTree<Entity *> _entities_tree;
 
 	int _id;
 	int _width, _height;
