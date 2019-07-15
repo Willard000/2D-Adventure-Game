@@ -4,9 +4,11 @@
 
 #include "Environment.h"
 #include "ResourceManager.h"
-#include "ScriptManager.h"
+#include "Lua.h"
 
 #include "PositionComponent.h"
+
+#include "Entity_Lua.h"
 
 // Member Functions
 // Lua Constructor
@@ -24,11 +26,11 @@ static int player_get_type_id(lua_State *L) {
 }
 
 // Player:move(int direction)
-// Player:move(int direction, double distance)
+// Player:move(int direction, float distance)
 static int player_move(lua_State *L) {
 	Player *player = luaW_check<Player>(L, 1);
 	int direction = (int)lua_tonumber(L, 2);
-	double distance = (double)lua_tonumber(L, 3);
+	float distance = (float)lua_tonumber(L, 3);
 
 	if (distance == 0) {
 		GetPosition(player)->move(direction);
@@ -40,7 +42,7 @@ static int player_move(lua_State *L) {
 	return 0;
 }
 
-//Player:scale(float factor)
+// Player:scale(float factor)
 static int player_scale(lua_State *L) {
 	Player *player = luaW_check<Player>(L, 1);
 	float factor = (float)lua_tonumber(L, 2);
@@ -97,8 +99,8 @@ static int player_get(lua_State *L) {
 	return 1;
 }
 
-void lua_init_player(ScriptManager *scriptManager, lua_State *L) {
+void lua_init_player(Lua *lua, lua_State *L) {
 	luaW_register<Player>(L, "Player", player_table, player_metatable, player_new);
 
-	scriptManager->registerGlobal("get_player", player_get);
+	lua->registerGlobal("get_player", player_get);
 }

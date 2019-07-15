@@ -71,6 +71,7 @@ UIManager::UIManager() :
 	_placement				( { TYPE_TILE, -1 } ),
 	_selection				( { TYPE_OBJECT, -1 } ),
 	_center_placement		( true ),
+	_mouse_button			( 0 ),
 	_mouse_x				( 0 ),
 	_mouse_y				( 0 ),
 	_on_confirm				( nullptr ),
@@ -156,7 +157,9 @@ bool UIManager::check_buttons() {
 	return false;
 }
 
-bool UIManager::check_selection() {
+bool UIManager::check_selection(int mouse_button) {
+	_mouse_button = mouse_button;
+
 	if (_mouse_x >= _element_area.area.x) {
 		_placement.id = select_placement();
 		if (_placement.id != -1) {
@@ -203,12 +206,15 @@ void UIManager::render() {
 			renderer->render(img, { (int)x, (int)y, TILE_WIDTH, TILE_HEIGHT });
 		}
 	}
-	else if (_state == STATE_SELECTING) {
-		if (_selection.id != -1) {
+	else if (_state == STATE_SELECTING && _selection.id != -1) {
+		if (_selection.type != TYPE_WARP) {
 			Entity *entity = Environment::get().get_resource_manager()->get_entity(_selection.type, _selection.id);
 			if (PositionComponent *position = GetPosition(entity)) {
 				renderer->draw_rect(position->rect, ELEMENT_SELECTION_COLOR, DRAW_RECT_CAMERA);
 			}
+		}
+		else if (_selection.type == TYPE_WARP) {
+			renderer->draw_rect((*Environment::get().get_resource_manager()->get_map()->get_warps())[_selection.id].from, ELEMENT_SELECTION_COLOR, DRAW_RECT_CAMERA);
 		}
 	}
 }
@@ -290,7 +296,10 @@ bool UIManager::place_element() {
 	}
 
 	if (_placement.type == TYPE_SOLID) {
-		Environment::get().get_resource_manager()->edit_solid(index);
+		if(_mouse_button == MOUSE_LEFT)
+			Environment::get().get_resource_manager()->get_map()->add_solid(index);
+		else 
+			Environment::get().get_resource_manager()->get_map()->remove_solid(index);
 		return true;
 	}
 
@@ -390,6 +399,15 @@ SDL_Rect UIManager::place_warp_rect() {
 			Environment::get().get_window()->set_title(title);
 		}
 	}
+
+	if (pos.w < 0) {
+		pos.x += pos.w;
+		pos.w = abs(pos.w);
+	}
+	if (pos.h < 0) {
+		pos.y += pos.h;
+		pos.h = abs(pos.h);
+	}
 	 
 	return pos;
 }
@@ -400,6 +418,7 @@ Element UIManager::select_element() {
 
 	std::map<std::string, EntityManager::Entity_Map> *entities = Environment::get().get_resource_manager()->get_entities();
 	SDL_Rect mouse = get_mouse_rect((int)x, (int)y);
+
 	for (auto it = entities->begin(); it != entities->end(); it++) {
 		for (auto itt = it->second.begin(); itt != it->second.end(); itt++) {
 			if (PositionComponent *position = GetPosition(itt->second)) {
@@ -410,12 +429,26 @@ Element UIManager::select_element() {
 		}
 	}
 
+	std::vector<Map::Warp> *warps = Environment::get().get_resource_manager()->get_map()->get_warps();
+	for (int i = 0; i < (int)warps->size(); i++) {
+		SDL_Rect warp_pos = (*warps)[i].from;
+		if (collision(mouse, warp_pos)) {
+			return { TYPE_WARP, i };
+		}
+	}
+
 	return { " " , -1 };
 }
 
 void UIManager::delete_element() {
 	if (_selection.id != -1) {
-		Environment::get().get_resource_manager()->remove(_selection.type, _selection.id);
+		if (_selection.type == TYPE_WARP) {
+			Environment::get().get_resource_manager()->get_map()->remove_warp(_selection.id);
+		}
+		else {
+			Environment::get().get_resource_manager()->remove(_selection.type, _selection.id);
+		}
+
 		_selection.id = -1;
 		_selection.type = " ";
 	}

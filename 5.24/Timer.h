@@ -9,6 +9,7 @@ public:
 	Timer(int time);
 	void set(int time);
 	void pause();
+	void restart();
 
 	bool update();
 

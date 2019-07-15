@@ -26,6 +26,6 @@ static luaL_Reg entity_metatable[] = {
 	{NULL, NULL}
 };
 
-void lua_init_entity(ScriptManager *scriptManager, lua_State *L) {
+void lua_init_entity(Lua *lua, lua_State *L) {
 	luaW_register<Entity>(L, "Entity", entity_table, entity_metatable, entity_new);
 }

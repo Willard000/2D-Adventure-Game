@@ -152,7 +152,7 @@ void InputManager::update() {
 	}
 
 	if (is_mouse_held(SDL_BUTTON_MIDDLE)) {
-		Environment::get().get_window()->get_camera()->update((_mouse_x_prev - _mouse_x), (_mouse_y_prev - _mouse_y));
+		Environment::get().get_window()->get_camera()->update((float)(_mouse_x_prev - _mouse_x), (float)(_mouse_y_prev - _mouse_y));
 		_mouse_x_prev = _mouse_x;
 		_mouse_y_prev = _mouse_y;
 	}
@@ -191,16 +191,19 @@ void InputManager::update_editor() {
 	if (is_mouse(SDL_BUTTON_LEFT)) {
 		clicked_button = Environment::get().get_ui_manager()->check_buttons();
 		if (!clicked_button && Environment::get().get_ui_manager()->get_placement_type() != TYPE_TILE) {
-			Environment::get().get_ui_manager()->check_selection();
+			Environment::get().get_ui_manager()->check_selection(MOUSE_LEFT);
 		}
 	}
 
 	if (!clicked_button && Environment::get().get_ui_manager()->get_state() != UI::STATE_WAITING) {
-		if (Environment::get().get_ui_manager()->get_placement_type() == TYPE_TILE && is_mouse_held(SDL_BUTTON_LEFT)) {
-			Environment::get().get_ui_manager()->check_selection();
+		std::string type = Environment::get().get_ui_manager()->get_placement_type();
+		if ((type == TYPE_TILE || type == TYPE_SOLID) && is_mouse_held(SDL_BUTTON_LEFT)) {
+			Environment::get().get_ui_manager()->check_selection(MOUSE_LEFT);
+		}
+		else if(type == TYPE_SOLID && is_mouse_held(SDL_BUTTON_RIGHT)) {
+			Environment::get().get_ui_manager()->check_selection(MOUSE_RIGHT);
 		}
 	}
-
 
 	if (is_mouse(SDL_BUTTON_MIDDLE)) {
 		_mouse_x_prev = _mouse_x;
@@ -208,7 +211,7 @@ void InputManager::update_editor() {
 	}
 
 	if (is_mouse_held(SDL_BUTTON_MIDDLE)) {
-		Environment::get().get_window()->get_camera()->update((_mouse_x_prev - _mouse_x), (_mouse_y_prev - _mouse_y));
+		Environment::get().get_window()->get_camera()->update((float)(_mouse_x_prev - _mouse_x), (float)(_mouse_y_prev - _mouse_y));
 		_mouse_x_prev = _mouse_x;
 		_mouse_y_prev = _mouse_y;
 	}
@@ -245,7 +248,7 @@ void InputManager::update_editor_camera() {
 	}
 
 	if (is_mouse_held(SDL_BUTTON_MIDDLE)) {
-		Environment::get().get_window()->get_camera()->update((_mouse_x_prev - _mouse_x), (_mouse_y_prev - _mouse_y));
+		Environment::get().get_window()->get_camera()->update((float)(_mouse_x_prev - _mouse_x), (float)(_mouse_y_prev - _mouse_y));
 		_mouse_x_prev = _mouse_x;
 		_mouse_y_prev = _mouse_y;
 	}

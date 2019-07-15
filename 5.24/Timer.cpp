@@ -22,6 +22,10 @@ void Timer::pause() {
 	_is_paused = !_is_paused;
 }
 
+void Timer::restart() {
+	_prev_time = SDL_GetTicks();
+}
+
 bool Timer::update() {
 	if (_time > -1 && !_is_paused && ((int)(SDL_GetTicks() - _prev_time) > _time)) {
 		_prev_time = SDL_GetTicks();

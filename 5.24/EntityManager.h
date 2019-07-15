@@ -16,7 +16,7 @@ public:
 	EntityManager();
 	~EntityManager();
 
-	void create(std::string type, int type_id, double x = 0, double y = 0);
+	void create(std::string type, int type_id, float x = 0.0f, float y = 0.0f);
 	void add(Entity *entity);
 	void remove(Entity *entity);
 	void remove(std::string type, int id);

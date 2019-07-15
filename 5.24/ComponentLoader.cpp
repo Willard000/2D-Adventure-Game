@@ -21,14 +21,14 @@
 
 #define FILE_POSITION_WIDTH "iwidth"
 #define FILE_POSITION_HEIGHT "iheight"
-#define FILE_POSITION_SPEED "dspeed"
+#define FILE_POSITION_SPEED "fspeed"
 
 #define FILE_SPRITE_WIDTH "iwidth"
 #define FILE_SPRITE_HEIGHT "iheight"
 #define FILE_SPRITE_TIME "isprite_time"
 
-#define FILE_SPELL_MAX_DIS "dmax_dis"
-#define FILE_SPELL_SPEED "dspell_speed"
+#define FILE_SPELL_MAX_DIS "fmax_dis"
+#define FILE_SPELL_SPEED "fspell_speed"
 #define FILE_SPELL_DEATH_TIME "ideath_time"
 #define FILE_SPELL_SCRIPT "sscript"
 
@@ -39,7 +39,7 @@ const char *ENTITY_BASE_PATH = "Data/Entities/";
 
 void load_position(FileReader &file, Entity *entity, PositionComponent *&position) {
 	int w = 32, h = 32;
-	double speed = 0.0;
+	float speed = 0.0;
 
 	if (file.exists(FILE_POSITION_WIDTH))  w = file.get_int(FILE_POSITION_WIDTH); 
 	if (file.exists(FILE_POSITION_HEIGHT))  h = file.get_int(FILE_POSITION_HEIGHT); 
@@ -59,8 +59,8 @@ void load_sprite(FileReader &file, Entity *entity, SpriteComponent *&sprite) {
 }
 
 void load_spell(FileReader &file, Entity *entity, SpellComponent *&spell) {
-	double max_dis = 0;
-	double speed = 0;
+	float max_dis = 0;
+	float speed = 0;
 	int death_time = 0;
 	std::string script = " ";
 

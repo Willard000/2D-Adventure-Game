@@ -223,6 +223,29 @@ Entity *Map::entity_collision(const SDL_Rect &pos) {
 	return nullptr;
 }
 
+void Map::add_solid(int index) {
+	if (_solids.find(index) != _solids.end()) {
+		return;
+	}
+
+
+	SDL_Rect solid = {
+		(index % get_width()) * TILE_WIDTH,
+		(index / get_height()) * TILE_HEIGHT,
+		TILE_WIDTH,
+		TILE_HEIGHT
+	};
+
+	_solids[index] = solid;
+}
+
+void Map::remove_solid(int index) {
+	if (_solids.find(index) != _solids.end()) {
+		_solids.erase(index);
+		return;
+	}
+}
+
 void Map::add_warp(Warp warp) {
 	_warps.push_back(warp);
 }
@@ -234,6 +257,14 @@ void Map::remove_warp(Warp *warp) {
 			_warps.erase(it);
 		}
 	}
+}
+
+void Map::remove_warp(int index) {
+	if (index < 0 || index >= (int)_warps.size()) {
+		return;
+	}
+
+	_warps.erase(_warps.begin() + index);
 }
 
 std::string Map::get_path(int id) {

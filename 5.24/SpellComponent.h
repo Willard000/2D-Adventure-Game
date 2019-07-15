@@ -4,11 +4,13 @@
 
 #include <string>
 
+#include "Timer.h"
+
 #ifndef SPELL_COMPONENT_H
 #define SPELL_COMPONENT_H
 
 struct SpellComponent : public Component {
-	SpellComponent(Entity *entity_, double max_dis_, double speed_, int death_time, std::string script_);
+	SpellComponent(Entity *entity_, float max_dis_, float speed_, int death_time, std::string script_);
 
 	virtual void update();
 
@@ -17,13 +19,12 @@ struct SpellComponent : public Component {
 	void death();
 
 	Entity *owner;
-	double dis, max_dis;
-	double speed;
-	double dx, dy;
-	double des_x, des_y;
+	float dis, max_dis;
+	float speed;
+	float dx, dy; // vec2 direction
 	bool dead;
 	bool destroy;
-	int death_time;
+	Timer death_timer;
 
 	std::string script;
 };

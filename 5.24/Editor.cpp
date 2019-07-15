@@ -2,7 +2,7 @@
 
 #include "Clock.h"
 #include "Log.h"
-#include "ScriptManager.h"
+#include "Lua.h"
 #include "ResourceManager.h"
 #include "InputManager.h"
 #include "Window.h"
@@ -33,7 +33,7 @@ Editor::Editor() :
 
 	load_buttons();
 
-	_environment.get().get_resource_manager()->load_map(101);
+	_environment.get().get_resource_manager()->load_map(1);
 }
 
 void Editor::run() {
@@ -78,8 +78,8 @@ void Editor::build_environment() {
 	Window *window = load_window();
 	_environment.set_window(window);
 
-	ScriptManager *script_manager = new ScriptManager();
-	_environment.set_script_manager(script_manager);
+	Lua *lua = new Lua();
+	_environment.set_lua(lua);
 
 	ResourceManager *resource_manager = new ResourceManager();
 	_environment.set_resource_manager(resource_manager);

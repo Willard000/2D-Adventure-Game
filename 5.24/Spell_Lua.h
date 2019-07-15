@@ -5,8 +5,8 @@
 #ifndef SPELL_LUA_H
 #define SPELL_LUA_H
 
-class ScriptManager;
+class Lua;
 
-void lua_init_spell(ScriptManager *scriptManager, lua_State *L);
+void lua_init_spell(Lua *lua, lua_State *L);
 
 #endif

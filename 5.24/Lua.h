@@ -10,12 +10,12 @@
 #include "Environment.h"
 #include "Log.h"
 
-#ifndef SCRIPT_MANAGER_H
-#define SCRIPT_MANAGER_H
+#ifndef LUA_H
+#define LUA_H
 
-class ScriptManager {
+class Lua {
 public:
-	ScriptManager() :
+	Lua() :
 		_L ( lua_open() )
 	{
 		luaL_openlibs(_L);
@@ -25,7 +25,7 @@ public:
 		lua_init_spell(this, _L);
 	}
 
-	~ScriptManager() {
+	~Lua() {
 		lua_close(_L);
 	}
 
@@ -52,7 +52,7 @@ public:
 		lua_setglobal(_L, name.c_str());
 	}
 
-	lua_State *getL() { return _L; }
+	lua_State *get_state() { return _L; }
 
 private:
 	lua_State *_L;

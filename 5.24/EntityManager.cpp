@@ -1,7 +1,7 @@
 #include "EntityManager.h"
 
 #include "Environment.h"
-#include "ScriptManager.h"
+#include "Lua.h"
 #include "Window.h"
 #include "Log.h"
 
@@ -28,7 +28,7 @@ EntityManager::~EntityManager() {
 	_entities.clear();
 }
 
-void EntityManager::create(std::string type, int type_id, double x, double y) {
+void EntityManager::create(std::string type, int type_id, float x, float y) {
 	Entity *entity = new Entity(type, type_id);
 
 	if (PositionComponent *position = GetPosition(entity)) {

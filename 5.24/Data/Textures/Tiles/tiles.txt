@@ -29,3 +29,16 @@
 27 Data/Textures/Tiles/path11.png
 28 Data/Textures/Tiles/path12.png
 29 Data/Textures/Tiles/path13.png
+30 Data/Textures/Tiles/flower_red.png
+31 Data/Textures/Tiles/flower_pink.png
+32 Data/Textures/Tiles/flower_blue.png
+33 Data/Textures/Tiles/flower_lightblue.png
+34 Data/Textures/Tiles/flower_orange.png
+35 Data/Textures/Tiles/flower_purple.png
+36 Data/Textures/Tiles/flower_darkblue.png
+37 Data/Textures/Tiles/pebbles.png
+38 Data/Textures/Tiles/pebbles2.png
+39 Data/Textures/Tiles/pebbles3.png
+40 Data/Textures/Tiles/pebbles_water.png
+41 Data/Textures/Tiles/pebbles_water2.png
+42 Data/Textures/Tiles/pebbles_water3.png

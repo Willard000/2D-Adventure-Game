@@ -9,12 +9,12 @@
 
 #include "Globals.h"
 
-PositionComponent::PositionComponent(Entity *entity_, double x_, double y_, int w_, int h_, double speed_) :
+PositionComponent::PositionComponent(Entity *entity_, float x_, float y_, int w_, int h_, float speed_) :
 	Component		( entity_ ),
 	pos_x			( x_ ),
 	pos_y			( y_ ),
 	speed			( speed_ ),
-	scale_f			( 1.0 ),
+	scale_f			( 1.0f ),
 	rotation		( 0.0 ),
 	rect			( { int(pos_x), int(pos_y), w_, h_ } ),
 	base_width      ( w_ ),
@@ -23,10 +23,10 @@ PositionComponent::PositionComponent(Entity *entity_, double x_, double y_, int 
 
 void PositionComponent::update() {}
 
-void PositionComponent::move(int dir_, double dis_) {
-	double distance = dis_ == 0 ? speed : dis_;
-	double prev_pos_x = pos_x;
-	double prev_pos_y = pos_y;
+void PositionComponent::move(int dir_, float dis_) {
+	float distance = dis_ == 0 ? speed : dis_;
+	float prev_pos_x = pos_x;
+	float prev_pos_y = pos_y;
 
 	if (dir_ == MOVE_UP) {
 		pos_y -= distance * Environment::get().get_clock()->get_time();
@@ -56,7 +56,7 @@ void PositionComponent::move(int dir_, double dis_) {
 	}
 }
 
-void PositionComponent::set(double x, double y) {
+void PositionComponent::set(float x, float y) {
 	pos_x = x;
 	pos_y = y;
 	rect.x = (int)pos_x;

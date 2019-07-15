@@ -94,7 +94,7 @@ TextureManager::~TextureManager() {
 void TextureManager::load_textures(Type type, std::string path) {
 	Texture_Map textures;
 	FileReader file(path.c_str());
-
+;
 	for (freader::iterator it = file.begin(); it != file.end(); it++) {
 		if (type == TYPE_TILE) {
 			textures[std::stoi(it->first)] = load_texture_info_tile(it->second);

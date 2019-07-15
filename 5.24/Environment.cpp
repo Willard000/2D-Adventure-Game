@@ -5,7 +5,7 @@
 #include "Clock.h"
 #include "Log.h"
 #include "Window.h"
-#include "ScriptManager.h"
+#include "Lua.h"
 #include "ResourceManager.h"
 #include "InputManager.h"
 #include "UIManager.h"
@@ -17,7 +17,7 @@ Environment::Environment() :
 	_clock					( nullptr ),
 	_log					( nullptr ),
 	_window					( nullptr ),
-	_script_manager			( nullptr ),
+	_lua					( nullptr ),
 	_resource_manager		( nullptr ),
 	_input_manager			( nullptr ),
 	_ui_manager				( nullptr )
@@ -41,8 +41,8 @@ void Environment::shutdown() {
 	delete _resource_manager;
 	_resource_manager = nullptr;
 
-	delete _script_manager;
-	_script_manager = nullptr;
+	delete _lua;
+	_lua = nullptr;
 
 	delete _window;
 	_window = nullptr;
@@ -75,8 +75,8 @@ void Environment::set_window(Window *window) {
 	_window = window;
 }
 
-void Environment::set_script_manager(ScriptManager *script_manager) {
-	_script_manager = script_manager;
+void Environment::set_lua(Lua *lua) {
+	_lua = lua;
 }
 
 void Environment::set_resource_manager(ResourceManager *resource_manager) {
@@ -107,8 +107,8 @@ Window *Environment::get_window() {
 	return _window;
 }
 
-ScriptManager *Environment::get_script_manager() {
-	return _script_manager;
+Lua *Environment::get_lua() {
+	return _lua;
 }
 
 ResourceManager *Environment::get_resource_manager() {

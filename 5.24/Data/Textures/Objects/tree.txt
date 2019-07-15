@@ -1,4 +1,4 @@
 # Tree
 stexture Data/Textures/Objects/tree.png
-iwidth 200
-iheight 200
+iwidth 162
+iheight 199

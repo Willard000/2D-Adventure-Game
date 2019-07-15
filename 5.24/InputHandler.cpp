@@ -24,10 +24,10 @@ void toggle_camera() {
 	}
 }
 
-void cast_spell(double x, double y) {
+void cast_spell(float x, float y) {
 	Camera *camera = Environment::get().get_window()->get_camera();
-	x = double((x / camera->get_scale()) + camera->get_x());
-	y = double((y / camera->get_scale()) + camera->get_y());
+	x = (x / camera->get_scale()) + camera->get_x();
+	y = (y / camera->get_scale()) + camera->get_y();
 	MagicComponent *magic = GetMagic(Environment::get().get_resource_manager()->get_player());
 	if (magic) {
 		magic->cast_main(x, y);

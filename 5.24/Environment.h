@@ -4,7 +4,7 @@
 class Clock;
 class Log;
 class Window;
-class ScriptManager;
+class Lua;
 class ResourceManager;
 class InputManager;
 class UIManager;
@@ -23,7 +23,7 @@ public:
 	void set_clock(Clock *clock);
 	void set_log(Log *log);
 	void set_window(Window *window);
-	void set_script_manager(ScriptManager *script_manager);
+	void set_lua(Lua *lua);
 	void set_resource_manager(ResourceManager *resource_manager);
 	void set_input_manager(InputManager *input_manager);
 	void set_ui_manager(UIManager *ui_manager);
@@ -32,7 +32,7 @@ public:
 	Clock *get_clock();
 	Log *get_log();
 	Window *get_window();
-	ScriptManager *get_script_manager();
+	Lua *get_lua();
 	ResourceManager *get_resource_manager();
 	InputManager *get_input_manager();
 	UIManager *get_ui_manager();
@@ -44,7 +44,7 @@ private:
 	Clock *_clock;
 	Log *_log;
 	Window *_window;
-	ScriptManager *_script_manager;
+	Lua *_lua;
 	ResourceManager *_resource_manager;
 	InputManager *_input_manager;
 	UIManager *_ui_manager;

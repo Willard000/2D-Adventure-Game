@@ -50,8 +50,12 @@ public:
 	Warp *warp_collision(const SDL_Rect &pos);
 	Entity *entity_collision(const SDL_Rect &pos);
 
+	void add_solid(int index);
+	void remove_solid(int index);
+
 	void add_warp(Warp warp);
 	void remove_warp(Warp *warp);
+	void remove_warp(int index);
 
 	int get_id() { return _id; }
 	// in pixels
@@ -65,6 +69,8 @@ public:
 
 	void draw_warps();
 	void draw_solids();
+
+	std::vector<Warp> *get_warps() { return &_warps; }
 
 	friend class ResourceManager;
 private:

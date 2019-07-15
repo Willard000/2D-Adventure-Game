@@ -32,10 +32,10 @@ static int spell_get_speed(lua_State *L) {
 	return 0;
 }
 
-// Spell:set_dx(double dx)
+// Spell:set_dx(float dx)
 static int spell_set_dx(lua_State *L) {
 	Entity *spell = luaW_check<Entity>(L, -2);
-	double dx = (double)luaL_checknumber(L, -1);
+	float dx = (float)luaL_checknumber(L, -1);
 	if (SpellComponent *spell_comp = GetSpell(spell)) {
 		spell_comp->dx = dx;
 		return 0;
@@ -44,10 +44,10 @@ static int spell_set_dx(lua_State *L) {
 	return 0;
 }
 
-// Spell:set_dy(double dy)
+// Spell:set_dy(float dy)
 static int spell_set_dy(lua_State *L) {
 	Entity *spell = luaW_check<Entity>(L, -2);
-	double dy = (double)luaL_checknumber(L, -1);
+	float dy = (float)luaL_checknumber(L, -1);
 	if (SpellComponent *spell_comp = GetSpell(spell)) {
 		spell_comp->dy = dy;
 		return 0;
@@ -80,10 +80,10 @@ static int spell_get_dy(lua_State *L) {
 	return 0;
 }
 
-// Spell:set_dis(double dis)
+// Spell:set_dis(float dis)
 static int spell_set_dis(lua_State *L) {
 	Entity *spell = luaW_check<Entity>(L, -2);
-	double dis = (double)luaL_checknumber(L, -1);
+	float dis = (float)luaL_checknumber(L, -1);
 	if (SpellComponent *spell_comp = GetSpell(spell)) {
 		spell_comp->dis = dis;
 		return 0;
@@ -127,14 +127,14 @@ static int spell_get_owner(lua_State *L) {
 	return 0;
 }
 
-// Spell:move(double x, double y)
+// Spell:move(float x, float y)
 static int spell_move(lua_State *L) {
 
 	Entity *spell = luaW_check<Entity>(L, -3);
-	double x = (double)luaL_checknumber(L, -2);
-	double y = (double)luaL_checknumber(L, -1);
-	double xdis = x * Environment::get().get_clock()->get_time();
-	double ydis = y * Environment::get().get_clock()->get_time();
+	float x = (float)luaL_checknumber(L, -2);
+	float y = (float)luaL_checknumber(L, -1);
+	float xdis = float(x * Environment::get().get_clock()->get_time());
+	float ydis = float(y * Environment::get().get_clock()->get_time());
 
 	SpellComponent *spell_comp = GetSpell(spell);
 	spell_comp->dis += abs(xdis) + abs(ydis);
@@ -172,6 +172,10 @@ static luaL_Reg spell_metatable[] = {
 	{"get_h", entity_get_h},
 	{"set_x", entity_set_x},
 	{"set_y", entity_set_y},
+	{"scale", entity_scale},
+	{"set_scale", entity_set_scale},
+	{"rotate", entity_rotate},
+	{"set_rotation", entity_set_rotation},
 	{"get_speed", spell_get_speed},
 	{"set_dx", spell_set_dx},
 	{"set_dy", spell_set_dy},
@@ -187,6 +191,6 @@ static luaL_Reg spell_metatable[] = {
 	{NULL, NULL}
 };
 
-void lua_init_spell(ScriptManager *scriptManager, lua_State *L) {
+void lua_init_spell(Lua *lua, lua_State *L) {
 	luaW_register<Entity>(L, "Spell", spell_table, spell_metatable, spell_new);
 }

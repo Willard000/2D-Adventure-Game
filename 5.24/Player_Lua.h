@@ -3,8 +3,8 @@
 #ifndef PLAYER_LUA_H
 #define PLAYER_LUA_H
 
-class ScriptManager;
+class Lua;
 
-void lua_init_player(ScriptManager *scriptManager, lua_State *L);
+void lua_init_player(Lua *lua, lua_State *L);
 
 #endif

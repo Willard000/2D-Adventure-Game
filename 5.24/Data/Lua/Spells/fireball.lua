@@ -12,44 +12,47 @@ end
 local function cast()
 	local spell = SPELL_CASTED
 
-	spell:set_x(spell:get_owner():get_x() + spell:get_owner():get_w() / 2)
-	spell:set_y(spell:get_owner():get_y() + spell:get_owner():get_h() / 2)
-
-	-- mouse coordiantes
-	local x = get_mouse_x()
-	local y = get_mouse_y()
+	spell:set_x(spell:get_owner():get_x() + (spell:get_owner():get_w() / 2) - (spell:get_w() / 2))
+	spell:set_y(spell:get_owner():get_y() + (spell:get_owner():get_h() / 2) - (spell:get_h() / 2))
 	
-	-- adjacent & opposite triangle sides
-	local adj = x - spell:get_x() - (spell:get_w() / 2)
-	local opp = y - spell:get_y() - (spell:get_h() / 2)
-	local abs_adj = math.abs(adj)
-	local abs_opp = math.abs(opp)
+	-- direction vec
+	local vec = {x = get_mouse_x() - spell:get_x() - (spell:get_w() / 2),
+		     y = get_mouse_y() - spell:get_y() - (spell:get_h() / 2)}
 
-	-- rise & run
-	local dx = 0
-	local dy = 0
+	-- normalize vec
+	local vec_mag = math.sqrt((vec.x^2) + (vec.y^2))
+	vec.x = vec.x / vec_mag
+	vec.y = vec.y / vec_mag
 
-	if(abs_opp > abs_adj) then
-		dx = abs_adj / abs_opp
-		dy = 2 - dx
-	else
-		dy = abs_opp / abs_adj
-		dx = 2 - dy
-	end
+	-- scale vec
+	local speed = spell:get_speed()
+	vec.x = vec.x * speed
+	vec.y = vec.y * speed
 
-	if(adj < 0) then
-		dx = 0 - dx
-	end
+	spell:set_dx(vec.x)
+	spell:set_dy(vec.y)
+
+-- Rotation
+
+	local u = {x = get_mouse_x() - spell:get_x(), y = get_mouse_y() - spell:get_y()}
+	local v = {x = 1, y = 0}
+
+	local dot_product = (u.x * v.x) + (u.y * v.y)
 	
-	if(opp < 0) then
-		dy = 0 - dy
+	local u_mag = math.sqrt((u.x^2) + (u.y^2))
+	local v_mag = math.sqrt((v.x^2) + (v.y^2))
+
+	local mag = u_mag * v_mag
+
+	local angle = math.acos(dot_product / mag)
+
+	angle = angle * (180 / math.pi)
+
+	if(u.y < 0) then
+		angle = 360 - angle
 	end
 
-	dx = dx * spell:get_speed()
-	dy = dy * spell:get_speed()
-
-	spell:set_dx(dx)
-	spell:set_dy(dy)
+	spell:set_rotation(angle)
 end
 
 cast()

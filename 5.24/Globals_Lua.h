@@ -3,8 +3,8 @@
 #ifndef GLOBALS_LUA_H
 #define GLOBALS_LUA_H
 
-class ScriptManager;
+class Lua;
 
-void lua_init_globals(ScriptManager *scriptManager, lua_State *L);
+void lua_init_globals(Lua *lua, lua_State *L);
 
 #endif

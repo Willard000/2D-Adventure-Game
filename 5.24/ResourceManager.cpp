@@ -97,31 +97,10 @@ bool ResourceManager::load_map(int id) {
 }
 
 void ResourceManager::edit_map(int index, int id) {
-	if (_map->_tiles[index].id == id || index < 0 || index > (int)_map->_tiles.size() - 1) {
+	if (index < 0 || index > (int)_map->_tiles.size() - 1 ||
+		_map->_tiles[index].id == id ) {
 		return;
 	}
 	_map->_tiles[index].id = id;
 	update_map_texture(_map->_tiles[index].pos, id);
-}
-
-void ResourceManager::edit_solid(int index) {
-	if (index < 0 || index > (_map->_width * _map->_height)) {
-		return;
-	}
-
-	for (auto it = _map->_solids.begin(); it != _map->_solids.end(); it++) {
-		if (it->first == index) {
-			_map->_solids.erase(it);
-			return;
-		}
-	}
-
-	SDL_Rect solid = {
-		(index % _map->get_width()) * TILE_WIDTH,
-		(index / _map->get_height()) * TILE_HEIGHT,
-		TILE_WIDTH,
-		TILE_HEIGHT
-	};
-
-	_map->_solids[index] = solid;
 }

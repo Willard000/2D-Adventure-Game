@@ -12,7 +12,7 @@
 
 #include "Globals.h"
 
-#define CAMERA_ZOOM_SPEED 1
+#define CAMERA_ZOOM_SPEED 1.0f
 
 Camera::Camera() :
 	_x						( 0 ),
@@ -31,7 +31,7 @@ void Camera::toggle() {
 	_is_locked = !_is_locked;
 }
 
-void Camera::move(int dir, double dis) {
+void Camera::move(int dir, float dis) {
 	if (_is_locked) {
 		return;
 	}
@@ -85,7 +85,7 @@ void Camera::update() {
 	}
 }
 
-void Camera::update(double x, double y) {
+void Camera::update(float x, float y) {
 	if (_is_locked) {
 		return;
 	}

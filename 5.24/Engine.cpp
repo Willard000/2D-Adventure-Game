@@ -4,7 +4,7 @@
 #include "Clock.h"
 #include "Log.h"
 #include "Window.h"
-#include "ScriptManager.h"
+#include "Lua.h"
 #include "ResourceManager.h"
 #include "InputManager.h"
 
@@ -29,7 +29,7 @@ void Engine::run() {
 
 		_environment.get_input_manager()->update();
 
-	//	_environment.get_script_manager()->run("Data/Lua/test.lua");
+	//	_environment.get_lua()->run("Data/Lua/test.lua");
 
 		_environment.get_resource_manager()->update();
 
@@ -66,8 +66,8 @@ void Engine::build_environment() {
 	Window *window = load_window();
 	_environment.set_window(window);
 	
-	ScriptManager *script_manager = new ScriptManager();
-	_environment.set_script_manager(script_manager);
+	Lua *lua = new Lua();
+	_environment.set_lua(lua);
 
 	ResourceManager *resource_manager = new ResourceManager();
 	_environment.set_resource_manager(resource_manager);

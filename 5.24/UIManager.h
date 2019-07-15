@@ -15,6 +15,9 @@
 #define TYPE_SOLID "Solid"
 #define TYPE_WARP "Warp"
 
+#define MOUSE_LEFT 0
+#define MOUSE_RIGHT 1
+
 namespace UI {
 
 	struct Element_Area {
@@ -59,7 +62,7 @@ public:
 	void update_mouse_location();
 
 	bool check_buttons();
-	bool check_selection();
+	bool check_selection(int mouse_button);
 	void render();
 
 	void set_state(int flag);
@@ -81,7 +84,6 @@ public:
 
 	void place_warp();
 
-
 	int get_state() { return _state; }
 private:
 	void calc_real_mouse_location(int &x, int &y);
@@ -90,6 +92,7 @@ private:
 	int _state;
 	int _state_prev;
 
+	int _mouse_button;
 	int _mouse_x;
 	int _mouse_y;
 
