@@ -2,6 +2,7 @@
 
 #include "Environment.h"
 #include "Window.h"
+#include "Clock.h"
 #include "Log.h"
 
 #include "PositionComponent.h"
@@ -76,9 +77,16 @@ void ResourceManager::render_editor(const UI::Element_Area &element_area, const 
 		renderer->render(_editor_tiles_texture, element_area.area, true);
 	else if (placement.type == TYPE_OBJECT)
 		renderer->render(_editor_objects_texture, element_area.area, true);
+	else if (placement.type == TYPE_ENEMY) 
+		renderer->render(_editor_enemies_texture, element_area.area, true);
 
 	if (placement.id != -1) {
-		renderer->render(get_texture_info(placement.type, placement.id), element_area.info, true);
+		if (placement.type == TYPE_ENEMY) {
+			renderer->render(get_texture_info(placement.type + TYPE_EX_ICON, placement.id), element_area.info, true);
+		}
+		else {
+			renderer->render(get_texture_info(placement.type, placement.id), element_area.info, true);
+		}
 	}
 }
 
@@ -92,6 +100,8 @@ bool ResourceManager::load_map(int id) {
 		return false;
 	}
 	load_map_texture(_map->_tiles, _map->_rect.w, _map->_rect.h);
+
+	Environment::get().get_clock()->reset();
 
 	return true;
 }

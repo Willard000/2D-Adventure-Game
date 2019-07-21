@@ -3,3 +3,5 @@ Player Data/Textures/Player/player.txt
 Object Data/Textures/Objects/objects.txt
 Tile Data/Textures/Tiles/tiles.txt
 Spell Data/Textures/Spells/spells.txt
+Enemy Data/Textures/Enemies/enemies.txt
+Enemy_Icon Data/Textures/Enemies/Icons/icons.txt

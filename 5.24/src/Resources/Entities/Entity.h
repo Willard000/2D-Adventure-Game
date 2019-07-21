@@ -10,9 +10,12 @@
 #define TYPE_PLAYER "Player"
 #define TYPE_OBJECT "Object"
 #define TYPE_SPELL "Spell"
+#define TYPE_ENEMY "Enemy"
 
 #define GetPosition(entity) static_cast<PositionComponent *>(entity->get_component(typeid(PositionComponent)))
 #define GetSprite(entity) static_cast<SpriteComponent *>(entity->get_component(typeid(SpriteComponent)))
+#define GetPlayer(entity) static_cast<PlayerComponent *>(entity->get_component(typeid(PlayerComponent)))
+#define GetEnemy(entity) static_cast<EnemyComponent *>(entity->get_component(typeid(EnemyComponent)))
 #define GetSpell(entity) static_cast<SpellComponent *>(entity->get_component(typeid(SpellComponent)))
 #define GetMagic(entity) static_cast<MagicComponent *>(entity->get_component(typeid(MagicComponent)))
 
@@ -30,6 +33,8 @@ public:
 	Component *get_component(std::type_index type) { return _components[type]; }
 
 	virtual void update();
+
+	void clear();
 
 	int get_id() { return _id; }
 

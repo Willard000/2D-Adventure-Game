@@ -10,6 +10,7 @@
 
 #define MOVE 1
 #define CAST 2
+#define IDLE 3
 
 struct SpriteComponent : public Component {
 	SpriteComponent(Entity *entity_, int w_, int h_, int time_);

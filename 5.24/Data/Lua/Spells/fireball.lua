@@ -1,28 +1,36 @@
 require "math"
 
-function update(spell)
+Fireball = {}
+
+function Fireball.update(spell)
 	spell:move(spell:get_dx(), spell:get_dy())
+
+	 -- 3 - use idle animation
+	spell:set_ani(3)
 
 	if(spell:get_dis() > spell:get_max_dis()) then
 		spell:death()
 	end
-
 end
 
-local function cast()
-	local spell = SPELL_CASTED
+function Fireball.cast(spell)
+	local mouse_x = get_mouse_x()
+	local mouse_y = get_mouse_y()
+	local caster = spell:get_caster()
+	local pos = spell:get_entity():get_position()
+	local caster_pos = caster:get_position()
 
-	spell:set_x(spell:get_owner():get_x() + (spell:get_owner():get_w() / 2) - (spell:get_w() / 2))
-	spell:set_y(spell:get_owner():get_y() + (spell:get_owner():get_h() / 2) - (spell:get_h() / 2))
-	
+	pos:set(caster_pos:get_x() + (caster_pos:get_w() / 2) - (pos:get_w() / 2),
+		caster_pos:get_y() + (caster_pos:get_h() / 2) - (pos:get_h() / 2))
+
 	-- direction vec
-	local vec = {x = get_mouse_x() - spell:get_x() - (spell:get_w() / 2),
-		     y = get_mouse_y() - spell:get_y() - (spell:get_h() / 2)}
+	local vec = {x = mouse_x - pos:get_x() - (pos:get_w() / 2),
+		     y = mouse_y - pos:get_y() - (pos:get_h() / 2)}
 
 	-- normalize vec
-	local vec_mag = math.sqrt((vec.x^2) + (vec.y^2))
-	vec.x = vec.x / vec_mag
-	vec.y = vec.y / vec_mag
+	local vec_mag = 1 / math.sqrt((vec.x^2) + (vec.y^2))
+	vec.x = vec.x * vec_mag
+	vec.y = vec.y * vec_mag
 
 	-- scale vec
 	local speed = spell:get_speed()
@@ -34,7 +42,8 @@ local function cast()
 
 -- Rotation
 
-	local u = {x = get_mouse_x() - spell:get_x(), y = get_mouse_y() - spell:get_y()}
+	local u = {x = mouse_x - pos:get_x() - (pos:get_w() / 2),
+		   y = mouse_y - pos:get_y() - (pos:get_h() / 2)}
 	local v = {x = 1, y = 0}
 
 	local dot_product = (u.x * v.x) + (u.y * v.y)
@@ -52,7 +61,5 @@ local function cast()
 		angle = 360 - angle
 	end
 
-	spell:set_rotation(angle)
+	pos:set_rotation(angle)
 end
-
-cast()

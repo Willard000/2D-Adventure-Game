@@ -21,6 +21,11 @@
 #define AMASK 0x000000ff
 #define RGB_DEPTH 32
 
+#define FONT_BASE_PATH "Data/Font/font.ttf"
+#define FONT_PTSIZE 92
+#define FONT_TEXT_XOFFSET_FACTOR 2		// centers the text position depending on its length
+#define FONT_TEXT_YOFFSET_FACTOR 8		// ex. pos.x -= pos.w / TEXT_OFFSET_FECTOR_X
+
 #define DRAW_RECT_EMPTY 0001
 #define DRAW_RECT_FULL 0010
 #define DRAW_RECT_CAMERA 0100
@@ -40,6 +45,7 @@ public:
 	void render(const Texture *img, const SDL_Rect &pos, bool ui_element = false);
 	void render(const Texture *img, PositionComponent *position);
 	void render(Sprite *img, SpriteComponent *sprite, PositionComponent *position);
+	void render(Sprite *img, SpriteComponent *sprite, const SDL_Rect &position, bool ui_element = false);
 
 	void draw_text(Text &text, bool ui_element = false);
 	void draw_rect(const SDL_Rect &rect, const SDL_Color &color, int flag = DRAW_RECT_FULL);
@@ -48,6 +54,7 @@ public:
 	SDL_Texture *make_blit_texture(std::map<int, SDL_Surface *> &surfaces, const int &width, const int &height, const int &surface_size);
 	SDL_Texture *blit_texture(SDL_Surface *&main_surface, SDL_Surface *surface, SDL_Rect &pos);
 
+	TTF_Font *get_font() { return _font; }
 	void create_text(Text &text);
 
 	SDL_Renderer *get_renderer() { return _renderer; }

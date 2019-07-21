@@ -20,6 +20,8 @@ namespace UI {
 
 		virtual void execute() {}
 
+		void set_color(SDL_Color &color) { _color = color; }
+
 	    Text &get_text() { return _text; }
 		const SDL_Rect &get_rect() { return _rect; }
 		const SDL_Color &get_color() { return _color; }

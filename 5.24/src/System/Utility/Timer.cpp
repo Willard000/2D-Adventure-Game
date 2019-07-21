@@ -22,7 +22,7 @@ void Timer::pause() {
 	_is_paused = !_is_paused;
 }
 
-void Timer::restart() {
+void Timer::reset() {
 	_prev_time = SDL_GetTicks();
 }
 

@@ -12,6 +12,7 @@ public:
 	Clock();
 
 	bool update(Uint32 interval = UPDATE_INTERVAL);
+	void reset();
 
 	void limit(bool limit);
 	void set_cap(int cap);

@@ -1,0 +1,12 @@
+# Bushki
+
+Position
+iwidth 32
+iheight 32
+
+Sprite
+isprite_time 300
+
+Enemy
+senemy_name Bushki
+senemy_script Data/Lua/Enemies/bushki.lua

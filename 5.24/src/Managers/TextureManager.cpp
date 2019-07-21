@@ -7,6 +7,8 @@
 
 #include "FileReader.h"
 
+#include "Globals.h"
+
 #define FILE_SPRITE "Sprite"
 #define FILE_TEXTURE_PATH "stexture"
 #define FILE_TEXTURE_W "iwidth"
@@ -16,6 +18,8 @@
 #define FILE_FRAME_RUN "irun"
 #define FILE_FRAME_CAST "icast"
 #define FILE_FRAME_SPECIAL "ispecial"
+#define FILE_FRAME_MIN_IDLE "imin_idle"
+#define FILE_FRAME_MAX_IDLE "imax_idle"
 #define FILE_FRAME_MIN_UP "imin_up"
 #define FILE_FRAME_MAX_UP "imax_up"
 #define FILE_FRAME_MIN_DOWN "imin_down"
@@ -28,27 +32,25 @@
 
 #define EDITOR_LINE_COLOR {255, 255, 255, 50}
 
-const char *TEXTURE_BASE_PATH = "Data/Textures/textures.txt";
-const char *SURFACE_BASE_PATH = "Data/Textures/surfaces.txt";
-
 TextureManager::TextureManager() :
 	_map_texture				( new Texture() ),
 	_map_surface				( nullptr ),
 	_editor_tiles_texture	    ( new Texture() ),
 	_editor_objects_texture		( new Texture() ),
+	_editor_enemies_texture     ( new Texture() ),
 	_editor_line_background		( new Texture() )
 {
 	Environment::get().get_log()->print("Loading Texture Manager");
 
 	Environment::get().get_log()->print("Loading Textures");
-	FileReader texture_file(TEXTURE_BASE_PATH);
+	FileReader texture_file(TEXTURE_FILE);
 	for (freader::iterator it = texture_file.begin(); it != texture_file.end(); ++it) {
 		load_textures(it->first, it->second);
 	}
 	Environment::get().get_log()->print("Finished loading Textures");
 
 	Environment::get().get_log()->print("Loading Surfaces");
-	FileReader surface_file(SURFACE_BASE_PATH);
+	FileReader surface_file(SURFACE_FILE);
 	for (freader::iterator it = surface_file.begin(); it != surface_file.end(); ++it) {
 		load_surfaces(it->first, it->second);
 	}
@@ -64,6 +66,13 @@ TextureManager::TextureManager() :
 
 		_editor_objects_texture->texture = Environment::get().get_window()->get_renderer()->make_blit_texture(
 			_surfaces[TYPE_OBJECT],
+			ELEMENT_AREA_WIDTH,
+			Environment::get().get_window()->get_height(),
+			TILE_WIDTH
+		);
+
+		_editor_enemies_texture->texture = Environment::get().get_window()->get_renderer()->make_blit_texture(
+			_surfaces[TYPE_ENEMY],
 			ELEMENT_AREA_WIDTH,
 			Environment::get().get_window()->get_height(),
 			TILE_WIDTH
@@ -142,6 +151,8 @@ Texture *TextureManager::load_texture_info(std::string path) {
 		if (file.exists(FILE_FRAME_RUN)) sprite->run = file.get_int(FILE_FRAME_RUN);
 		if (file.exists(FILE_FRAME_CAST)) sprite->cast = file.get_int(FILE_FRAME_CAST);
 		if (file.exists(FILE_FRAME_SPECIAL)) sprite->special = file.get_int(FILE_FRAME_SPECIAL);
+		if (file.exists(FILE_FRAME_MIN_IDLE)) sprite->min_idle = file.get_int(FILE_FRAME_MIN_IDLE);
+		if (file.exists(FILE_FRAME_MAX_IDLE)) sprite->max_idle = file.get_int(FILE_FRAME_MAX_IDLE);
 		if (file.exists(FILE_FRAME_MIN_UP)) sprite->min_up = file.get_int(FILE_FRAME_MIN_UP);
 		if (file.exists(FILE_FRAME_MAX_UP)) sprite->max_up = file.get_int(FILE_FRAME_MAX_UP);
 		if (file.exists(FILE_FRAME_MIN_DOWN)) sprite->min_down = file.get_int(FILE_FRAME_MIN_DOWN);

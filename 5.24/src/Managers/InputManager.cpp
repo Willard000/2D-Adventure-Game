@@ -184,19 +184,19 @@ void InputManager::update_editor() {
 	}
 
 	if (is_key(SDL_SCANCODE_Q)) {
-		Environment::get().get_ui_manager()->delete_element();
+		Environment::get().get_ui_manager()->delete_map_selection();
 	}
 
 	static bool clicked_button = false;
 	if (is_mouse(SDL_BUTTON_LEFT)) {
 		clicked_button = Environment::get().get_ui_manager()->check_buttons();
-		if (!clicked_button && Environment::get().get_ui_manager()->get_placement_type() != TYPE_TILE) {
+		if (!clicked_button && Environment::get().get_ui_manager()->get_selection_type() != TYPE_TILE) {
 			Environment::get().get_ui_manager()->check_selection(MOUSE_LEFT);
 		}
 	}
 
 	if (!clicked_button && Environment::get().get_ui_manager()->get_state() != UI::STATE_WAITING) {
-		std::string type = Environment::get().get_ui_manager()->get_placement_type();
+		std::string type = Environment::get().get_ui_manager()->get_selection_type();
 		if ((type == TYPE_TILE || type == TYPE_SOLID) && is_mouse_held(SDL_BUTTON_LEFT)) {
 			Environment::get().get_ui_manager()->check_selection(MOUSE_LEFT);
 		}

@@ -1,5 +1,5 @@
 # Bush
 
 Position
-iwidth 50
-iheight 50
+iwidth 38
+iheight 34

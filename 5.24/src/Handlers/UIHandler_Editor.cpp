@@ -82,28 +82,34 @@ void UI::button_load_map() {
 
 void UI::button_select_tiles() {
 	Environment::get().get_ui_manager()->set_state(STATE_PLACING);
-	Environment::get().get_ui_manager()->set_placement_type(TYPE_TILE);
+	Environment::get().get_ui_manager()->set_selection_type(TYPE_TILE);
 }
 
 void UI::button_select_solids() {
 	Environment::get().get_ui_manager()->set_state(STATE_PLACING);
-	Environment::get().get_ui_manager()->set_placement_type(TYPE_SOLID);
+	Environment::get().get_ui_manager()->set_selection_type(TYPE_SOLID);
 }
 
 void UI::button_select_warps() {
 	Environment::get().get_ui_manager()->set_state(STATE_PLACING);
-	Environment::get().get_ui_manager()->set_placement_type(TYPE_WARP);
+	Environment::get().get_ui_manager()->set_selection_type(TYPE_WARP);
 }
 
 void UI::button_select_objects() {
 	Environment::get().get_ui_manager()->set_state(STATE_PLACING);
-	Environment::get().get_ui_manager()->set_placement_type(TYPE_OBJECT);
+	Environment::get().get_ui_manager()->set_selection_type(TYPE_OBJECT);
+}
+
+void UI::button_select_enemies() {
+	Environment::get().get_ui_manager()->set_state(STATE_PLACING);
+	Environment::get().get_ui_manager()->set_selection_type(TYPE_ENEMY);
 }
 
 void UI::button_select_free() {
 	Environment::get().get_ui_manager()->set_state(STATE_SELECTING);
+	Environment::get().get_ui_manager()->set_selection_type(TYPE_SELECT);
 }
 
-void UI::button_center_placement() {
-	Environment::get().get_ui_manager()->toggle_center_placement();
+void UI::button_align_placement() {
+	Environment::get().get_ui_manager()->toggle_alignment();
 }

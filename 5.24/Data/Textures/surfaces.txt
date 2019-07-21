@@ -1,3 +1,4 @@
 # Surfaces
 Tile Data/Textures/Tiles/tiles.txt
 Object Data/Textures/Objects/object_surfaces.txt
+Enemy Data/Textures/Enemies/enemies_surfaces.txt

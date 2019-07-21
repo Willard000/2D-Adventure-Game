@@ -12,7 +12,7 @@
 #define SPELL_COMPONENT_H
 
 struct SpellComponent : public Component {
-	SpellComponent(Entity *entity_, float max_dis_, float speed_, int death_time, std::string script_);
+	SpellComponent(Entity *entity_, std::string name_, float max_dis_, float speed_, int death_time, std::string script_);
 
 	virtual void update();
 
@@ -20,15 +20,15 @@ struct SpellComponent : public Component {
 
 	void death();
 
-	Entity *owner;
+	Entity *caster;
 	float dis, max_dis;
 	float speed;
 	float dx, dy; // vec2 direction
 	bool dead;
 	bool destroy;
 	Timer death_timer;
-	lua_State *lua_thread;
 
+	std::string name;
 	std::string script;
 };
 

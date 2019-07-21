@@ -4,5 +4,7 @@ stexture Data/Textures/Spells/fireball.png
 iwidth 20
 iheight 20
 iidle 0
-iend 1
-inum_frames 2
+imin_idle 0
+imax_idle 2
+iend 3
+inum_frames 4

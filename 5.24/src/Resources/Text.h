@@ -6,21 +6,30 @@
 #ifndef TEXT_H
 #define TEXT_H
 
-struct Text {
+class Text {
+public:
 	Text();
-	Text(std::string text_, SDL_Color color_, int font_size_, Uint32 wrap_length_, int x_, int y_);
+	Text(std::string text, SDL_Color color, int font_size, Uint32 wrap_length, int x, int y);
 	~Text();
 
 	Text &operator=(const Text &rhs);
 
-	std::string text;
-	SDL_Color color;
-	int font_size;
-	Uint32 wrap_length;
-	SDL_Texture *texture;
-	int x, y;
-	SDL_Rect rect;
-	bool loaded;
+	const std::string &get_text() { return _text; }
+
+	void set_text(std::string text);
+
+	void load();
+
+	friend class Renderer;
+private:
+	std::string _text;
+	SDL_Color _color;
+	int _font_size;
+	Uint32 _wrap_length;
+	SDL_Texture *_texture;
+	int _x, _y;
+	SDL_Rect _rect;
+	bool _is_loaded;
 };
 
 #endif

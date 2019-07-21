@@ -39,6 +39,12 @@ bool Clock::update(Uint32 interval) {
 	return false;
 }
 
+void Clock::reset() {
+	_frames = 0;
+	_update_ticks = _previous_ticks + UPDATE_INTERVAL;
+	update_time();
+}
+
 void Clock::limit(bool limit) {
 	_is_limit = limit;
 }
@@ -50,7 +56,7 @@ void Clock::set_cap(int cap) {
 
 void Clock::update_time() {
 	_ticks = SDL_GetTicks() - _previous_ticks;
-	_time = double(_ticks / 1000.0);
+	_time = double(_ticks * .001);
 	_previous_ticks = SDL_GetTicks();
 }
 
@@ -65,11 +71,11 @@ int Clock::load_cap() {
 // Time format (00:00:00:000)
 // days : hours : minutes : seconds : miliseconds
 std::string Clock::get_display_time() {
-	double miliseconds = SDL_GetTicks() / 1000.0;
+	double miliseconds = SDL_GetTicks() * .001;
 	miliseconds = miliseconds - floor(miliseconds);
 	miliseconds *= 1000.0;
 
-	int ticks = (int)(SDL_GetTicks() / 1000.0);
+	int ticks = (int)(SDL_GetTicks() * .001);
 	int seconds = ticks % 60;
 	int minutes = int(ticks / 60) % 60;
 	int hours = int(ticks / 3600) % 24;

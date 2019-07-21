@@ -1,0 +1,2 @@
+# Icons
+0 Data/Textures/Enemies/Icons/bushki.txt

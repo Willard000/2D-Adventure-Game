@@ -14,6 +14,9 @@
 
 #define TYPE_SOLID "Solid"
 #define TYPE_WARP "Warp"
+#define TYPE_SELECT "Select"
+
+#define TYPE_EX_ICON "_Icon"
 
 #define MOUSE_LEFT 0
 #define MOUSE_RIGHT 1
@@ -61,6 +64,8 @@ public:
 
 	void update_mouse_location();
 
+	void highlight_button();
+
 	bool check_buttons();
 	bool check_selection(int mouse_button);
 	void render();
@@ -71,16 +76,17 @@ public:
 	void push_confirmation(Callback on_confirm = nullptr, Callback on_deny = nullptr);
 	void pop_confirmation();
 
-	Element select_element();
-	void delete_element();
+	Element select_from_map();
+	bool place_on_map();
+	void delete_map_selection();
 
 	// returns element id ( -1 if mouse is not hovering an element)
-	int select_placement();
-	bool place_element();
-	void set_placement_type(std::string type);
-	std::string get_placement_type();
+	int select();
 
-	void toggle_center_placement();
+	void set_selection_type(std::string type);
+	std::string get_selection_type();
+
+	void toggle_alignment();
 
 	void place_warp();
 
@@ -98,17 +104,25 @@ private:
 
 	Text _current_text;
 	Text _mouse_location;
+	Text _alignment_text;
+	Text _selection_text;
 
 	Callback _on_confirm;
 	Callback _on_deny;
 
 	Element_Area _element_area;
-	Element _placement;
-	Element _selection;
+	Element _selection;		
+	Element _map_selection;			
 
-	bool _center_placement;
+	Button *_highlighted_button;
+
+	bool _align_placement;
 
 	std::map<std::string, Button *> _buttons;
+
+	// remembers last selection for each type
+	// Key - placement.type Val - placement.id
+	std::map<std::string, int> _last_selected_id;
 };
 
 

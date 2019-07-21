@@ -4,47 +4,72 @@
 #include "Window.h"
 
 Text::Text() :
-	text			( "" ),
-	color			( { 255, 255, 255, 255 } ),
-	font_size		( 12 ),
-	wrap_length     ( 1000 ),
-	texture			( nullptr ),
-	x				( 0 ),
-	y				( 0 ),
-	rect			( { 0, 0, 0, 0 } ),
-	loaded			( false )
+	_text			( "" ),
+	_color			( { 255, 255, 255, 255 } ),
+	_font_size		( 12 ),
+	_wrap_length    ( 1000 ),
+	_texture		( nullptr ),
+	_x				( 0 ),
+	_y				( 0 ),
+	_rect			( { 0, 0, 0, 0 } ),
+	_is_loaded		( false )
 {}
 
-Text::Text(std::string text_, SDL_Color color_, int font_size_, Uint32 wrap_length_, int x_, int y_) :
-	text			( text_ ),
-	color			( color_ ),
-	font_size		( font_size_ ),
-	wrap_length     ( wrap_length_ ),
-	texture			( nullptr ),
-	x				( x_ ),
-	y				( y_ ),
-	rect			( { x_, y_, 0, 0 } ),
-	loaded			( false )
+Text::Text(std::string text, SDL_Color color, int font_size, Uint32 wrap_length, int x, int y) :
+	_text			( text ),
+	_color			( color ),
+	_font_size		( font_size ),
+	_wrap_length    ( wrap_length ),
+	_texture		( nullptr ),
+	_x				( x ),
+	_y				( y ),
+	_rect			( { x, y, 0, 0 } ),
+	_is_loaded		( false )
 {}
 
 Text &Text::operator=(const Text& rhs) {
 
-	text = rhs.text;
-	color = rhs.color;
-	font_size = rhs.font_size;
-	wrap_length = wrap_length;
-	x = rhs.x;
-	y = rhs.y;
-	rect = { x, y, 0, 0 };
+	_text = rhs._text;
+	_color = rhs._color;
+	_font_size = rhs._font_size;
+	_wrap_length = _wrap_length;
+	_x = rhs._x;
+	_y = rhs._y;
+	_rect = { _x, _y, 0, 0 };
 
-	if (texture)
-		SDL_DestroyTexture(texture);
+	if (_texture)
+		SDL_DestroyTexture(_texture);
 
-	loaded = false;
+	_is_loaded = false;
 
 	return *this;
 }
 
 Text::~Text() {
-	SDL_DestroyTexture(texture);
+	SDL_DestroyTexture(_texture);
+}
+
+void Text::set_text(std::string text) {
+	_text = text;
+	_is_loaded = false;
+	_rect.x += _rect.w / FONT_TEXT_XOFFSET_FACTOR;
+	_rect.y += _rect.h / FONT_TEXT_YOFFSET_FACTOR;
+}
+
+void Text::load() {
+	if (_text == "") {
+		return;
+	}
+	if (_texture) {
+		SDL_DestroyTexture(_texture);
+	}
+	SDL_Surface *surface = TTF_RenderText_Blended_Wrapped(Environment::get().get_window()->get_renderer()->get_font(), _text.c_str(), _color, _wrap_length);
+	SDL_SetSurfaceAlphaMod(surface, _color.a);
+	_texture = SDL_CreateTextureFromSurface(Environment::get().get_window()->get_renderer()->get_renderer(), surface);
+	_rect.w = int((float)surface->clip_rect.w * ((float)_font_size / (float)FONT_PTSIZE));
+	_rect.h = int((float)surface->clip_rect.h * ((float)_font_size / (float)FONT_PTSIZE));
+	_rect.x -= _rect.w / FONT_TEXT_XOFFSET_FACTOR;
+	_rect.y -= _rect.h / FONT_TEXT_YOFFSET_FACTOR;
+	SDL_FreeSurface(surface);
+	_is_loaded = true;
 }

@@ -2,7 +2,6 @@
 #include <vector>
 
 #include "Entity.h"
-#include "Player.h"
 
 #include "Quadtree.h"
 
@@ -26,7 +25,7 @@ public:
 	void update();
 
 	Entity *get_entity(const std::string &type, int id) { return _entities[type][id]; }
-	Player *get_player() { return _player; }
+	Entity *get_player() { return _player; }
 
 	std::map<int, Entity *> *get_entities(const std::string &type) { return &_entities[type]; }
 	std::map<std::string, Entity_Map> *get_entities() { return &_entities; }
@@ -36,7 +35,7 @@ private:
 	void remove_destroyed_entities();
 private:
 	std::map<std::string, Entity_Map> _entities;
-	Player *_player;
+	Entity *_player;
 
 	std::vector<Entity *> _entities_to_remove;
 };

@@ -5,10 +5,11 @@ iwidth 20
 iheight 20
 
 Sprite
-isprite_time -1
+isprite_time 200
 
 Spell
+sspell_name Fireball
 fmax_dis 1000
-fspell_speed 100
+fspell_speed 300
 ideath_time 100
-sscript Data/Lua/Spells/fireball.lua
+sspell_script Data/Lua/Spells/fireball.lua

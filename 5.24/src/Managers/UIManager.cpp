@@ -22,24 +22,34 @@
 #define BUTTON_CONFIRM_YOFFSET 60
 #define BUTTON_CONFIRM_W 120
 #define BUTTON_CONFIRM_H 30
-#define BUTTON_CONFIRM_FT_SIZE 24
+#define BUTTON_CONFIRM_FTSIZE 24
 #define BUTTON_DENY "No"
 
 #define CURRENT_TEXT_COLOR { 255, 255, 255, 255 }
-#define CURRENT_TEXT_FT_SIZE 24
+#define CURRENT_TEXT_FTSIZE 24
 #define CURRENT_TEXT_YOFFSET 200
 
 #define MOUSE_TEXT_TIME 100
-#define MOUSE_TEXT_COLOR { 255, 100, 255, 255 }
 #define MOUSE_TEXT_XOFFSET 50
-#define MOUSE_TEXT_YOFFSET -20
-#define MOUSE_TEXT_PTSIZE 14
+
+#define ALIGNMENT_TEXT "Alignment: "
+#define ALIGNMENT_TEXT_XOFFSET 200
+
+#define SELECTION_TEXT "Selection: "
+#define SELECTION_TEXT_XOFFSET 500
+
+#define INFO_TEXT_COLOR {255, 255, 255, 255}
+#define INFO_TEXT_FTSIZE 14
+#define INFO_TEXT_WRAP_SIZE 1000
+#define INFO_TEXT_YOFFSET -20
 
 #define ELEMENT_SELECTION_COLOR { 0, 250, 240, 50 }
 #define ELEMENT_SELECTION_HEIGHT 256
 #define ELEMENT_AREA_COLOR { 100, 100, 100, 100 }
 
 #define WARP_COLOR {0, 255, 0, 100}
+
+#define HIGHLIGHT_FACTOR 80
 
 SDL_Rect get_mouse_rect(const int &x, const int &y) {
 	return { x, y, MOUSE_WIDTH, MOUSE_HEIGHT };
@@ -68,14 +78,20 @@ UIManager::UIManager() :
 								 ELEMENT_AREA_COLOR,
 								{Environment::get().get_window()->get_width() - ELEMENT_AREA_WIDTH, ELEMENT_SELECTION_HEIGHT, ELEMENT_AREA_WIDTH, Environment::get().get_window()->get_height()},
 								{Environment::get().get_window()->get_width() - ELEMENT_AREA_WIDTH, 0, ELEMENT_AREA_WIDTH, ELEMENT_SELECTION_HEIGHT} } ),
-	_placement				( { TYPE_TILE, -1 } ),
-	_selection				( { TYPE_OBJECT, -1 } ),
-	_center_placement		( true ),
+	_selection				( { TYPE_TILE, -1 } ),
+	_map_selection			( { TYPE_OBJECT, -1 } ),
+	_align_placement		( true ),
 	_mouse_button			( 0 ),
 	_mouse_x				( 0 ),
 	_mouse_y				( 0 ),
 	_on_confirm				( nullptr ),
-	_on_deny				( nullptr )
+	_on_deny				( nullptr ),
+	_highlighted_button		( nullptr ),
+	_current_text           ( "", CURRENT_TEXT_COLOR, CURRENT_TEXT_FTSIZE, 0,
+						   	  Environment::get().get_window()->get_width_half(),
+							  Environment::get().get_window()->get_height_half() - CURRENT_TEXT_YOFFSET ),
+	_alignment_text			( ALIGNMENT_TEXT + std::string("On"), INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, ALIGNMENT_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET ),
+	_selection_text         ( SELECTION_TEXT + std::string(TYPE_TILE), INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, SELECTION_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET )
 {
 	Environment::get().get_log()->print("Loading UI Manager");
 }
@@ -86,11 +102,10 @@ UIManager::~UIManager() {
 	for (auto it = _buttons.begin(); it != _buttons.end(); ++it) {
 		delete it->second;
 	}
-
 }
 
 void UIManager::add_button(Button *button) {
-	_buttons[button->get_text().text] = button;
+	_buttons[button->get_text().get_text()] = button;
 }
 
 void UIManager::remove_button(std::string key) {
@@ -106,6 +121,7 @@ void UIManager::remove_button(std::string key) {
 int UIManager::update() {
 	SDL_GetMouseState(&_mouse_x, &_mouse_y);
 	update_mouse_location();
+	highlight_button();
 
 	if (_state == STATE_CONFIRM || _state == STATE_DENY) {
 		pop_confirmation();
@@ -137,13 +153,43 @@ void UIManager::update_mouse_location() {
 
 		_mouse_location = Text(
 			"x: " + std::to_string(x) + " y: " + std::to_string(y),
-			MOUSE_TEXT_COLOR,
-			MOUSE_TEXT_PTSIZE,
-			1000,
+			INFO_TEXT_COLOR,
+			INFO_TEXT_FTSIZE,
+			INFO_TEXT_WRAP_SIZE,
 			MOUSE_TEXT_XOFFSET,
-			Environment::get().get_window()->get_height() + MOUSE_TEXT_YOFFSET
+			Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET
 		);
 	}
+}
+
+void UIManager::highlight_button() {
+	for (auto it = _buttons.begin(); it != _buttons.end(); ++it) {
+		if (collision(it->second->get_rect(), get_mouse_rect(_mouse_x, _mouse_y))) {
+			if (_highlighted_button == it->second) {
+				return;
+			}
+
+			if (_highlighted_button) {
+				SDL_Color color = _highlighted_button->get_color();
+				color.a -= HIGHLIGHT_FACTOR;
+				_highlighted_button->set_color(color);
+			}
+
+			SDL_Color color = it->second->get_color();
+			color.a += HIGHLIGHT_FACTOR;
+			it->second->set_color(color);
+			_highlighted_button = it->second;
+			return;
+		}
+	}
+
+	if (_highlighted_button) {
+		SDL_Color color = _highlighted_button->get_color();
+		color.a -= HIGHLIGHT_FACTOR;
+		_highlighted_button->set_color(color);
+	}
+
+	_highlighted_button = nullptr;
 }
 
 bool UIManager::check_buttons() {
@@ -161,8 +207,8 @@ bool UIManager::check_selection(int mouse_button) {
 	_mouse_button = mouse_button;
 
 	if (_mouse_x >= _element_area.area.x) {
-		_placement.id = select_placement();
-		if (_placement.id != -1) {
+		_selection.id = select();
+		if (_selection.id != -1) {
 			_state = STATE_PLACING;
 		}
 		else {
@@ -172,12 +218,12 @@ bool UIManager::check_selection(int mouse_button) {
 	}
 
 	if (_state == STATE_PLACING) {
-		place_element();
+		place_on_map();
 		return true;
 	}
 
 	if (_state = STATE_SELECTING) {
-		_selection = select_element();
+		_map_selection = select_from_map();
 		return true;
 	}
 
@@ -187,36 +233,43 @@ bool UIManager::check_selection(int mouse_button) {
 void UIManager::render() {
 	Renderer *renderer = Environment::get().get_window()->get_renderer();
 
-	for (auto it = _buttons.begin(); it !=_buttons.end(); ++it) {
+	Environment::get().get_resource_manager()->render_editor(_element_area, _selection);
+	if (_state == STATE_WAITING)
+		renderer->draw_text(_current_text, true);
+	else if (_state == STATE_PLACING) {
+		int x, y;
+		calc_real_mouse_location(x, y);
+		Texture *img = nullptr;
+		if(_selection.type == TYPE_ENEMY)
+			img = Environment::get().get_resource_manager()->get_texture_info(_selection.type + TYPE_EX_ICON, _selection.id);
+		else
+			img = Environment::get().get_resource_manager()->get_texture_info(_selection.type, _selection.id);
+
+		if (img != nullptr) {
+			renderer->render(img, { (int)x, (int)y, TILE_WIDTH, TILE_HEIGHT });
+		}
+	}
+	else if (_state == STATE_SELECTING && _map_selection.id != -1) {
+		if (_map_selection.type != TYPE_WARP) {
+			Entity *entity = Environment::get().get_resource_manager()->get_entity(_map_selection.type, _map_selection.id);
+			if (PositionComponent *position = GetPosition(entity)) {
+				renderer->draw_rect(position->rect, ELEMENT_SELECTION_COLOR, DRAW_RECT_CAMERA);
+			}
+		}
+		else if (_map_selection.type == TYPE_WARP) {
+			renderer->draw_rect((*Environment::get().get_resource_manager()->get_map()->get_warps())[_map_selection.id].from, ELEMENT_SELECTION_COLOR, DRAW_RECT_CAMERA);
+		}
+	}
+
+	for (auto it = _buttons.begin(); it != _buttons.end(); ++it) {
 		renderer->draw_rect(it->second->get_rect(), it->second->get_color());
 		renderer->draw_text(it->second->get_text(), true);
 	}
 
 
 	renderer->draw_text(_mouse_location, true);
-
-	Environment::get().get_resource_manager()->render_editor(_element_area, _placement);
-	if (_state == STATE_WAITING)
-		renderer->draw_text(_current_text, true);
-	else if (_state == STATE_PLACING) {
-		int x, y;
-		calc_real_mouse_location(x, y);
-		Texture *img = Environment::get().get_resource_manager()->get_texture_info(_placement.type, _placement.id);
-		if (img != nullptr) {
-			renderer->render(img, { (int)x, (int)y, TILE_WIDTH, TILE_HEIGHT });
-		}
-	}
-	else if (_state == STATE_SELECTING && _selection.id != -1) {
-		if (_selection.type != TYPE_WARP) {
-			Entity *entity = Environment::get().get_resource_manager()->get_entity(_selection.type, _selection.id);
-			if (PositionComponent *position = GetPosition(entity)) {
-				renderer->draw_rect(position->rect, ELEMENT_SELECTION_COLOR, DRAW_RECT_CAMERA);
-			}
-		}
-		else if (_selection.type == TYPE_WARP) {
-			renderer->draw_rect((*Environment::get().get_resource_manager()->get_map()->get_warps())[_selection.id].from, ELEMENT_SELECTION_COLOR, DRAW_RECT_CAMERA);
-		}
-	}
+	renderer->draw_text(_alignment_text, true);
+	renderer->draw_text(_selection_text, true);
 }
 
 void UIManager::set_state(int flag) {
@@ -224,9 +277,7 @@ void UIManager::set_state(int flag) {
 }
 
 void UIManager::set_current_text(std::string text) {
-	int width_half = Environment::get().get_window()->get_width_half();
-	int height_half = Environment::get().get_window()->get_height_half();
-	_current_text = Text (text, CURRENT_TEXT_COLOR, CURRENT_TEXT_FT_SIZE, 0, width_half, height_half - CURRENT_TEXT_YOFFSET);
+	_current_text.set_text(text);
 }
 
 void UIManager::push_confirmation(Callback on_confirm, Callback on_deny) {
@@ -238,14 +289,14 @@ void UIManager::push_confirmation(Callback on_confirm, Callback on_deny) {
 		&confirm_yes,
 		BUTTON_CONFIRM,
 		{ (width / 2) - BUTTON_CONFIRM_XOFFSET, (height / 2) - BUTTON_CONFIRM_YOFFSET, BUTTON_CONFIRM_W, BUTTON_CONFIRM_H },
-		BUTTON_CONFIRM_FT_SIZE
+		BUTTON_CONFIRM_FTSIZE
 	);
 
 	Button_Pressable *button_deny = new Button_Pressable(
 		&confirm_no,
 		BUTTON_DENY,
 		{ (width / 2) + BUTTON_CONFIRM_XOFFSET - BUTTON_CONFIRM_W, (height / 2) - BUTTON_CONFIRM_YOFFSET, BUTTON_CONFIRM_W, BUTTON_CONFIRM_H },
-		BUTTON_CONFIRM_FT_SIZE
+		BUTTON_CONFIRM_FTSIZE
 	);
 
 	add_button(button_confirm);
@@ -260,7 +311,7 @@ void UIManager::pop_confirmation() {
 	remove_button(BUTTON_DENY);
 }
 
-int UIManager::select_placement() {
+int UIManager::select() {
 	if (_state == STATE_WAITING) {
 		return -1;
 	}
@@ -269,14 +320,14 @@ int UIManager::select_placement() {
 	}
 	int index = int((_mouse_x - _element_area.area.x) / ELEMENT_WIDTH) + int(((_mouse_y - _element_area.area.y) / ELEMENT_HEIGHT) * ELEMENT_ROW_SIZE);
 
-	if (index < 0 || index > (int)Environment::get().get_resource_manager()->get_surface_size(_placement.type) - 1) {
+	if (index < 0 || index > (int)Environment::get().get_resource_manager()->get_surface_size(_selection.type) - 1) {
 		return -1;
 	}
 
 	return index;
 }
 
-bool UIManager::place_element() {
+bool UIManager::place_on_map() {
 	if (_state == STATE_WAITING) {
 		return false;
 	}
@@ -290,12 +341,12 @@ bool UIManager::place_element() {
 
 	int index = int(x / TILE_WIDTH) + ((int(y / TILE_HEIGHT) * int(boundry.w / TILE_WIDTH)));
 
-	if (_placement.type == TYPE_TILE) {
-		Environment::get().get_resource_manager()->edit_map(index, _placement.id);
+	if (_selection.type == TYPE_TILE) {
+		Environment::get().get_resource_manager()->edit_map(index, _selection.id);
 		return true;
 	}
 
-	if (_placement.type == TYPE_SOLID) {
+	if (_selection.type == TYPE_SOLID) {
 		if(_mouse_button == MOUSE_LEFT)
 			Environment::get().get_resource_manager()->get_map()->add_solid(index);
 		else 
@@ -303,12 +354,12 @@ bool UIManager::place_element() {
 		return true;
 	}
 
-	if (_placement.type == TYPE_WARP) {
+	if (_selection.type == TYPE_WARP) {
 		place_warp();
 		return true;
 	}
 
-	if (_center_placement) {
+	if (_align_placement) {
 		int map_width = Environment::get().get_resource_manager()->get_map()->get_width();
 		x = (index % map_width) * TILE_WIDTH + (TILE_WIDTH / 2);
 		y = (index / map_width) * TILE_HEIGHT + (TILE_HEIGHT / 2);
@@ -318,8 +369,8 @@ bool UIManager::place_element() {
 		return false;
 	}
 
-	if (_placement.type == TYPE_OBJECT) {
-		Environment::get().get_resource_manager()->create(_placement.type, _placement.id, (float)x, (float)y);
+	if (_selection.type == TYPE_OBJECT || _selection.type == TYPE_ENEMY) {
+		Environment::get().get_resource_manager()->create(_selection.type, _selection.id, (float)x, (float)y);
 	}
 
 	return true;
@@ -412,7 +463,7 @@ SDL_Rect UIManager::place_warp_rect() {
 	return pos;
 }
 
-Element UIManager::select_element() {
+Element UIManager::select_from_map() {
 	int x, y;
 	calc_real_mouse_location(x, y);
 
@@ -440,30 +491,42 @@ Element UIManager::select_element() {
 	return { " " , -1 };
 }
 
-void UIManager::delete_element() {
-	if (_selection.id != -1) {
-		if (_selection.type == TYPE_WARP) {
-			Environment::get().get_resource_manager()->get_map()->remove_warp(_selection.id);
+void UIManager::delete_map_selection() {
+	if (_map_selection.id != -1) {
+		if (_map_selection.type == TYPE_WARP) {
+			Environment::get().get_resource_manager()->get_map()->remove_warp(_map_selection.id);
 		}
 		else {
-			Environment::get().get_resource_manager()->remove(_selection.type, _selection.id);
+			Environment::get().get_resource_manager()->remove(_map_selection.type, _map_selection.id);
 		}
 
-		_selection.id = -1;
-		_selection.type = " ";
+		_map_selection.id = -1;
+		_map_selection.type = " ";
 	}
 }
 
-void UIManager::set_placement_type(std::string type) {
-	_placement.type = type;
+void UIManager::set_selection_type(std::string type) {
+	if (type == _selection.type) {
+		return;
+	}
+
+	_last_selected_id[_selection.type] = _selection.id;
+	if (_last_selected_id.find(type) == _last_selected_id.end())
+		_selection.id = -1;
+	else
+		_selection.id = _last_selected_id[type];
+
+	_selection.type = type;
+	_selection_text.set_text(SELECTION_TEXT + type);
 }
 
-std::string UIManager::get_placement_type() {
-	return _placement.type;
+std::string UIManager::get_selection_type() {
+	return _selection.type;
 }
 
-void UIManager::toggle_center_placement() {
-	_center_placement = !_center_placement;
+void UIManager::toggle_alignment() {
+	_align_placement = !_align_placement;
+	_alignment_text.set_text(_align_placement ? ALIGNMENT_TEXT + std::string("On") : ALIGNMENT_TEXT + std::string("Off"));
 }
 
 void UIManager::calc_real_mouse_location(int &x, int &y) {

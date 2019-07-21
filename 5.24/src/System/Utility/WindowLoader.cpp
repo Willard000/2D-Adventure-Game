@@ -4,7 +4,7 @@
 
 #include "FileReader.h"
 
-#define BASE_FILE_PATH "Data/system.txt"
+#include "Globals.h"
 
 #define FILE_CONSOLE_X "iconsole_x"
 #define FILE_CONSOLE_Y "iconsole_y"
@@ -19,7 +19,6 @@
 #define FILE_WINDOW_H "iwindow_h"
 #define FILE_WINDOW_MODE "iwindow_mode"
 #define FILE_WINDOW_COLOR "window_color"
-#define FILE_CAMERA_SPEED "dcamera_speed"
 
 Window::Console_Settings load_console_settings(FileReader &file) {
 	Window::Console_Settings console;
@@ -56,7 +55,7 @@ Window::Window_Settings load_window_settings(FileReader &file) {
 }
 
 Window *load_window() {
-	FileReader file(BASE_FILE_PATH);
+	FileReader file(SYSTEM_FILE);
 	Window::Console_Settings console = load_console_settings(file);
 	Window::Window_Settings window = load_window_settings(file);
 

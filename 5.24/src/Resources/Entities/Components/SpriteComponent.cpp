@@ -56,6 +56,13 @@ void SpriteComponent::update(Sprite *img) {
 
 		dir_prev = dir;
 	}
+	else if (ani == IDLE) {
+		frame++;
+		if (frame < img->min_idle || frame > img->max_idle) {
+			frame = img->min_idle;
+		}
+		is_update = false;
+	}
 
 	ani_prev = ani;
 	ani = NULL;

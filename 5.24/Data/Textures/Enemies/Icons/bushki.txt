@@ -1,0 +1,4 @@
+# Bushki Icon
+stexture Data/Textures/Enemies/Icons/bushki.png
+iwidth 32
+iheight 32

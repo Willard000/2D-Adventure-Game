@@ -9,154 +9,124 @@
 #include "ResourceManager.h"
 #include "Clock.h"
 
-#include "Player.h"
-
-#include "Entity_Lua.h"
-
 #include "Collision.h"
 
 // spell_new
-static Entity *spell_new(lua_State *L) {
-	int id = (int)luaL_checknumber(L, -1);
-	return new Entity(TYPE_SPELL, id);
+// not implemented
+static SpellComponent *spell_new(lua_State *L) {
+	return nullptr;
 }
 
-// Spell:get_speed()
+// Entity Spell:get_entity()
+static int spell_get_entity(lua_State *L) {
+	SpellComponent *spell = luaW_check<SpellComponent>(L, -1);
+	luaW_push<Entity>(L, spell->entity);
+	return 1;
+}
+
+// float Spell:get_speed()
 static int spell_get_speed(lua_State *L) {
-	Entity *spell = luaW_check<Entity>(L, -1);
-	if (SpellComponent *spell_comp = GetSpell(spell)) {
-		lua_pushnumber(L, spell_comp->speed);
-		return 1;
-	}
-	Environment::get().get_log()->print("lua error - 'spell_get_speed()' doesnt have spell component");
-	return 0;
+	SpellComponent *spell = luaW_check<SpellComponent>(L, -1);
+	lua_pushnumber(L, spell->speed);
+	return 1;
 }
 
-// Spell:set_dx(float dx)
+// void Spell:set_dx(float dx)
 static int spell_set_dx(lua_State *L) {
-	Entity *spell = luaW_check<Entity>(L, -2);
+	SpellComponent *spell = luaW_check<SpellComponent>(L, -2);
 	float dx = (float)luaL_checknumber(L, -1);
-	if (SpellComponent *spell_comp = GetSpell(spell)) {
-		spell_comp->dx = dx;
-		return 0;
-	}
-	Environment::get().get_log()->print("lua error - 'spell_set_dx()' doesnt have spell component");
+	spell->dx = dx;
 	return 0;
 }
 
-// Spell:set_dy(float dy)
+// void Spell:set_dy(float dy)
 static int spell_set_dy(lua_State *L) {
-	Entity *spell = luaW_check<Entity>(L, -2);
+	SpellComponent *spell = luaW_check<SpellComponent>(L, -2);
 	float dy = (float)luaL_checknumber(L, -1);
-	if (SpellComponent *spell_comp = GetSpell(spell)) {
-		spell_comp->dy = dy;
-		return 0;
-	}
-	Environment::get().get_log()->print("lua error - 'spell_set_dy()' doesnt have spell component");
+	spell->dy = dy;
 	return 0;
 }
 
-// Spell:get_dx()
+// float Spell:get_dx()
 static int spell_get_dx(lua_State *L) {
-	Entity *spell = luaW_check<Entity>(L, -1);
-	if (SpellComponent *spell_comp = GetSpell(spell)) {
-		lua_pushnumber(L, spell_comp->dx);
-		return 1;
-	}
-
-	Environment::get().get_log()->print("lua error - 'spell_get_dx()' doesnt have spell component");
-	return 0;
+	SpellComponent *spell = luaW_check<SpellComponent>(L, -1);
+	lua_pushnumber(L, spell->dx);
+	return 1;
 }
 
-// Spell:get_dy()
+// float Spell:get_dy()
 static int spell_get_dy(lua_State *L) {
-	Entity *spell = luaW_check<Entity>(L, -1);
-	if (SpellComponent *spell_comp = GetSpell(spell)) {
-		lua_pushnumber(L, spell_comp->dy);
-		return 1;
-	}
-
-	Environment::get().get_log()->print("lua error - 'spell_get_dy()' doesnt have spell component");
-	return 0;
+	SpellComponent *spell = luaW_check<SpellComponent>(L, -1);
+	lua_pushnumber(L, spell->dy);
+	return 1;
 }
 
-// Spell:set_dis(float dis)
+// void Spell:set_dis(float dis)
 static int spell_set_dis(lua_State *L) {
-	Entity *spell = luaW_check<Entity>(L, -2);
+	SpellComponent *spell = luaW_check<SpellComponent>(L, -2);
 	float dis = (float)luaL_checknumber(L, -1);
-	if (SpellComponent *spell_comp = GetSpell(spell)) {
-		spell_comp->dis = dis;
-		return 0;
-	}
-	Environment::get().get_log()->print("lua error - 'spell_set_dis()' doesnt have spell component");
+	spell->dis = dis;
 	return 0;
 }
 
-// Spell:get_dis()
+// float Spell:get_dis()
 static int spell_get_dis(lua_State *L) {
-	Entity *spell = luaW_check<Entity>(L, -1);
-	if (SpellComponent *spell_comp = GetSpell(spell)) {
-		lua_pushnumber(L, spell_comp->dis);
-		return 1;
-	}
-
-	Environment::get().get_log()->print("lua error - 'spell_get_dis()' doesnt have spell component");
-	return 0;
+	SpellComponent *spell = luaW_check<SpellComponent>(L, -1);
+	lua_pushnumber(L, spell->dis);
+	return 1;
 }
 
-// Spell:get_max_dis()
+// float Spell:get_max_dis()
 static int spell_get_max_dis(lua_State *L) {
-	Entity *spell = luaW_check<Entity>(L, -1);
-	if (SpellComponent *spell_comp = GetSpell(spell)) {
-		lua_pushnumber(L, spell_comp->max_dis);
-		return 1;
-	}
-
-	Environment::get().get_log()->print("lua error - 'spell_get_max_dis()' doesnt have spell component");
-	return 0;
+	SpellComponent *spell = luaW_check<SpellComponent>(L, -1);
+	lua_pushnumber(L, spell->max_dis);
+	return 1;
 }
 
-// Spell:get_owner()
-static int spell_get_owner(lua_State *L) {
-	Entity *spell = luaW_check<Entity>(L, -1);
-	if (SpellComponent *spell_comp = GetSpell(spell)) {
-		luaW_push<Entity>(L, spell_comp->owner);
-		return 1;
-	}
-	Environment::get().get_log()->print("lua error - 'spell_get_owner()' doesnt have spell component");
-	return 0;
+// Entity Spell:get_caster()
+static int spell_get_caster(lua_State *L) {
+	SpellComponent *spell = luaW_check<SpellComponent>(L, -1);
+	luaW_push<Entity>(L, spell->caster);
+	return 1;
 }
 
-// Spell:move(float x, float y)
+// void Spell:move(float x, float y)
 static int spell_move(lua_State *L) {
-
-	Entity *spell = luaW_check<Entity>(L, -3);
+	SpellComponent *spell = luaW_check<SpellComponent>(L, -3);
 	float x = (float)luaL_checknumber(L, -2);
 	float y = (float)luaL_checknumber(L, -1);
 	float xdis = float(x * Environment::get().get_clock()->get_time());
 	float ydis = float(y * Environment::get().get_clock()->get_time());
 
-	SpellComponent *spell_comp = GetSpell(spell);
-	spell_comp->dis += abs(xdis) + abs(ydis);
+	spell->dis += abs(xdis) + abs(ydis);
 
-	if (PositionComponent *position = GetPosition(spell)) {
+	if (PositionComponent *position = GetPosition(spell->entity)) {
 		position->pos_x += xdis;
 		position->pos_y += ydis;
 		position->rect.x = (int)position->pos_x;
 		position->rect.y = (int)position->pos_y;
 		if (Environment::get().get_resource_manager()->get_map()->entity_collision(position->rect)) {
-			spell_comp->death();
+			spell->death();
 		}
 	}
 
 	return 0;
 }
 
-// Spell:death()
+// void Spell:death()
 static int spell_death(lua_State *L) {
-	Entity *spell = luaW_check<Entity>(L, -1);
-	if (SpellComponent *spell_comp = GetSpell(spell)) {
-		spell_comp->death();
+	SpellComponent *spell = luaW_check<SpellComponent>(L, -1);
+	spell->death();
+	return 0;
+}
+
+// void Spell:set_ani(int animation_type)
+// 3 - IDLE
+static int spell_set_ani(lua_State *L) {
+	SpellComponent *spell = luaW_check<SpellComponent>(L, -2);
+	int ani = (int)luaL_checknumber(L, -1);
+	if (SpriteComponent *sprite = GetSprite(spell->entity)) {
+		sprite->ani = ani;
 	}
 	return 0;
 }
@@ -166,31 +136,33 @@ static luaL_Reg spell_table[] = {
 };
 
 static luaL_Reg spell_metatable[] = {
-	{"get_x", entity_get_x},
-	{"get_y", entity_get_y},
-	{"get_w", entity_get_w},
-	{"get_h", entity_get_h},
-	{"set_x", entity_set_x},
-	{"set_y", entity_set_y},
-	{"scale", entity_scale},
-	{"set_scale", entity_set_scale},
-	{"rotate", entity_rotate},
-	{"set_rotation", entity_set_rotation},
-	{"get_speed", spell_get_speed},
-	{"set_dx", spell_set_dx},
-	{"set_dy", spell_set_dy},
-	{"get_dx", spell_get_dx},
-	{"get_dy", spell_get_dy},
-	{"get_dis", spell_get_dis},
-	{"get_max_dis", spell_get_max_dis},
-	{"set_dis", spell_set_dis},
-	{"get_owner", spell_get_owner},
-	{"destroy", entity_destroy},
+	// func
 	{"move", spell_move},
 	{"death", spell_death},
+
+	// set
+	{"set_dx", spell_set_dx},
+	{"set_dy", spell_set_dy},
+
+	{"set_ani", spell_set_ani},
+
+	{"get_set_dis", spell_set_dis},
+
+
+	// get
+	{"get_entity", spell_get_entity},
+	{"get_caster", spell_get_caster},
+	{"get_speed", spell_get_speed},
+
+	{"get_dx", spell_get_dx},
+	{"get_dy", spell_get_dy},
+
+	{"get_dis", spell_get_dis},
+	{"get_max_dis", spell_get_max_dis},
+
 	{NULL, NULL}
 };
 
 void lua_init_spell(Lua *lua, lua_State *L) {
-	luaW_register<Entity>(L, "Spell", spell_table, spell_metatable, spell_new);
+	luaW_register<SpellComponent>(L, "Spell", spell_table, spell_metatable, spell_new);
 }

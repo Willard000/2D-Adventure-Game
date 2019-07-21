@@ -9,7 +9,7 @@
 #include "SpriteComponent.h"
 
 EntityManager::EntityManager() :
-	_player			( new Player(1) )
+	_player		( new Entity(TYPE_PLAYER, 1) )
 {
 	Environment::get().get_log()->print("Loading Entity Manager");
 

@@ -18,6 +18,7 @@ struct Sprite : public Texture {
 		run			( 0 ),
 		cast		( 0 ),
 		special		( 0 ),
+		min_idle    ( 0 ),   max_idle    ( 0 ),
 		min_up		( 0 ),	 max_up		 ( 0 ),
 		min_down	( 0 ),	 max_down	 ( 0 ),
 		min_left	( 0 ),	 max_left	 ( 0 ),
@@ -37,6 +38,7 @@ struct Sprite : public Texture {
 	Uint8
 		idle, end,
 		run, cast, special,
+		min_idle, max_idle,
 		min_up, max_up,
 		min_down, max_down,
 		min_left, max_left,

@@ -11,8 +11,6 @@
 #ifndef TEXTURE_MANAGER_H
 #define TEXTURE_MANAGER_H
 
-extern const char *TEXTURE_BASE_PATH;
-
 namespace tmanager {
 	typedef std::string Type;
 	typedef int Key;
@@ -38,6 +36,7 @@ public:
 	Texture *&get_texture_info(const Type &type, const Key &key) { return _textures[type][key]; }
 	Texture *&get_texture_info(Entity *entity) { return _textures[entity->get_type()][entity->get_type_id()]; }
 	SDL_Surface *&get_surface_info(const Type &type, const Key &key) { return _surfaces[type][key]; }
+	Sprite *get_sprite_info(const Type &type, const Key &key) { return static_cast<Sprite *>(_textures[type][key]); }
     Sprite *get_sprite_info(Entity *entity) { return static_cast<Sprite *>(_textures[entity->get_type()][entity->get_type_id()]); }
 
 	unsigned int get_texture_size(const Type &type) { return _textures[type].size(); }
@@ -57,11 +56,9 @@ private:
 	Texture *_map_texture;
 	SDL_Surface *_map_surface;
 
-	SDL_Surface *_editor_tiles_surface;
 	Texture *_editor_tiles_texture;
-
-	SDL_Surface *_editor_objects_surface;
 	Texture *_editor_objects_texture;
+	Texture *_editor_enemies_texture;
 
 	Texture *_editor_line_background;
 };
