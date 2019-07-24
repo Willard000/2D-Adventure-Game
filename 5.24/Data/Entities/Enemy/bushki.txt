@@ -3,9 +3,10 @@
 Position
 iwidth 32
 iheight 32
+fspeed 100
 
 Sprite
-isprite_time 300
+isprite_time 150
 
 Enemy
 senemy_name Bushki

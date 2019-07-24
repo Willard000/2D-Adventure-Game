@@ -18,6 +18,10 @@ struct SpellComponent : public Component {
 
 	void cast();
 
+	void move(float x, float y);
+
+	bool is_collision();
+
 	void death();
 
 	Entity *caster;

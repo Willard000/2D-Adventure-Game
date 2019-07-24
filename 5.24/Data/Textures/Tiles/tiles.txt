@@ -42,3 +42,4 @@
 40 Data/Textures/Tiles/pebbles_water.png
 41 Data/Textures/Tiles/pebbles_water2.png
 42 Data/Textures/Tiles/pebbles_water3.png
+43 Data/Textures/Tiles/wood.png

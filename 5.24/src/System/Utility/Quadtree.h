@@ -63,7 +63,9 @@ public:
 		if (!_northeast) {
 			for (auto it = _objects.begin(); it != _objects.end(); ++it) {
 				if (collision(position, *(it->second))) {
-					return &(it->first);
+					if (position != *(it->second)) {
+						return &(it->first);
+					}
 				}
 			}
 			return nullptr;
@@ -85,7 +87,9 @@ public:
 		if (!_northeast) {
 			for (auto it = _objects.begin(); it != _objects.end(); ++it) {
 				if (collision(position, *(it->second))) {
-					return true;
+					if (position != *(it->second)) {
+						return true;
+					}
 				}
 			}
 			return false;
@@ -97,8 +101,6 @@ public:
 			_southeast->check_collision(position) ||
 			_southwest->check_collision(position);
 	}
-
-	void check_collisions(const SDL_Rect &position, std::vector<Tree_Object> &objects);
 
 	void clear() {
 		if (_northeast) {
@@ -119,37 +121,11 @@ public:
 		// re build tree???
 	}
 
-	void print() {
-		std::cout << "D: " << _depth << std::endl;
-		for (auto it = _objects.begin(); it != _objects.end(); ++it) {
-			//		std::cout << "E: " << (*it)->entity->get_id() << " " << (*it)->entity->get_type() << " " << (*it)->entity->get_type_id() << std::endl;
-			//		std::cout << it->second->x << " " << (*it)->y << " " << (*it)->w << " " << (*it)->h << std::endl;
-//			std::cout << it->first->from.x << " " << it->first->from.y << " " << it->first->from.w << " " << it->first->from.h << std::endl;
-		}
-
-		if (_northeast) {
-			std::cout << "North East: " << std::endl;
-			_northeast->print();
-		}
-		if (_northwest) {
-			std::cout << "North West: " << std::endl;
-			_northwest->print();
-		}
-		if (_southeast) {
-			std::cout << "South East: " << std::endl;
-			_southeast->print();
-		}
-		if (_southwest) {
-			std::cout << "South West: " << std::endl;
-			_southwest->print();
-		}
-	}
-
 	void draw(std::vector<std::pair<SDL_Rect *, SDL_Color>> &rects, SDL_Color color = { 200, 0, 0, 50 }) {
 		rects.push_back(std::pair<SDL_Rect *, SDL_Color>(&_rect, color));
 
 		for (auto it = _objects.begin(); it != _objects.end(); ++it) {
-			rects.push_back(std::pair<SDL_Rect *, SDL_Color>(it->second, { 0, 0, 255, 200 }));
+			rects.push_back(std::pair<SDL_Rect *, SDL_Color>(it->second, { 0, 0, 255, 100 }));
 		}
 
 		if (!_northeast)

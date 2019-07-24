@@ -3,6 +3,9 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+#include <cstdlib>
+#include <time.h>
+
 #include "Engine.h"
 #include "Editor.h"
 
@@ -14,6 +17,8 @@ int main(int args, char *argc[]) {
 	if (!TTF_Init()) {
 		std::cout << "SDL_TTF_LOADED" << std::endl;
 	}
+
+	srand(time(NULL));
 
 	int input = 0;
 	std::cin >> input;

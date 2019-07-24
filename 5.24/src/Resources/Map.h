@@ -7,11 +7,12 @@
 #include "Entity.h"
 #include "FileReader.h"
 #include "Quadtree.h"
+#include "Grid.h"
+
+#include "Globals.h"
 
 #ifndef MAP_H
 #define MAP_H
-
-#define TYPE_TILE "Tile"
 
 #define TILE_WIDTH 32
 #define TILE_HEIGHT 32
@@ -42,13 +43,24 @@ public:
 
 	Map();
 
+	void update();
+
 	bool load(int id);
 	void save();
 	bool create_new(int id, std::string name, int width, int height, int base_tile_id);
 
+	bool bound_collision(const SDL_Rect &pos);
 	bool solid_collision(const SDL_Rect &pos);
 	Warp *warp_collision(const SDL_Rect &pos);
-	Entity *entity_collision(const SDL_Rect &pos);
+	bool *entity_collision(Entity *entity);
+	Entity *get_entity_collision(Entity *entity);
+
+	void build_entity_grid();
+	void build_entity_tree();
+
+	Grid<Entity *> *get_entity_grid();
+
+	void remove_entity(Entity *entity, const SDL_Rect &pos);
 
 	void add_solid(int index);
 	void remove_solid(int index);
@@ -91,6 +103,7 @@ private:
 	QuadTree<Warp *> _warps_tree;
 
 	QuadTree<Entity *> _entities_tree;
+	Grid<Entity *> _entities_grid;
 
 	int _id;
 	int _width, _height;

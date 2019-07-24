@@ -5,6 +5,7 @@
 #include "SpriteComponent.h"
 
 #include "Environment.h"
+#include "Clock.h"
 #include "_Lua.h"
 #include "ResourceManager.h"
 
@@ -53,6 +54,47 @@ void SpellComponent::cast() {
 	lua_remove(L, -2);
 	luaW_push<SpellComponent>(L, this);
 	lua_pcall(L, 1, 0, 0);
+}
+
+void SpellComponent::move(float x, float y) {
+	float xdis = float(x * Environment::get().get_clock()->get_time());
+	float ydis = float(y * Environment::get().get_clock()->get_time());
+
+	dis += abs(xdis) + abs(ydis);
+
+	if (PositionComponent *position = GetPosition(entity)) {
+		position->pos_x += xdis;
+		position->pos_y += ydis;
+		position->rect.x = (int)position->pos_x;
+		position->rect.y = (int)position->pos_y;
+		if (is_collision()) {
+			death();
+		}
+	}
+}
+
+bool SpellComponent::is_collision() {
+	PositionComponent *position = GetPosition(entity);
+	if (!position)
+		return false;
+
+	std::vector<Entity *> *entities = Environment::get().get_resource_manager()->get_map()->get_entity_grid()->get_objs(position->rect);
+	if (!entities)
+		return false;
+
+	for (auto it = entities->begin(); it != entities->end(); ++it) {
+		if (*it != caster) {
+			const int &type = (*it)->get_type();
+			if (type == TYPE_OBJECT ||
+				type == TYPE_ENEMY ||
+				type == TYPE_PLAYER) {
+				if (collision(position->rect, GetPosition((*it))->rect))
+					return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 void SpellComponent::death() {

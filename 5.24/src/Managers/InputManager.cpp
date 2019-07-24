@@ -196,7 +196,7 @@ void InputManager::update_editor() {
 	}
 
 	if (!clicked_button && Environment::get().get_ui_manager()->get_state() != UI::STATE_WAITING) {
-		std::string type = Environment::get().get_ui_manager()->get_selection_type();
+		int type = Environment::get().get_ui_manager()->get_selection_type();
 		if ((type == TYPE_TILE || type == TYPE_SOLID) && is_mouse_held(SDL_BUTTON_LEFT)) {
 			Environment::get().get_ui_manager()->check_selection(MOUSE_LEFT);
 		}

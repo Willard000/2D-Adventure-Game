@@ -5,6 +5,8 @@
 
 #include "PositionComponent.h"
 
+#include "Collision.h"
+
 PlayerComponent::PlayerComponent(Entity *entity_) :
 	Component		 ( entity_ )
 {}
@@ -19,4 +21,25 @@ void PlayerComponent::update() {
 				Environment::get().get_resource_manager()->load_map(warp->to_id);
 		}
 	}
+}
+
+bool PlayerComponent::is_collision() {
+	PositionComponent *position = GetPosition(entity);
+	if (!position)
+		return false;
+
+	std::vector<Entity *> *entities = Environment::get().get_resource_manager()->get_map()->get_entity_grid()->get_objs(position->rect);
+	if (!entities)
+		return false;
+
+	for (auto it = entities->begin(); it != entities->end(); ++it) {
+		const int &type = (*it)->get_type();
+		if ( type == TYPE_OBJECT ||
+			 type == TYPE_ENEMY) {
+			if (collision(position->rect, GetPosition((*it))->rect))
+				return true;
+		}
+	}
+
+	return false;
 }

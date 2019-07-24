@@ -26,6 +26,7 @@ ResourceManager::~ResourceManager() {
 void ResourceManager::update() {
 	EntityManager::update();
 	Environment::get().get_window()->get_camera()->update(); // move this
+	_map->update();
 }
 
 void ResourceManager::render_entities() {
@@ -58,7 +59,7 @@ void ResourceManager::render_map() {
 	Environment::get().get_window()->get_renderer()->render(_map_texture, _map->_rect);
 }
 
-void ResourceManager::render_editor(const UI::Element_Area &element_area, const UI::Element &placement) {
+void ResourceManager::render_editor(const UI::Element_Area &element_area, const UI::Element &selection) {
 	Renderer *renderer = Environment::get().get_window()->get_renderer();
 
 	for (auto it = _map->_solids.begin(); it != _map->_solids.end(); ++it) {
@@ -73,19 +74,21 @@ void ResourceManager::render_editor(const UI::Element_Area &element_area, const 
 
 	renderer->draw_rect(element_area.background, element_area.color);
 
-	if (placement.type == TYPE_TILE)
+	if (selection.type == TYPE_TILE)
 		renderer->render(_editor_tiles_texture, element_area.area, true);
-	else if (placement.type == TYPE_OBJECT)
+	else if (selection.type == TYPE_OBJECT)
 		renderer->render(_editor_objects_texture, element_area.area, true);
-	else if (placement.type == TYPE_ENEMY) 
+	else if (selection.type == TYPE_ENEMY)
 		renderer->render(_editor_enemies_texture, element_area.area, true);
+	else if (selection.type == TYPE_EFFECT)
+		renderer->render(_editor_effects_texture, element_area.area, true);
 
-	if (placement.id != -1) {
-		if (placement.type == TYPE_ENEMY) {
-			renderer->render(get_texture_info(placement.type + TYPE_EX_ICON, placement.id), element_area.info, true);
+	if (selection.id != -1) {
+		if (selection.type == TYPE_ENEMY || selection.type == TYPE_EFFECT) {
+			renderer->render(get_texture_info(selection.type + TYPE_EX_ICON, selection.id), element_area.info, true);
 		}
 		else {
-			renderer->render(get_texture_info(placement.type, placement.id), element_area.info, true);
+			renderer->render(get_texture_info(selection.type, selection.id), element_area.info, true);
 		}
 	}
 }

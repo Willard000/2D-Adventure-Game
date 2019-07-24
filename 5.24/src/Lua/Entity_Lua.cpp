@@ -12,7 +12,7 @@
 #include "Log.h"
 
 static Entity *entity_new(lua_State *L) {
-	const char *type = luaL_checkstring(L, -2);
+	int type = (int)luaL_checknumber(L, -2);
 	int id = (int)luaL_checknumber(L, -1);
 	return new Entity(type, id);
 }

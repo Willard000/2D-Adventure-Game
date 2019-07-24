@@ -1,7 +1,10 @@
 # Textures
-Player Data/Textures/Player/player.txt
-Object Data/Textures/Objects/objects.txt
-Tile Data/Textures/Tiles/tiles.txt
-Spell Data/Textures/Spells/spells.txt
-Enemy Data/Textures/Enemies/enemies.txt
-Enemy_Icon Data/Textures/Enemies/Icons/icons.txt
+0 Data/Textures/Tiles/tiles.txt
+1 Data/Textures/Player/player.txt
+2 Data/Textures/Objects/objects.txt
+3 Data/Textures/Spells/spells.txt
+4 Data/Textures/Enemies/enemies.txt
+5 Data/Textures/Effects/effects.txt
+
+1004 Data/Textures/Enemies/Icons/icons.txt
+1005 Data/Textures/Effects/Icons/icons.txt

@@ -7,6 +7,8 @@ struct PlayerComponent : public Component {
 	PlayerComponent(Entity *entity_);
 
 	virtual void update();
+
+	bool is_collision();
 };
 
 #endif

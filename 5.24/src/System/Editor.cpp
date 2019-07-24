@@ -20,6 +20,7 @@
 #define BUTTON_TILES_POSITION {1245, 0, 100, 25}
 #define BUTTON_OBJECTS_POSITION {1245, 25, 100, 25}
 #define BUTTON_ENEMIES_POSITION {1245, 50, 100, 25}
+#define BUTTON_EFFECTS_POSITION {1245, 75, 100, 25}
 
 #define BUTTON_SELECT_FREE {600, 0, 100, 25}
 #define BUTTON_ALIGN_PLACEMENT {700, 0, 100, 25}
@@ -99,12 +100,13 @@ void Editor::load_buttons() {
 	ui_manager->add_button(new UI::Button_Pressable(&UI::button_load_map, "Load", BUTTON_LOAD_POSITION));
 
 	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_tiles, "Tiles", BUTTON_TILES_POSITION));
-	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_solids, "Solids", BUTTON_SOLIDS_POSITION));
 	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_objects, "Objects", BUTTON_OBJECTS_POSITION));
 	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_enemies, "Enemies", BUTTON_ENEMIES_POSITION));
-	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_warps, "Warps", BUTTON_WARPS_POSITION));
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_effects, "Effects", BUTTON_EFFECTS_POSITION));
+
 
 	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_free, "Select", BUTTON_SELECT_FREE));
-
 	ui_manager->add_button(new UI::Button_Pressable(&UI::button_align_placement, "Align", BUTTON_ALIGN_PLACEMENT));
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_solids, "Solids", BUTTON_SOLIDS_POSITION));
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_warps, "Warps", BUTTON_WARPS_POSITION));
 }

@@ -20,12 +20,12 @@ struct SpriteComponent : public Component {
 	void update(Sprite *img);
 
 	Uint8
-		frame = 0, 
-		ani = 0, ani_prev = 0, 
-		dir = 0, dir_prev = 0;
+		frame,
+		ani, ani_prev, 
+		dir, dir_prev;
 
-	SDL_Rect pos = { 0, 0, 32, 32 };
-	bool is_update = false;
+	SDL_Rect pos;
+	bool is_update;
 	Timer time;
 };
 

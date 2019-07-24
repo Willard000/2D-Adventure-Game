@@ -1,0 +1,13 @@
+# Ripple
+
+Position
+iwidth 32
+iheight 32
+
+Sprite
+isprite_time 225
+
+Effect
+seffect_name Ripple
+seffect_script Data/Lua/Effects/ripple.lua
+ieffect_rand_time_offset_range 10

@@ -12,6 +12,7 @@
 #include "MagicComponent.h"
 #include "PlayerComponent.h"
 #include "EnemyComponent.h"
+#include "EffectComponent.h"
 
 #include "Environment.h"
 #include "Log.h"
@@ -24,6 +25,7 @@
 #define FILE_MAGIC_COMPONENT "Magic"
 #define FILE_PLAYER_COMPONENT "Player"
 #define FILE_ENEMY_COMPONENT "Enemy"
+#define FILE_EFFECT_COMPONENT "Effect"
 
 #define FILE_POSITION_WIDTH "iwidth"
 #define FILE_POSITION_HEIGHT "iheight"
@@ -44,6 +46,10 @@
 
 #define FILE_ENEMY_NAME "senemy_name"
 #define FILE_ENEMY_SCRIPT "senemy_script"
+
+#define FILE_EFFECT_NAME "seffect_name"
+#define FILE_EFFECT_SCRIPT "seffect_script"
+#define FILE_EFFECT_RAND_TIME_OFFSET_RANGE "ieffect_rand_time_offset_range"
 
 void load_position(FileReader &file, Entity *entity, PositionComponent *&position) {
 	int w = 32, h = 32;
@@ -106,6 +112,18 @@ void load_enemy(FileReader &file, Entity *entity, EnemyComponent *&enemy) {
 	enemy = new EnemyComponent(entity, name, script);
 }
 
+void load_effect(FileReader &file, Entity *entity, EffectComponent *&effect) {
+	std::string name = " ";
+	std::string script = " ";
+	int rand_time_offset_range = 0;
+
+	if (file.exists(FILE_EFFECT_NAME)) name = file.get_string(FILE_EFFECT_NAME);
+	if (file.exists(FILE_EFFECT_SCRIPT)) script = file.get_string(FILE_EFFECT_SCRIPT);
+	if (file.exists(FILE_EFFECT_RAND_TIME_OFFSET_RANGE)) rand_time_offset_range = file.get_int(FILE_EFFECT_RAND_TIME_OFFSET_RANGE);
+
+	effect = new EffectComponent(entity, name, script, rand_time_offset_range);
+}
+
 bool load_components(Entity *entity) {
 	/*
 	Environment::get().get_log()->print(
@@ -116,7 +134,7 @@ bool load_components(Entity *entity) {
 	);
 	*/
 
-	std::string locate_file_path = ENTITY_FOLDER + entity->get_type() + "/" + entity->get_type() + ".txt";
+	std::string locate_file_path = ENTITY_FOLDER + STYPE(entity->get_type()) + "/" + STYPE(entity->get_type()) + ".txt";
 	FileReader locate_file(locate_file_path.c_str());
 	std::string entity_type_id = std::to_string(entity->get_type_id());
 
@@ -179,6 +197,13 @@ bool load_components(Entity *entity) {
 		EnemyComponent *enemy = nullptr;
 		load_enemy(file, entity, enemy);
 		entity->add_component(enemy);
+		numComponents++;
+	}
+
+	if (file.exists(FILE_EFFECT_COMPONENT)) {
+		EffectComponent *effect = nullptr;
+		load_effect(file, entity, effect);
+		entity->add_component(effect);
 		numComponents++;
 	}
 

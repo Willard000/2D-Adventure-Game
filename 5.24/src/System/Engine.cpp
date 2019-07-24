@@ -10,8 +10,10 @@
 
 #include "WindowLoader.h"
 
+#include "Grid.h"
+
 Engine::Engine() :
-	_isRunning		( true )
+	_isRunning		(true)
 {
 	build_environment();
 

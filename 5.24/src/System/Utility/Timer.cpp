@@ -33,3 +33,7 @@ bool Timer::update() {
 	}
 	return false;
 }
+
+int Timer::get_time() {
+	return _time;
+}

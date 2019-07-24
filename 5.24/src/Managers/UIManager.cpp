@@ -58,7 +58,7 @@ SDL_Rect get_mouse_rect(const int &x, const int &y) {
 bool element_collision(const int &x, const int &y) {
 	SDL_Rect placement = get_mouse_rect(x, y);
 
-	std::map<std::string, EntityManager::Entity_Map> *entities = Environment::get().get_resource_manager()->get_entities();
+	std::map<int, EntityManager::Entity_Map> *entities = Environment::get().get_resource_manager()->get_entities();
 	for (auto it = entities->begin(); it != entities->end(); ++it) {
 		for (auto itt = it->second.begin(); itt != it->second.end(); ++itt) {
 			if (PositionComponent *position = GetPosition(itt->second)) {
@@ -91,7 +91,7 @@ UIManager::UIManager() :
 						   	  Environment::get().get_window()->get_width_half(),
 							  Environment::get().get_window()->get_height_half() - CURRENT_TEXT_YOFFSET ),
 	_alignment_text			( ALIGNMENT_TEXT + std::string("On"), INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, ALIGNMENT_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET ),
-	_selection_text         ( SELECTION_TEXT + std::string(TYPE_TILE), INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, SELECTION_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET )
+	_selection_text         ( SELECTION_TEXT + STYPE(TYPE_TILE), INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, SELECTION_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET )
 {
 	Environment::get().get_log()->print("Loading UI Manager");
 }
@@ -222,7 +222,7 @@ bool UIManager::check_selection(int mouse_button) {
 		return true;
 	}
 
-	if (_state = STATE_SELECTING) {
+	if (_state == STATE_SELECTING) {
 		_map_selection = select_from_map();
 		return true;
 	}
@@ -240,7 +240,7 @@ void UIManager::render() {
 		int x, y;
 		calc_real_mouse_location(x, y);
 		Texture *img = nullptr;
-		if(_selection.type == TYPE_ENEMY)
+		if(_selection.type == TYPE_ENEMY || _selection.type == TYPE_EFFECT)
 			img = Environment::get().get_resource_manager()->get_texture_info(_selection.type + TYPE_EX_ICON, _selection.id);
 		else
 			img = Environment::get().get_resource_manager()->get_texture_info(_selection.type, _selection.id);
@@ -369,7 +369,7 @@ bool UIManager::place_on_map() {
 		return false;
 	}
 
-	if (_selection.type == TYPE_OBJECT || _selection.type == TYPE_ENEMY) {
+	if (_selection.type == TYPE_OBJECT || _selection.type == TYPE_ENEMY || _selection.type == TYPE_EFFECT) {
 		Environment::get().get_resource_manager()->create(_selection.type, _selection.id, (float)x, (float)y);
 	}
 
@@ -467,7 +467,7 @@ Element UIManager::select_from_map() {
 	int x, y;
 	calc_real_mouse_location(x, y);
 
-	std::map<std::string, EntityManager::Entity_Map> *entities = Environment::get().get_resource_manager()->get_entities();
+	std::map<int, EntityManager::Entity_Map> *entities = Environment::get().get_resource_manager()->get_entities();
 	SDL_Rect mouse = get_mouse_rect((int)x, (int)y);
 
 	for (auto it = entities->begin(); it != entities->end(); ++it) {
@@ -488,7 +488,7 @@ Element UIManager::select_from_map() {
 		}
 	}
 
-	return { " " , -1 };
+	return { 0 , -1 };
 }
 
 void UIManager::delete_map_selection() {
@@ -501,11 +501,11 @@ void UIManager::delete_map_selection() {
 		}
 
 		_map_selection.id = -1;
-		_map_selection.type = " ";
+		_map_selection.type = 0;
 	}
 }
 
-void UIManager::set_selection_type(std::string type) {
+void UIManager::set_selection_type(Type type) {
 	if (type == _selection.type) {
 		return;
 	}
@@ -517,10 +517,10 @@ void UIManager::set_selection_type(std::string type) {
 		_selection.id = _last_selected_id[type];
 
 	_selection.type = type;
-	_selection_text.set_text(SELECTION_TEXT + type);
+	_selection_text.set_text(SELECTION_TEXT + STYPE(type));
 }
 
-std::string UIManager::get_selection_type() {
+Type UIManager::get_selection_type() {
 	return _selection.type;
 }
 

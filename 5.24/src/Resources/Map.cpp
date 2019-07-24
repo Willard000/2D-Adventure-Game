@@ -15,6 +15,9 @@
 
 #include "Collision.h"
 
+#define CELL_WIDTH 200
+#define CELL_HEIGHT 200
+
 #define FILE_MAP_WIDTH "iwidth"
 #define FILE_MAP_HEIGHT "iheight"
 #define FILE_MAP_TILES "Tiles"
@@ -33,7 +36,7 @@
 #define FILE_WARP_TO_W "ito_w"
 #define FILE_WARP_TO_H "ito_h"
 
-#define FILE_ENTITY_TYPE "stype"
+#define FILE_ENTITY_TYPE "itype"
 #define FILE_ENTITY_TYPE_ID "itype_id"
 #define FILE_ENTITY_POSITION_X "fposition_x"
 #define FILE_ENTITY_POSITION_Y "fposition_y"
@@ -45,7 +48,7 @@
 
 #define SOLID_TREE_CAPACITY 4
 #define WARP_TREE_CAPACITY 2
-#define ENTITY_TREE_CAPACITY 3
+#define ENTITY_TREE_CAPACITY 2
 
 const char *MAP_BASE_PATH = "Data/Maps/";
 
@@ -61,6 +64,11 @@ Map::Map() :
 	_entities_tree	( { 0, 0, 0, 0 }, ENTITY_TREE_CAPACITY )
 {}
 
+void Map::update() {
+	build_entity_grid();
+	//build_entity_tree();
+}
+
 bool Map::load(int id) {
 	Environment::get().get_log()->print("Loading map - " + std::to_string(id));
 	std::string path = get_path(id);
@@ -72,7 +80,7 @@ bool Map::load(int id) {
 		return false;
 	}
 
-	if (_id != 0) {
+	if (Environment::get().get_mode() == MODE_EDITOR && _id != 0) {
 		save(); // save current map
 	}
 
@@ -99,6 +107,9 @@ bool Map::load(int id) {
 	_id = id;
 
 	Environment::get().get_resource_manager()->clear_spells();
+
+	//grid
+	_entities_grid.resize(CELL_WIDTH, CELL_HEIGHT, (int)ceil((double)_rect.w / (double)CELL_WIDTH), (int)ceil((double)_rect.h / (double)CELL_HEIGHT));
 
 	load_tiles(file);
 	load_solids(file);
@@ -205,6 +216,13 @@ bool Map::create_new(int id, std::string name, int width, int height, int base_t
 	return true;
 }
 
+bool Map::bound_collision(const SDL_Rect &pos) {
+	if (pos.x < 0 || pos.y < 0 || pos.x > (_rect.w - pos.w) || pos.y > (_rect.h - pos.h))
+		return true;
+
+	return false;
+}
+
 bool Map::solid_collision(const SDL_Rect &pos) {
 	return  _solids_tree.check_collision(pos);
 }
@@ -216,11 +234,44 @@ Map::Warp *Map::warp_collision(const SDL_Rect &pos) {
 	return nullptr;
 }
 
-Entity *Map::entity_collision(const SDL_Rect &pos) {
-	if (Entity **entity = _entities_tree.get_first_collision(pos))
-		return *entity;
-
+bool *Map::entity_collision(Entity *entity) {
 	return nullptr;
+}
+
+void Map::build_entity_grid() {
+	_entities_grid.clear();
+	std::map<int, EntityManager::Entity_Map> *entities = Environment::get().get_resource_manager()->get_entities();
+	for (auto it = entities->begin(); it != entities->end(); ++it) {
+		if (it->first != TYPE_EFFECT) {
+			for (auto itt = it->second.begin(); itt != it->second.end(); ++itt) {
+				if (PositionComponent *position = GetPosition(itt->second)) {
+					_entities_grid.insert(position->rect.x, position->rect.y, itt->second);
+				}
+			}
+		}
+	}
+}
+
+void Map::build_entity_tree() {
+	_entities_tree.clear();
+	std::map<int, EntityManager::Entity_Map> *entities = Environment::get().get_resource_manager()->get_entities();
+	for (auto it = entities->begin(); it != entities->end(); ++it) {
+		if (it->first != TYPE_EFFECT) {
+			for (auto itt = it->second.begin(); itt != it->second.end(); ++itt) {
+				if (PositionComponent *position = GetPosition(itt->second)) {
+					_entities_tree.insert(itt->second, &position->rect);
+				}
+			}
+		}
+	}
+}
+
+Grid<Entity *> *Map::get_entity_grid() {
+	return &_entities_grid;
+}
+
+void Map::remove_entity(Entity *entity, const SDL_Rect &pos) {
+	_entities_grid.remove(pos.x, pos.y, entity);
 }
 
 void Map::add_solid(int index) {
@@ -320,7 +371,6 @@ void Map::load_solids(FileReader &file) {
 		return;
 	}
 
-
 	_solids.clear();
 	_solids_tree.clear();
 	_solids_tree.set_new_rect({ 0, 0, _rect.w, _rect.h });
@@ -382,12 +432,10 @@ void Map::load_entities(FileReader &file) {
 	}
 
 	Environment::get().get_resource_manager()->clear_entities();
-	_entities_tree.clear();
-	_entities_tree.set_new_rect({ 0, 0, _rect.w, _rect.h });
 
 	std::stringstream stream(file.get_string(FILE_MAP_ENTITIES));
 	std::string key, data;
-	std::string type = "Object";
+	int type = 0;
 	int type_id = 0;
 	float position_x = 0, position_y = 0;
 	while ((stream >> key)) {
@@ -395,13 +443,12 @@ void Map::load_entities(FileReader &file) {
 			Entity *entity = new Entity(type, type_id);
 			if (PositionComponent *position = GetPosition(entity)) {
 				position->set(position_x, position_y);
-				_entities_tree.insert(entity, &position->rect);
 			}
 			Environment::get().get_resource_manager()->add(entity);
 		}
 		else {
 			stream >> data;
-			if (key == FILE_ENTITY_TYPE) type = data;
+			if (key == FILE_ENTITY_TYPE) type = std::stoi(data);
 			else if (key == FILE_ENTITY_TYPE_ID) type_id = std::stoi(data);
 			else if (key == FILE_ENTITY_POSITION_X) position_x = std::stof(data);
 			else if (key == FILE_ENTITY_POSITION_Y) position_y = std::stof(data);
@@ -411,7 +458,7 @@ void Map::load_entities(FileReader &file) {
 
 void Map::save_entities(std::ostream &file) {
 	file << FILE_MAP_ENTITIES << " ";
-	std::map<std::string, EntityManager::Entity_Map> *entities = Environment::get().get_resource_manager()->get_entities();
+	std::map<int, EntityManager::Entity_Map> *entities = Environment::get().get_resource_manager()->get_entities();
 	for (auto it = entities->begin(); it != entities->end() && it->first != TYPE_SPELL; ++it) {
 		for (auto itt = it->second.begin(); itt != it->second.end(); ++itt) {
 			file << FILE_ENTITY_TYPE << " " << itt->second->get_type() << " "
@@ -446,12 +493,22 @@ void Map::draw_solids() {
 	}
 }
 
-
 void Map::test() {
+	// Q Trees
+	/*
 	std::vector<std::pair<SDL_Rect *, SDL_Color>> rects;
 	//_warps_tree.draw(rects);
-	_solids_tree.draw(rects);
+	//_solids_tree.draw(rects);
+	_entities_tree.draw(rects);
 	for (auto it = rects.begin(); it != rects.end(); ++it) {
 		Environment::get().get_window()->get_renderer()->draw_rect(*(it->first), it->second, DRAW_RECT_CAMERA);
+	}
+	*/
+
+	// Grid
+	std::vector<std::pair<SDL_Rect, SDL_Color>> rects;
+	_entities_grid.draw(rects);
+	for (auto it = rects.begin(); it != rects.end(); ++it) {
+		Environment::get().get_window()->get_renderer()->draw_rect(it->first, it->second, DRAW_RECT_CAMERA);
 	}
 }

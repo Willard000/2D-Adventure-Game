@@ -3,6 +3,7 @@
 #include "ComponentLoader.h"
 
 #include "PositionComponent.h"
+#include "PlayerComponent.h"
 
 int create_id() {
 	static int id = 0;
@@ -11,13 +12,13 @@ int create_id() {
 
 Entity::Entity() :
 	_id				( create_id() ),
-	_type			( " " ),
+	_type			( 0 ),
 	_type_id		( -1 ),
 	_is_destroyed	( false ),
 	_is_loaded		( false )
 {}
 
-Entity::Entity(std::string type, int type_id) :
+Entity::Entity(int type, int type_id) :
 	_id					( create_id() ),
 	_type				( type ),
 	_type_id			( type_id ),
@@ -57,6 +58,15 @@ void Entity::update() {
 			it->second->update();
 		}
 	}
+}
+
+bool Entity::is_collision() {
+	switch (_type) {
+	case TYPE_PLAYER:
+		return GetPlayer(this)->is_collision();
+	}
+
+	return false;
 }
 
 void Entity::clear() {

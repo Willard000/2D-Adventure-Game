@@ -95,21 +95,7 @@ static int spell_move(lua_State *L) {
 	SpellComponent *spell = luaW_check<SpellComponent>(L, -3);
 	float x = (float)luaL_checknumber(L, -2);
 	float y = (float)luaL_checknumber(L, -1);
-	float xdis = float(x * Environment::get().get_clock()->get_time());
-	float ydis = float(y * Environment::get().get_clock()->get_time());
-
-	spell->dis += abs(xdis) + abs(ydis);
-
-	if (PositionComponent *position = GetPosition(spell->entity)) {
-		position->pos_x += xdis;
-		position->pos_y += ydis;
-		position->rect.x = (int)position->pos_x;
-		position->rect.y = (int)position->pos_y;
-		if (Environment::get().get_resource_manager()->get_map()->entity_collision(position->rect)) {
-			spell->death();
-		}
-	}
-
+	spell->move(x, y);
 	return 0;
 }
 

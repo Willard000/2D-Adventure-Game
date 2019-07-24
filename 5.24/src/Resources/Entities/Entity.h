@@ -4,13 +4,10 @@
 
 #include "Component.h"
 
+#include "Globals.h"
+
 #ifndef ENITTY_H
 #define ENITTY_H
-
-#define TYPE_PLAYER "Player"
-#define TYPE_OBJECT "Object"
-#define TYPE_SPELL "Spell"
-#define TYPE_ENEMY "Enemy"
 
 #define GetPosition(entity) static_cast<PositionComponent *>(entity->get_component(typeid(PositionComponent)))
 #define GetSprite(entity) static_cast<SpriteComponent *>(entity->get_component(typeid(SpriteComponent)))
@@ -18,11 +15,12 @@
 #define GetEnemy(entity) static_cast<EnemyComponent *>(entity->get_component(typeid(EnemyComponent)))
 #define GetSpell(entity) static_cast<SpellComponent *>(entity->get_component(typeid(SpellComponent)))
 #define GetMagic(entity) static_cast<MagicComponent *>(entity->get_component(typeid(MagicComponent)))
+#define GetEffect(entity) static_cast<EffectComponent *>(entity->get_component(typeid(EffectComponent)))
 
 class Entity {
 public:
 	Entity();
-	Entity(std::string type, int type_id);
+	Entity(int type, int type_id);
 	Entity(const Entity &rhs);
 	Entity &operator=(const Entity &rhs);
 	~Entity();
@@ -34,11 +32,13 @@ public:
 
 	virtual void update();
 
+	virtual bool is_collision();
+
 	void clear();
 
 	int get_id() { return _id; }
 
-	std::string get_type() { return _type; }
+	int get_type() const { return _type; }
 	int get_type_id() { return _type_id; }
 
 	bool get_is_destroyed() { return _is_destroyed; }
@@ -48,7 +48,7 @@ public:
 private:
 	int _id; // unique id
 
-	std::string _type;
+	int _type;
 	int _type_id;
 
 	bool _is_destroyed;

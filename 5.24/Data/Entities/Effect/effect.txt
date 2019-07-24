@@ -1,0 +1,2 @@
+# Effects
+0 Data/Entities/Effect/ripple.txt

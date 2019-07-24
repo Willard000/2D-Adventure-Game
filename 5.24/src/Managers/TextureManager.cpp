@@ -35,49 +35,31 @@
 TextureManager::TextureManager() :
 	_map_texture				( new Texture() ),
 	_map_surface				( nullptr ),
-	_editor_tiles_texture	    ( new Texture() ),
-	_editor_objects_texture		( new Texture() ),
-	_editor_enemies_texture     ( new Texture() ),
-	_editor_line_background		( new Texture() )
+	_editor_tiles_texture	    ( nullptr ),
+	_editor_objects_texture		( nullptr ),
+	_editor_enemies_texture     ( nullptr ),
+	_editor_effects_texture		( nullptr ),
+	_editor_line_background		( nullptr )
 {
 	Environment::get().get_log()->print("Loading Texture Manager");
 
 	Environment::get().get_log()->print("Loading Textures");
 	FileReader texture_file(TEXTURE_FILE);
 	for (freader::iterator it = texture_file.begin(); it != texture_file.end(); ++it) {
-		load_textures(it->first, it->second);
+		Environment::get().get_log()->print("Texture Type & Path: " + it->first + " " + it->second);
+		load_textures(stoi(it->first), it->second);
 	}
 	Environment::get().get_log()->print("Finished loading Textures");
 
 	Environment::get().get_log()->print("Loading Surfaces");
 	FileReader surface_file(SURFACE_FILE);
 	for (freader::iterator it = surface_file.begin(); it != surface_file.end(); ++it) {
-		load_surfaces(it->first, it->second);
+		load_surfaces(stoi(it->first), it->second);
 	}
 	Environment::get().get_log()->print("Finished loading Surfaces");
 
-	if (Environment::get().get_mode() == MODE_EDITOR) {
-		_editor_tiles_texture->texture = Environment::get().get_window()->get_renderer()->make_blit_texture(
-			_surfaces[TYPE_TILE],
-			ELEMENT_AREA_WIDTH,
-			Environment::get().get_window()->get_height(),
-			TILE_WIDTH
-		);
-
-		_editor_objects_texture->texture = Environment::get().get_window()->get_renderer()->make_blit_texture(
-			_surfaces[TYPE_OBJECT],
-			ELEMENT_AREA_WIDTH,
-			Environment::get().get_window()->get_height(),
-			TILE_WIDTH
-		);
-
-		_editor_enemies_texture->texture = Environment::get().get_window()->get_renderer()->make_blit_texture(
-			_surfaces[TYPE_ENEMY],
-			ELEMENT_AREA_WIDTH,
-			Environment::get().get_window()->get_height(),
-			TILE_WIDTH
-		);
-	}
+	if (Environment::get().get_mode() == MODE_EDITOR)
+		load_editor_textures();
 }
 
 TextureManager::~TextureManager() {
@@ -249,4 +231,40 @@ SDL_Texture *TextureManager::make_editor_line_background(const int &width, const
 	SDL_SetSurfaceAlphaMod(surface, color.a);
 
 	return SDL_CreateTextureFromSurface(Environment::get().get_window()->get_renderer()->get_renderer(), surface);
+}
+
+void TextureManager::load_editor_textures() {
+	_editor_line_background = new Texture();
+
+	_editor_tiles_texture = new Texture();
+	_editor_tiles_texture->texture = Environment::get().get_window()->get_renderer()->make_blit_texture(
+		_surfaces[TYPE_TILE],
+		ELEMENT_AREA_WIDTH,
+		Environment::get().get_window()->get_height(),
+		TILE_WIDTH
+	);
+
+	_editor_objects_texture = new Texture();
+	_editor_objects_texture->texture = Environment::get().get_window()->get_renderer()->make_blit_texture(
+		_surfaces[TYPE_OBJECT],
+		ELEMENT_AREA_WIDTH,
+		Environment::get().get_window()->get_height(),
+		TILE_WIDTH
+	);
+
+	_editor_enemies_texture = new Texture();
+	_editor_enemies_texture->texture = Environment::get().get_window()->get_renderer()->make_blit_texture(
+		_surfaces[TYPE_ENEMY],
+		ELEMENT_AREA_WIDTH,
+		Environment::get().get_window()->get_height(),
+		TILE_WIDTH
+	);
+
+	_editor_effects_texture = new Texture();
+	_editor_effects_texture->texture = Environment::get().get_window()->get_renderer()->make_blit_texture(
+		_surfaces[TYPE_EFFECT],
+		ELEMENT_AREA_WIDTH,
+		Environment::get().get_window()->get_height(),
+		TILE_WIDTH
+	);
 }

@@ -14,4 +14,12 @@ inline bool collision(const SDL_Rect &a, const SDL_Rect &b) {
 	return true;
 }
 
+inline bool operator!=(const SDL_Rect &a, const SDL_Rect &b) {
+	return a.x != b.x || a.y != b.y || a.w != b.w || a.h != b.h;
+}
+
+inline bool operator==(const SDL_Rect &a, const SDL_Rect &b) {
+	return a.x == b.x && a.y == b.y && a.w == b.w && a.h == b.h;
+}
+
 #endif

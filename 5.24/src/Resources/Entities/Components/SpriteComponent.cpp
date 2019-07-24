@@ -2,9 +2,18 @@
 
 #include "Globals.h"
 
+#include "EffectComponent.h"
+#include "Entity.h"
+
 SpriteComponent::SpriteComponent(Entity *entity_, int w_, int h_, int time_) : 
 	Component		( entity_ ),
-	pos				( { 0, 0, w_, h_ } )
+	pos				( { 0, 0, w_, h_ } ),
+	is_update		( false ),
+	frame			( 0 ),
+	ani				( NULL ),	
+	ani_prev		( NULL ),
+	dir				( NULL ),		
+	dir_prev		( NULL )
 {
 	time.set		( time_ );
 };
@@ -18,18 +27,16 @@ void SpriteComponent::update() {
 void SpriteComponent::update(Sprite *img) {
 	if ((dir == dir_prev) && 
 		(ani == ani_prev) && 
-		(ani != CAST)     &&
+		(ani != CAST) &&
 		!is_update) {
 		return;
 	}
 
 	if (ani == NULL) {
 		frame = img->idle;
-		is_update = false;
 	}
 	else if (ani == MOVE) {
 		frame++;
-		is_update = false;
 		if (dir == NULL) {
 			frame = img->idle;
 		}
@@ -61,11 +68,11 @@ void SpriteComponent::update(Sprite *img) {
 		if (frame < img->min_idle || frame > img->max_idle) {
 			frame = img->min_idle;
 		}
-		is_update = false;
 	}
 
 	ani_prev = ani;
 	ani = NULL;
+	is_update = false;
 
 	pos.x = img->get_frame(frame).x;
 	pos.y = img->get_frame(frame).y;

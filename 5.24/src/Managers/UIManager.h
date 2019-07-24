@@ -4,6 +4,8 @@
 
 #include "Button.h"
 
+#include "Globals.h"
+
 #ifndef UI_MANAGER_H
 #define UI_MANAGER_H
 
@@ -11,12 +13,6 @@
 #define ELEMENT_HEIGHT 32
 #define ELEMENT_ROW_SIZE 8
 #define ELEMENT_AREA_WIDTH ELEMENT_ROW_SIZE * ELEMENT_WIDTH
-
-#define TYPE_SOLID "Solid"
-#define TYPE_WARP "Warp"
-#define TYPE_SELECT "Select"
-
-#define TYPE_EX_ICON "_Icon"
 
 #define MOUSE_LEFT 0
 #define MOUSE_RIGHT 1
@@ -31,7 +27,7 @@ namespace UI {
 	};
 
 	struct Element {
-		std::string type;
+		int type;
 		int id;
 	};
 
@@ -83,8 +79,8 @@ public:
 	// returns element id ( -1 if mouse is not hovering an element)
 	int select();
 
-	void set_selection_type(std::string type);
-	std::string get_selection_type();
+	void set_selection_type(int type);
+	int get_selection_type();
 
 	void toggle_alignment();
 
@@ -122,7 +118,7 @@ private:
 
 	// remembers last selection for each type
 	// Key - placement.type Val - placement.id
-	std::map<std::string, int> _last_selected_id;
+	std::map<int, int> _last_selected_id;
 };
 
 

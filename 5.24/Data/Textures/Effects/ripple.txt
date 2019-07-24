@@ -1,0 +1,9 @@
+# Ripple
+Sprite
+stexture Data/Textures/Effects/ripple.png
+iwidth 32
+iheight 32
+iidle 0
+imin_idle 0
+imax_idle 6
+inum_frames 7

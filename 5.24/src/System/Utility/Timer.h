@@ -13,6 +13,7 @@ public:
 
 	bool update();
 
+	int get_time();
 private:
 	int _time;
 	Uint32 _prev_time;

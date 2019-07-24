@@ -1,5 +1,3 @@
-#include <vector>
-
 #include "Component.h"
 #include "Entity.h"
 
@@ -19,7 +17,6 @@ struct MagicComponent : public Component {
 	bool can_cast;
 
 	Entity main_spell;
-	std::vector<Entity> spells;
 };
 
 #endif

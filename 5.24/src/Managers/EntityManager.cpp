@@ -13,6 +13,8 @@ EntityManager::EntityManager() :
 {
 	Environment::get().get_log()->print("Loading Entity Manager");
 
+	GetPosition(_player)->set(400, 300);
+
 	Environment::get().get_window()->get_camera()->center(_player); // move this?
 }
 
@@ -28,7 +30,7 @@ EntityManager::~EntityManager() {
 	_entities.clear();
 }
 
-void EntityManager::create(const std::string &type, int type_id, float x, float y) {
+void EntityManager::create(const Type &type, Type_ID type_id, float x, float y) {
 	Entity *entity = new Entity(type, type_id);
 
 	if (PositionComponent *position = GetPosition(entity)) {
@@ -37,7 +39,7 @@ void EntityManager::create(const std::string &type, int type_id, float x, float 
 
 	add(entity);
 
-	Environment::get().get_log()->print("Creating Entity - " + type + " " + std::to_string(type_id) + " " + std::to_string(entity->get_id()));
+	//Environment::get().get_log()->print("Creating Entity - " + type + " " + std::to_string(type_id) + " " + std::to_string(entity->get_id()));
 }
 
 void EntityManager::add(Entity *entity) {
@@ -49,17 +51,17 @@ void EntityManager::remove(Entity *entity) {
 		return;
 	}
 
-	Environment::get().get_log()->print("Deleting Entity - " + entity->get_type() + " " + std::to_string(entity->get_type_id()) + " " + std::to_string(entity->get_id()));
+	//Environment::get().get_log()->print("Deleting Entity - " + entity->get_type() + " " + std::to_string(entity->get_type_id()) + " " + std::to_string(entity->get_id()));
 
-	std::string type = entity->get_type();
+	int type = entity->get_type();
 	int id = entity->get_id();
 
 	delete _entities[type][id];
 	_entities[type].erase(id);
 }
 
-void EntityManager::remove(const std::string &type, int id) {
-	Environment::get().get_log()->print("Deleting Entity - " + type + " " + std::to_string(id));
+void EntityManager::remove(const Type &type, const ID &id) {
+	//Environment::get().get_log()->print("Deleting Entity - " + type + " " + std::to_string(id));
 
 	delete _entities[type][id];
 	_entities[type].erase(id);

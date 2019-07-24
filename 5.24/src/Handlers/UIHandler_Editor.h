@@ -11,6 +11,7 @@ namespace UI {
 	void button_select_warps();
 	void button_select_objects();
 	void button_select_enemies();
+	void button_select_effects();
 
 	void button_select_free();
 
