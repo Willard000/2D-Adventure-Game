@@ -8,6 +8,8 @@ struct EnemyComponent : public Component {
 
 	virtual void update();
 
+	bool is_collision();
+
 	std::string name;
 	std::string script;
 };

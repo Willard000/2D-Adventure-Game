@@ -1,11 +1,6 @@
-// testing
-//#include <iostream>
-//#include <SDL.h>
-//#include <vector>
-// testing
-
-#include "Entity.h"
-#include "PositionComponent.h"
+#include <iostream>
+#include <SDL.h>
+#include <vector>
 
 #ifndef GRID_H
 #define GRID_H
@@ -13,284 +8,249 @@
 template <class T>
 class Grid {
 public:
-	class Cell {
-	public:
-		Cell();
-		~Cell();
-		Cell &operator=(const Cell &rhs);
-
-		bool insert(const T &obj);
-
-		bool remove(const T &obj);
-
-		std::vector<T> *get_objs(const SDL_Rect &pos);
-
-		friend class Row;
-		friend Grid; // test for print/draw
-	private:
-		std::vector<T> _objs;
-	};
-
-	class Row {
-	public:
-		Row();
-		Row(int width);
-		~Row();
-		Row &operator=(const Row &rhs);
-
-		bool insert(const int &index, const T &obj);
-
-		bool remove(const int &index, const T &obj);
-
-		void clear();
-
-		std::vector<T> *get_objs(const int &index, const SDL_Rect &pos);
-
-		friend Grid; // test for print/draw
-	private:
-		Cell *_cells;
-		int _cell_size;
-	};
-public:
 	Grid();
 	Grid(int cell_width, int cell_height, int row_width, int height);
 	~Grid();
 
-	bool insert(const int &x, const int &y, const T &obj);
+	// inserts an object into the grid at location pos
+	// returns the amount of times the object was removed
+	// -- 0 - 4 one for each possible grid location
+	int insert(const SDL_Rect &pos, const T &obj);
 
-	bool remove(const int &x, const int &y, const T &obj);
+	// removes an object from the grid
+	// returns the amount of times the object was removed
+	// -- 0 - 4 one for each possible grid location
+	int remove(const SDL_Rect &pos, const T &obj);
 
+	// resizes the grid and clears all objects from each cell
 	void resize(int cell_width, int cell_height, int row_width, int height);
 
+	// clears all objects from each cell
 	void clear();
 
-	std::vector<T> *get_objs(const SDL_Rect &pos);
+	// returns array of pointers to each array of objects from 4 possible grid locations
+	// -- top_left, top_right, botttom_left, or bottom_right
+	std::vector<std::vector<T> *> get_cells(const SDL_Rect &pos);
 
-	void print();
+//	void print();
 
 	void draw(std::vector<std::pair<SDL_Rect, SDL_Color>> &rects);
 private:
-	Row *_rows;
-	int _row_size;
-
+	bool remove_from_cell(std::vector<T> &cell, const T &obj);
+private:
 	int _cell_width;
 	int _cell_height;
+	float _inv_cell_width;
+	float _inv_cell_height;
 
 	int _width;
 	int _height;
+
+	std::vector<T> **_cells;
 };
 
-//****************************************CELL*******************************************************//
-template <class T>
-Grid<T>::Cell::Cell()
-{}
-
-template <class T>
-Grid<T>::Cell::~Cell()
-{}
-
-template <class T>
-typename Grid<T>::Cell &Grid<T>::Cell::operator=(const Grid<T>::Cell &rhs) {
-	_objs = rhs._objs;
-
-	return *this;
-}
-
-template <class T>
-bool Grid<T>::Cell::insert(const T &obj) {
-	_objs.push_back(obj);
-	return true;
-}
-
-template <class T>
-bool Grid<T>::Cell::remove(const T &obj) {
-	for (auto it = _objs.begin(); it != _objs.end(); ++it) {
-		if (*it == obj) {
-			_objs.erase(it);
-			return true;
-		}
-	}
-	return false;
-}
-
-template <class T>
-std::vector<T> *Grid<T>::Cell::get_objs(const SDL_Rect &pos) {
-	return &_objs;
-}
-
-//****************************************ROW********************************************************//
-template <class T>
-Grid<T>::Row::Row() :
-	_cells			( nullptr ),
-	_cell_size		( 0 )
-{}
-
-template <class T>
-Grid<T>::Row::Row(int width) :
-	_cells			( new Cell[width] ),
-	_cell_size		( width )
-{
-	for (int i = 0; i < width; ++i) {
-		_cells[i] = Cell();
-	}
-}
-
-template <class T>
-Grid<T>::Row::~Row() {
-	if (_cells)
-		delete[] _cells;
-
-	_cells = nullptr;
-	_cell_size = 0;
-}
-
-template <class T>
-typename Grid<T>::Row &Grid<T>::Row::operator=(const Grid<T>::Row &rhs) {
-	if (_cells) {
-		delete[] _cells;
-		_cells = nullptr;
-	}
-
-	_cell_size = rhs._cell_size;
-	_cells = new Cell[_cell_size];
-	for (int i = 0; i < _cell_size; ++i) {
-		_cells[i] = rhs._cells[i];
-	}
-
-	return *this;
-}
-
-template <class T>
-bool Grid<T>::Row::insert(const int &index, const T &obj) {
-	if (index < 0 || index > _cell_size - 1) {
-		return false;
-	}
-
-	return _cells[index].insert(obj);
-}
-
-template <class T>
-bool Grid<T>::Row::remove(const int &index, const T &obj) {
-	if (index < 0 || index > _cell_size - 1) {
-		return false;
-	}
-
-	return _cells[index].remove(obj);
-}
-
-template <class T>
-void Grid<T>::Row::clear() {
-	for (int i = 0; i < _cell_size; ++i) {
-		_cells[i]._objs.clear();
-	}
-}
-
-template <class T>
-std::vector<T> *Grid<T>::Row::get_objs(const int &index, const SDL_Rect &pos) {
-	if (index < 0 || index > _cell_size - 1) {
-		return nullptr;
-	}
-
-	return _cells[index].get_objs(pos);
-}
-
-//****************************************GRID*******************************************************//
 template <class T>
 Grid<T>::Grid() :
-	_rows			( nullptr ),
-	_row_size		( 0 ),
-	_cell_width		( 0 ),
-	_cell_height	( 0 ),
-	_width			( 0 ),
-	_height			( 0 )
+	_cell_width(0),
+	_cell_height(0),
+	_inv_cell_width(0.0f),
+	_inv_cell_height(0.0f),
+	_width(0),
+	_height(0),
+	_cells(nullptr)
 {}
 
 template <class T>
 Grid<T>::Grid(int cell_width, int cell_height, int width, int height) :
-	_rows			( new Row[height] ),
-	_row_size		( height ),
-	_cell_width		( cell_width ),
-	_cell_height	( cell_height ),
-	_width			( width ),
-	_height			( height )
+	_cell_width(cell_width),
+	_cell_height(cell_height),
+	_inv_cell_width(1.0f / (float)cell_width),
+	_inv_cell_height(1.0f / (float)cell_height),
+	_width(width),
+	_height(height)
 {
+	_cells = new std::vector<T> *[_height];
 	for (int i = 0; i < height; ++i) {
-		_rows[i] = Row(width);
+		_cells[i] = new std::vector<T>[_width];
 	}
 }
 
 template <class T>
 Grid<T>::~Grid() {
-	if (_rows)
-		delete[] _rows;
-
-	_rows = nullptr;
-	_row_size = 0;
+	for (int i = 0; i < _height; ++i) {
+		delete[] _cells[i];
+	}
+	delete[] _cells;
 }
 
 template <class T>
-bool Grid<T>::insert(const int &x, const int &y, const T &obj) {
-	const int x_index = x / _cell_width;
-	const int y_index = y / _cell_height;
-	if (y_index < 0 || y_index > _row_size - 1) {
-		return false;
+int Grid<T>::insert(const SDL_Rect &pos, const T &obj) {
+	const int &y = int(pos.y * _inv_cell_height);
+	const int &y2 = int((pos.y + pos.h) * _inv_cell_height);
+	const int &x = int(pos.x * _inv_cell_width);
+	const int &x2 = int((pos.x + pos.w) * _inv_cell_width);
+	int inserted = 0;
+
+	if (!(y > _height - 1 || y < 0)) {
+		if (!(x > _width - 1 || x < 0)) {
+			_cells[y][x].push_back(obj);
+			++inserted;
+		}
+
+		if (x2 != x) {
+			if (!(x2 > _width - 1 || x < 0)) {
+				_cells[y][x2].push_back(obj);
+				++inserted;
+			}
+		}
 	}
 
-	return _rows[y_index].insert(x_index, obj);
+	if (y2 != y) {
+		if (!(y2 > _height - 1 || y < 0)) {
+			if (!(x > _width - 1 || x < 0)) {
+				_cells[y2][x].push_back(obj);
+				++inserted;
+			}
+
+			if (x2 != x) {
+				if (!(x2 > _width - 1 || x2 < 0)) {
+					_cells[y2][x2].push_back(obj);
+					++inserted;
+				}
+			}
+		}
+	}
+
+	return inserted;
 }
 
 template <class T>
-bool Grid<T>::remove(const int &x, const int &y, const T &obj) {
-	const int x_index = x / _cell_width;
-	const int y_index = y / _cell_height;
-	if (y_index < 0 || y_index > _row_size - 1) {
-		return false;
+int Grid<T>::remove(const SDL_Rect &pos, const T &obj) {
+	const int &y = int(pos.y * _inv_cell_height);
+	const int &y2 = int((pos.y + pos.h) * _inv_cell_height);
+	const int &x = int(pos.x * _inv_cell_width);
+	const int &x2 = int((pos.x + pos.w) * _inv_cell_width);
+	int removed = 0;
+
+	if (!(y > _height - 1 || y < 0)) {
+		if (!(x > _width - 1 || x < 0)) {
+			removed += remove_from_cell(_cells[y][x], obj);
+		}
+
+		if (x2 != x) {
+			if (!(x2 > _width - 1 || x2 < 0)) {
+				removed += remove_from_cell(_cells[y][x2], obj);
+			}
+		}
 	}
 
-	return _rows[y_index].remove(x_index, obj);
+	if (y2 != y) {
+		if (!(y2 > _height - 1 || y < 0)) {
+			if (!(x > _width - 1 || x < 0)) {
+				removed += remove_from_cell(_cells[y2][x], obj);
+			}
+
+			if (x2 != x) {
+				if (!(x2 > _width - 1 || x < 0)) {
+					removed += remove_from_cell(_cells[y2][x2], obj);
+				}
+			}
+		}
+	}
+
+	return removed;
 }
 
 template <class T>
 void Grid<T>::resize(int cell_width, int cell_height, int width, int height) {
-	if (_rows)
-		delete[] _rows;
-
-	_rows = new Row[height];
-	_row_size = height;
-
 	_cell_width = cell_width;
 	_cell_height = cell_height;
+	_inv_cell_width = 1.0f / (float)_cell_width;
+	_inv_cell_height = 1.0f / (float)_cell_height;
+
+	if (_cells) {
+		for (int i = 0; i < _height; ++i) {
+			delete[] _cells[i];
+		}
+	}
+	delete[] _cells;
 
 	_width = width;
 	_height = height;
 
+	_cells = new std::vector<T> *[_height];
 	for (int i = 0; i < height; ++i) {
-		_rows[i] = Row(width);
+		_cells[i] = new std::vector<T>[_width];
 	}
 }
 
 template <class T>
 void Grid<T>::clear() {
-	for (int i = 0; i < _row_size; ++i) {
-		_rows[i].clear();
+	for (int y = 0; y < _height; ++y) {
+		for (int x = 0; x < _width; ++x) {
+			_cells[y][x].clear();
+		}
 	}
 }
 
 template <class T>
-std::vector<T> *Grid<T>::get_objs(const SDL_Rect &pos) {
-	const int x_index = pos.x / _cell_width;
-	const int y_index = pos.y / _cell_height;
-	if (y_index < 0 || y_index > _row_size - 1) {
-		return nullptr;
+std::vector<std::vector<T> *> Grid<T>::get_cells(const SDL_Rect &pos) {
+	std::vector<std::vector<T> *> cells;  // all possible cell locations
+	std::vector<T> *cell_ptr = nullptr;  // cell for each of the 4 possible grid locations
+
+	const int &y = int(pos.y * _inv_cell_height);
+	const int &y2 = int((pos.y + pos.h) * _inv_cell_height);
+	const int &x = int(pos.x * _inv_cell_width);
+	const int &x2 = int((pos.x + pos.w) * _inv_cell_width);
+	int return_val = 0;
+
+	if (!(y > _height - 1 || y < 0)) {
+		if (!(x > _width - 1 || x < 0)) {
+			cell_ptr = &(_cells[y][x]);
+			if (cell_ptr) {
+				cells.push_back(cell_ptr);
+			}
+		}
+
+		if (x2 != x) {
+			if (!(x2 > _width - 1 || x2 < 0)) {
+				cell_ptr = &(_cells[y][x2]);
+				if (cell_ptr) {
+					cells.push_back(cell_ptr);
+				}
+			}
+		}
 	}
 
-	return _rows[y_index].get_objs(x_index, pos);
+	if (y2 != y) {
+		if (!(y2 > _height - 1 || y < 0)) {
+			if (!(x > _width - 1 || x < 0)) {
+				cell_ptr = &(_cells[y2][x]);
+				if (cell_ptr) {
+					cells.push_back(cell_ptr);
+				}
+			}
+
+			if (x2 != x) {
+				if (!(x2 > _width - 1 || x2 < 0)) {
+					cell_ptr = &(_cells[y2][x2]);
+					if (cell_ptr) {
+						cells.push_back(cell_ptr);
+					}
+				}
+			}
+		}
+	}
+
+	return cells;
 }
+
+/*
 
 template <class T>
 void Grid<T>::print() {
-	std::cout << "Row Size: " << _row_size << std::endl;
-	for (int i = 0; i < _row_size; ++i) {
+	std::cout << "Row Size: " << _height << std::endl;
+	for (int i = 0; i < _height; ++i) {
 		std::cout << "Row: " << std::endl;
 		for (int k = 0; k < _rows[i]._cell_size; ++k) {
 			std::cout << "     Cell: " << std::endl;
@@ -299,17 +259,32 @@ void Grid<T>::print() {
 	}
 }
 
+*/
+
 template <class T>
 void Grid<T>::draw(std::vector<std::pair<SDL_Rect, SDL_Color>> &rects) {
-	for (int i = 0; i < _row_size; ++i) {
-		for (int k = 0; k < _rows[i]._cell_size; ++k) {
-			SDL_Rect rect = { k * _cell_width, i * _cell_height, _cell_width, _cell_height};
+	for (int y = 0; y < _height; ++y) {
+		for (int x = 0; x < _width; ++x) {
+			SDL_Rect rect = { x * _cell_width, y * _cell_height, _cell_width, _cell_height };
 			SDL_Color color = { 0, 0, 0, 150 };
-			if (_rows[i]._cells[k]._objs.size() > 0)
-				color = { 255, 255, 255, 150 };
+			Uint8 size = (Uint8)_cells[y][x].size();
+			if (size > 0) {
+				color = { Uint8(5 * size), 100, Uint8(5 * size), 150 };
+			}
 			rects.push_back(std::pair<SDL_Rect, SDL_Color>(rect, color));
 		}
 	}
+}
+
+template <class T>
+bool Grid<T>::remove_from_cell(std::vector<T> &cell, const T &obj) {
+	for (auto it = cell.begin(); it != cell.end(); ++it) {
+		if (*it == obj) {
+			cell.erase(it);
+			return true;
+		}
+	}
+	return false;
 }
 
 #endif

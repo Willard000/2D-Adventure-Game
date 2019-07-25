@@ -78,17 +78,16 @@ bool SpellComponent::is_collision() {
 	if (!position)
 		return false;
 
-	std::vector<Entity *> *entities = Environment::get().get_resource_manager()->get_map()->get_entity_grid()->get_objs(position->rect);
-	if (!entities)
-		return false;
+	const auto entity_vec = Environment::get().get_resource_manager()->get_map()->get_entity_grid()->get_cells(position->rect);
 
-	for (auto it = entities->begin(); it != entities->end(); ++it) {
-		if (*it != caster) {
-			const int &type = (*it)->get_type();
+	for (auto &vec : entity_vec) {
+		for (auto &e : *vec) {
+			const int &type = e->get_type();
 			if (type == TYPE_OBJECT ||
 				type == TYPE_ENEMY ||
 				type == TYPE_PLAYER) {
-				if (collision(position->rect, GetPosition((*it))->rect))
+				if (collision(position->rect, GetPosition(e)->rect) &&
+					e != caster)
 					return true;
 			}
 		}

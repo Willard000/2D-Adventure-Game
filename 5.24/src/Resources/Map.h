@@ -97,10 +97,10 @@ private:
 	std::vector<Tile> _tiles;
 
 	std::map<int, SDL_Rect> _solids;
-	QuadTree<int> _solids_tree;
+	Grid<SDL_Rect *> _solids_grid;
 
 	std::vector<Warp> _warps;
-	QuadTree<Warp *> _warps_tree;
+	Grid<Warp *> _warps_grid;
 
 	QuadTree<Entity *> _entities_tree;
 	Grid<Entity *> _entities_grid;

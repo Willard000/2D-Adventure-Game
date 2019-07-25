@@ -4,6 +4,8 @@
 
 #include "PositionComponent.h"
 #include "PlayerComponent.h"
+#include "EnemyComponent.h"
+#include "SpellComponent.h"
 
 int create_id() {
 	static int id = 0;
@@ -64,6 +66,10 @@ bool Entity::is_collision() {
 	switch (_type) {
 	case TYPE_PLAYER:
 		return GetPlayer(this)->is_collision();
+	case TYPE_ENEMY:
+		return GetEnemy(this)->is_collision();
+	case TYPE_SPELL:
+		return GetSpell(this)->is_collision();
 	}
 
 	return false;

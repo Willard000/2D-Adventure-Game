@@ -59,8 +59,6 @@ Map::Map() :
 	_height			( 0 ),
 	_rect			( { 0, 0, 0, 0 } ),
 	_is_loaded		( false ),
-	_solids_tree	( { 0, 0, 0, 0 }, SOLID_TREE_CAPACITY ),
-	_warps_tree		( { 0, 0, 0, 0 }, WARP_TREE_CAPACITY ),
 	_entities_tree	( { 0, 0, 0, 0 }, ENTITY_TREE_CAPACITY )
 {}
 
@@ -224,13 +222,29 @@ bool Map::bound_collision(const SDL_Rect &pos) {
 }
 
 bool Map::solid_collision(const SDL_Rect &pos) {
-	return  _solids_tree.check_collision(pos);
+	const auto solids_vec = _solids_grid.get_cells(pos);
+
+	for (auto &vec : solids_vec) {
+		for (auto &s : *vec) {
+			if (collision(pos, *s)) {
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 Map::Warp *Map::warp_collision(const SDL_Rect &pos) {
-	if (Warp **warp = _warps_tree.get_first_collision(pos))
-		return *warp;
+	const auto warps_vec = _warps_grid.get_cells(pos);
 
+	for (auto &vec : warps_vec) {
+		for (auto &w : *vec) {
+			if (collision(pos, w->from)) {
+				return w;
+			}
+		}
+	}
 	return nullptr;
 }
 
@@ -240,12 +254,15 @@ bool *Map::entity_collision(Entity *entity) {
 
 void Map::build_entity_grid() {
 	_entities_grid.clear();
+	Entity *player = Environment::get().get_resource_manager()->get_player();
+	_entities_grid.insert(GetPosition(player)->rect, player);
+
 	std::map<int, EntityManager::Entity_Map> *entities = Environment::get().get_resource_manager()->get_entities();
 	for (auto it = entities->begin(); it != entities->end(); ++it) {
 		if (it->first != TYPE_EFFECT) {
 			for (auto itt = it->second.begin(); itt != it->second.end(); ++itt) {
 				if (PositionComponent *position = GetPosition(itt->second)) {
-					_entities_grid.insert(position->rect.x, position->rect.y, itt->second);
+					_entities_grid.insert(position->rect, itt->second);
 				}
 			}
 		}
@@ -271,7 +288,7 @@ Grid<Entity *> *Map::get_entity_grid() {
 }
 
 void Map::remove_entity(Entity *entity, const SDL_Rect &pos) {
-	_entities_grid.remove(pos.x, pos.y, entity);
+	_entities_grid.remove(pos, entity);
 }
 
 void Map::add_solid(int index) {
@@ -372,8 +389,7 @@ void Map::load_solids(FileReader &file) {
 	}
 
 	_solids.clear();
-	_solids_tree.clear();
-	_solids_tree.set_new_rect({ 0, 0, _rect.w, _rect.h });
+	_solids_grid.resize(CELL_WIDTH, CELL_HEIGHT, (int)ceil((double)_rect.w / (double)CELL_WIDTH), (int)ceil((double)_rect.h / (double)CELL_HEIGHT));
 
 	std::istringstream stream(file.get_string(FILE_MAP_SOLIDS));
 	int tile_num = 0;
@@ -382,9 +398,7 @@ void Map::load_solids(FileReader &file) {
 		solid.x = (tile_num % _width) * TILE_WIDTH;
 		solid.y = (tile_num / _height) * TILE_HEIGHT;
 		_solids[tile_num] = solid;
-
-
-		_solids_tree.insert(tile_num, &_solids[tile_num]);
+		_solids_grid.insert(_solids[tile_num], &_solids[tile_num]); // meh SDL_Rect pointer for tile is weird
 	}
 }
 
@@ -394,8 +408,7 @@ void Map::load_warps(FileReader &file) {
 	}
 
 	_warps.clear();
-	_warps_tree.clear();
-	_warps_tree.set_new_rect({ 0, 0, _rect.w, _rect.h });
+	_warps_grid.resize(CELL_WIDTH, CELL_HEIGHT, (int)ceil((double)_rect.w / (double)CELL_WIDTH), (int)ceil((double)_rect.h / (double)CELL_HEIGHT));
 
 	std::istringstream stream(file.get_string(FILE_MAP_WARPS));
 	Warp warp;
@@ -421,7 +434,7 @@ void Map::load_warps(FileReader &file) {
 	}
 
 	for (auto it = _warps.begin(); it != _warps.end(); ++it) {
-		_warps_tree.insert(&(*it), &(it->from));
+		_warps_grid.insert(it->from, &(*it));
 	}
 
 }

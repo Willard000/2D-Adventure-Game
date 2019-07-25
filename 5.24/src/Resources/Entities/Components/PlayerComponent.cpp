@@ -28,18 +28,22 @@ bool PlayerComponent::is_collision() {
 	if (!position)
 		return false;
 
-	std::vector<Entity *> *entities = Environment::get().get_resource_manager()->get_map()->get_entity_grid()->get_objs(position->rect);
-	if (!entities)
-		return false;
+	const auto entity_vec = Environment::get().get_resource_manager()->get_map()->get_entity_grid()->get_cells(position->rect);
 
-	for (auto it = entities->begin(); it != entities->end(); ++it) {
-		const int &type = (*it)->get_type();
-		if ( type == TYPE_OBJECT ||
-			 type == TYPE_ENEMY) {
-			if (collision(position->rect, GetPosition((*it))->rect))
-				return true;
+	for (auto &vec : entity_vec) {
+		for (auto &e : *vec) {
+			const int &type = e->get_type();
+			if (type == TYPE_OBJECT ||
+				type == TYPE_ENEMY) {
+				if (collision(position->rect, GetPosition(e)->rect))
+					return true;
+			}
 		}
 	}
+
+	if (Environment::get().get_resource_manager()->get_map()->solid_collision(position->rect) ||
+		Environment::get().get_resource_manager()->get_map()->bound_collision(position->rect))
+		return true;
 
 	return false;
 }
