@@ -1,5 +1,5 @@
 #include <string>
-#include <unordered_map>
+#include <map>
 
 #ifndef FILE_READER_H
 #define FILE_READER_H
@@ -7,7 +7,7 @@
 bool file_exists(const char *path);
 
 namespace freader {
-	typedef std::unordered_map<std::string, std::string> Data;
+	typedef std::map<std::string, std::string> Data;
 	typedef Data::iterator iterator;
 }
 
@@ -24,6 +24,9 @@ public:
 	bool get_bool(const std::string &key) { return (bool)std::stoi(_data[key]); }
 
 	bool exists(const std::string &key) { return _data.find(key) != _data.end(); }
+
+	// returns number of lines in file
+	size_t size() { return _data.size(); }
 
 	freader::iterator begin() { return _data.begin(); }
 	freader::iterator end() { return _data.end(); }

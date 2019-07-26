@@ -1,5 +1,7 @@
 # House
 
+itexture_id 3
+
 Position
 iwidth 200
 iheight 225

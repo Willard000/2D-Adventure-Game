@@ -7,6 +7,8 @@ class Timer {
 public:
 	Timer();
 	Timer(int time);
+	Timer(const Timer &rhs);
+
 	void set(int time);
 	void pause();
 	void reset();

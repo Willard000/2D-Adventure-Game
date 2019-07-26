@@ -65,27 +65,28 @@ TextureManager::TextureManager() :
 TextureManager::~TextureManager() {
 	Environment::get().get_log()->print("Closing Texture Manager");
 
-	for (auto it = _textures.begin(); it != _textures.end(); ++it) {
-		for (auto itt = it->second.begin(); itt != it->second.end(); ++itt) {
-			delete itt->second;
+	for (auto &texture_vec : _textures) {
+		for (auto &texture : texture_vec) {
+			delete texture;
 		}
+		texture_vec.clear();
 	}
-	_textures.clear();
 
-	for (auto it = _surfaces.begin(); it != _surfaces.end(); ++it) {
-		for (auto itt = it->second.begin(); itt != it->second.end(); ++itt) {
-			SDL_FreeSurface(itt->second);
+	for (auto &surface_vec : _surfaces) {
+		for (auto &surface : surface_vec) {
+			SDL_FreeSurface(surface);
 		}
+		surface_vec.clear();
 	}
-	_surfaces.clear();
 
 	delete _map_texture;
 }
 
 void TextureManager::load_textures(const Type &type, const std::string &path) {
-	Texture_Map textures;
+	std::vector<Texture *> textures;
 	FileReader file(path.c_str());
-;
+
+	textures.resize(file.size());
 	for (freader::iterator it = file.begin(); it != file.end(); ++it) {
 		if (type == TYPE_TILE) {
 			textures[std::stoi(it->first)] = load_texture_info_tile(it->second);
@@ -152,9 +153,10 @@ Texture *TextureManager::load_texture_info(std::string path) {
 }
 
 void TextureManager::load_surfaces(const Type &type, const std::string &path) {
-	Surface_Map surfaces;
+	std::vector<SDL_Surface *> surfaces;
 	FileReader file(path.c_str());
 
+	surfaces.resize(file.size(), nullptr);
 	for (freader::iterator it = file.begin(); it != file.end(); ++it) {
 		surfaces[std::stoi(it->first)] = load_surface_info(it->second);
 	}
@@ -162,7 +164,7 @@ void TextureManager::load_surfaces(const Type &type, const std::string &path) {
 	_surfaces[type] = surfaces;
 }
 
-SDL_Surface *TextureManager::load_surface_info(std::string path) {
+SDL_Surface *TextureManager::load_surface_info(const std::string &path) {
 	Environment::get().get_log()->print("Loading Surface - " + path);
 
 	FileReader file(path.c_str());
@@ -192,7 +194,7 @@ void TextureManager::update_map_texture(SDL_Rect &pos, int id) {
 	);
 }
 
-SDL_Texture *TextureManager::make_map_blit_texture(SDL_Surface *&main_surface, std::map<int, SDL_Surface *> &surfaces, std::vector<Map::Tile> &tiles, const int &width, const int &height) {
+SDL_Texture *TextureManager::make_map_blit_texture(SDL_Surface *&main_surface, std::vector<SDL_Surface *> &surfaces, std::vector<Map::Tile> &tiles, const int &width, const int &height) {
 	if (main_surface) {
 		SDL_FreeSurface(main_surface);
 	}

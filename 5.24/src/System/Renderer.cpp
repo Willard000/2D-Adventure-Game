@@ -209,20 +209,22 @@ void Renderer::draw_line(const SDL_Rect &rect, const SDL_Color &color) {
 }
 
 
-SDL_Texture *Renderer::make_blit_texture(std::map<int, SDL_Surface *> &surfaces, const int &width, const int &height, const int &surface_size) {
+SDL_Texture *Renderer::make_blit_texture(std::vector<SDL_Surface *> &surfaces, const int &width, const int &height, const int &surface_size) {
 	SDL_Surface *surface = SDL_CreateRGBSurface(NULL, width, height, RGB_DEPTH, RMASK, GMASK, BMASK, AMASK);
 	SDL_Rect pos = { 0, 0, surface_size, surface_size };
+
 	int i = 0;
-	for (auto it = surfaces.begin(); it != surfaces.end(); ++it, ++i) {
+	for (auto &s : surfaces) {
 		pos.x = int(i * surface_size);
-		it->second->clip_rect.w = surface_size;
-		it->second->clip_rect.h = surface_size;
+		s->clip_rect.w = surface_size;
+		s->clip_rect.h = surface_size;
 		if (pos.x >= width) {
 			pos.x = 0;
 			pos.y += surface_size;
 			i = 0;
 		}
-		SDL_BlitScaled(it->second, NULL, surface, &pos);
+		SDL_BlitScaled(s, NULL, surface, &pos);
+		++i;
 	}
 
 	return SDL_CreateTextureFromSurface(_renderer, surface);

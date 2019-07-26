@@ -13,10 +13,25 @@ SpriteComponent::SpriteComponent(Entity *entity_, int w_, int h_, int time_) :
 	ani				( NULL ),	
 	ani_prev		( NULL ),
 	dir				( NULL ),		
-	dir_prev		( NULL )
-{
-	time.set		( time_ );
-};
+	dir_prev		( NULL ),
+	time			( time_ )
+{}
+
+SpriteComponent::SpriteComponent(Entity *new_entity, const SpriteComponent &rhs) :
+	Component		( new_entity ),
+	pos				( rhs.pos ),
+	is_update		( rhs.is_update ),
+	frame			( rhs.frame ),
+	ani				( rhs.ani ),
+	ani_prev		( rhs.ani_prev ),
+	dir				( rhs.dir ),
+	dir_prev		( rhs.dir_prev ),
+	time			( rhs.time )
+{}
+
+SpriteComponent *SpriteComponent::copy(Entity *new_entity) const {
+	return new SpriteComponent(new_entity, *this);
+}
 
 void SpriteComponent::update() {
 	if (!is_update) {

@@ -12,6 +12,16 @@ EnemyComponent::EnemyComponent(Entity *entity_, std::string name_, std::string s
 	Environment::get().get_lua()->load_script(script);
 }
 
+EnemyComponent::EnemyComponent(Entity *new_entity, const EnemyComponent &rhs) :
+	Component	    ( new_entity ),
+	name			( rhs.name ),
+	script			( rhs.script )
+{}
+
+EnemyComponent *EnemyComponent::copy(Entity *new_entity) const {
+	return new EnemyComponent(new_entity, *this);
+}
+
 void EnemyComponent::update() {
 	lua_State *L = Environment::get().get_lua()->get_state();
 	lua_getglobal(L, name.c_str());

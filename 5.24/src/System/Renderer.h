@@ -1,6 +1,8 @@
 #include <string>
 #include <map>
 
+#include <vector>
+
 #include <SDL.h>
 #include <SDL_image.h>
 
@@ -51,7 +53,7 @@ public:
 	void draw_rect(const SDL_Rect &rect, const SDL_Color &color, int flag = DRAW_RECT_FULL);
 	void draw_line(const SDL_Rect &rect, const SDL_Color &color);
 
-	SDL_Texture *make_blit_texture(std::map<int, SDL_Surface *> &surfaces, const int &width, const int &height, const int &surface_size);
+	SDL_Texture *make_blit_texture(std::vector<SDL_Surface *> &surfaces, const int &width, const int &height, const int &surface_size);
 	SDL_Texture *blit_texture(SDL_Surface *&main_surface, SDL_Surface *surface, SDL_Rect &pos);
 
 	TTF_Font *get_font() { return _font; }

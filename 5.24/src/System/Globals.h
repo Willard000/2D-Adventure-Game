@@ -31,12 +31,16 @@ enum {
 	TYPE_EFFECT,
 
 
+	// ^ have textures ^
+	TOTAL_TEXTURE_TYPES,
+	// v dont have textures v
+
 	TYPE_SOLID,
 	TYPE_WARP,
 	TYPE_SELECT,
 };
 
-#define TYPE_EX_ICON 1000
+#define TYPE_EX_ICON 10
 
 const std::string STYPE_TILE = "Tile";
 

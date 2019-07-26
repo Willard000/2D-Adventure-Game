@@ -85,10 +85,10 @@ Grid<T>::~Grid() {
 
 template <class T>
 int Grid<T>::insert(const SDL_Rect &pos, const T &obj) {
-	const int &y = int(pos.y * _inv_cell_height);
-	const int &y2 = int((pos.y + pos.h) * _inv_cell_height);
-	const int &x = int(pos.x * _inv_cell_width);
-	const int &x2 = int((pos.x + pos.w) * _inv_cell_width);
+	const int y = int(pos.y * _inv_cell_height);
+	const int y2 = int((pos.y + pos.h) * _inv_cell_height);
+	const int x = int(pos.x * _inv_cell_width);
+	const int x2 = int((pos.x + pos.w) * _inv_cell_width);
 	int inserted = 0;
 
 	if (!(y > _height - 1 || y < 0)) {
@@ -126,10 +126,10 @@ int Grid<T>::insert(const SDL_Rect &pos, const T &obj) {
 
 template <class T>
 int Grid<T>::remove(const SDL_Rect &pos, const T &obj) {
-	const int &y = int(pos.y * _inv_cell_height);
-	const int &y2 = int((pos.y + pos.h) * _inv_cell_height);
-	const int &x = int(pos.x * _inv_cell_width);
-	const int &x2 = int((pos.x + pos.w) * _inv_cell_width);
+	const int y = int(pos.y * _inv_cell_height);
+	const int y2 = int((pos.y + pos.h) * _inv_cell_height);
+	const int x = int(pos.x * _inv_cell_width);
+	const int x2 = int((pos.x + pos.w) * _inv_cell_width);
 	int removed = 0;
 
 	if (!(y > _height - 1 || y < 0)) {
@@ -198,10 +198,10 @@ std::vector<std::vector<T> *> Grid<T>::get_cells(const SDL_Rect &pos) {
 	std::vector<std::vector<T> *> cells;  // all possible cell locations
 	std::vector<T> *cell_ptr = nullptr;  // cell for each of the 4 possible grid locations
 
-	const int &y = int(pos.y * _inv_cell_height);
-	const int &y2 = int((pos.y + pos.h) * _inv_cell_height);
-	const int &x = int(pos.x * _inv_cell_width);
-	const int &x2 = int((pos.x + pos.w) * _inv_cell_width);
+	const int y = int(pos.y * _inv_cell_height);
+	const int y2 = int((pos.y + pos.h) * _inv_cell_height);
+	const int x = int(pos.x * _inv_cell_width);
+	const int x2 = int((pos.x + pos.w) * _inv_cell_width);
 	int return_val = 0;
 
 	if (!(y > _height - 1 || y < 0)) {
@@ -269,7 +269,7 @@ void Grid<T>::draw(std::vector<std::pair<SDL_Rect, SDL_Color>> &rects) {
 			SDL_Color color = { 0, 0, 0, 150 };
 			Uint8 size = (Uint8)_cells[y][x].size();
 			if (size > 0) {
-				color = { Uint8(5 * size), 100, Uint8(5 * size), 150 };
+				color = { Uint8(2 * size), 0, Uint8(2 * size), 150 };
 			}
 			rects.push_back(std::pair<SDL_Rect, SDL_Color>(rect, color));
 		}

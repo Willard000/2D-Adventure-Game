@@ -8,8 +8,12 @@
 struct PositionComponent : public Component {
 public:
 	PositionComponent(Entity *entity_, float x_, float y_, int w_, int h_, float speed_);
+	PositionComponent(Entity *new_entity, const PositionComponent &rhs);
+	PositionComponent *copy(Entity *new_entity) const;
 
-	virtual void update();
+	void update();
+
+	const int get_type() const { return COMPONENT_POSITION; }
 
 	void move(int dir_, float dis_ = 0.0f);
 

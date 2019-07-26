@@ -15,7 +15,8 @@ int create_id() {
 Entity::Entity() :
 	_id				( create_id() ),
 	_type			( 0 ),
-	_type_id		( -1 ),
+	_type_id		( 0 ),
+	_texture_id     ( 0 ),
 	_is_destroyed	( false ),
 	_is_loaded		( false )
 {}
@@ -24,6 +25,7 @@ Entity::Entity(int type, int type_id) :
 	_id					( create_id() ),
 	_type				( type ),
 	_type_id			( type_id ),
+	_texture_id         ( 0 ),
 	_is_destroyed		( false ),
 	_is_loaded			( false )
 {
@@ -34,20 +36,15 @@ Entity::Entity(const Entity &rhs) :
 	_id				( create_id() ),
 	_type			( rhs._type ),
 	_type_id		( rhs._type_id ),
+	_texture_id     ( rhs._texture_id ),
 	_is_destroyed	( rhs._is_destroyed ),
-	_is_loaded		( false )
+	_is_loaded		( rhs._is_loaded )
 {
-	_is_loaded = load_components(this);
-}
-
-Entity &Entity::operator=(const Entity &rhs) {
-	_id = create_id();
-	_type = rhs._type;
-	_type_id = rhs._type_id;
-	_is_destroyed = rhs._is_destroyed;
-	_is_loaded = load_components(this);
-
-	return *this;
+	for (unsigned int i = 0; i < rhs._components.size(); ++i) {
+		if (rhs._components[i]) {
+			_components[i] = rhs._components[i]->copy(this);
+		}
+	}
 }
 
 Entity::~Entity() {
@@ -55,10 +52,9 @@ Entity::~Entity() {
 }
 
 void Entity::update() {
-	for (auto it = _components.begin(); it != _components.end(); ++it) {
-		if (it->second != nullptr) {
-			it->second->update();
-		}
+	for (auto &component : _components) {
+		if(component)
+			component->update();
 	}
 }
 
@@ -76,8 +72,19 @@ bool Entity::is_collision() {
 }
 
 void Entity::clear() {
+	if (!_is_loaded)
+		return;
+
 	for (auto it = _components.begin(); it != _components.end(); ++it) {
-		delete it->second;
+		if (*it) {
+			delete *it;
+			*it = nullptr;
+		}
 	}
-	_components.clear();
+}
+
+void Entity::add_component(Component *component) { 
+	if (!_components[component->get_type()]) {
+		_components[component->get_type()] = component;
+	}
 }

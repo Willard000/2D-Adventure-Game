@@ -1,5 +1,7 @@
 # Fireball
 
+itexture_id 0
+
 Position
 iwidth 20
 iheight 20
@@ -13,3 +15,4 @@ fmax_dis 1000
 fspell_speed 300
 ideath_time 100
 sspell_script Data/Lua/Spells/fireball.lua
+ispell_damage 5

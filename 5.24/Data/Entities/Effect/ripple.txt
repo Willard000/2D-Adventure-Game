@@ -1,5 +1,7 @@
 # Ripple
 
+itexture_id 0
+
 Position
 iwidth 32
 iheight 32

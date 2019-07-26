@@ -13,6 +13,12 @@ Timer::Timer(int time) :
 
 {}
 
+Timer::Timer(const Timer &rhs) :
+	_time			( rhs._time ),
+	_prev_time		( rhs._prev_time ),
+	_is_paused		( rhs._is_paused )
+{}
+
 void Timer::set(int time) {
 	_time = time;
 	_is_paused = false;

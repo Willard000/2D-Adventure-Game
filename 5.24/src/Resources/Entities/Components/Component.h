@@ -1,7 +1,19 @@
-#include <vector>
-
 #ifndef COMPONENT_H
 #define COMPONENT_H
+
+enum
+{
+	COMPONENT_POSITION,
+	COMPONENT_SPRITE,
+	COMPONENT_PLAYER,
+	COMPONENT_ENEMY,
+	COMPONENT_SPELL,
+	COMPONENT_MAGIC,
+	COMPONENT_EFFECT,
+	COMPONENT_STATS,
+
+	TOTAL_COMPONENTS
+};
 
 class Entity;
 
@@ -11,7 +23,13 @@ public:
 		entity		(entity_)
 	{}
 
+
+	// makes new component copy and gives it to new_entity
+	virtual Component *copy(Entity *new_entity) const = 0;
+
 	virtual void update() = 0;
+
+	virtual const int get_type() const = 0;
 
 	Entity *entity;
 };

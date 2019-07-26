@@ -2,7 +2,7 @@ require "math"
 
 Fireball = {}
 
-function Fireball.update(spell)
+function Fireball.update(spell) 
 	spell:move(spell:get_dx(), spell:get_dy())
 
 	 -- 3 - use idle animation

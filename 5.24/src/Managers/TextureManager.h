@@ -1,6 +1,8 @@
 #include <memory>
 #include <map>
 
+#include <array>
+
 #include <SDL.h>
 
 #include "Texture.h"
@@ -10,6 +12,9 @@
 
 #ifndef TEXTURE_MANAGER_H
 #define TEXTURE_MANAGER_H
+
+#define SURFACE_ARRAY_SIZE 10
+#define TEXTURE_ARRAY_SIZE 20
 
 namespace tmanager {
 	typedef int Type;
@@ -28,7 +33,7 @@ public:
 	Texture *load_texture_info(std::string path);
 
 	void load_surfaces(const Type &type, const std::string &path);
-	SDL_Surface *load_surface_info(std::string path);
+	SDL_Surface *load_surface_info(const std::string &path);
 
 	void load_map_texture(std::vector<Map::Tile> &tiles, const int &width, const int &height);
 	void update_map_texture(SDL_Rect &pos, int id);
@@ -44,15 +49,21 @@ public:
 
 	friend class ResourceManager;
 private:
-	SDL_Texture *make_map_blit_texture(SDL_Surface *&main_surface, std::map<int, SDL_Surface *> &surfaces, std::vector<Map::Tile> &tiles, const int &width, const int &height);
+	SDL_Texture *make_map_blit_texture(SDL_Surface *&main_surface, std::vector<SDL_Surface *> &surfaces, std::vector<Map::Tile> &tiles, const int &width, const int &height);
 	SDL_Texture *make_editor_line_background(const int &width, const int &height, const int &tile_width, const int &tile_height, const SDL_Color &color);
 	void load_editor_textures();
 private:
-	typedef std::map<Type_ID, SDL_Surface *> Surface_Map;
-	std::map<Type, Surface_Map> _surfaces;
+	//typedef std::map<Type_ID, SDL_Surface *> Surface_Map;
+	//std::map<Type, Surface_Map> _surfaces;
 
-	typedef std::map<Type_ID, Texture *> Texture_Map;
-	std::map<Type, Texture_Map> _textures;
+
+	std::array<std::vector<SDL_Surface *>, SURFACE_ARRAY_SIZE> _surfaces;
+
+	//typedef std::map<Type_ID, Texture *> Texture_Map;
+	//std::map<Type, Texture_Map> _textures;
+
+	std::array<std::vector<Texture *>, TEXTURE_ARRAY_SIZE> _textures;
+	// IMPLEMENT THIS
 
 	Texture *_map_texture;
 	SDL_Surface *_map_surface;

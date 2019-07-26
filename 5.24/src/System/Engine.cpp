@@ -24,6 +24,8 @@ void Engine::run() {
 	_environment.get_log()->print("Engine Main Loop\n");
 
 	while (_isRunning) {
+
+
 		_environment.get_window()->get_renderer()->clear();
 
 		_isRunning = _environment.get_input_manager()->get();

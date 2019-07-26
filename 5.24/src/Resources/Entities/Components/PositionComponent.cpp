@@ -21,6 +21,22 @@ PositionComponent::PositionComponent(Entity *entity_, float x_, float y_, int w_
 	base_height     ( h_ )
 {}
 
+PositionComponent::PositionComponent(Entity *new_entity, const PositionComponent &rhs) :
+	Component		( new_entity ),
+	pos_x			( rhs.pos_x ),
+	pos_y			( rhs.pos_y ),
+	speed			( rhs.speed ),
+	scale_f			( rhs.scale_f ),
+	rotation		( rhs.rotation ),
+	rect			( rhs.rect ),
+	base_width		( rhs.base_width ),
+	base_height		( rhs.base_height )
+{}
+
+PositionComponent *PositionComponent::copy(Entity *new_entity) const {
+	return new PositionComponent(new_entity, *this);
+}
+
 void PositionComponent::update() {}
 
 void PositionComponent::move(int dir_, float dis_) {

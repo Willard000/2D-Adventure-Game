@@ -12,16 +12,37 @@
 EffectComponent::EffectComponent(Entity *entity_, std::string name_, std::string script_, int rand_time_offset_range_) :
 	Component				( entity_ ),
 	name					( name_ ),
-	script					( script_ )
+	script					( script_ ),
+	rand_time_offset_range  ( rand_time_offset_range_ )
 {
 	Environment::get().get_lua()->load_script(script);
 
 	if (SpriteComponent *sprite = GetSprite(entity)) {
-		if (rand_time_offset_range_ > 0) {
-			int offset = rand() % 2 == 1 ? sprite->time.get_time() + (rand() % rand_time_offset_range_) : sprite->time.get_time() - (rand() % rand_time_offset_range_);
+		if (rand_time_offset_range > 0) {
+			int offset = rand() % 2 == 1 ? sprite->time.get_time() + (rand() % rand_time_offset_range) : sprite->time.get_time() - (rand() % rand_time_offset_range);
 			sprite->time.set(offset);
 		}
 	}
+}
+
+EffectComponent::EffectComponent(Entity *new_entity, const EffectComponent &rhs) :
+	Component				 ( new_entity ),
+	name					 ( rhs.name ),
+	script					 ( rhs.script ),
+	rand_time_offset_range   ( rand_time_offset_range )
+{
+	Environment::get().get_lua()->load_script(script);
+
+	if (SpriteComponent *sprite = GetSprite(entity)) {
+		if (rand_time_offset_range > 0) {
+			int offset = rand() % 2 == 1 ? sprite->time.get_time() + (rand() % rand_time_offset_range) : sprite->time.get_time() - (rand() % rand_time_offset_range);
+			sprite->time.set(offset);
+		}
+	}
+}
+
+EffectComponent *EffectComponent::copy(Entity *new_entity) const {
+	return new EffectComponent(new_entity, *this);
 }
 
 void EffectComponent::update() {

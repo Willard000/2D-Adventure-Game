@@ -6,5 +6,5 @@
 4 Data/Textures/Enemies/enemies.txt
 5 Data/Textures/Effects/effects.txt
 
-1004 Data/Textures/Enemies/Icons/icons.txt
-1005 Data/Textures/Effects/Icons/icons.txt
+14 Data/Textures/Enemies/Icons/icons.txt
+15 Data/Textures/Effects/Icons/icons.txt

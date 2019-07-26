@@ -1,5 +1,7 @@
 # Bush
 
+itexture_id 2
+
 Position
 iwidth 38
 iheight 34

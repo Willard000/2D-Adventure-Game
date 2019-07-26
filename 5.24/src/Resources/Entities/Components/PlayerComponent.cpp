@@ -11,6 +11,14 @@ PlayerComponent::PlayerComponent(Entity *entity_) :
 	Component		 ( entity_ )
 {}
 
+PlayerComponent::PlayerComponent(Entity *new_entity, const PlayerComponent &rhs) :
+	Component		 ( new_entity )
+{}
+
+PlayerComponent *PlayerComponent::copy(Entity *new_entity) const {
+	return new PlayerComponent(new_entity, *this);
+}
+
 void PlayerComponent::update() {
 	// WARP
 	if (PositionComponent *position = GetPosition(entity)) {

@@ -14,8 +14,12 @@
 
 struct SpriteComponent : public Component {
 	SpriteComponent(Entity *entity_, int w_, int h_, int time_);
+	SpriteComponent(Entity *new_entity, const SpriteComponent &rhs);
+	SpriteComponent *copy(Entity *new_entity) const;
 
-	virtual void update();
+	void update();
+
+	const int get_type() const { return COMPONENT_SPRITE; }
 
 	void update(Sprite *img);
 

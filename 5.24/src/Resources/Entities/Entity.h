@@ -1,6 +1,5 @@
-#include <map>
-#include <typeindex>
 #include <string>
+#include <array>
 
 #include "Component.h"
 
@@ -9,30 +8,31 @@
 #ifndef ENITTY_H
 #define ENITTY_H
 
-#define GetPosition(entity) static_cast<PositionComponent *>(entity->get_component(typeid(PositionComponent)))
-#define GetSprite(entity) static_cast<SpriteComponent *>(entity->get_component(typeid(SpriteComponent)))
-#define GetPlayer(entity) static_cast<PlayerComponent *>(entity->get_component(typeid(PlayerComponent)))
-#define GetEnemy(entity) static_cast<EnemyComponent *>(entity->get_component(typeid(EnemyComponent)))
-#define GetSpell(entity) static_cast<SpellComponent *>(entity->get_component(typeid(SpellComponent)))
-#define GetMagic(entity) static_cast<MagicComponent *>(entity->get_component(typeid(MagicComponent)))
-#define GetEffect(entity) static_cast<EffectComponent *>(entity->get_component(typeid(EffectComponent)))
+#define GetPosition(entity) static_cast<PositionComponent *>(entity->get_component(COMPONENT_POSITION))
+#define GetSprite(entity) static_cast<SpriteComponent *>(entity->get_component(COMPONENT_SPRITE))
+#define GetPlayer(entity) static_cast<PlayerComponent *>(entity->get_component(COMPONENT_PLAYER))
+#define GetEnemy(entity) static_cast<EnemyComponent *>(entity->get_component(COMPONENT_ENEMY))
+#define GetSpell(entity) static_cast<SpellComponent *>(entity->get_component(COMPONENT_SPELL))
+#define GetMagic(entity) static_cast<MagicComponent *>(entity->get_component(COMPONENT_MAGIC))
+#define GetEffect(entity) static_cast<EffectComponent *>(entity->get_component(COMPONENT_EFFECT))
+#define GetStats(entity) static_cast<StatsComponent *>(entity->get_component(COMPONENT_STATS))
 
 class Entity {
 public:
 	Entity();
 	Entity(int type, int type_id);
 	Entity(const Entity &rhs);
-	Entity &operator=(const Entity &rhs);
 	~Entity();
 
-	template <class ComponentType>
-	void add_component(ComponentType *component) { _components[typeid(ComponentType)] = component; }
+	typedef int Component_Type;
 
-	Component *get_component(std::type_index type) { return _components[type]; }
+	void add_component(Component *component);
 
-	virtual void update();
+	Component *get_component(const Component_Type &type) { return _components[type]; }
 
-	virtual bool is_collision();
+	void update();
+
+	bool is_collision();
 
 	void clear();
 
@@ -45,18 +45,21 @@ public:
 	void destroy() { _is_destroyed = true; }
 
 	bool get_is_loaded() { return _is_loaded; }
+
+	void set_texture_id(int texture_id) { _texture_id = texture_id; }
 private:
 	int _id; // unique id
 
 	int _type;
 	int _type_id;
 
+	int _texture_id;
+
 	bool _is_destroyed;
 
 	bool _is_loaded;
 
-	typedef std::map<std::type_index, Component *> Components;
-	Components _components;
+	std::array<Component *, TOTAL_COMPONENTS> _components{ nullptr };
 };
 
 #endif

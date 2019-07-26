@@ -5,8 +5,12 @@
 
 struct PlayerComponent : public Component {
 	PlayerComponent(Entity *entity_);
+	PlayerComponent(Entity *new_entity, const PlayerComponent &rhs);
+	PlayerComponent *copy(Entity *new_entity) const;
 
-	virtual void update();
+	void update();
+
+	const int get_type() const { return COMPONENT_PLAYER; }
 
 	bool is_collision();
 };

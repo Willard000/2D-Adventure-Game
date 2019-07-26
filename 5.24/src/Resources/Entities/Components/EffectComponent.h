@@ -9,8 +9,12 @@
 
 struct EffectComponent : public Component {
 	EffectComponent(Entity *entity_, std::string name, std::string script_, int rand_time_offset_range_);
+	EffectComponent(Entity *new_entity, const EffectComponent &rhs);
+	EffectComponent *copy(Entity *new_entity) const;
 
-	virtual void update();
+	void update();
+
+	const int get_type() const { return COMPONENT_EFFECT; }
 
 	std::string name;
 	std::string script;

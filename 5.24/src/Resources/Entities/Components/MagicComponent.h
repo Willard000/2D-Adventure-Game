@@ -8,10 +8,16 @@
 
 struct MagicComponent : public Component {
 	MagicComponent(Entity *entity_, int main_spell_id_, int cast_speed_);
+	MagicComponent(Entity *new_entity, const MagicComponent &rhs);
+	MagicComponent *copy(Entity *new_entity) const;
 
-	virtual void update();
+	void update();
+
+	const int get_type() const { return COMPONENT_MAGIC; }
 
 	void cast_main(double x_, double y_);
+
+	int main_spell_id;
 
 	Timer cast_timer;
 	bool can_cast;

@@ -1,5 +1,7 @@
 # Bushki
 
+itexture_id 0
+
 Position
 iwidth 32
 iheight 32
@@ -11,3 +13,9 @@ isprite_time 150
 Enemy
 senemy_name Bushki
 senemy_script Data/Lua/Enemies/bushki.lua
+
+Stats
+istats_max_health 100
+istats_max_mana 100
+istats_damage 1
+istats_armor 1

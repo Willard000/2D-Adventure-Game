@@ -1,5 +1,7 @@
 # Tree
 
+itexture_id 0
+
 Position
 iwidth 194
 iheight 239
