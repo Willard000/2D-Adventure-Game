@@ -13,6 +13,7 @@
 #include "Player_Lua.h"
 #include "Enemy_Lua.h"
 #include "Effect_Lua.h"
+#include "Combat_Lua.h"
 
 #include "Environment.h"
 #include "Log.h"
@@ -34,6 +35,7 @@ public:
 		lua_init_player(this, _L);
 		lua_init_enemy(this, _L);
 		lua_init_effect(this, _L);
+		lua_init_combat(this, _L);
 
 		lua_init_entity(this, _L);
 

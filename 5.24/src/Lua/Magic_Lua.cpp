@@ -14,12 +14,22 @@ static int magic_get_entity(lua_State *L) {
 	return 1;
 }
 
+// void Magic:cast(float x, float y)
+static int magic_cast(lua_State *L) {
+	MagicComponent *magic = luaW_check<MagicComponent>(L, -3);
+	float x = (float)luaL_checknumber(L, -2);
+	float y = (float)luaL_checknumber(L, -1);
+	magic->cast_main(x, y);
+	return 0;
+}
+
 static luaL_Reg magic_table[] = {
 	{NULL, NULL}
 };
 
 static luaL_Reg magic_metatable[] = {
 	// func
+	{"cast", magic_cast},
 
 	// set
 

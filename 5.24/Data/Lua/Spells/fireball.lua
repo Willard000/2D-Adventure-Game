@@ -13,9 +13,7 @@ function Fireball.update(spell)
 	end
 end
 
-function Fireball.cast(spell)
-	local mouse_x = get_mouse_x()
-	local mouse_y = get_mouse_y()
+function Fireball.cast(spell, x, y)
 	local caster = spell:get_caster()
 	local pos = spell:get_entity():get_position()
 	local caster_pos = caster:get_position()
@@ -24,8 +22,8 @@ function Fireball.cast(spell)
 		caster_pos:get_y() + (caster_pos:get_h() / 2) - (pos:get_h() / 2))
 
 	-- direction vec
-	local vec = {x = mouse_x - pos:get_x() - (pos:get_w() / 2),
-		     y = mouse_y - pos:get_y() - (pos:get_h() / 2)}
+	local vec = {x = x - pos:get_x() - (pos:get_w() / 2),
+		     y = y - pos:get_y() - (pos:get_h() / 2)}
 
 	-- normalize vec
 	local vec_mag = 1 / math.sqrt((vec.x^2) + (vec.y^2))
@@ -42,8 +40,8 @@ function Fireball.cast(spell)
 
 -- Rotation
 
-	local u = {x = mouse_x - pos:get_x() - (pos:get_w() / 2),
-		   y = mouse_y - pos:get_y() - (pos:get_h() / 2)}
+	local u = {x = x - pos:get_x() - (pos:get_w() / 2),
+		   y = y - pos:get_y() - (pos:get_h() / 2)}
 	local v = {x = 1, y = 0}
 
 	local dot_product = (u.x * v.x) + (u.y * v.y)

@@ -9,6 +9,8 @@
 #include "Entity.h"
 #include "ResourceManager.h"
 
+#include "Collision.h"
+
 
 // int get_mouse_x()
 static int mouse_get_x(lua_State *L) {
@@ -42,9 +44,19 @@ static int get_player(lua_State *L) {
 	return 1;
 }
 
+// bool collision(PositionComponent *a, PositionComponent *b)
+static int collision(lua_State *L) {
+	PositionComponent *a = luaW_check<PositionComponent>(L, -2);
+	PositionComponent *b = luaW_check<PositionComponent>(L, -1);
+	bool is_collision = collision(a->rect, b->rect);
+	lua_pushboolean(L, is_collision);
+	return 1;
+}
+
 void lua_init_globals(Lua *lua, lua_State *L) {
 	lua->register_global("get_mouse_x", mouse_get_x);
 	lua->register_global("get_mouse_y", mouse_get_y);
 	lua->register_global("get_time", get_time);
 	lua->register_global("get_player", get_player);
+	lua->register_global("collision", collision);
 }

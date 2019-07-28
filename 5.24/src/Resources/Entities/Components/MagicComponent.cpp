@@ -39,7 +39,7 @@ void MagicComponent::cast_main(double x_, double y_) {
 		Entity *spell = new Entity(main_spell);
 		SpellComponent *spell_comp = GetSpell(spell);
 		spell_comp->caster = entity;
-		spell_comp->cast();
+		spell_comp->cast(x_, y_);
 		Environment::get().get_resource_manager()->add(spell);
 		can_cast = false;
 	}

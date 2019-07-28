@@ -237,16 +237,18 @@ void UIManager::render() {
 	if (_state == STATE_WAITING)
 		renderer->draw_text(_current_text, true);
 	else if (_state == STATE_PLACING) {
-		int x, y;
-		calc_real_mouse_location(x, y);
-		Texture *img = nullptr;
-		if(_selection.type == TYPE_ENEMY || _selection.type == TYPE_EFFECT)
-			img = Environment::get().get_resource_manager()->get_texture_info(_selection.type + TYPE_EX_ICON, _selection.id);
-		else
-			img = Environment::get().get_resource_manager()->get_texture_info(_selection.type, _selection.id);
+		if (_selection.id != -1) {
+			int x, y;
+			calc_real_mouse_location(x, y);
+			Texture *img = nullptr;
+			if (_selection.type == TYPE_ENEMY || _selection.type == TYPE_EFFECT)
+				img = Environment::get().get_resource_manager()->get_texture_info(_selection.type + TYPE_EX_ICON, _selection.id);
+			else
+				img = Environment::get().get_resource_manager()->get_texture_info(_selection.type, _selection.id);
 
-		if (img != nullptr) {
-			renderer->render(img, { (int)x, (int)y, TILE_WIDTH, TILE_HEIGHT });
+			if (img != nullptr) {
+				renderer->render(img, { (int)x, (int)y, TILE_WIDTH, TILE_HEIGHT });
+			}
 		}
 	}
 	else if (_state == STATE_SELECTING && _map_selection.id != -1) {

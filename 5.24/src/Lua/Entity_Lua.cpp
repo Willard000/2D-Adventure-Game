@@ -7,6 +7,8 @@
 #include "EnemyComponent.h"
 #include "SpellComponent.h"
 #include "MagicComponent.h"
+#include "EffectComponent.h"
+#include "CombatComponent.h"
 
 #include "Environment.h"
 #include "Log.h"
@@ -90,6 +92,28 @@ static int entity_get_magic(lua_State *L) {
 	return 1;
 }
 
+// EffectComponent Entity:get_effect()
+static int entity_get_effect(lua_State *L) {
+	Entity *entity = luaW_check<Entity>(L, -1);
+	EffectComponent *effect = GetEffect(entity);
+	if (effect)
+		luaW_push<EffectComponent>(L, effect);
+	else
+		lua_pushnil(L);
+	return 1;
+}
+
+// CombatComponent Entity:get_combat()
+static int entity_get_combat(lua_State *L) {
+	Entity *entity = luaW_check<Entity>(L, -1);
+	CombatComponent *combat = GetCombat(entity);
+	if (combat)
+		luaW_push<CombatComponent>(L, combat);
+	else
+		lua_pushnil(L);
+	return 1;
+}
+
 static luaL_Reg entity_table[] = {
 	{NULL, NULL}
 };
@@ -108,6 +132,8 @@ static luaL_Reg entity_metatable[] = {
 	{"get_enemy", entity_get_enemy},
 	{"get_spell", entity_get_spell},
 	{"get_magic", entity_get_magic},
+	{"get_effect", entity_get_effect},
+	{"get_combat", entity_get_combat},
 
 	{NULL, NULL}
 };

@@ -15,7 +15,7 @@
 #define GetSpell(entity) static_cast<SpellComponent *>(entity->get_component(COMPONENT_SPELL))
 #define GetMagic(entity) static_cast<MagicComponent *>(entity->get_component(COMPONENT_MAGIC))
 #define GetEffect(entity) static_cast<EffectComponent *>(entity->get_component(COMPONENT_EFFECT))
-#define GetStats(entity) static_cast<StatsComponent *>(entity->get_component(COMPONENT_STATS))
+#define GetCombat(entity) static_cast<CombatComponent *>(entity->get_component(COMPONENT_COMBAT))
 
 class Entity {
 public:
@@ -47,6 +47,7 @@ public:
 	bool get_is_loaded() { return _is_loaded; }
 
 	void set_texture_id(int texture_id) { _texture_id = texture_id; }
+	int get_texture_id() { return _texture_id; }
 private:
 	int _id; // unique id
 

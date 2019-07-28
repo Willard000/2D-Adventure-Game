@@ -7,6 +7,10 @@
 
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
+#include "CombatComponent.h"
+#include "EnemyComponent.h"
+
+bool SHOW_COMBAT_RANGE = false;			// DEBUG
 
 #define SOLIDS_COLOR {255, 0, 50, 50}
 #define WARPS_COLOR {0, 255, 50, 50}
@@ -42,6 +46,7 @@ void ResourceManager::render_entities() {
 void ResourceManager::render_entity(Entity *entity) {
 	PositionComponent *position = GetPosition(entity);
 	SpriteComponent *sprite = GetSprite(entity);
+	CombatComponent *combat = GetCombat(entity);
 
 	if (!position) {
 		return;
@@ -53,6 +58,19 @@ void ResourceManager::render_entity(Entity *entity) {
 	else {
 		Environment::get().get_window()->get_renderer()->render(get_texture_info(entity), position);
 	}
+
+	if (combat) {
+		combat->draw_health();
+	}
+
+	if (SHOW_COMBAT_RANGE) {
+		EnemyComponent *enemy = GetEnemy(entity);
+		if (enemy) {
+			SDL_Rect range = { position->rect.x - enemy->combat_range.w / 2, position->rect.y - enemy->combat_range.h / 2, enemy->combat_range.w, enemy->combat_range.h };
+			Environment::get().get_window()->get_renderer()->draw_rect(range, { 0, 255, 0, 150 }, DRAW_RECT_CAMERA);
+		}
+	}
+
 }
 
 void ResourceManager::render_map() {

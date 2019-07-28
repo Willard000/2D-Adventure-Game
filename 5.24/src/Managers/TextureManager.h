@@ -1,6 +1,3 @@
-#include <memory>
-#include <map>
-
 #include <array>
 
 #include <SDL.h>
@@ -18,7 +15,7 @@
 
 namespace tmanager {
 	typedef int Type;
-	typedef int Type_ID;
+	typedef int Texture_ID;
 }
 
 using namespace tmanager;
@@ -38,11 +35,11 @@ public:
 	void load_map_texture(std::vector<Map::Tile> &tiles, const int &width, const int &height);
 	void update_map_texture(SDL_Rect &pos, int id);
 
-	Texture *&get_texture_info(const Type &type, const Type_ID &type_id) { return _textures[type][type_id]; }
-	Texture *&get_texture_info(Entity *entity) { return _textures[entity->get_type()][entity->get_type_id()]; }
-	SDL_Surface *&get_surface_info(const Type &type, const Type_ID &type_id) { return _surfaces[type][type_id]; }
-	Sprite *get_sprite_info(const Type &type, const Type_ID &type_id) { return static_cast<Sprite *>(_textures[type][type_id]); }
-    Sprite *get_sprite_info(Entity *entity) { return static_cast<Sprite *>(_textures[entity->get_type()][entity->get_type_id()]); }
+	Texture *&get_texture_info(const Type &type, const Texture_ID &texture_id) { return _textures[type][texture_id]; }
+	Texture *&get_texture_info(Entity *entity) { return _textures[entity->get_type()][entity->get_texture_id()]; }
+	SDL_Surface *&get_surface_info(const Type &type, const Texture_ID &texture_id) { return _surfaces[type][texture_id]; }
+	Sprite *get_sprite_info(const Type &type, const Texture_ID &texture_id) { return static_cast<Sprite *>(_textures[type][texture_id]); }
+    Sprite *get_sprite_info(Entity *entity) { return static_cast<Sprite *>(_textures[entity->get_type()][entity->get_texture_id()]); }
 
 	unsigned int get_texture_size(const Type &type) { return _textures[type].size(); }
 	unsigned int get_surface_size(const Type &type) { return _surfaces[type].size(); }
@@ -53,17 +50,9 @@ private:
 	SDL_Texture *make_editor_line_background(const int &width, const int &height, const int &tile_width, const int &tile_height, const SDL_Color &color);
 	void load_editor_textures();
 private:
-	//typedef std::map<Type_ID, SDL_Surface *> Surface_Map;
-	//std::map<Type, Surface_Map> _surfaces;
-
-
 	std::array<std::vector<SDL_Surface *>, SURFACE_ARRAY_SIZE> _surfaces;
 
-	//typedef std::map<Type_ID, Texture *> Texture_Map;
-	//std::map<Type, Texture_Map> _textures;
-
 	std::array<std::vector<Texture *>, TEXTURE_ARRAY_SIZE> _textures;
-	// IMPLEMENT THIS
 
 	Texture *_map_texture;
 	SDL_Surface *_map_surface;

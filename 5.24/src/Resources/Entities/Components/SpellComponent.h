@@ -20,7 +20,7 @@ struct SpellComponent : public Component {
 
 	const int get_type() const { return COMPONENT_SPELL; }
 
-	void cast();
+	void cast(float x, float y);
 
 	void move(float x, float y);
 

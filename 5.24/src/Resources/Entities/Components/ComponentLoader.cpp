@@ -13,7 +13,7 @@
 #include "PlayerComponent.h"
 #include "EnemyComponent.h"
 #include "EffectComponent.h"
-#include "StatsComponent.h"
+#include "CombatComponent.h"
 
 #include "Environment.h"
 #include "Log.h"
@@ -29,7 +29,7 @@
 #define FILE_PLAYER_COMPONENT "Player"
 #define FILE_ENEMY_COMPONENT "Enemy"
 #define FILE_EFFECT_COMPONENT "Effect"
-#define FILE_STATS_COMPONENT "Stats"
+#define FILE_COMBAT_COMPONENT "Combat"
 
 #define FILE_POSITION_WIDTH "iwidth"
 #define FILE_POSITION_HEIGHT "iheight"
@@ -51,15 +51,18 @@
 
 #define FILE_ENEMY_NAME "senemy_name"
 #define FILE_ENEMY_SCRIPT "senemy_script"
+#define FILE_ENEMY_COMBAT_RANGEW "ienemy_combat_range_w"
+#define FILE_ENEMY_COMBAT_RANGEH "ienemy_combat_range_h"
 
 #define FILE_EFFECT_NAME "seffect_name"
 #define FILE_EFFECT_SCRIPT "seffect_script"
 #define FILE_EFFECT_RAND_TIME_OFFSET_RANGE "ieffect_rand_time_offset_range"
 
-#define FILE_STATS_MAX_HEALTH "istats_max_health"
-#define FILE_STATS_MAX_MANA "istats_max_mana"
-#define FILE_STATS_DAMAGE "istats_damage"
-#define FILE_STATS_ARMOR "istats_armor"
+#define FILE_COMBAT_MAX_HEALTH "icombat_max_health"
+#define FILE_COMBAT_MAX_MANA "icombat_max_mana"
+#define FILE_COMBAT_DAMAGE "icombat_damage"
+#define FILE_COMBAT_ARMOR "icombat_armor"
+#define FILE_COMBAT_TIME "icombat_time"
 
 void load_position(FileReader &file, Entity *entity, PositionComponent *&position) {
 	int w = 32, h = 32;
@@ -117,11 +120,14 @@ void load_player(FileReader &file, Entity *entity, PlayerComponent *&player) {
 void load_enemy(FileReader &file, Entity *entity, EnemyComponent *&enemy) {
 	std::string name = " ";
 	std::string script = " ";
+	Combat_Range combat_range = { 0, 0 };
 
 	if (file.exists(FILE_ENEMY_NAME)) name = file.get_string(FILE_ENEMY_NAME);
 	if (file.exists(FILE_ENEMY_SCRIPT)) script = file.get_string(FILE_ENEMY_SCRIPT);
+	if (file.exists(FILE_ENEMY_COMBAT_RANGEW)) combat_range.w = file.get_int(FILE_ENEMY_COMBAT_RANGEW);
+	if (file.exists(FILE_ENEMY_COMBAT_RANGEH)) combat_range.h = file.get_int(FILE_ENEMY_COMBAT_RANGEH);
 
-	enemy = new EnemyComponent(entity, name, script);
+	enemy = new EnemyComponent(entity, name, script, combat_range);
 }
 
 void load_effect(FileReader &file, Entity *entity, EffectComponent *&effect) {
@@ -136,18 +142,20 @@ void load_effect(FileReader &file, Entity *entity, EffectComponent *&effect) {
 	effect = new EffectComponent(entity, name, script, rand_time_offset_range);
 }
 
-void load_stats(FileReader &file, Entity *entity, StatsComponent *&stats) {
+void load_combat(FileReader &file, Entity *entity, CombatComponent *&combat) {
 	int max_health = 0;
 	int max_mana = 0;
 	int damage = 0;
 	int armor = 0;
+	int combat_time = 10000;
 
-	if (file.exists(FILE_STATS_MAX_HEALTH)) max_health = file.get_int(FILE_STATS_MAX_HEALTH);
-	if (file.exists(FILE_STATS_MAX_MANA)) max_mana = file.get_int(FILE_STATS_MAX_MANA);
-	if (file.exists(FILE_STATS_DAMAGE)) damage = file.get_int(FILE_STATS_DAMAGE);
-	if (file.exists(FILE_STATS_ARMOR)) armor = file.get_int(FILE_STATS_ARMOR);
+	if (file.exists(FILE_COMBAT_MAX_HEALTH)) max_health = file.get_int(FILE_COMBAT_MAX_HEALTH);
+	if (file.exists(FILE_COMBAT_MAX_MANA)) max_mana = file.get_int(FILE_COMBAT_MAX_MANA);
+	if (file.exists(FILE_COMBAT_DAMAGE)) damage = file.get_int(FILE_COMBAT_DAMAGE);
+	if (file.exists(FILE_COMBAT_ARMOR)) armor = file.get_int(FILE_COMBAT_ARMOR);
+	if (file.exists(FILE_COMBAT_TIME)) combat_time = file.get_int(FILE_COMBAT_TIME);
 
-	stats = new StatsComponent(entity, max_health, max_mana, damage, armor);
+	combat = new CombatComponent(entity, max_health, max_mana, damage, armor, combat_time);
 }
 
 bool load_components(Entity *entity) {
@@ -235,10 +243,10 @@ bool load_components(Entity *entity) {
 		numComponents++;
 	}
 
-	if (file.exists(FILE_STATS_COMPONENT)) {
-		StatsComponent *stats = nullptr;
-		load_stats(file, entity, stats);
-		entity->add_component(stats);
+	if (file.exists(FILE_COMBAT_COMPONENT)) {
+		CombatComponent *combat = nullptr;
+		load_combat(file, entity, combat);
+		entity->add_component(combat);
 		numComponents++;
 	}
 

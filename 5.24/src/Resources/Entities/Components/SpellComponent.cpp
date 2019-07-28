@@ -3,7 +3,7 @@
 #include "Entity.h"
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
-#include "StatsComponent.h"
+#include "CombatComponent.h"
 
 #include "Environment.h"
 #include "Clock.h"
@@ -68,13 +68,15 @@ void SpellComponent::update() {
 	}
 }
 
-void SpellComponent::cast() {
+void SpellComponent::cast(float x, float y) {
 	lua_State *L = Environment::get().get_lua()->get_state();
 	lua_getglobal(L, name.c_str());
 	lua_getfield(L, -1, "cast");
 	lua_remove(L, -2);
 	luaW_push<SpellComponent>(L, this);
-	lua_pcall(L, 1, 0, 0);
+	lua_pushnumber(L, x);
+	lua_pushnumber(L, y);
+	lua_pcall(L, 3, 0, 0);
 }
 
 void SpellComponent::move(float x, float y) {
@@ -108,10 +110,10 @@ bool SpellComponent::is_collision() {
 				type == TYPE_ENEMY ||
 				type == TYPE_PLAYER) {
 				if (collision(position->rect, GetPosition(e)->rect) &&
-					e != caster) {
+					e != caster && e->get_type() != caster->get_type()) {
 
-					if (StatsComponent *stats = GetStats(e)) {
-						stats->apply_damage(calc_damage());
+					if (CombatComponent *combat = GetCombat(e)) {
+						combat->apply_damage(calc_damage());
 					}
 
 					return true;
@@ -135,8 +137,8 @@ void SpellComponent::death() {
 }
 
 int SpellComponent::calc_damage() {
-	if (StatsComponent *stats = GetStats(entity)) {
-		return stats->damage + damage;
+	if (CombatComponent *combat = GetCombat(entity)) {
+		return combat->damage + damage;
 	}
 
 	return damage;
