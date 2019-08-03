@@ -57,6 +57,9 @@ private:
 	Texture *_map_texture;
 	SDL_Surface *_map_surface;
 
+	std::vector<std::vector<Texture *>> _map_textures;
+	std::vector<std::vector<SDL_Surface *>> _map_surfaces;
+
 	Texture *_editor_tiles_texture;
 	Texture *_editor_objects_texture;
 	Texture *_editor_enemies_texture;

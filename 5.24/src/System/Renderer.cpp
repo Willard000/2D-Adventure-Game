@@ -231,7 +231,8 @@ SDL_Texture *Renderer::make_blit_texture(std::vector<SDL_Surface *> &surfaces, c
 }
 
 SDL_Texture *Renderer::blit_texture(SDL_Surface *&main_surface, SDL_Surface *surface, SDL_Rect &pos) {
-	SDL_BlitSurface(surface, NULL, main_surface, &pos);
+	SDL_Rect blit_rect = { pos.x, pos.y, NULL, NULL };
+	SDL_BlitSurface(surface, NULL, main_surface, &blit_rect);
 	return SDL_CreateTextureFromSurface(_renderer, main_surface);
 }
 

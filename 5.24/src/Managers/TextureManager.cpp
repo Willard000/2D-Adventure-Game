@@ -32,6 +32,8 @@
 
 #define EDITOR_LINE_COLOR {255, 255, 255, 50}
 
+#define MAP_TEXTURE_SECTION_SIZE 10
+
 TextureManager::TextureManager() :
 	_map_texture				( new Texture() ),
 	_map_surface				( nullptr ),
@@ -80,6 +82,25 @@ TextureManager::~TextureManager() {
 	}
 
 	delete _map_texture;
+	SDL_FreeSurface(_map_surface);
+
+	for (auto &v : _map_surfaces) {
+		for (auto &s : v) {
+			SDL_FreeSurface(s);
+		}
+	}
+
+	for (auto &v : _map_textures) {
+		for (auto &t : v) {
+			delete t;
+		}
+	}
+
+	delete _editor_tiles_texture;
+	delete _editor_objects_texture;
+	delete _editor_enemies_texture;
+	delete _editor_effects_texture;
+	delete _editor_line_background;
 }
 
 void TextureManager::load_textures(const Type &type, const std::string &path) {
@@ -174,23 +195,93 @@ SDL_Surface *TextureManager::load_surface_info(const std::string &path) {
 }
 
 void TextureManager::load_map_texture(std::vector<Map::Tile> &tiles, const int &width, const int &height) {
-	SDL_DestroyTexture(_map_texture->texture);
-	_map_texture->texture = make_map_blit_texture(_map_surface, _surfaces[TYPE_TILE], tiles, width, height);
+	if (Environment::get().get_mode() == MODE_GAME) {
+		SDL_DestroyTexture(_map_texture->texture);
+		_map_texture->texture = make_map_blit_texture(_map_surface, _surfaces[TYPE_TILE], tiles, width, height);
+		return;
+	}
 
-	if (Environment::get().get_mode() == MODE_EDITOR) {
-		_editor_line_background->texture = make_editor_line_background(width, height, TILE_WIDTH, TILE_HEIGHT, EDITOR_LINE_COLOR);
-		_editor_line_background->rect.w = width;
-		_editor_line_background->rect.h = height;
+	// editor
+
+	_editor_line_background->texture = make_editor_line_background(width, height, TILE_WIDTH, TILE_HEIGHT, EDITOR_LINE_COLOR);
+	_editor_line_background->rect.w = width;
+	_editor_line_background->rect.h = height;
+
+	for (auto &v : _map_surfaces) {
+		for (auto &s : v) {
+			SDL_FreeSurface(s);
+		}
+	}
+	_map_surfaces.clear();
+
+	for (auto &v : _map_textures) {
+		for (auto &t : v) {
+			delete t;
+		}
+	}
+	_map_textures.clear();
+
+	int rows = (width / TILE_WIDTH) / MAP_TEXTURE_SECTION_SIZE;
+	int columns = (height / TILE_HEIGHT) / MAP_TEXTURE_SECTION_SIZE;
+
+	for (int i = 0; i < columns; ++i) {
+		std::vector<Texture *> texture_row;
+		std::vector<SDL_Surface *> surface_row;
+		for (int k = 0; k < rows; ++k) {
+			SDL_Surface *surface = SDL_CreateRGBSurface(NULL, MAP_TEXTURE_SECTION_SIZE * TILE_WIDTH, MAP_TEXTURE_SECTION_SIZE * TILE_HEIGHT, RGB_DEPTH, RMASK, GMASK, BMASK, AMASK);
+			Texture * section = new Texture();
+
+			int section_start_index = k * MAP_TEXTURE_SECTION_SIZE + (i * rows * MAP_TEXTURE_SECTION_SIZE * MAP_TEXTURE_SECTION_SIZE); 
+
+			for (int h = 0; h < MAP_TEXTURE_SECTION_SIZE; ++h) {
+				for (int w = 0; w < MAP_TEXTURE_SECTION_SIZE; ++w) {
+					int index = w + (h * rows * MAP_TEXTURE_SECTION_SIZE) + section_start_index;
+					SDL_Rect blit_rect = { w * TILE_WIDTH, h * TILE_HEIGHT, 0, 0 };
+					SDL_BlitSurface(_surfaces[TYPE_TILE][tiles[index].id], NULL, surface, &blit_rect);
+				}
+			}
+
+			section->texture = SDL_CreateTextureFromSurface(Environment::get().get_window()->get_renderer()->get_renderer(), surface);
+			section->rect = {
+				k * MAP_TEXTURE_SECTION_SIZE * TILE_WIDTH,
+				i * MAP_TEXTURE_SECTION_SIZE * TILE_HEIGHT,
+				MAP_TEXTURE_SECTION_SIZE * TILE_WIDTH,
+				MAP_TEXTURE_SECTION_SIZE * TILE_HEIGHT
+			};
+			texture_row.push_back(section);
+			surface_row.push_back(surface);
+		}
+		_map_textures.push_back(texture_row);
+		_map_surfaces.push_back(surface_row);
 	}
 }
 
 void TextureManager::update_map_texture(SDL_Rect &pos, int id) {
-	SDL_DestroyTexture(_map_texture->texture);
+	if (Environment::get().get_mode() == MODE_GAME) {
+		SDL_DestroyTexture(_map_texture->texture);
 
-	_map_texture->texture = Environment::get().get_window()->get_renderer()->blit_texture(
-		_map_surface,
+		_map_texture->texture = Environment::get().get_window()->get_renderer()->blit_texture(
+			_map_surface,
+			get_surface_info(TYPE_TILE, id),
+			pos
+		);
+
+		return;
+	}
+
+	// editor
+
+	int x_index = pos.x / TILE_WIDTH / MAP_TEXTURE_SECTION_SIZE;
+	int y_index = pos.y / TILE_HEIGHT / MAP_TEXTURE_SECTION_SIZE;
+
+	SDL_DestroyTexture(_map_textures[y_index][x_index]->texture);
+
+	SDL_Rect tile_pos = { pos.x - (TILE_WIDTH * MAP_TEXTURE_SECTION_SIZE) * x_index, pos.y - (TILE_HEIGHT * MAP_TEXTURE_SECTION_SIZE) * y_index, NULL, NULL };
+
+	_map_textures[y_index][x_index]->texture = Environment::get().get_window()->get_renderer()->blit_texture(
+		_map_surfaces[y_index][x_index],
 		get_surface_info(TYPE_TILE, id),
-		pos
+		tile_pos
 	);
 }
 

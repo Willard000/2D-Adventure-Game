@@ -14,8 +14,8 @@ isprite_cast_time 500
 Enemy
 senemy_name Bushki
 senemy_script Data/Lua/Enemies/bushki.lua
-ienemy_combat_range_w 0
-ienemy_combat_range_h 0
+ienemy_combat_range_w 300
+ienemy_combat_range_h 300
 
 Magic
 imain_spell_id 1

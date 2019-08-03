@@ -11,7 +11,7 @@
 #include "EnemyComponent.h"
 
 bool SHOW_COMBAT_RANGE = false;			// DEBUG
-bool SHOW_PATHING = true;
+bool SHOW_PATHING = false;
 
 #define SOLIDS_COLOR {255, 0, 50, 50}
 #define WARPS_COLOR {0, 255, 50, 50}
@@ -89,7 +89,16 @@ void ResourceManager::render_entity(Entity *entity) {
 }
 
 void ResourceManager::render_map() {
-	Environment::get().get_window()->get_renderer()->render(_map_texture, _map->_rect);
+	if (Environment::get().get_mode() == MODE_GAME) {
+		Environment::get().get_window()->get_renderer()->render(_map_texture, _map->_rect);
+	}
+	else {
+		for (auto &v : _map_textures) {
+			for (auto &t : v) {
+				Environment::get().get_window()->get_renderer()->render(t);
+			}
+		}
+	}
 }
 
 void ResourceManager::render_editor(const UI::Element_Area &element_area, const UI::Element &selection) {
