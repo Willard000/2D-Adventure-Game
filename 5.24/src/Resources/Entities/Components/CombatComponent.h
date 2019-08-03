@@ -14,7 +14,7 @@ struct CombatComponent : public Component {
 
 	const int get_type() const ;
 
-	void apply_damage(int damage_);
+	void apply_damage(int damage_, const SDL_Color &color);
 
 	void draw_health();
 

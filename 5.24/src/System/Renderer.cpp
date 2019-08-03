@@ -150,28 +150,28 @@ void Renderer::render(Sprite *img, SpriteComponent *sprite, const SDL_Rect &posi
 	}
 }
 
-void Renderer::draw_text(Text &text, bool ui_element) {
-	if (!text._is_loaded) {
-		text.load();
+void Renderer::draw_text(Text *text, bool ui_element) {
+	if (!text->_is_loaded) {
+		text->load();
 	}
-	if (text._texture != nullptr) {
+	if (text->_texture != nullptr) {
 		if (ui_element) {
 			SDL_RenderSetScale(_renderer, 1.0f, 1.0f);
-			SDL_RenderCopy(_renderer, text._texture, NULL, &text._rect);
+			SDL_RenderCopy(_renderer, text->_texture, NULL, &text->_rect);
 			SDL_RenderSetScale(_renderer, _camera->_uniform_scale, _camera->_uniform_scale);
 		}
 		else {
-			SDL_RenderCopyEx(_renderer, text._texture, NULL, &get_des(text._rect), _camera->_uniform_rotation, NULL, SDL_FLIP_NONE);
+			SDL_RenderCopyEx(_renderer, text->_texture, NULL, &get_des(text->_rect), _camera->_uniform_rotation, NULL, SDL_FLIP_NONE);
 		}
 	}
 	else {
 		if (ui_element) {
 			SDL_RenderSetScale(_renderer, 1.0f, 1.0f);
-			draw_rect(text._rect, NULL_TEXT_COLOR);
+			draw_rect(text->_rect, NULL_TEXT_COLOR);
 			SDL_RenderSetScale(_renderer, _camera->_uniform_scale, _camera->_uniform_scale);
 		}
 		else {
-			draw_rect(get_des(text._rect), NULL_TEXT_COLOR);
+			draw_rect(get_des(text->_rect), NULL_TEXT_COLOR);
 		}
 	}
 }

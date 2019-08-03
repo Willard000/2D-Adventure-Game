@@ -14,6 +14,10 @@ public:
 
 	Text &operator=(const Text &rhs);
 
+	virtual void update() {}
+
+	virtual bool end() { return false; }
+
 	const std::string &get_text() { return _text; }
 
 	void set_text(std::string text);

@@ -12,6 +12,7 @@
 
 #include "Entity.h"
 #include "PositionComponent.h"
+#include "EnemyComponent.h"
 
 #include "Collision.h"
 
@@ -40,6 +41,9 @@
 #define FILE_ENTITY_TYPE_ID "itype_id"
 #define FILE_ENTITY_POSITION_X "fposition_x"
 #define FILE_ENTITY_POSITION_Y "fposition_y"
+
+#define FILE_ENTITY_PATHING_X "ipathing_x"
+#define FILE_ENTITY_PATHING_Y "ipathing_y"
 
 #define FILE_MAP_SEPERATOR "."
 
@@ -451,20 +455,31 @@ void Map::load_entities(FileReader &file) {
 	int type = 0;
 	int type_id = 0;
 	float position_x = 0, position_y = 0;
+	Path path;
+	std::vector<Path> pathing;
+
 	while ((stream >> key)) {
 		if (key == FILE_MAP_SEPERATOR) {
 			Entity *entity = new Entity(type, type_id);
 			if (PositionComponent *position = GetPosition(entity)) {
 				position->set(position_x, position_y);
 			}
-			Environment::get().get_resource_manager()->add(entity);
+			if (EnemyComponent *enemy = GetEnemy(entity)) {
+				if (pathing.size() > 0) {
+					enemy->_pathing = pathing;
+					pathing.clear();
+				}
+			}
+			Environment::get().get_resource_manager()->add_entity(entity);
 		}
 		else {
 			stream >> data;
 			if (key == FILE_ENTITY_TYPE) type = std::stoi(data);
 			else if (key == FILE_ENTITY_TYPE_ID) type_id = std::stoi(data);
-			else if (key == FILE_ENTITY_POSITION_X) position_x = std::stof(data);
+			else if (key == FILE_ENTITY_POSITION_X) position_x = std::stof(data);  
 			else if (key == FILE_ENTITY_POSITION_Y) position_y = std::stof(data);
+			else if (key == FILE_ENTITY_PATHING_X) path.x = std::stoi(data);
+			else if (key == FILE_ENTITY_PATHING_Y) { path.y = std::stoi(data);	pathing.push_back(path); }
 		}
 	}
 }
@@ -480,6 +495,13 @@ void Map::save_entities(std::ostream &file) {
 			if (PositionComponent *position = GetPosition(itt->second)) {
 				file << FILE_ENTITY_POSITION_X << " " << position->pos_x << " "
 					<< FILE_ENTITY_POSITION_Y << " " << position->pos_y << " ";
+			}
+
+			if (EnemyComponent *enemy = GetEnemy(itt->second)) {
+				for (auto &p : enemy->_pathing) {
+					file << FILE_ENTITY_PATHING_X << " " << p.x << " "
+						<< FILE_ENTITY_PATHING_Y << " " << p.y << " ";
+				}
 			}
 
 			file << FILE_MAP_SEPERATOR << " ";

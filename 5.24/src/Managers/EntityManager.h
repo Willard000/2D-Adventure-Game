@@ -23,14 +23,14 @@ public:
 	EntityManager();
 	~EntityManager();
 
-	void create(const Type &type, Type_ID type_id, float x = 0.0f, float y = 0.0f);
-	void add(Entity *entity);
-	void remove(Entity *entity);
-	void remove(const Type &type, const ID &id);
+	void create_entity(const Type &type, Type_ID type_id, float x = 0.0f, float y = 0.0f);
+	void add_entity(Entity *entity);
+	void remove_entity(Entity *entity);
+	void remove_entity(const Type &type, const ID &id);
 	void clear_entities();
 	void clear_spells();
 
-	void update();
+	void update_entities();
 
 	Entity *get_entity(const Type &type, const ID &id) { return _entities[type][id]; }
 	Entity *get_player() { return _player; }

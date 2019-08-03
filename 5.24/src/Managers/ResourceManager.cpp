@@ -11,6 +11,7 @@
 #include "EnemyComponent.h"
 
 bool SHOW_COMBAT_RANGE = false;			// DEBUG
+bool SHOW_PATHING = true;
 
 #define SOLIDS_COLOR {255, 0, 50, 50}
 #define WARPS_COLOR {0, 255, 50, 50}
@@ -18,6 +19,7 @@ bool SHOW_COMBAT_RANGE = false;			// DEBUG
 ResourceManager::ResourceManager() :
 	TextureManager(),
 	EntityManager(),
+	TextManager(),
 	_map(new Map())
 {
 	Environment::get().get_log()->print("Loading Resource Manager");
@@ -28,8 +30,9 @@ ResourceManager::~ResourceManager() {
 }
 
 void ResourceManager::update() {
-	EntityManager::update();
-	Environment::get().get_window()->get_camera()->update(); // move this
+	update_entities();
+	update_text();
+	Environment::get().get_window()->get_camera()->update();
 	_map->update();
 }
 
@@ -68,6 +71,18 @@ void ResourceManager::render_entity(Entity *entity) {
 		if (enemy) {
 			SDL_Rect range = { position->rect.x - enemy->combat_range.w / 2, position->rect.y - enemy->combat_range.h / 2, enemy->combat_range.w, enemy->combat_range.h };
 			Environment::get().get_window()->get_renderer()->draw_rect(range, { 0, 255, 0, 150 }, DRAW_RECT_CAMERA);
+		}
+	}
+
+	if (SHOW_PATHING) {
+		EnemyComponent *enemy = GetEnemy(entity);
+		if (enemy) {
+			for (auto &p : enemy->_pathing) {
+				SDL_Rect path_rect = { p.x - PATH_WIDTH / 2, p.y - PATH_HEIGHT / 2, PATH_WIDTH, PATH_HEIGHT };
+				Environment::get().get_window()->get_renderer()->draw_rect(path_rect, { 0, 0, 255, 150 }, DRAW_RECT_CAMERA);
+			}
+			SDL_Rect center_rect = { position->rect.x - PATH_WIDTH / 2 + position->rect.w / 2, position->rect.y - PATH_HEIGHT / 2 + position->rect.h / 2, PATH_WIDTH, PATH_HEIGHT };
+			Environment::get().get_window()->get_renderer()->draw_rect(center_rect, { 255, 150, 0, 150 }, DRAW_RECT_CAMERA);
 		}
 	}
 
@@ -114,6 +129,7 @@ void ResourceManager::render_editor(const UI::Element_Area &element_area, const 
 void ResourceManager::render() {
 	render_map();
 	render_entities();
+	render_text();
 }
 
 bool ResourceManager::load_map(int id) {

@@ -1,6 +1,7 @@
 
 #include "EntityManager.h"
 #include "TextureManager.h"
+#include "TextManager.h"
 #include "Map.h"
 #include "UIManager.h"
 
@@ -9,7 +10,8 @@
 
 class ResourceManager : 
 	public EntityManager,
-	public TextureManager
+	public TextureManager,
+	public TextManager
 {
 public:
 	ResourceManager();

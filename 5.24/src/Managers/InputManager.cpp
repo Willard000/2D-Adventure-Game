@@ -300,7 +300,7 @@ std::string InputManager::start_text_input() {
 			text = Text(_text_input, { 255, 255, 255, 255 }, 24, 3000, width, height);
 		}
 
-		Environment::get().get_window()->get_renderer()->draw_text(text, true);
+		Environment::get().get_window()->get_renderer()->draw_text(&text, true);
 
 		Environment::get().get_window()->get_renderer()->render();
 

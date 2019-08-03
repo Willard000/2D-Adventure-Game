@@ -43,12 +43,9 @@ Window::Window_Settings load_window_settings(FileReader &file) {
 	if (file.exists(FILE_WINDOW_MODE)) window.mode = file.get_int(FILE_WINDOW_MODE);
 	if (file.exists(FILE_WINDOW_COLOR)) {
 		std::istringstream stream(file.get_string(FILE_WINDOW_COLOR));
-		int red, green, blue, alpha;
-		stream >> red >> green >> blue >> alpha;
-		window.color.r = red;
-		window.color.g = green;
-		window.color.b = blue;
-		window.color.a = alpha;
+		int r, g, b, a;
+		stream >> r >> g >> b >> a;
+		window.color = { (Uint8)r, (Uint8)g, (Uint8)b, (Uint8)a };
 	}
 
 	return window;

@@ -85,10 +85,12 @@ public:
 	void toggle_alignment();
 
 	void place_warp();
+	void place_enemy(float x = 0.0f, float y = 0.0f);
 
 	int get_state() { return _state; }
 private:
 	void calc_real_mouse_location(int &x, int &y);
+	void calc_align_mouse_location(int &x, int &y);
 	SDL_Rect place_warp_rect();
 private:
 	int _state;

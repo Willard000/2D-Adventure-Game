@@ -47,7 +47,7 @@ public:
 	void render(Sprite *img, SpriteComponent *sprite, PositionComponent *position);
 	void render(Sprite *img, SpriteComponent *sprite, const SDL_Rect &position, bool ui_element = false);
 
-	void draw_text(Text &text, bool ui_element = false);
+	void draw_text(Text *text, bool ui_element = false);
 	void draw_rect(const SDL_Rect &rect, const SDL_Color &color, int flag = DRAW_RECT_FULL);
 	void draw_line(const SDL_Rect &rect, const SDL_Color &color);
 

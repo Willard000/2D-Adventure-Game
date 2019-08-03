@@ -15,7 +15,7 @@ struct MagicComponent : public Component {
 
 	const int get_type() const { return COMPONENT_MAGIC; }
 
-	void cast_main(double x_, double y_);
+	void cast_main(float x_, float y_);
 
 	int main_spell_id;
 

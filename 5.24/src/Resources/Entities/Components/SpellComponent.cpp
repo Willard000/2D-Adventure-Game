@@ -14,9 +14,8 @@
 
 #include <iostream>
 
-SpellComponent::SpellComponent(Entity *entity_, std::string name_, float max_dis_, float speed_, int death_time_, std::string script_, int damage_) :
+SpellComponent::SpellComponent(Entity *entity_, float max_dis_, float speed_, int death_time_, std::string script_name_, std::string script_, int damage_, SDL_Color color_) :
 	Component			( entity_ ),
-	name				( name_ ),
 	caster				( nullptr ),
 	dis					( 0 ),
 	max_dis				( max_dis_ ),
@@ -26,15 +25,16 @@ SpellComponent::SpellComponent(Entity *entity_, std::string name_, float max_dis
 	dead				( false ),
 	destroy				( false ),
 	death_timer			( death_time_ ),
+	script_name			( script_name_ ),
 	script				( script_ ),
-	damage				( damage_ )
+	damage				( damage_ ),
+	color				( color_ )
 {
 	Environment::get().get_lua()->load_script(script);
 }
 
 SpellComponent::SpellComponent(Entity *new_entity, const SpellComponent &rhs) :
 	Component			( new_entity ),
-	name				( rhs.name ),
 	caster				( rhs.caster ),
 	dis					( rhs.dis ),
 	max_dis				( rhs.max_dis ),
@@ -44,8 +44,10 @@ SpellComponent::SpellComponent(Entity *new_entity, const SpellComponent &rhs) :
 	dead				( rhs.dead ),
 	destroy				( rhs.destroy ),
 	death_timer			( rhs.death_timer ),
+	script_name			( rhs.script_name ),
 	script				( rhs.script ),
-	damage				( rhs.damage )
+	damage				( rhs.damage ),
+	color				( rhs.color )
 {}
 
 SpellComponent *SpellComponent::copy(Entity *new_entity) const {
@@ -55,7 +57,7 @@ SpellComponent *SpellComponent::copy(Entity *new_entity) const {
 void SpellComponent::update() {
 	if (!dead) {
 		lua_State *L = Environment::get().get_lua()->get_state();
-		lua_getglobal(L, name.c_str());
+		lua_getglobal(L, script_name.c_str());
 		lua_getfield(L, -1, "update");
 		lua_remove(L, -2);
 		luaW_push<SpellComponent>(L, this);
@@ -70,13 +72,18 @@ void SpellComponent::update() {
 
 void SpellComponent::cast(float x, float y) {
 	lua_State *L = Environment::get().get_lua()->get_state();
-	lua_getglobal(L, name.c_str());
+	lua_getglobal(L, script_name.c_str());
 	lua_getfield(L, -1, "cast");
 	lua_remove(L, -2);
 	luaW_push<SpellComponent>(L, this);
 	lua_pushnumber(L, x);
 	lua_pushnumber(L, y);
 	lua_pcall(L, 3, 0, 0);
+
+	SpriteComponent *sprite = GetSprite(caster);
+	if (sprite) {
+		sprite->ani = CAST;
+	}
 }
 
 void SpellComponent::move(float x, float y) {
@@ -90,6 +97,7 @@ void SpellComponent::move(float x, float y) {
 		position->pos_y += ydis;
 		position->rect.x = (int)position->pos_x;
 		position->rect.y = (int)position->pos_y;
+
 		if (is_collision()) {
 			death();
 		}
@@ -113,7 +121,7 @@ bool SpellComponent::is_collision() {
 					e != caster && e->get_type() != caster->get_type()) {
 
 					if (CombatComponent *combat = GetCombat(e)) {
-						combat->apply_damage(calc_damage());
+						combat->apply_damage(calc_damage(), color);
 					}
 
 					return true;

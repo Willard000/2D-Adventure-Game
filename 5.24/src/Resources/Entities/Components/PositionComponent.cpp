@@ -57,14 +57,48 @@ void PositionComponent::move(int dir_, float dis_) {
 		pos_x += float(distance * Environment::get().get_clock()->get_time());
 	}
 
+	rect.x = int(pos_x);
+	rect.y = int(pos_y);
+
 	SpriteComponent *sprite = GetSprite(entity);
 	if (sprite != nullptr) {
 		sprite->ani = MOVE;
 		sprite->dir = dir_;
 	}
 
-	rect.x = int(pos_x);
-	rect.y = int(pos_y);
+	if (entity->is_collision()) {
+		set(prev_pos_x, prev_pos_y);
+	}
+}
+
+void PositionComponent::move_freely(float dx, float dy) {
+	float xdis = float(dx * Environment::get().get_clock()->get_time());
+	float ydis = float(dy * Environment::get().get_clock()->get_time());
+	float prev_pos_x = pos_x;
+	float prev_pos_y = pos_y;
+
+	pos_x += xdis;
+	pos_y += ydis;
+	rect.x = (int)pos_x;
+	rect.y = (int)pos_y;
+
+	SpriteComponent *sprite = GetSprite(entity);
+	if (sprite != nullptr) {
+		sprite->ani = MOVE;
+
+		if (dy > .75) {
+			sprite->dir = MOVE_DOWN;
+		}
+		else if (dy < -.75) {
+			sprite->dir = MOVE_UP;
+		}
+		else if (dx > 0) {
+			sprite->dir = MOVE_RIGHT;
+		}
+		else {
+			sprite->dir = MOVE_LEFT;
+		}
+	}
 
 	if (entity->is_collision()) {
 		set(prev_pos_x, prev_pos_y);

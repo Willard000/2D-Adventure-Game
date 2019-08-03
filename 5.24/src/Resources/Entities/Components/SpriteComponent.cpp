@@ -5,7 +5,7 @@
 #include "EffectComponent.h"
 #include "Entity.h"
 
-SpriteComponent::SpriteComponent(Entity *entity_, int w_, int h_, int time_) : 
+SpriteComponent::SpriteComponent(Entity *entity_, int w_, int h_, int time_, int cast_time_) : 
 	Component		( entity_ ),
 	pos				( { 0, 0, w_, h_ } ),
 	is_update		( false ),
@@ -14,7 +14,8 @@ SpriteComponent::SpriteComponent(Entity *entity_, int w_, int h_, int time_) :
 	ani_prev		( NULL ),
 	dir				( NULL ),		
 	dir_prev		( NULL ),
-	time			( time_ )
+	time			( time_ ),
+	cast_timer		( cast_time_ )
 {}
 
 SpriteComponent::SpriteComponent(Entity *new_entity, const SpriteComponent &rhs) :
@@ -26,7 +27,8 @@ SpriteComponent::SpriteComponent(Entity *new_entity, const SpriteComponent &rhs)
 	ani_prev		( rhs.ani_prev ),
 	dir				( rhs.dir ),
 	dir_prev		( rhs.dir_prev ),
-	time			( rhs.time )
+	time			( rhs.time ),
+	cast_timer		( rhs.cast_timer )
 {}
 
 SpriteComponent *SpriteComponent::copy(Entity *new_entity) const {
@@ -83,6 +85,16 @@ void SpriteComponent::update(Sprite *img) {
 		if (frame < img->min_idle || frame > img->max_idle) {
 			frame = img->min_idle;
 		}
+	}
+	else if (ani == CAST && !cast_timer.update()) {
+		frame = img->cast;
+
+		pos.x = img->get_frame(frame).x;
+		pos.y = img->get_frame(frame).y;
+
+		ani_prev = ani;
+		is_update = false;
+		return;
 	}
 
 	ani_prev = ani;

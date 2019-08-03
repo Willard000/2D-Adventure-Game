@@ -1,0 +1,19 @@
+# Bushki_Attack
+
+itexture_id 1
+
+Position
+iwidth 13
+iheight 7
+
+Sprite
+isprite_time -1
+
+Spell
+fmax_dis 1000
+fspell_speed 500
+ideath_time 10000
+sspell_script_name Fireball
+sspell_script Data/Lua/Spells/fireball.lua
+ispell_damage 5
+spell_color 121 202 32 150

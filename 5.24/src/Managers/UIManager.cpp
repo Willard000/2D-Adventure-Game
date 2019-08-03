@@ -14,6 +14,9 @@
 
 #include "Timer.h"
 
+#include "PositionComponent.h"
+#include "EnemyComponent.h"
+
 #define MOUSE_WIDTH 1
 #define MOUSE_HEIGHT 1
 
@@ -48,6 +51,8 @@
 #define ELEMENT_AREA_COLOR { 100, 100, 100, 100 }
 
 #define WARP_COLOR {0, 255, 0, 100}
+
+#define PATH_COLOR { 0, 100, 225, 150 }
 
 #define HIGHLIGHT_FACTOR 80
 
@@ -235,7 +240,7 @@ void UIManager::render() {
 
 	Environment::get().get_resource_manager()->render_editor(_element_area, _selection);
 	if (_state == STATE_WAITING)
-		renderer->draw_text(_current_text, true);
+		renderer->draw_text(&_current_text, true);
 	else if (_state == STATE_PLACING) {
 		if (_selection.id != -1) {
 			int x, y;
@@ -265,13 +270,13 @@ void UIManager::render() {
 
 	for (auto it = _buttons.begin(); it != _buttons.end(); ++it) {
 		renderer->draw_rect(it->second->get_rect(), it->second->get_color());
-		renderer->draw_text(it->second->get_text(), true);
+		renderer->draw_text(&it->second->get_text(), true);
 	}
 
 
-	renderer->draw_text(_mouse_location, true);
-	renderer->draw_text(_alignment_text, true);
-	renderer->draw_text(_selection_text, true);
+	renderer->draw_text(&_mouse_location, true);
+	renderer->draw_text(&_alignment_text, true);
+	renderer->draw_text(&_selection_text, true);
 }
 
 void UIManager::set_state(int flag) {
@@ -371,8 +376,13 @@ bool UIManager::place_on_map() {
 		return false;
 	}
 
-	if (_selection.type == TYPE_OBJECT || _selection.type == TYPE_ENEMY || _selection.type == TYPE_EFFECT) {
-		Environment::get().get_resource_manager()->create(_selection.type, _selection.id, (float)x, (float)y);
+	if (_selection.type == TYPE_ENEMY) {
+		place_enemy((float)x, (float)y);
+		return true;
+	}
+
+	if (_selection.type == TYPE_OBJECT || _selection.type == TYPE_EFFECT) {
+		Environment::get().get_resource_manager()->create_entity(_selection.type, _selection.id, (float)x, (float)y);
 	}
 
 	return true;
@@ -465,6 +475,77 @@ SDL_Rect UIManager::place_warp_rect() {
 	return pos;
 }
 
+void UIManager::place_enemy(float x, float y) {
+	Entity *entity = new Entity(_selection.type, _selection.id);
+	if (PositionComponent *position = GetPosition(entity)) {
+		position->set(x - (position->rect.w / 2), y - (position->rect.h / 2));
+	}
+
+	EnemyComponent *enemy = GetEnemy(entity);
+	if (!enemy) {
+		Environment::get().get_resource_manager()->add_entity(entity);
+		return;
+	}
+
+	std::vector<Path> pathing;
+	while (Environment::get().get_input_manager()->get()) {
+		Environment::get().get_window()->get_renderer()->clear();
+
+		Environment::get().get_ui_manager()->update();
+
+		Environment::get().get_input_manager()->update_editor_camera();
+
+		if (Environment::get().get_input_manager()->is_key(SDL_SCANCODE_SPACE)) {
+			enemy->_pathing = pathing;
+			break;
+		}
+
+		if (Environment::get().get_input_manager()->is_mouse(SDL_BUTTON_LEFT)) {
+			int mouse_x, mouse_y;
+			calc_real_mouse_location(mouse_x, mouse_y);
+
+			if (_align_placement) {
+				calc_align_mouse_location(mouse_x, mouse_y);
+			}
+
+			Path path;
+			path.x = mouse_x;
+			path.y = mouse_y;
+
+			bool already_exists = false;
+			for (auto &p : pathing) {
+				if (p.x == path.x && p.y == path.y) {
+					already_exists = true;
+					break;
+				}
+			}
+
+			if (!already_exists) {
+				pathing.push_back(path);
+			}
+		}
+
+		Environment::get().get_resource_manager()->render();
+		Environment::get().get_resource_manager()->render_entity(entity);
+
+		for (auto &p : pathing) {
+			Environment::get().get_window()->get_renderer()->draw_rect({ p.x - PATH_WIDTH / 2, p.y - PATH_HEIGHT / 2, PATH_WIDTH, PATH_HEIGHT }, PATH_COLOR, DRAW_RECT_CAMERA);
+		}
+
+		Environment::get().get_ui_manager()->render();
+
+		Environment::get().get_window()->get_renderer()->render();
+
+		if (Environment::get().get_clock()->update()) {
+			std::string title = "Pathing      Map: " + std::to_string(Environment::get().get_resource_manager()->get_map()->get_id()) + "     " +
+				Environment::get().get_clock()->get_display_time() + "    " + std::to_string(Environment::get().get_clock()->get_fms());
+			Environment::get().get_window()->set_title(title);
+		}
+	}
+
+	Environment::get().get_resource_manager()->add_entity(entity);
+}
+
 Element UIManager::select_from_map() {
 	int x, y;
 	calc_real_mouse_location(x, y);
@@ -499,7 +580,7 @@ void UIManager::delete_map_selection() {
 			Environment::get().get_resource_manager()->get_map()->remove_warp(_map_selection.id);
 		}
 		else {
-			Environment::get().get_resource_manager()->remove(_map_selection.type, _map_selection.id);
+			Environment::get().get_resource_manager()->remove_entity(_map_selection.type, _map_selection.id);
 		}
 
 		_map_selection.id = -1;
@@ -535,4 +616,12 @@ void UIManager::calc_real_mouse_location(int &x, int &y) {
 	Camera *camera = Environment::get().get_window()->get_camera();
 	x = int(double((_mouse_x / camera->get_scale()) + camera->get_x()));
 	y = int(double((_mouse_y / camera->get_scale()) + camera->get_y()));
+}
+
+void UIManager::calc_align_mouse_location(int &x, int &y) {
+	SDL_Rect boundry = Environment::get().get_resource_manager()->get_map()->get_rect();
+	int index = int(x / TILE_WIDTH) + ((int(y / TILE_HEIGHT) * int(boundry.w / TILE_WIDTH)));
+	int map_width = Environment::get().get_resource_manager()->get_map()->get_width();
+	x = (index % map_width) * TILE_WIDTH + (TILE_WIDTH / 2);
+	y = (index / map_width) * TILE_HEIGHT + (TILE_HEIGHT / 2);
 }

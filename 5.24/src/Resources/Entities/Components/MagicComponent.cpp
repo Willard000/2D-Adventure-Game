@@ -34,13 +34,13 @@ void MagicComponent::update() {
 	}
 }
 
-void MagicComponent::cast_main(double x_, double y_) {
+void MagicComponent::cast_main(float x_, float y_) {
 	if (can_cast) {
 		Entity *spell = new Entity(main_spell);
 		SpellComponent *spell_comp = GetSpell(spell);
 		spell_comp->caster = entity;
 		spell_comp->cast(x_, y_);
-		Environment::get().get_resource_manager()->add(spell);
+		Environment::get().get_resource_manager()->add_entity(spell);
 		can_cast = false;
 	}
 }

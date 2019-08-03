@@ -16,6 +16,7 @@ public:
 	const int get_type() const { return COMPONENT_POSITION; }
 
 	void move(int dir_, float dis_ = 0.0f);
+	void move_freely(float dx, float dy);
 
 	void set(float x, float y);
 

@@ -2,6 +2,9 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
+
+#include <SDL.h>
 
 #include "FileReader.h"
 
@@ -38,13 +41,15 @@
 #define FILE_SPRITE_WIDTH "iwidth"
 #define FILE_SPRITE_HEIGHT "iheight"
 #define FILE_SPRITE_TIME "isprite_time"
+#define FILE_SPRITE_CAST_TIME "isprite_cast_time"
 
-#define FILE_SPELL_NAME "sspell_name"
 #define FILE_SPELL_MAX_DIS "fmax_dis"
 #define FILE_SPELL_SPEED "fspell_speed"
 #define FILE_SPELL_DEATH_TIME "ideath_time"
+#define FILE_SPELL_SCRIPT_NAME "sspell_script_name"
 #define FILE_SPELL_SCRIPT "sspell_script"
 #define FILE_SPELL_DAMAGE "ispell_damage"
+#define FILE_SPELL_COLOR "spell_color"
 
 #define FILE_MAGIC_MAIN_SPELL_ID "imain_spell_id"
 #define FILE_MAGIC_CAST_SPEED "icast_speed"
@@ -76,13 +81,16 @@ void load_position(FileReader &file, Entity *entity, PositionComponent *&positio
 }
 
 void load_sprite(FileReader &file, Entity *entity, SpriteComponent *&sprite) {
-	int w = 0, h = 0, time = -1;
+	int w = 0, h = 0;
+	int time = -1;
+	int cast_time = -1;
 
 	if (file.exists(FILE_SPRITE_WIDTH))  w = file.get_int(FILE_SPRITE_WIDTH); 
 	if (file.exists(FILE_SPRITE_HEIGHT))  h = file.get_int(FILE_SPRITE_HEIGHT); 
 	if (file.exists(FILE_SPRITE_TIME))  time = file.get_int(FILE_SPRITE_TIME); 
+	if (file.exists(FILE_SPRITE_CAST_TIME)) cast_time = file.get_int(FILE_SPRITE_CAST_TIME);
 
-	sprite = new SpriteComponent(entity, w, h, time);
+	sprite = new SpriteComponent(entity, w, h, time, cast_time);
 }
 
 void load_spell(FileReader &file, Entity *entity, SpellComponent *&spell) {
@@ -90,17 +98,24 @@ void load_spell(FileReader &file, Entity *entity, SpellComponent *&spell) {
 	float speed = 0;
 	int death_time = 0;
 	std::string script = " ";
-	std::string name = " ";
+	std::string script_name = " ";
 	int damage = 0;
+	SDL_Color color = { 0, 0, 0, 255 };
 
-	if (file.exists(FILE_SPELL_NAME)) name = file.get_string(FILE_SPELL_NAME);
 	if (file.exists(FILE_SPELL_MAX_DIS)) max_dis = file.get_float(FILE_SPELL_MAX_DIS);
 	if (file.exists(FILE_SPELL_SPEED)) speed = file.get_float(FILE_SPELL_SPEED);
 	if (file.exists(FILE_SPELL_DEATH_TIME)) death_time = file.get_int(FILE_SPELL_DEATH_TIME);
+	if (file.exists(FILE_SPELL_SCRIPT_NAME)) script_name = file.get_string(FILE_SPELL_SCRIPT_NAME);
 	if (file.exists(FILE_SPELL_SCRIPT)) script = file.get_string(FILE_SPELL_SCRIPT);
 	if (file.exists(FILE_SPELL_DAMAGE)) damage = file.get_int(FILE_SPELL_DAMAGE);
+	if (file.exists(FILE_SPELL_COLOR)) {
+		std::istringstream stream(file.get_string(FILE_SPELL_COLOR));
+		int r, g, b, a;
+		stream >> r >> g >> b >> a;
+		color = { (Uint8)r, (Uint8)g, (Uint8)b, (Uint8)a };
+	}
 
-	spell = new SpellComponent(entity, name, max_dis, speed, death_time, script, damage);
+	spell = new SpellComponent(entity, max_dis, speed, death_time, script_name, script, damage, color);
 }
 
 void load_magic(FileReader &file, Entity *entity, MagicComponent *&magic) {

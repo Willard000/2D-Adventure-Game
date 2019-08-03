@@ -30,23 +30,23 @@ EntityManager::~EntityManager() {
 	_entities.clear();
 }
 
-void EntityManager::create(const Type &type, Type_ID type_id, float x, float y) {
+void EntityManager::create_entity(const Type &type, Type_ID type_id, float x, float y) {
 	Entity *entity = new Entity(type, type_id);
 
 	if (PositionComponent *position = GetPosition(entity)) {
 		position->set(x - (position->rect.w / 2), y - (position->rect.h / 2));
 	}
 
-	add(entity);
+	add_entity(entity);
 
 	//Environment::get().get_log()->print("Creating Entity - " + type + " " + std::to_string(type_id) + " " + std::to_string(entity->get_id()));
 }
 
-void EntityManager::add(Entity *entity) {
+void EntityManager::add_entity(Entity *entity) {
 	_entities[entity->get_type()][entity->get_id()] = entity;
 }
 
-void EntityManager::remove(Entity *entity) {
+void EntityManager::remove_entity(Entity *entity) {
 	if (!entity) {
 		return;
 	}
@@ -60,7 +60,7 @@ void EntityManager::remove(Entity *entity) {
 	_entities[type].erase(id);
 }
 
-void EntityManager::remove(const Type &type, const ID &id) {
+void EntityManager::remove_entity(const Type &type, const ID &id) {
 	//Environment::get().get_log()->print("Deleting Entity - " + type + " " + std::to_string(id));
 
 	delete _entities[type][id];
@@ -83,7 +83,7 @@ void EntityManager::clear_spells() {
 	_entities[TYPE_SPELL].clear();
 }
 
-void EntityManager::update() {
+void EntityManager::update_entities() {
 	_player->update();
 
 	for (auto it = _entities.begin(); it != _entities.end(); ++it) {
@@ -102,7 +102,7 @@ void EntityManager::update() {
 
 void EntityManager::remove_destroyed_entities() {
 	for (auto it = _entities_to_remove.begin(); it != _entities_to_remove.end(); ++it) {
-		remove(*it);
+		remove_entity(*it);
 	}
 	_entities_to_remove.clear();
 }

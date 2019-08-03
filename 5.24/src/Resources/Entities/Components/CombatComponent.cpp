@@ -1,3 +1,5 @@
+#include <cstdlib>
+
 #include "CombatComponent.h"
 
 #include "Entity.h"
@@ -5,12 +7,20 @@
 
 #include "Environment.h"
 #include "Window.h"
+#include "ResourceManager.h"
+
+#include "Text_Timed.h"
 
 #define HEALTH_BAR_HEIGHT 8
 #define MANA_BAR_HEIGHT 6
 
 #define HEALTH_BAR_COLOR {225, 55, 55, 150}
 #define MANA_BAR_COLOR {100, 185, 225, 150}
+
+#define DAMAGE_TEXT_COLOR {225, 55, 55, 150}
+#define DAMAGE_TEXT_WRAP_LENGTH 1000
+#define DAMAGE_TEXT_FTSIZE 14
+#define DAMAGE_TEXT_DISPLAY_TIME 400
 
 CombatComponent::CombatComponent(Entity *entity_, int max_health_, int max_mana_, int damage_, int armor_, int combat_time) :
 	Component		( entity_ ),
@@ -50,13 +60,27 @@ const int CombatComponent::get_type() const {
 	return COMPONENT_COMBAT;
 }
 
-void CombatComponent::apply_damage(int damage_) {
+void CombatComponent::apply_damage(int damage_, const SDL_Color &color) {
 	start_combat();
 
 	health -= damage_;
 
 	if (health <= 0) {
 		entity->destroy();
+	}
+
+	PositionComponent *position = GetPosition(entity);
+	if (position) {
+		Text_Timed *text = new Text_Timed(
+			std::to_string(damage_),
+			color,
+			DAMAGE_TEXT_FTSIZE,
+			DAMAGE_TEXT_WRAP_LENGTH,
+			position->rect.x + rand() % position->rect.w,
+			position->rect.y - rand() % position->rect.h,
+			DAMAGE_TEXT_DISPLAY_TIME
+		);
+		Environment::get().get_resource_manager()->add_text(text);
 	}
 }
 

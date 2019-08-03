@@ -12,7 +12,7 @@
 #define SPELL_COMPONENT_H
 
 struct SpellComponent : public Component {
-	SpellComponent(Entity *entity_, std::string name_, float max_dis_, float speed_, int death_time, std::string script_, int damage_);
+	SpellComponent(Entity *entity_, float max_dis_, float speed_, int death_time, std::string script_name_, std::string script_, int damage_, SDL_Color color_);
 	SpellComponent(Entity *new_entity, const SpellComponent &rhs);
 	SpellComponent *copy(Entity *new_entity) const;
 
@@ -37,10 +37,11 @@ struct SpellComponent : public Component {
 	bool dead;
 	bool destroy;
 	Timer death_timer;
+	SDL_Color color;
 
 	int damage;
 
-	std::string name;
+	std::string script_name;
 	std::string script;
 };
 

@@ -13,7 +13,7 @@
 #define IDLE 3
 
 struct SpriteComponent : public Component {
-	SpriteComponent(Entity *entity_, int w_, int h_, int time_);
+	SpriteComponent(Entity *entity_, int w_, int h_, int time_, int cast_time_);
 	SpriteComponent(Entity *new_entity, const SpriteComponent &rhs);
 	SpriteComponent *copy(Entity *new_entity) const;
 
@@ -31,6 +31,7 @@ struct SpriteComponent : public Component {
 	SDL_Rect pos;
 	bool is_update;
 	Timer time;
+	Timer cast_timer;
 };
 
 #endif

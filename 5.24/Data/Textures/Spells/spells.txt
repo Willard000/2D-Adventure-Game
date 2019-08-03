@@ -1,2 +1,3 @@
-# Objects
+# Spells
 0 Data/Textures/Spells/fireball.txt
+1 Data/Textures/Spells/bushki_attack.txt
