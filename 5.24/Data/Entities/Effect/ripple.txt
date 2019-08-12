@@ -12,4 +12,5 @@ isprite_time 225
 Effect
 seffect_name Ripple
 seffect_script Data/Lua/Effects/ripple.lua
-ieffect_rand_time_offset_range 10
+ieffect_rand_rotation 360
+ieffect_rand_time 200

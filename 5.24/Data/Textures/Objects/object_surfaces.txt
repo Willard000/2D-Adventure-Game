@@ -3,3 +3,4 @@
 1 Data/Textures/Objects/stump.png
 2 Data/Textures/Objects/bush.png
 3 Data/Textures/Objects/house.png
+4 Data/Textures/Objects/post.png

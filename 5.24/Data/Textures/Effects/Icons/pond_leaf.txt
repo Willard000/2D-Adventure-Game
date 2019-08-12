@@ -1,0 +1,4 @@
+# Pond Leaf Icon
+stexture Data/Textures/Effects/Icons/pond_leaf.png
+iwidth 20
+iheight 20

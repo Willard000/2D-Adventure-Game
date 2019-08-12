@@ -1,0 +1,7 @@
+# Post
+
+itexture_id 4
+
+Position
+iwidth 48
+iheight 64

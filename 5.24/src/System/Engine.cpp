@@ -17,14 +17,13 @@ Engine::Engine() :
 {
 	build_environment();
 
-	_environment.get().get_resource_manager()->load_map(1);
+	_environment.get().get_resource_manager()->load_map(7);
 }
 
 void Engine::run() {
 	_environment.get_log()->print("Engine Main Loop\n");
 
 	while (_isRunning) {
-
 
 		_environment.get_window()->get_renderer()->clear();
 

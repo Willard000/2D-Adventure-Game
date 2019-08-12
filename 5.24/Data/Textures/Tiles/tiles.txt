@@ -43,3 +43,9 @@
 41 Data/Textures/Tiles/pebbles_water2.png
 42 Data/Textures/Tiles/pebbles_water3.png
 43 Data/Textures/Tiles/wood.png
+44 Data/Textures/Tiles/bridge.png
+45 Data/Textures/Tiles/bridge2.png
+46 Data/Textures/Tiles/bridge3.png
+47 Data/Textures/Tiles/bridge4.png
+48 Data/Textures/Tiles/bridge5.png
+49 Data/Textures/Tiles/bridge6.png

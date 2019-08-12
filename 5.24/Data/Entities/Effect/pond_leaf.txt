@@ -1,0 +1,16 @@
+# Pond Leaf
+
+itexture_id 1
+
+Position
+iwidth 20
+iheight 20
+
+Sprite
+isprite_time -1
+
+Effect
+seffect_name Pond_Leaf
+seffect_script Data/Lua/Effects/pond_leaf.lua
+ieffect_rand_rotation 360
+ieffect_rand_time 200

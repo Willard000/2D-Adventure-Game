@@ -487,24 +487,26 @@ void Map::load_entities(FileReader &file) {
 void Map::save_entities(std::ostream &file) {
 	file << FILE_MAP_ENTITIES << " ";
 	std::map<int, EntityManager::Entity_Map> *entities = Environment::get().get_resource_manager()->get_entities();
-	for (auto it = entities->begin(); it != entities->end() && it->first != TYPE_SPELL; ++it) {
-		for (auto itt = it->second.begin(); itt != it->second.end(); ++itt) {
-			file << FILE_ENTITY_TYPE << " " << itt->second->get_type() << " "
-				<< FILE_ENTITY_TYPE_ID << " " << itt->second->get_type_id() << " ";
+	for (auto it = entities->begin(); it != entities->end(); ++it) {
+		if (it->first != TYPE_SPELL) {
+			for (auto itt = it->second.begin(); itt != it->second.end(); ++itt) {
+				file << FILE_ENTITY_TYPE << " " << itt->second->get_type() << " "
+					<< FILE_ENTITY_TYPE_ID << " " << itt->second->get_type_id() << " ";
 
-			if (PositionComponent *position = GetPosition(itt->second)) {
-				file << FILE_ENTITY_POSITION_X << " " << position->pos_x << " "
-					<< FILE_ENTITY_POSITION_Y << " " << position->pos_y << " ";
-			}
-
-			if (EnemyComponent *enemy = GetEnemy(itt->second)) {
-				for (auto &p : enemy->_pathing) {
-					file << FILE_ENTITY_PATHING_X << " " << p.x << " "
-						<< FILE_ENTITY_PATHING_Y << " " << p.y << " ";
+				if (PositionComponent *position = GetPosition(itt->second)) {
+					file << FILE_ENTITY_POSITION_X << " " << position->pos_x << " "
+						<< FILE_ENTITY_POSITION_Y << " " << position->pos_y << " ";
 				}
-			}
 
-			file << FILE_MAP_SEPERATOR << " ";
+				if (EnemyComponent *enemy = GetEnemy(itt->second)) {
+					for (auto &p : enemy->_pathing) {
+						file << FILE_ENTITY_PATHING_X << " " << p.x << " "
+							<< FILE_ENTITY_PATHING_Y << " " << p.y << " ";
+					}
+				}
+
+				file << FILE_MAP_SEPERATOR << " ";
+			}
 		}
 	}
 }

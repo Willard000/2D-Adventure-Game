@@ -61,7 +61,8 @@
 
 #define FILE_EFFECT_NAME "seffect_name"
 #define FILE_EFFECT_SCRIPT "seffect_script"
-#define FILE_EFFECT_RAND_TIME_OFFSET_RANGE "ieffect_rand_time_offset_range"
+#define FILE_EFFECT_RAND_ROTATION "ieffect_rand_rotation"
+#define FILE_EFFECT_RAND_TIME "ieffect_rand_time"
 
 #define FILE_COMBAT_MAX_HEALTH "icombat_max_health"
 #define FILE_COMBAT_MAX_MANA "icombat_max_mana"
@@ -148,13 +149,15 @@ void load_enemy(FileReader &file, Entity *entity, EnemyComponent *&enemy) {
 void load_effect(FileReader &file, Entity *entity, EffectComponent *&effect) {
 	std::string name = " ";
 	std::string script = " ";
-	int rand_time_offset_range = 0;
+	int rand_rotation = 0;
+	int rand_time = 0;
 
 	if (file.exists(FILE_EFFECT_NAME)) name = file.get_string(FILE_EFFECT_NAME);
 	if (file.exists(FILE_EFFECT_SCRIPT)) script = file.get_string(FILE_EFFECT_SCRIPT);
-	if (file.exists(FILE_EFFECT_RAND_TIME_OFFSET_RANGE)) rand_time_offset_range = file.get_int(FILE_EFFECT_RAND_TIME_OFFSET_RANGE);
+	if (file.exists(FILE_EFFECT_RAND_ROTATION)) rand_rotation = file.get_int(FILE_EFFECT_RAND_ROTATION);
+	if (file.exists(FILE_EFFECT_RAND_TIME)) rand_time = file.get_int(FILE_EFFECT_RAND_TIME);
 
-	effect = new EffectComponent(entity, name, script, rand_time_offset_range);
+	effect = new EffectComponent(entity, name, script, rand_rotation, rand_time);
 }
 
 void load_combat(FileReader &file, Entity *entity, CombatComponent *&combat) {

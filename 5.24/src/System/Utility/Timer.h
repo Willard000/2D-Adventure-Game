@@ -12,6 +12,7 @@ public:
 	void set(int time);
 	void pause();
 	void reset();
+	void offset(int time);
 
 	bool update();
 

@@ -134,7 +134,7 @@ int UIManager::update() {
 		if (_state == STATE_CONFIRM && _on_confirm) {
 			_state = STATE_WAITING;
 			_on_confirm();
-			_on_confirm = nullptr;
+			_on_confirm = nullptr;  
 		}
 		else if (_state == STATE_DENY && _on_deny) {
 			_state = STATE_WAITING;

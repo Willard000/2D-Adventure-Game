@@ -1,0 +1,4 @@
+# Post
+stexture Data/Textures/Objects/post.png
+iwidth 48
+iheight 64

@@ -37,13 +37,23 @@ void ResourceManager::update() {
 }
 
 void ResourceManager::render_entities() {
-	for (auto it = _entities.begin(); it != _entities.end(); ++it) {
-		for (auto itt = it->second.begin(); itt != it->second.end(); ++itt) {
-			render_entity(itt->second);
-		}
+	for (auto &object : _entities[TYPE_OBJECT]) {
+		render_entity(object.second);
+	}
+
+	for (auto &effect : _entities[TYPE_EFFECT]) {
+		render_entity(effect.second);
+	}
+
+	for (auto &enemy : _entities[TYPE_ENEMY]) {
+		render_entity(enemy.second);
 	}
 
 	render_entity(_player);
+
+	for (auto &spell : _entities[TYPE_SPELL]) {
+		render_entity(spell.second);
+	}
 }
 
 void ResourceManager::render_entity(Entity *entity) {
