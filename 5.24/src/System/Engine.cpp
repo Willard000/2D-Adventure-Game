@@ -12,12 +12,24 @@
 
 #include "Grid.h"
 
+
+// test
+#include "PlayerComponent.h"
+// test
+
 Engine::Engine() :
 	_isRunning		(true)
 {
 	build_environment();
 
-	_environment.get().get_resource_manager()->load_map(7);
+	_environment.get().get_resource_manager()->load_map(1);
+
+
+	// test inventory
+	for (unsigned int i = 0; i < 100; ++i) {
+		Entity *item = new Entity(TYPE_ITEM, 0);
+		GetPlayer(Environment::get().get_resource_manager()->get_player())->items.push_back(item);
+	}
 }
 
 void Engine::run() {

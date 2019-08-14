@@ -26,4 +26,6 @@ icombat_max_health 100
 icombat_max_mana 100
 icombat_damage 1
 icombat_armor 1
+icombat_hps 0
+icombat_mps 0
 icombat_time 10000

@@ -1,0 +1,18 @@
+# Stick
+
+itexture_id 0
+
+Position
+iwidth 32
+iheight 32
+
+Item
+sitem_name Stick
+iitem_health 100
+iitem_mana 100
+iitem_damage 2
+iitem_armor 1
+iitem_hps 1
+iitem_mps 1
+bitem_equipable 1
+bitem_useable 0

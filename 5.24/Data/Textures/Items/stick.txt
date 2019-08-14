@@ -1,0 +1,4 @@
+# Stick
+stexture Data/Textures/Items/stick.png
+iwidth 32
+iheight 32

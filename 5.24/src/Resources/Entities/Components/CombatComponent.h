@@ -6,7 +6,7 @@
 #define COMBAT_COMPONENT_H
 
 struct CombatComponent : public Component {
-	CombatComponent(Entity *entity_, int max_health_, int max_mana_, int damage_, int armor_, int combat_time);
+	CombatComponent(Entity *entity_, int max_health_, int max_mana_, int damage_, int armor_, int hps_, int mps_, int combat_time);
 	CombatComponent(Entity *new_entity, const CombatComponent &rhs);
 	CombatComponent *copy(Entity *new_entity) const;
 
@@ -20,13 +20,10 @@ struct CombatComponent : public Component {
 
 	void start_combat();
 
-	int health;
-	int max_health;
-	int mana;
-	int max_mana;
-
-	int damage;
-	int armor;
+	int health, max_health;
+	int mana, max_mana;
+	int damage, armor;
+	int hps, mps;
 
 	bool in_combat;
 	Timer combat_timer;

@@ -381,7 +381,7 @@ bool UIManager::place_on_map() {
 		return true;
 	}
 
-	if (_selection.type == TYPE_OBJECT || _selection.type == TYPE_EFFECT) {
+	if (_selection.type == TYPE_OBJECT || _selection.type == TYPE_EFFECT || _selection.type == TYPE_ITEM) {
 		Environment::get().get_resource_manager()->create_entity(_selection.type, _selection.id, (float)x, (float)y);
 	}
 

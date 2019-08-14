@@ -40,6 +40,8 @@ Text &Text::operator=(const Text& rhs) {
 	if (_texture)
 		SDL_DestroyTexture(_texture);
 
+	_texture = nullptr;
+
 	_is_loaded = false;
 
 	return *this;

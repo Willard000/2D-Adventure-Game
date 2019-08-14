@@ -15,10 +15,13 @@ imain_spell_id 0
 icast_speed 100
 
 Player
+splayer_name Matt
 
 Combat
 icombat_max_health 100
 icombat_max_mana 100
 icombat_damage 1
 icombat_armor 1
+icombat_hps 1
+icombat_mps 1
 icombat_time 10000

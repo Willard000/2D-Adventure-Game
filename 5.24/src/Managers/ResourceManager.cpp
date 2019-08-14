@@ -41,6 +41,10 @@ void ResourceManager::render_entities() {
 		render_entity(object.second);
 	}
 
+	for (auto &item : _entities[TYPE_ITEM]) {
+		render_entity(item.second);
+	}
+
 	for (auto &effect : _entities[TYPE_EFFECT]) {
 		render_entity(effect.second);
 	}
@@ -134,6 +138,8 @@ void ResourceManager::render_editor(const UI::Element_Area &element_area, const 
 		renderer->render(_editor_enemies_texture, element_area.area, true);
 	else if (selection.type == TYPE_EFFECT)
 		renderer->render(_editor_effects_texture, element_area.area, true);
+	else if (selection.type == TYPE_ITEM)
+		renderer->render(_editor_items_texture, element_area.area, true);
 
 	if (selection.id != -1) {
 		if (selection.type == TYPE_ENEMY || selection.type == TYPE_EFFECT) {

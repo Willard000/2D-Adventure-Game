@@ -64,6 +64,7 @@ private:
 	Texture *_editor_objects_texture;
 	Texture *_editor_enemies_texture;
 	Texture *_editor_effects_texture;
+	Texture *_editor_items_texture;
 
 	Texture *_editor_line_background;
 };

@@ -12,6 +12,9 @@
 #include "Globals.h"
 
 #include "MagicComponent.h"
+#include "PlayerComponent.h"
+
+#include "Inventory.h"
 
 bool valid_string_to_int(std::string str) {
 	if (str == "") {
@@ -140,6 +143,12 @@ void InputManager::update() {
 
 	if (is_key(SDL_SCANCODE_O)) {
 		toggle_camera();
+	}
+
+	if (is_key(SDL_SCANCODE_E)) {
+		Entity *player = Environment::get().get_resource_manager()->get_player();
+		Inventory inventory(player, &(GetPlayer(player)->items), GetCombat(player));
+		inventory.open();
 	}
 
 	if (is_mouse_held(SDL_BUTTON_LEFT)) {

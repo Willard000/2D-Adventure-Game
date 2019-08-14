@@ -7,16 +7,24 @@
 
 #include "Collision.h"
 
-PlayerComponent::PlayerComponent(Entity *entity_) :
-	Component		 ( entity_ )
+PlayerComponent::PlayerComponent(Entity *entity_, std::string name_) :
+	Component		 ( entity_ ),
+	name			 ( name_ )
 {}
 
 PlayerComponent::PlayerComponent(Entity *new_entity, const PlayerComponent &rhs) :
-	Component		 ( new_entity )
+	Component		 ( new_entity ),
+	name			 ( rhs.name )
 {}
 
 PlayerComponent *PlayerComponent::copy(Entity *new_entity) const {
 	return new PlayerComponent(new_entity, *this);
+}
+
+PlayerComponent::~PlayerComponent() {
+	for (auto &item : items) {
+		delete item;
+	}
 }
 
 void PlayerComponent::update() {

@@ -1,0 +1,2 @@
+# Items
+0 Data/Entities/Item/stick.txt

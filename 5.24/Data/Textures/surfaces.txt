@@ -1,5 +1,6 @@
 # Surfaces
 0 Data/Textures/Tiles/tiles.txt
 2 Data/Textures/Objects/object_surfaces.txt
-4 Data/Textures/Enemies/enemies_surfaces.txt
-5 Data/Textures/Effects/effects_surfaces.txt
+4 Data/Textures/Enemies/enemy_surfaces.txt
+5 Data/Textures/Effects/effect_surfaces.txt
+6 Data/Textures/Items/item_surfaces.txt

@@ -29,6 +29,7 @@ enum {
 	TYPE_SPELL,
 	TYPE_ENEMY,
 	TYPE_EFFECT,
+	TYPE_ITEM,
 
 
 	// ^ have textures ^
@@ -49,6 +50,7 @@ const std::string STYPE_OBJECT = "Object";
 const std::string STYPE_SPELL = "Spell";
 const std::string STYPE_ENEMY = "Enemy";
 const std::string STYPE_EFFECT = "Effect";
+const std::string STYPE_ITEM = "Item";
 
 const std::string STYPE_SOLID = "Solid";
 const std::string STYPE_WARP = "Warp";
@@ -68,6 +70,8 @@ const inline std::string &STYPE(const int &type) {
 		return STYPE_ENEMY;
 	case TYPE_EFFECT:
 		return STYPE_EFFECT;
+	case TYPE_ITEM:
+		return STYPE_ITEM;
 	case TYPE_SOLID:
 		return STYPE_SOLID;
 	case TYPE_WARP:

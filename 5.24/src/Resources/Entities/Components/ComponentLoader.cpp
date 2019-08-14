@@ -17,6 +17,7 @@
 #include "EnemyComponent.h"
 #include "EffectComponent.h"
 #include "CombatComponent.h"
+#include "ItemComponent.h"
 
 #include "Environment.h"
 #include "Log.h"
@@ -33,6 +34,7 @@
 #define FILE_ENEMY_COMPONENT "Enemy"
 #define FILE_EFFECT_COMPONENT "Effect"
 #define FILE_COMBAT_COMPONENT "Combat"
+#define FILE_ITEM_COMPONENT "Item"
 
 #define FILE_POSITION_WIDTH "iwidth"
 #define FILE_POSITION_HEIGHT "iheight"
@@ -54,6 +56,8 @@
 #define FILE_MAGIC_MAIN_SPELL_ID "imain_spell_id"
 #define FILE_MAGIC_CAST_SPEED "icast_speed"
 
+#define FILE_PLAYER_NAME "splayer_name"
+
 #define FILE_ENEMY_NAME "senemy_name"
 #define FILE_ENEMY_SCRIPT "senemy_script"
 #define FILE_ENEMY_COMBAT_RANGEW "ienemy_combat_range_w"
@@ -68,7 +72,19 @@
 #define FILE_COMBAT_MAX_MANA "icombat_max_mana"
 #define FILE_COMBAT_DAMAGE "icombat_damage"
 #define FILE_COMBAT_ARMOR "icombat_armor"
+#define FILE_COMBAT_HPS "icombat_hps"
+#define FILE_COMBAT_MPS "icombat_mps"
 #define FILE_COMBAT_TIME "icombat_time"
+
+#define FILE_ITEM_NAME "sitem_name"
+#define FILE_ITEM_HEALTH "iitem_health"
+#define FILE_ITEM_MANA "iitem_mana"
+#define FILE_ITEM_DAMAGE "iitem_damage"
+#define FILE_ITEM_ARMOR "iitem_armor"
+#define FILE_ITEM_HPS "iitem_hps"
+#define FILE_ITEM_MPS "iitem_mps"
+#define FILE_ITEM_EQUIPABLE "bitem_equipable"
+#define FILE_ITEM_USEABLE "bitem_useable"
 
 void load_position(FileReader &file, Entity *entity, PositionComponent *&position) {
 	int w = 32, h = 32;
@@ -130,7 +146,11 @@ void load_magic(FileReader &file, Entity *entity, MagicComponent *&magic) {
 }
 
 void load_player(FileReader &file, Entity *entity, PlayerComponent *&player) {
-	player = new PlayerComponent(entity);
+	std::string name = "";
+
+	if (file.exists(FILE_PLAYER_NAME)) name = file.get_string(FILE_PLAYER_NAME);
+
+	player = new PlayerComponent(entity, name);
 }
 
 void load_enemy(FileReader &file, Entity *entity, EnemyComponent *&enemy) {
@@ -161,19 +181,40 @@ void load_effect(FileReader &file, Entity *entity, EffectComponent *&effect) {
 }
 
 void load_combat(FileReader &file, Entity *entity, CombatComponent *&combat) {
-	int max_health = 0;
-	int max_mana = 0;
-	int damage = 0;
-	int armor = 0;
+	int max_health = 0, max_mana = 0;
+	int damage = 0, armor = 0;
+	int hps = 0, mps = 0;
 	int combat_time = 10000;
 
 	if (file.exists(FILE_COMBAT_MAX_HEALTH)) max_health = file.get_int(FILE_COMBAT_MAX_HEALTH);
 	if (file.exists(FILE_COMBAT_MAX_MANA)) max_mana = file.get_int(FILE_COMBAT_MAX_MANA);
 	if (file.exists(FILE_COMBAT_DAMAGE)) damage = file.get_int(FILE_COMBAT_DAMAGE);
 	if (file.exists(FILE_COMBAT_ARMOR)) armor = file.get_int(FILE_COMBAT_ARMOR);
+	if (file.exists(FILE_COMBAT_HPS)) hps = file.get_int(FILE_COMBAT_HPS);
+	if (file.exists(FILE_COMBAT_MPS)) mps = file.get_int(FILE_COMBAT_MPS);
 	if (file.exists(FILE_COMBAT_TIME)) combat_time = file.get_int(FILE_COMBAT_TIME);
 
-	combat = new CombatComponent(entity, max_health, max_mana, damage, armor, combat_time);
+	combat = new CombatComponent(entity, max_health, max_mana, damage, armor, hps, mps, combat_time);
+}
+
+void load_item(FileReader &file, Entity *entity, ItemComponent *&item) {
+	std::string name = "";
+	int health = 0, mana = 0;
+	int damage = 0, armor = 0;
+	int hps = 0, mps = 0;
+	bool is_equipable = false, is_useable = false;
+
+	if (file.exists(FILE_ITEM_NAME)) name = file.get_string(FILE_ITEM_NAME);
+	if (file.exists(FILE_ITEM_HEALTH)) health = file.get_int(FILE_ITEM_HEALTH);
+	if (file.exists(FILE_ITEM_MANA)) mana = file.get_int(FILE_ITEM_MANA);
+	if (file.exists(FILE_ITEM_DAMAGE)) damage = file.get_int(FILE_ITEM_DAMAGE);
+	if (file.exists(FILE_ITEM_ARMOR)) armor = file.get_int(FILE_ITEM_ARMOR);
+	if (file.exists(FILE_ITEM_HPS)) hps = file.get_int(FILE_ITEM_HPS);
+	if (file.exists(FILE_ITEM_MPS)) mps = file.get_int(FILE_ITEM_MPS);
+	if (file.exists(FILE_ITEM_EQUIPABLE)) is_equipable = file.get_bool(FILE_ITEM_EQUIPABLE);
+	if (file.exists(FILE_ITEM_USEABLE)) is_useable = file.get_bool(FILE_ITEM_USEABLE);
+
+	item = new ItemComponent(entity, name, health, mana, damage, armor, hps, mps, is_equipable, is_useable);
 }
 
 bool load_components(Entity *entity) {
@@ -265,6 +306,13 @@ bool load_components(Entity *entity) {
 		CombatComponent *combat = nullptr;
 		load_combat(file, entity, combat);
 		entity->add_component(combat);
+		numComponents++;
+	}
+
+	if (file.exists(FILE_ITEM_COMPONENT)) {
+		ItemComponent *item = nullptr;
+		load_item(file, entity, item);
+		entity->add_component(item);
 		numComponents++;
 	}
 

@@ -110,6 +110,11 @@ void UI::button_select_effects() {
 	Environment::get().get_ui_manager()->set_selection_type(TYPE_EFFECT);
 }
 
+void UI::button_select_items() {
+	Environment::get().get_ui_manager()->set_state(STATE_PLACING);
+	Environment::get().get_ui_manager()->set_selection_type(TYPE_ITEM);
+}
+
 void UI::button_select_free() {
 	Environment::get().get_ui_manager()->set_state(STATE_SELECTING);
 	Environment::get().get_ui_manager()->set_selection_type(TYPE_SELECT);

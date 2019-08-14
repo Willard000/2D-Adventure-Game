@@ -11,6 +11,7 @@ enum
 	COMPONENT_MAGIC,
 	COMPONENT_EFFECT,
 	COMPONENT_COMBAT,
+	COMPONENT_ITEM,
 
 	TOTAL_COMPONENTS
 };
@@ -22,6 +23,8 @@ public:
 	Component(Entity *entity_) :
 		entity		(entity_)
 	{}
+
+	~Component() {}
 
 	// makes new component copy and gives it to new_entity
 	virtual Component *copy(Entity *new_entity) const = 0;

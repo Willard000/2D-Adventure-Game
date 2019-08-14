@@ -22,7 +22,7 @@
 #define DAMAGE_TEXT_FTSIZE 14
 #define DAMAGE_TEXT_DISPLAY_TIME 400
 
-CombatComponent::CombatComponent(Entity *entity_, int max_health_, int max_mana_, int damage_, int armor_, int combat_time) :
+CombatComponent::CombatComponent(Entity *entity_, int max_health_, int max_mana_, int damage_, int armor_, int hps_, int mps_, int combat_time) :
 	Component		( entity_ ),
 	max_health		( max_health_ ),
 	health			( max_health_ ),
@@ -30,6 +30,8 @@ CombatComponent::CombatComponent(Entity *entity_, int max_health_, int max_mana_
 	mana			( max_mana_ ),
 	damage			( damage_ ),
 	armor			( armor_ ),
+	hps				( hps_ ),
+	mps				( mps_ ),
 	in_combat       ( false ),
 	combat_timer	( combat_time )
 {}
@@ -42,6 +44,8 @@ CombatComponent::CombatComponent(Entity *new_entity, const CombatComponent &rhs)
 	mana			( rhs.mana ),
 	damage			( rhs.damage ),
 	armor			( rhs.armor ),
+	hps				( rhs.hps ),
+	mps				( rhs.mps ),
 	in_combat       ( rhs.in_combat ),
 	combat_timer    ( rhs.combat_timer )
 {}

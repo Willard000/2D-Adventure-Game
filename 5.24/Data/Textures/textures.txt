@@ -5,6 +5,7 @@
 3 Data/Textures/Spells/spells.txt
 4 Data/Textures/Enemies/enemies.txt
 5 Data/Textures/Effects/effects.txt
+6 Data/Textures/Items/items.txt
 
 14 Data/Textures/Enemies/Icons/icons.txt
 15 Data/Textures/Effects/Icons/icons.txt
