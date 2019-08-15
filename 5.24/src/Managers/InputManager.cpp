@@ -147,8 +147,11 @@ void InputManager::update() {
 
 	if (is_key(SDL_SCANCODE_E)) {
 		Entity *player = Environment::get().get_resource_manager()->get_player();
-		Inventory inventory(player, &(GetPlayer(player)->items), GetCombat(player));
-		inventory.open();
+		GetPlayer(player)->inventory.open();
+	}
+
+	if (is_key(SDL_SCANCODE_Q)) {
+		pickup_item();
 	}
 
 	if (is_mouse_held(SDL_BUTTON_LEFT)) {

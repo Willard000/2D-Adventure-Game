@@ -12,7 +12,7 @@ namespace UI {
 		Button_Pressable(
 			CallBack on_press,
 			std::string text = "Text",
-			SDL_Rect rect = { 0, 0, 0, 20 },
+			SDL_Rect rect = { 0, 0, 100, 20 },
 			int font_size = 16,
 			Uint32 wrap_length = 1000,
 			SDL_Color text_color = { 255, 255, 255, 255 },

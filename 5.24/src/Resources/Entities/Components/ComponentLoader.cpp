@@ -76,6 +76,7 @@
 #define FILE_COMBAT_MPS "icombat_mps"
 #define FILE_COMBAT_TIME "icombat_time"
 
+#define FILE_ITEM_SLOT "iitem_slot"
 #define FILE_ITEM_NAME "sitem_name"
 #define FILE_ITEM_HEALTH "iitem_health"
 #define FILE_ITEM_MANA "iitem_mana"
@@ -198,12 +199,14 @@ void load_combat(FileReader &file, Entity *entity, CombatComponent *&combat) {
 }
 
 void load_item(FileReader &file, Entity *entity, ItemComponent *&item) {
+	int slot = 0;
 	std::string name = "";
 	int health = 0, mana = 0;
 	int damage = 0, armor = 0;
 	int hps = 0, mps = 0;
 	bool is_equipable = false, is_useable = false;
 
+	if (file.exists(FILE_ITEM_SLOT)) slot = file.get_int(FILE_ITEM_SLOT);
 	if (file.exists(FILE_ITEM_NAME)) name = file.get_string(FILE_ITEM_NAME);
 	if (file.exists(FILE_ITEM_HEALTH)) health = file.get_int(FILE_ITEM_HEALTH);
 	if (file.exists(FILE_ITEM_MANA)) mana = file.get_int(FILE_ITEM_MANA);
@@ -214,7 +217,7 @@ void load_item(FileReader &file, Entity *entity, ItemComponent *&item) {
 	if (file.exists(FILE_ITEM_EQUIPABLE)) is_equipable = file.get_bool(FILE_ITEM_EQUIPABLE);
 	if (file.exists(FILE_ITEM_USEABLE)) is_useable = file.get_bool(FILE_ITEM_USEABLE);
 
-	item = new ItemComponent(entity, name, health, mana, damage, armor, hps, mps, is_equipable, is_useable);
+	item = new ItemComponent(entity, slot, name, health, mana, damage, armor, hps, mps, is_equipable, is_useable);
 }
 
 bool load_components(Entity *entity) {

@@ -1,11 +1,16 @@
 #include <vector>
+#include <array>
 #include <string>
 
 #include "Component.h"
 #include "Entity.h"
 
+#include "Inventory.h"
+
 #ifndef PLAYER_COMPONENT_H
 #define PLAYER_COMPONENT_H
+
+#define MAX_ITEMS 100
 
 struct PlayerComponent : public Component {
 	PlayerComponent(Entity *entity_, std::string name);
@@ -20,8 +25,17 @@ struct PlayerComponent : public Component {
 
 	bool is_collision();
 
+	void equip_item(int index);
+	void unequip_item(int index);
+
+	void equip_item_stats(ItemComponent *item);
+	void unequip_item_stats(ItemComponent *item);
+
 	std::string name;
 	std::vector<Entity *> items;
+	std::array<Entity *, TOTAL_SLOTS> equipped_items = { nullptr };
+
+	Inventory inventory;
 };
 
 #endif

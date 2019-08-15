@@ -8,5 +8,6 @@ void move_entity(Entity *entity, int dir);
 void move_camera(int dir);
 void toggle_camera();
 void cast_spell(float x, float y);
+void pickup_item();
 
 #endif

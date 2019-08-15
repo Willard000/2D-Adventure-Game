@@ -7,6 +7,7 @@ iwidth 32
 iheight 32
 
 Item
+iitem_slot 0
 sitem_name Stick
 iitem_health 100
 iitem_mana 100

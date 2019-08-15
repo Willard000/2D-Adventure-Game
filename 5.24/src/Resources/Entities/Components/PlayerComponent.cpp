@@ -9,12 +9,15 @@
 
 PlayerComponent::PlayerComponent(Entity *entity_, std::string name_) :
 	Component		 ( entity_ ),
-	name			 ( name_ )
+	name			 ( name_ ),
+	inventory		 ( entity_, &items, GetCombat(entity_) )
 {}
 
 PlayerComponent::PlayerComponent(Entity *new_entity, const PlayerComponent &rhs) :
 	Component		 ( new_entity ),
-	name			 ( rhs.name )
+	name			 ( rhs.name ),
+	items			 ( rhs.items ),
+	inventory		 ( new_entity, &items, GetCombat(new_entity) )
 {}
 
 PlayerComponent *PlayerComponent::copy(Entity *new_entity) const {
@@ -23,6 +26,10 @@ PlayerComponent *PlayerComponent::copy(Entity *new_entity) const {
 
 PlayerComponent::~PlayerComponent() {
 	for (auto &item : items) {
+		delete item;
+	}
+
+	for (auto &item : equipped_items) {
 		delete item;
 	}
 }
@@ -62,4 +69,65 @@ bool PlayerComponent::is_collision() {
 		return true;
 
 	return false;
+}
+
+void PlayerComponent::equip_item(int index) {
+	if (index < 0 || index > items.size()) {
+		return;
+	}
+
+	ItemComponent *item_info = GetItem(items[index]);
+
+	if (equipped_items[item_info->slot]) {
+		items.push_back(equipped_items[item_info->slot]);
+		unequip_item_stats(GetItem(equipped_items[item_info->slot]));
+	}
+	equipped_items[item_info->slot] = items[index];
+	equip_item_stats(item_info);
+	items.erase(items.begin() + index);
+}
+
+void PlayerComponent::unequip_item(int index) {
+	if (index < 0 || index > items.size()) {
+		return;
+	}
+
+	if (items.size() == MAX_ITEMS) {
+		return;
+	}
+
+	if (!equipped_items[index]) {
+		return;
+	}
+
+	ItemComponent *item_info = GetItem(equipped_items[index]);
+	unequip_item_stats(item_info);
+	items.push_back(equipped_items[index]);
+	equipped_items[index] = nullptr;
+}
+
+void PlayerComponent::equip_item_stats(ItemComponent *item) {
+	CombatComponent *stats = GetCombat(entity);
+
+	stats->max_health += item->health;
+	stats->max_mana += item->mana;
+	stats->damage += item->damage;
+	stats->armor += item->armor;
+	stats->hps += item->hps;
+	stats->mps += item->mps;
+}
+
+void PlayerComponent::unequip_item_stats(ItemComponent *item) {
+	CombatComponent *stats = GetCombat(entity);
+
+	stats->max_health -= item->health;
+	if (stats->health > stats->max_health)
+		stats->health = stats->max_health;
+	stats->max_mana -= item->mana;
+	if (stats->mana > stats->max_mana)
+		stats->mana = stats->max_mana;
+	stats->damage -= item->damage;
+	stats->armor -= item->armor;
+	stats->hps -= item->hps;
+	stats->mps -= item->mps;
 }

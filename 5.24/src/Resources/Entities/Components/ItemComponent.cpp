@@ -1,7 +1,8 @@
 #include "ItemComponent.h"
 
-ItemComponent::ItemComponent(Entity *entity_, std::string name_, int health_, int mana_, int damage_, int armor_, int hps_, int mps_, bool is_equipable_, bool is_useable_) :
+ItemComponent::ItemComponent(Entity *entity_, int slot_, std::string name_, int health_, int mana_, int damage_, int armor_, int hps_, int mps_, bool is_equipable_, bool is_useable_) :
 	Component		( entity_ ),
+	slot			( slot_ ),
 	name			( name_ ),
 	health			( health_ ),
 	mana			( mana_ ),
@@ -15,6 +16,7 @@ ItemComponent::ItemComponent(Entity *entity_, std::string name_, int health_, in
 
 ItemComponent::ItemComponent(Entity *new_entity, const ItemComponent &rhs) :
 	Component		( new_entity ),
+	slot			( rhs.slot ),
 	name			( rhs.name ),
 	health			( rhs.health ),
 	mana			( rhs.mana ),

@@ -4,6 +4,10 @@
 namespace UI {
 	void confirm_yes();
 	void confirm_no();
+
+	void equip_item();
+	void use_item();
+	void drop_item();
 }
 
 #endif
