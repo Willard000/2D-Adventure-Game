@@ -1,0 +1,16 @@
+# Wizard Hat
+
+itexture_id 6
+
+Position
+iwidth 32
+iheight 32
+
+Item
+iitem_slot 2
+sitem_name Wizard_Hat
+iitem_mana 30
+iitem_mps 2
+
+bitem_equipable 1
+bitem_useable 0

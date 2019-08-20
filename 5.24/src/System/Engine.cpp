@@ -12,24 +12,13 @@
 
 #include "Grid.h"
 
-
-// test
-#include "PlayerComponent.h"
-// test
+#include "PlayerLoader.h"
 
 Engine::Engine() :
 	_isRunning		(true)
 {
 	build_environment();
-
-	_environment.get().get_resource_manager()->load_map(1);
-
-
-	// test inventory
-	for (unsigned int i = 0; i < 100; ++i) {
-		Entity *item = new Entity(TYPE_ITEM, 0);
-		GetPlayer(Environment::get().get_resource_manager()->get_player())->items.push_back(item);
-	}
+	load_game();
 }
 
 void Engine::run() {
@@ -64,6 +53,9 @@ void Engine::run() {
 		}
 	}
 
+	save_player();
+	_environment.get_resource_manager()->get_map()->save(false);
+
 	_environment.get_log()->print("Shutting Down Engine\n");
 	_environment.shutdown();
 }
@@ -88,4 +80,8 @@ void Engine::build_environment() {
 
 	InputManager *input_manager = new InputManager();
 	_environment.set_input_manager(input_manager);
+}
+
+void Engine::load_game() {
+	load_player();
 }

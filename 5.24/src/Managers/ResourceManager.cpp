@@ -10,6 +10,8 @@
 #include "CombatComponent.h"
 #include "EnemyComponent.h"
 
+#include "PlayerLoader.h"
+
 bool SHOW_COMBAT_RANGE = false;			// DEBUG
 bool SHOW_PATHING = false;
 
@@ -157,8 +159,8 @@ void ResourceManager::render() {
 	render_text();
 }
 
-bool ResourceManager::load_map(int id) {
-	if (!_map->load(id)) {
+bool ResourceManager::load_map(int id, bool is_base_map) {
+	if (!_map->load(id, is_base_map)) {
 		return false;
 	}
 	load_map_texture(_map->_tiles, _map->_rect.w, _map->_rect.h);

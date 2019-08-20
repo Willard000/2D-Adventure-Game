@@ -154,6 +154,10 @@ void InputManager::update() {
 		pickup_item();
 	}
 
+	if (is_key(SDL_SCANCODE_1)) {
+		Environment::get().get_resource_manager()->load_map(Environment::get().get_resource_manager()->get_map()->get_id(), true);
+	}
+
 	if (is_mouse_held(SDL_BUTTON_LEFT)) {
 		cast_spell((float)_mouse_x, (float)_mouse_y);
 	}

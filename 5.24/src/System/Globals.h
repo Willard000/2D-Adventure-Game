@@ -10,6 +10,8 @@
 
 #define ENTITY_FOLDER "Data/Entities/"
 
+#define PLAYER_FILE "Data/player.txt"
+
 enum {
 	MOVE_UP = 1,
 	MOVE_DOWN,
@@ -60,26 +62,16 @@ const std::string STYPE_NULL = "";
 
 const inline std::string &STYPE(const int &type) {
 	switch (type) {
-	case TYPE_PLAYER:
-		return STYPE_PLAYER;
-	case TYPE_OBJECT:
-		return STYPE_OBJECT;
-	case TYPE_SPELL:
-		return STYPE_SPELL;
-	case TYPE_ENEMY:
-		return STYPE_ENEMY;
-	case TYPE_EFFECT:
-		return STYPE_EFFECT;
-	case TYPE_ITEM:
-		return STYPE_ITEM;
-	case TYPE_SOLID:
-		return STYPE_SOLID;
-	case TYPE_WARP:
-		return STYPE_WARP;
-	case TYPE_SELECT:
-		return STYPE_SELECT;
-	case TYPE_TILE:
-		return STYPE_TILE;
+	case TYPE_PLAYER:		return STYPE_PLAYER;
+	case TYPE_OBJECT:		return STYPE_OBJECT;
+	case TYPE_SPELL:		return STYPE_SPELL;
+	case TYPE_ENEMY:		return STYPE_ENEMY;
+	case TYPE_EFFECT:		return STYPE_EFFECT;
+	case TYPE_ITEM:			return STYPE_ITEM;
+	case TYPE_SOLID:		return STYPE_SOLID;
+	case TYPE_WARP:			return STYPE_WARP;
+	case TYPE_SELECT:		return STYPE_SELECT;
+	case TYPE_TILE:			return STYPE_TILE;
 	}
 
 	return STYPE_NULL;

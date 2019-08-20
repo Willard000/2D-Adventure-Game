@@ -46,12 +46,13 @@ void create_new_map() {
 	}
 
 	if (resource_manager->get_map()->create_new(id, name, width, height, base_tile_id)) {
-		resource_manager->load_map(id);
+		resource_manager->load_map(id, true);
 	}
 }
 
 void save_map() {
-	Environment::get().get_resource_manager()->get_map()->save();
+	Environment::get().get_resource_manager()->get_map()->save(true);
+	Environment::get().get_resource_manager()->get_map()->save(false);
 }
 
 void load_map() {
@@ -62,7 +63,7 @@ void load_map() {
 		return;
 	}
 
-	Environment::get().get_resource_manager()->load_map(id);
+	Environment::get().get_resource_manager()->load_map(id, true);
 }
 
 void UI::button_new_map() {

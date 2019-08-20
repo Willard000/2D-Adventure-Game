@@ -12,10 +12,6 @@ EntityManager::EntityManager() :
 	_player		( new Entity(TYPE_PLAYER, 0) )
 {
 	Environment::get().get_log()->print("Loading Entity Manager");
-
-	GetPosition(_player)->set(400, 300);
-
-	Environment::get().get_window()->get_camera()->center(_player); // move this?
 }
 
 EntityManager::~EntityManager() {

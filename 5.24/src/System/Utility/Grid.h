@@ -2,6 +2,8 @@
 #include <SDL.h>
 #include <vector>
 
+// Objects that are too big and fit into more then 4 cells, do not work
+
 #ifndef GRID_H
 #define GRID_H
 

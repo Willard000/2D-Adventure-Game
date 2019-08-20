@@ -25,7 +25,7 @@ public:
 
 	void render();
 
-	bool load_map(int id);
+	bool load_map(int id, bool is_base_map);
 	void edit_map(int index, int id);
 
 	void render_editor(const UI::Element_Area &element_area, const UI::Element &selection);

@@ -1,2 +1,8 @@
 # Items
 0 Data/Textures/Items/stick.txt
+1 Data/Textures/Items/shirt.txt
+2 Data/Textures/Items/pants.txt
+3 Data/Textures/Items/gloves.txt
+4 Data/Textures/Items/boots.txt
+5 Data/Textures/Items/ring.txt
+6 Data/Textures/Items/wizard_hat.txt

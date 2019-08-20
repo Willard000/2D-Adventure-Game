@@ -1,0 +1,4 @@
+# Gloves
+stexture Data/Textures/Items/gloves.png
+iwidth 32
+iheight 32

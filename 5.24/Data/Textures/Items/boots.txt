@@ -1,0 +1,4 @@
+# Boots
+stexture Data/Textures/Items/boots.png
+iwidth 32
+iheight 32

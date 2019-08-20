@@ -1,0 +1,4 @@
+# Ring
+stexture Data/Textures/Items/ring.png
+iwidth 32
+iheight 32

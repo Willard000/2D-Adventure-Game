@@ -1,2 +1,8 @@
 # Item Surfaces
 0 Data/Textures/Items/stick.png
+1 Data/Textures/Items/shirt.png
+2 Data/Textures/Items/pants.png
+3 Data/Textures/Items/gloves.png
+4 Data/Textures/Items/boots.png
+5 Data/Textures/Items/ring.png
+6 Data/Textures/Items/wizard_hat.png

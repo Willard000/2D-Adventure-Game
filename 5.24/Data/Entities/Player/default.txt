@@ -24,4 +24,7 @@ icombat_damage 1
 icombat_armor 1
 icombat_hps 1
 icombat_mps 1
+icombat_leech 0
+icombat_drain 0
+icombat_luck 0
 icombat_time 10000

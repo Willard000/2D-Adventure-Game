@@ -1,0 +1,17 @@
+# Ring
+
+itexture_id 5
+
+Position
+iwidth 32
+iheight 32
+
+Item
+iitem_slot 7
+sitem_name Ring
+iitem_hps 1
+iitem_mps 1
+iitem_luck 1
+
+bitem_equipable 1
+bitem_useable 0

@@ -10,12 +10,18 @@
 PlayerComponent::PlayerComponent(Entity *entity_, std::string name_) :
 	Component		 ( entity_ ),
 	name			 ( name_ ),
+	level			 ( 0 ),
+	exp				 ( 0 ),
+	exp_to_level     ( 100 ),
 	inventory		 ( entity_, &items, GetCombat(entity_) )
 {}
 
 PlayerComponent::PlayerComponent(Entity *new_entity, const PlayerComponent &rhs) :
 	Component		 ( new_entity ),
 	name			 ( rhs.name ),
+	level			 ( rhs.level ),
+	exp				 ( rhs.exp ),
+	exp_to_level	 ( rhs.exp_to_level),
 	items			 ( rhs.items ),
 	inventory		 ( new_entity, &items, GetCombat(new_entity) )
 {}
@@ -40,9 +46,17 @@ void PlayerComponent::update() {
 		Map::Warp *warp = Environment::get().get_resource_manager()->get_map()->warp_collision(position->rect);
 		if (warp != nullptr) {
 			position->set(float(warp->to.x + (warp->to.w / 2) - (position->rect.w / 2)), float(warp->to.y + (warp->to.h / 2) - (position->rect.h / 2)));
-			if (warp->to_id != Environment::get().get_resource_manager()->get_map()->get_id())
-				Environment::get().get_resource_manager()->load_map(warp->to_id);
+			if (warp->to_id != Environment::get().get_resource_manager()->get_map()->get_id()) {
+				Environment::get().get_resource_manager()->get_map()->save(false);
+				Environment::get().get_resource_manager()->load_map(warp->to_id, false);
+			}
 		}
+	}
+
+	// exp
+	if (exp >= exp_to_level) {
+		level_up();
+		exp -= exp_to_level;
 	}
 }
 
@@ -72,7 +86,7 @@ bool PlayerComponent::is_collision() {
 }
 
 void PlayerComponent::equip_item(int index) {
-	if (index < 0 || index > items.size()) {
+	if (index < 0 || index > (int)items.size()) {
 		return;
 	}
 
@@ -88,7 +102,7 @@ void PlayerComponent::equip_item(int index) {
 }
 
 void PlayerComponent::unequip_item(int index) {
-	if (index < 0 || index > items.size()) {
+	if (index < 0 || index > TOTAL_SLOTS - 1) {
 		return;
 	}
 
@@ -108,6 +122,7 @@ void PlayerComponent::unequip_item(int index) {
 
 void PlayerComponent::equip_item_stats(ItemComponent *item) {
 	CombatComponent *stats = GetCombat(entity);
+	PositionComponent *position = GetPosition(entity);
 
 	stats->max_health += item->health;
 	stats->max_mana += item->mana;
@@ -115,10 +130,15 @@ void PlayerComponent::equip_item_stats(ItemComponent *item) {
 	stats->armor += item->armor;
 	stats->hps += item->hps;
 	stats->mps += item->mps;
+	stats->leech += item->leech;
+	stats->drain += item->drain;
+	position->speed += item->speed;
+	stats->luck += item->luck;
 }
 
 void PlayerComponent::unequip_item_stats(ItemComponent *item) {
 	CombatComponent *stats = GetCombat(entity);
+	PositionComponent *position = GetPosition(entity);
 
 	stats->max_health -= item->health;
 	if (stats->health > stats->max_health)
@@ -130,4 +150,28 @@ void PlayerComponent::unequip_item_stats(ItemComponent *item) {
 	stats->armor -= item->armor;
 	stats->hps -= item->hps;
 	stats->mps -= item->mps;
+	stats->leech -= item->leech;
+	stats->drain -= item->drain;
+	position->speed -= item->speed;
+	stats->luck -= item->luck;
+}
+
+void PlayerComponent::level_up() {
+	++level;
+	exp_to_level = exp_to_level * 1.1 + 50; // change this?
+
+	PositionComponent *position = GetPosition(entity);
+	CombatComponent *stats = GetCombat(entity);
+	stats->max_health += 5 * level;
+	stats->health = stats->max_health;
+	stats->max_mana += 5 * level;
+	stats->mana = stats->max_mana;
+	stats->damage += 1;
+	stats->armor += 1;
+	if (level % 5 == 0) {
+		stats->hps += 2;
+		stats->mps += 2;
+		position->speed += 10;
+		stats->luck += 1;
+	}
 }

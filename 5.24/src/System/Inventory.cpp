@@ -44,12 +44,18 @@
 #define ITEM_INFO_WRAP_LENGTH 1000
 #define ITEM_INFO_NAME_COLOR {255, 0, 0, 200}
 
+#define LEVEL_COLOR {150, 100, 200, 200}
+#define EXP_COLOR {150, 100, 200, 200}
 #define HEALTH_COLOR {225, 55, 55, 200}
 #define MANA_COLOR {100, 185, 225, 200}
-#define DAMAGE_COLOR {250, 200, 100, 200}
-#define ARMOR_COLOR {150, 230, 120, 200}
+#define DAMAGE_COLOR {240, 160, 110, 200}
+#define ARMOR_COLOR {210, 130, 200, 200}
 #define HPS_COLOR {225, 55, 55, 200}
 #define MPS_COLOR {100, 185, 225, 200}
+#define LEECH_COLOR {225, 55, 55, 200}
+#define DRAIN_COLOR {100, 185, 225, 200}
+#define SPEED_COLOR {135, 210, 140, 200}
+#define LUCK_COLOR {250, 170, 100, 200}
 
 #define ENTITY_INFO_LABEL_XOFFSET 50
 #define ENTITY_INFO_VAL_XOFFSET 350
@@ -70,6 +76,7 @@
 #define SLOT_WEAPON_RECT {625, 284, ITEM_SIZE, ITEM_SIZE}
 #define SLOT_HEAD_RECT {625, 200, ITEM_SIZE, ITEM_SIZE}
 #define SLOT_CHEST_RECT {625, 242, ITEM_SIZE, ITEM_SIZE}
+#define SLOT_RING_RECT {625, 326, ITEM_SIZE, ITEM_SIZE}
 
 #define SLOT_OFFHAND_RECT {875, 284, ITEM_SIZE, ITEM_SIZE}
 #define SLOT_GLOVES_RECT {875, 200, ITEM_SIZE, ITEM_SIZE}
@@ -138,11 +145,17 @@ void Inventory::input() {
 			}
 		}
 	}
+
+	if (input_manager->is_key(SDL_SCANCODE_E)) {
+		equip_item();
+	}
+
+	if (input_manager->is_key(SDL_SCANCODE_Q)) {
+		drop_item();
+	}
 }
 
-void Inventory::update() {
-
-}
+void Inventory::update() {}
 
 void Inventory::render() {
 	Renderer *renderer = Environment::get().get_window()->get_renderer();
@@ -219,7 +232,11 @@ void Inventory::render_items() {
 		if (!_selection_info.hide) {
 			selection_rect = { _background.w / 2 + SELECTION_XOFFSET, _background.h / 2 + SELECTION_YOFFSET, SELECTION_SIZE, SELECTION_SIZE };
 			renderer->draw_rect(selection_rect, SELECTION_MAIN_COLOR);
-			renderer->render(Environment::get().get_resource_manager()->get_texture_info(_items->at(_selection.index)), selection_rect, true);
+
+			if (!_selection.equipped)
+				renderer->render(Environment::get().get_resource_manager()->get_texture_info(_items->at(_selection.index)), selection_rect, true);
+			else
+				renderer->render(Environment::get().get_resource_manager()->get_texture_info(GetPlayer(_entity)->equipped_items[_selection.index]), selection_rect, true);
 		}
 
 		int selection_x = _selection.index % MAX_ROW_SIZE;
@@ -243,37 +260,61 @@ void Inventory::render_item_info() {
 
 	Renderer *renderer = Environment::get().get_window()->get_renderer();
 
+	ItemComponent *item = nullptr;
+	if (!_selection.equipped)
+		item = GetItem(_items->at(_selection.index));
+	else
+		item = GetItem(GetPlayer(_entity)->equipped_items[_selection.index]);
+
 	renderer->draw_text(&_selection_info.name, true);
-	renderer->draw_text(&_selection_info.health, true);
-	renderer->draw_text(&_selection_info.health_val, true);
-	renderer->draw_text(&_selection_info.mana, true);
-	renderer->draw_text(&_selection_info.mana_val, true);
-	renderer->draw_text(&_selection_info.damage, true);
-	renderer->draw_text(&_selection_info.damage_val, true);
-	renderer->draw_text(&_selection_info.armor, true);
-	renderer->draw_text(&_selection_info.armor_val, true);
-	renderer->draw_text(&_selection_info.hps, true);
-	renderer->draw_text(&_selection_info.hps_val, true);
-	renderer->draw_text(&_selection_info.mps, true);
-	renderer->draw_text(&_selection_info.mps_val, true);
+	if (item->health > 0) {
+		renderer->draw_text(&_selection_info.health, true);		renderer->draw_text(&_selection_info.health_val, true);
+	}
+	if (item->mana > 0) {
+		renderer->draw_text(&_selection_info.mana, true);		renderer->draw_text(&_selection_info.mana_val, true);
+	}
+	if (item->damage > 0) {
+		renderer->draw_text(&_selection_info.damage, true);		renderer->draw_text(&_selection_info.damage_val, true);
+	}
+	if (item->armor > 0) {
+		renderer->draw_text(&_selection_info.armor, true);		renderer->draw_text(&_selection_info.armor_val, true);
+	}
+	if (item->hps > 0) {
+		renderer->draw_text(&_selection_info.hps, true);		renderer->draw_text(&_selection_info.hps_val, true);
+	}
+	if (item->mps > 0) {
+		renderer->draw_text(&_selection_info.mps, true);		renderer->draw_text(&_selection_info.mps_val, true);
+	}
+	if (item->leech > 0) {
+		renderer->draw_text(&_selection_info.leech, true);		renderer->draw_text(&_selection_info.leech_val, true);
+	}
+	if (item->drain > 0) {
+		renderer->draw_text(&_selection_info.drain, true);		renderer->draw_text(&_selection_info.drain_val, true);
+	}
+	if (item->speed > 0) {
+		renderer->draw_text(&_selection_info.speed, true);		renderer->draw_text(&_selection_info.speed_val, true);
+	}
+	if (item->luck > 0) {
+		renderer->draw_text(&_selection_info.luck, true);		renderer->draw_text(&_selection_info.luck_val, true);
+	}
 }
 
 void Inventory::render_entity_info() {
 	Renderer *renderer = Environment::get().get_window()->get_renderer();
 
 	renderer->draw_text(&_entity_info.name, true);
-	renderer->draw_text(&_entity_info.health, true);
-	renderer->draw_text(&_entity_info.health_val, true);
-	renderer->draw_text(&_entity_info.mana, true);
-	renderer->draw_text(&_entity_info.mana_val, true);
-	renderer->draw_text(&_entity_info.damage, true);
-	renderer->draw_text(&_entity_info.damage_val, true);
-	renderer->draw_text(&_entity_info.armor, true);
-	renderer->draw_text(&_entity_info.armor_val, true);
-	renderer->draw_text(&_entity_info.hps, true);
-	renderer->draw_text(&_entity_info.hps_val, true);
-	renderer->draw_text(&_entity_info.mps, true);
-	renderer->draw_text(&_entity_info.mps_val, true);
+	renderer->draw_text(&_entity_info.level, true);		renderer->draw_text(&_entity_info.level_val, true);
+	renderer->draw_text(&_entity_info.exp, true);		renderer->draw_text(&_entity_info.exp_val, true);
+	renderer->draw_text(&_entity_info.health, true);	renderer->draw_text(&_entity_info.health_val, true);
+	renderer->draw_text(&_entity_info.mana, true);		renderer->draw_text(&_entity_info.mana_val, true);
+	renderer->draw_text(&_entity_info.damage, true);	renderer->draw_text(&_entity_info.damage_val, true);
+	renderer->draw_text(&_entity_info.armor, true);		renderer->draw_text(&_entity_info.armor_val, true);
+	renderer->draw_text(&_entity_info.hps, true);		renderer->draw_text(&_entity_info.hps_val, true);
+	renderer->draw_text(&_entity_info.mps, true);		renderer->draw_text(&_entity_info.mps_val, true);
+	renderer->draw_text(&_entity_info.leech, true);		renderer->draw_text(&_entity_info.leech_val, true);
+	renderer->draw_text(&_entity_info.drain, true);		renderer->draw_text(&_entity_info.drain_val, true);
+	renderer->draw_text(&_entity_info.speed, true);		renderer->draw_text(&_entity_info.speed_val, true);
+	renderer->draw_text(&_entity_info.luck, true);		renderer->draw_text(&_entity_info.luck_val, true);
 }
 
 void Inventory::render_buttons() {
@@ -337,24 +378,66 @@ void Inventory::set_item_info(ItemComponent *item) {
 
 	_selection_info.name = Text(item->name, ITEM_INFO_NAME_COLOR, font_size, wrap_length, _background.w / 2 + SELECTION_XOFFSET + SELECTION_SIZE /2, y);
 	y += font_size + 2;
-	_selection_info.health = Text("Health: ", HEALTH_COLOR, font_size, wrap_length, label_x, y);
-	_selection_info.health_val = Text(std::to_string(item->health), HEALTH_COLOR, font_size, wrap_length, val_x, y);
-	y += font_size + 2;
-	_selection_info.hps = Text("HPS: ", HPS_COLOR, font_size, wrap_length, label_x, y);
-	_selection_info.hps_val = Text(std::to_string(item->hps), HPS_COLOR, font_size, wrap_length, val_x, y);
-	y += font_size + 2;
-	_selection_info.mana = Text("Mana: ", MANA_COLOR, font_size, wrap_length, label_x, y);
-	_selection_info.mana_val = Text(std::to_string(item->mana), MANA_COLOR, font_size, wrap_length, val_x, y);
-	y += font_size + 2;
-	_selection_info.mps = Text("MPS: ", MPS_COLOR, font_size, wrap_length, label_x, y);
-	_selection_info.mps_val = Text(std::to_string(item->mps), MPS_COLOR, font_size, wrap_length, val_x, y);
-	y += font_size + 2;
-	_selection_info.damage = Text("Damage: ", DAMAGE_COLOR, font_size, wrap_length, label_x, y);
-	_selection_info.damage_val = Text(std::to_string(item->damage), DAMAGE_COLOR, font_size, wrap_length, val_x, y);
-	y += font_size + 2;
-	_selection_info.armor = Text("Armor: ", ARMOR_COLOR, font_size, wrap_length, label_x, y);
-	_selection_info.armor_val = Text(std::to_string(item->armor), ARMOR_COLOR, font_size, wrap_length, val_x, y);
 
+	if (item->health > 0) {
+		_selection_info.health = Text("Health:", HEALTH_COLOR, font_size, wrap_length, label_x, y);
+		_selection_info.health_val = Text(std::to_string(item->health), HEALTH_COLOR, font_size, wrap_length, val_x, y);
+		y += font_size + 2;
+	}
+
+	if (item->hps > 0) {
+		_selection_info.hps = Text("HPS:", HPS_COLOR, font_size, wrap_length, label_x, y);
+		_selection_info.hps_val = Text(std::to_string(item->hps), HPS_COLOR, font_size, wrap_length, val_x, y);
+		y += font_size + 2;
+	}
+
+	if (item->mana > 0) {
+		_selection_info.mana = Text("Mana:", MANA_COLOR, font_size, wrap_length, label_x, y);
+		_selection_info.mana_val = Text(std::to_string(item->mana), MANA_COLOR, font_size, wrap_length, val_x, y);
+		y += font_size + 2;
+	}
+
+	if (item->mps > 0) {
+		_selection_info.mps = Text("MPS:", MPS_COLOR, font_size, wrap_length, label_x, y);
+		_selection_info.mps_val = Text(std::to_string(item->mps), MPS_COLOR, font_size, wrap_length, val_x, y);
+		y += font_size + 2;
+	}
+
+	if (item->damage > 0) {
+		_selection_info.damage = Text("Damage:", DAMAGE_COLOR, font_size, wrap_length, label_x, y);
+		_selection_info.damage_val = Text(std::to_string(item->damage), DAMAGE_COLOR, font_size, wrap_length, val_x, y);
+		y += font_size + 2;
+	}
+
+	if (item->armor > 0) {
+		_selection_info.armor = Text("Armor:", ARMOR_COLOR, font_size, wrap_length, label_x, y);
+		_selection_info.armor_val = Text(std::to_string(item->armor), ARMOR_COLOR, font_size, wrap_length, val_x, y);
+		y += font_size + 2;
+	}
+
+	if (item->leech > 0) {
+		_selection_info.leech = Text("Leech:", LEECH_COLOR, font_size, wrap_length, label_x, y);
+		_selection_info.leech_val = Text(std::to_string(item->leech), LEECH_COLOR, font_size, wrap_length, val_x, y);
+		y += font_size + 2;
+	}
+
+	if (item->drain > 0) {
+		_selection_info.drain = Text("Drain:", DRAIN_COLOR, font_size, wrap_length, label_x, y);
+		_selection_info.drain_val = Text(std::to_string(item->drain), DRAIN_COLOR, font_size, wrap_length, val_x, y);
+		y += font_size + 2;
+	}
+
+	if (item->speed > 0) {
+		_selection_info.speed = Text("Speed:", SPEED_COLOR, font_size, wrap_length, label_x, y);
+		_selection_info.speed_val = Text(std::to_string(item->speed), SPEED_COLOR, font_size, wrap_length, val_x, y);
+		y += font_size + 2;
+	}
+
+	if (item->luck > 0) {
+		_selection_info.luck = Text("Luck:", LUCK_COLOR, font_size, wrap_length, label_x, y);
+		_selection_info.luck_val = Text(std::to_string(item->luck), LUCK_COLOR, font_size, wrap_length, val_x, y);
+		y += font_size + 2;
+	}
 	_selection_info.hide = false;
 }
 
@@ -370,6 +453,11 @@ void Inventory::set_entity_info() {
 		return;
 	}
 
+	PositionComponent *position_info = GetPosition(_entity);
+	if (!position_info) {
+		return;
+	}
+
 	PlayerComponent *player_info = GetPlayer(_entity);
 	if (player_info) {
 		_entity_info.name = Text(player_info->name, ENTITY_INFO_NAME_COLOR, font_size, wrap_length, label_x + (val_x - label_x) / 2, y);
@@ -382,26 +470,53 @@ void Inventory::set_entity_info() {
 	}
 
 	y += font_size + 2;
+	_entity_info.level = Text("Level:", LEVEL_COLOR, font_size, wrap_length, label_x, y);
+	_entity_info.level_val = Text(std::to_string(player_info->level), LEVEL_COLOR, font_size, wrap_length, val_x, y);
 
-	_entity_info.health = Text("Health: ", HEALTH_COLOR, font_size, wrap_length, label_x, y);
+	y += font_size + 2;
+	_entity_info.exp = Text("Exp:", EXP_COLOR, font_size, wrap_length, label_x, y);
+	_entity_info.exp_val = Text(std::to_string(player_info->exp) + "/" + std::to_string(player_info->exp_to_level), EXP_COLOR, font_size, wrap_length, val_x, y);
+	
+	y += font_size + 2;
+	_entity_info.health = Text("Health:", HEALTH_COLOR, font_size, wrap_length, label_x, y);
 	_entity_info.health_val = Text(std::to_string(combat_info->health) + "/" + std::to_string(combat_info->max_health),
 								HEALTH_COLOR, font_size, wrap_length, val_x, y);
+
 	y += font_size + 2;
-	_entity_info.hps = Text("HPS: ", HPS_COLOR, font_size, wrap_length, label_x, y);
+	_entity_info.hps = Text("HPS:", HPS_COLOR, font_size, wrap_length, label_x, y);
 	_entity_info.hps_val = Text(std::to_string(combat_info->hps), HPS_COLOR, font_size, wrap_length, val_x, y);
+
 	y += font_size + 2;
-	_entity_info.mana = Text("Mana: ", MANA_COLOR, font_size, wrap_length, label_x, y);
+	_entity_info.mana = Text("Mana:", MANA_COLOR, font_size, wrap_length, label_x, y);
 	_entity_info.mana_val = Text(std::to_string(combat_info->mana) + "/" + std::to_string(combat_info->max_mana),
 								MANA_COLOR, font_size, wrap_length, val_x, y);
 	y += font_size + 2;
-	_entity_info.mps = Text("MPS: ", MPS_COLOR, font_size, wrap_length, label_x, y);
+	_entity_info.mps = Text("MPS:", MPS_COLOR, font_size, wrap_length, label_x, y);
 	_entity_info.mps_val = Text(std::to_string(combat_info->mps), MPS_COLOR, font_size, wrap_length, val_x, y);
+
 	y += font_size + 2;
-	_entity_info.damage = Text("Damage: ", DAMAGE_COLOR, font_size, wrap_length, label_x, y);
+	_entity_info.damage = Text("Damage:", DAMAGE_COLOR, font_size, wrap_length, label_x, y);
 	_entity_info.damage_val = Text(std::to_string(combat_info->damage), DAMAGE_COLOR, font_size, wrap_length, val_x, y);
+
 	y += font_size + 2;
 	_entity_info.armor = Text("Armor:", ARMOR_COLOR, font_size, wrap_length, label_x, y);
 	_entity_info.armor_val = Text(std::to_string(combat_info->armor), ARMOR_COLOR, font_size, wrap_length, val_x, y);
+
+	y += font_size + 2;
+	_entity_info.leech = Text("Leech:", LEECH_COLOR, font_size, wrap_length, label_x, y);
+	_entity_info.leech_val = Text(std::to_string(combat_info->leech), LEECH_COLOR, font_size, wrap_length, val_x, y);
+
+	y += font_size + 2;
+	_entity_info.drain = Text("Drain:", DRAIN_COLOR, font_size, wrap_length, label_x, y);
+	_entity_info.drain_val = Text(std::to_string(combat_info->drain), DRAIN_COLOR, font_size, wrap_length, val_x, y);
+
+	y += font_size + 2;
+	_entity_info.speed = Text("Speed:", SPEED_COLOR, font_size, wrap_length, label_x, y);
+	_entity_info.speed_val = Text(std::to_string((int)position_info->speed), SPEED_COLOR, font_size, wrap_length, val_x, y);
+
+	y += font_size + 2;
+	_entity_info.luck = Text("Luck:", LUCK_COLOR, font_size, wrap_length, label_x, y);
+	_entity_info.luck_val = Text(std::to_string(combat_info->luck), LUCK_COLOR, font_size, wrap_length, val_x, y);
 }
 
 void Inventory::set_item_equipped(bool is_equipped) {
@@ -438,6 +553,7 @@ void Inventory::setup_slots() {
 	_slots[SLOT_GLOVES] = SLOT_GLOVES_RECT;
 	_slots[SLOT_LEGS] = SLOT_LEGS_RECT;
 	_slots[SLOT_BOOTS] = SLOT_BOOTS_RECT;
+	_slots[SLOT_RING] = SLOT_RING_RECT;
 }
 
 void Inventory::equip_item() {

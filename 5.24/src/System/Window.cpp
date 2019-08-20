@@ -41,7 +41,7 @@ void Window::set_window_mode(int window_mode) {
 		SDL_SetWindowFullscreen(_window, SDL_WINDOW_FULLSCREEN);
 	}
 	// Fullscreen Borderless Windowed
-	if (window_mode == 2) {
+	else if (window_mode == 2) {
 		SDL_SetWindowBordered(_window, SDL_FALSE);
 		SDL_SetWindowSize(_window, mode.w, mode.h);
 		SDL_SetWindowPosition(_window, 0, 0);
@@ -51,15 +51,15 @@ void Window::set_window_mode(int window_mode) {
 		_height_half = _height / 2;
 	}
 	// Borderless
-	if (window_mode == 3) {
+	else if (window_mode == 3) {
 		SDL_SetWindowBordered(_window, SDL_FALSE);
 	}
 	// Fake Fullscreen
-	if (window_mode == 4) {
+	else if (window_mode == 4) {
 		SDL_SetWindowFullscreen(_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 	}
 	// Resizeable
-	if (window_mode == 5) {
+	else if (window_mode == 5) {
 		SDL_SetWindowResizable(_window, SDL_TRUE);
 		// update window width  & height on resize
 	}

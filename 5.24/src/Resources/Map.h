@@ -21,6 +21,7 @@
 #define MAP_MAX_HEIGHT 256
 
 extern const char *MAP_BASE_PATH;
+extern const char *MAP_SAVED_PATH;
 
 struct Map_Surface {
 	SDL_Surface *surfaces;
@@ -45,8 +46,8 @@ public:
 
 	void update();
 
-	bool load(int id);
-	void save();
+	bool load(int id, bool is_base_map);
+	void save(bool is_base_map);
 	bool create_new(int id, std::string name, int width, int height, int base_tile_id);
 
 	bool bound_collision(const SDL_Rect &pos);
@@ -86,7 +87,9 @@ public:
 
 	friend class ResourceManager;
 private:
-	std::string get_path(int id);
+	std::string get_base_map_path(int id);
+	std::string get_saved_map_path(int id);
+
 	void load_tiles(FileReader &file);
 	void load_solids(FileReader &file);
 	void load_warps(FileReader &file);

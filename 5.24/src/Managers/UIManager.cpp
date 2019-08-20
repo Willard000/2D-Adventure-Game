@@ -399,15 +399,16 @@ void UIManager::place_warp() {
 	set_current_text("Enter Warp Map ID");
 	Environment::get().get_input_manager()->get_text_input(&warp.to_id);
 
-	map->save();
+	map->save(true);
+	map->save(false);
 
-	if (!Environment::get().get_resource_manager()->load_map(warp.to_id)) {
+	if (!Environment::get().get_resource_manager()->load_map(warp.to_id, true)) {
 		return;
 	}
 
 	warp.to = place_warp_rect();
 
-	Environment::get().get_resource_manager()->load_map(map_id);
+	Environment::get().get_resource_manager()->load_map(map_id, true);
 
 	map->add_warp(warp);
 

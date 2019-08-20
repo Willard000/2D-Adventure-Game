@@ -1,6 +1,6 @@
 #include "ItemComponent.h"
 
-ItemComponent::ItemComponent(Entity *entity_, int slot_, std::string name_, int health_, int mana_, int damage_, int armor_, int hps_, int mps_, bool is_equipable_, bool is_useable_) :
+ItemComponent::ItemComponent(Entity *entity_, int slot_, std::string name_, int health_, int mana_, int damage_, int armor_, int hps_, int mps_, int leech_, int drain_, int speed_, int luck_, bool is_equipable_, bool is_useable_) :
 	Component		( entity_ ),
 	slot			( slot_ ),
 	name			( name_ ),
@@ -10,6 +10,10 @@ ItemComponent::ItemComponent(Entity *entity_, int slot_, std::string name_, int 
 	armor			( armor_ ),
 	hps				( hps_ ),
 	mps				( mps_ ),
+	leech			( leech_ ),
+	drain			( drain_ ),
+	speed			( speed_ ),
+	luck			( luck_ ),
 	is_equipable	( is_equipable_ ),
 	is_useable		( is_useable_)
 {}
@@ -24,6 +28,10 @@ ItemComponent::ItemComponent(Entity *new_entity, const ItemComponent &rhs) :
 	armor			( rhs.armor ),
 	hps				( rhs.hps ),
 	mps				( rhs.mps ),
+	leech			( rhs.leech ),
+	drain			( rhs.drain ),
+	speed			( rhs.speed ),
+	luck			( rhs.luck ),
 	is_equipable	( rhs.is_equipable ),
 	is_useable		( rhs.is_useable )
 {}

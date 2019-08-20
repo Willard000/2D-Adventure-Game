@@ -1,0 +1,15 @@
+# Boots
+
+itexture_id 4
+
+Position
+iwidth 32
+iheight 32
+
+Item
+iitem_slot 6
+sitem_name Boots
+iitem_speed 10
+
+bitem_equipable 1
+bitem_useable 0

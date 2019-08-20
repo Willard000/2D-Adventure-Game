@@ -74,6 +74,9 @@
 #define FILE_COMBAT_ARMOR "icombat_armor"
 #define FILE_COMBAT_HPS "icombat_hps"
 #define FILE_COMBAT_MPS "icombat_mps"
+#define FILE_COMBAT_LEECH "icombat_leech"
+#define FILE_COMBAT_DRAIN "icombat_drain"
+#define FILE_COMBAT_LUCK "icombat_luck"
 #define FILE_COMBAT_TIME "icombat_time"
 
 #define FILE_ITEM_SLOT "iitem_slot"
@@ -84,6 +87,10 @@
 #define FILE_ITEM_ARMOR "iitem_armor"
 #define FILE_ITEM_HPS "iitem_hps"
 #define FILE_ITEM_MPS "iitem_mps"
+#define FILE_ITEM_LEECH "iitem_leech"
+#define FILE_ITEM_DRAIN "iitem_drain"
+#define FILE_ITEM_SPEED "iitem_speed"
+#define FILE_ITEM_LUCK "iitem_luck"
 #define FILE_ITEM_EQUIPABLE "bitem_equipable"
 #define FILE_ITEM_USEABLE "bitem_useable"
 
@@ -185,6 +192,8 @@ void load_combat(FileReader &file, Entity *entity, CombatComponent *&combat) {
 	int max_health = 0, max_mana = 0;
 	int damage = 0, armor = 0;
 	int hps = 0, mps = 0;
+	int leech = 0, drain = 0;
+	int luck = 0;
 	int combat_time = 10000;
 
 	if (file.exists(FILE_COMBAT_MAX_HEALTH)) max_health = file.get_int(FILE_COMBAT_MAX_HEALTH);
@@ -193,9 +202,12 @@ void load_combat(FileReader &file, Entity *entity, CombatComponent *&combat) {
 	if (file.exists(FILE_COMBAT_ARMOR)) armor = file.get_int(FILE_COMBAT_ARMOR);
 	if (file.exists(FILE_COMBAT_HPS)) hps = file.get_int(FILE_COMBAT_HPS);
 	if (file.exists(FILE_COMBAT_MPS)) mps = file.get_int(FILE_COMBAT_MPS);
+	if (file.exists(FILE_COMBAT_LEECH)) leech = file.get_int(FILE_COMBAT_LEECH);
+	if (file.exists(FILE_COMBAT_DRAIN)) drain = file.get_int(FILE_COMBAT_DRAIN);
+	if (file.exists(FILE_COMBAT_LUCK)) luck = file.get_int(FILE_COMBAT_LUCK);
 	if (file.exists(FILE_COMBAT_TIME)) combat_time = file.get_int(FILE_COMBAT_TIME);
 
-	combat = new CombatComponent(entity, max_health, max_mana, damage, armor, hps, mps, combat_time);
+	combat = new CombatComponent(entity, max_health, max_mana, damage, armor, hps, mps, leech, drain, luck, combat_time);
 }
 
 void load_item(FileReader &file, Entity *entity, ItemComponent *&item) {
@@ -204,20 +216,26 @@ void load_item(FileReader &file, Entity *entity, ItemComponent *&item) {
 	int health = 0, mana = 0;
 	int damage = 0, armor = 0;
 	int hps = 0, mps = 0;
+	int leech = 0, drain = 0;
+	int speed = 0, luck = 0;
 	bool is_equipable = false, is_useable = false;
 
 	if (file.exists(FILE_ITEM_SLOT)) slot = file.get_int(FILE_ITEM_SLOT);
-	if (file.exists(FILE_ITEM_NAME)) name = file.get_string(FILE_ITEM_NAME);
+	if (file.exists(FILE_ITEM_NAME)) {	name = file.get_string(FILE_ITEM_NAME);	for (auto it = name.begin(); it != name.end(); ++it) {	if (*it == '_') {	*it = ' ';	}	} }
 	if (file.exists(FILE_ITEM_HEALTH)) health = file.get_int(FILE_ITEM_HEALTH);
 	if (file.exists(FILE_ITEM_MANA)) mana = file.get_int(FILE_ITEM_MANA);
 	if (file.exists(FILE_ITEM_DAMAGE)) damage = file.get_int(FILE_ITEM_DAMAGE);
 	if (file.exists(FILE_ITEM_ARMOR)) armor = file.get_int(FILE_ITEM_ARMOR);
 	if (file.exists(FILE_ITEM_HPS)) hps = file.get_int(FILE_ITEM_HPS);
 	if (file.exists(FILE_ITEM_MPS)) mps = file.get_int(FILE_ITEM_MPS);
+	if (file.exists(FILE_ITEM_LEECH)) leech = file.get_int(FILE_ITEM_LEECH);
+	if (file.exists(FILE_ITEM_DRAIN)) drain = file.get_int(FILE_ITEM_DRAIN);
+	if (file.exists(FILE_ITEM_SPEED)) speed = file.get_int(FILE_ITEM_SPEED);
+	if (file.exists(FILE_ITEM_LUCK)) luck = file.get_int(FILE_ITEM_LUCK);
 	if (file.exists(FILE_ITEM_EQUIPABLE)) is_equipable = file.get_bool(FILE_ITEM_EQUIPABLE);
 	if (file.exists(FILE_ITEM_USEABLE)) is_useable = file.get_bool(FILE_ITEM_USEABLE);
 
-	item = new ItemComponent(entity, slot, name, health, mana, damage, armor, hps, mps, is_equipable, is_useable);
+	item = new ItemComponent(entity, slot, name, health, mana, damage, armor, hps, mps, leech, drain, speed, luck, is_equipable, is_useable);
 }
 
 bool load_components(Entity *entity) {

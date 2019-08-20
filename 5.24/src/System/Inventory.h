@@ -16,14 +16,14 @@
 class Inventory {
 public:
 	struct Item_Info {
-		Text name, health, mana, damage, armor, hps, mps;
-		Text health_val, mana_val, damage_val, armor_val, hps_val, mps_val;
+		Text name, health, mana, damage, armor, hps, mps, leech, drain, speed, luck;
+		Text health_val, mana_val, damage_val, armor_val, hps_val, mps_val, leech_val, drain_val, speed_val, luck_val;
 		bool hide;
 	};
 
 	struct Entity_Info {
-		Text name, health, mana, damage, armor, mps, hps;
-		Text health_val, mana_val, damage_val, armor_val, mps_val, hps_val;
+		Text name, level, exp, health, mana, damage, armor, mps, hps, leech, drain, speed, luck;
+		Text level_val, exp_val, health_val, mana_val, damage_val, armor_val, mps_val, hps_val, leech_val, drain_val, speed_val, luck_val;
 	};
 
 	struct Selection {

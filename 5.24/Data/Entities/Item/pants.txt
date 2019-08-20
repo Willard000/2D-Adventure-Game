@@ -1,0 +1,15 @@
+# Pants
+
+itexture_id 2
+
+Position
+iwidth 32
+iheight 32
+
+Item
+iitem_slot 4
+sitem_name Pants
+iitem_armor 2
+
+bitem_equipable 1
+bitem_useable 0

@@ -1,2 +1,8 @@
 # Items
 0 Data/Entities/Item/stick.txt
+1 Data/Entities/Item/shirt.txt
+2 Data/Entities/Item/pants.txt
+3 Data/Entities/Item/gloves.txt
+4 Data/Entities/Item/boots.txt
+5 Data/Entities/Item/ring.txt
+6 Data/Entities/Item/wizard_hat.txt

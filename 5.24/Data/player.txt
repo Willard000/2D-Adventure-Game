@@ -1,0 +1,10 @@
+# Player
+sname Matthew
+ilevel 1
+iexp 0
+ihealth 100
+imana 100
+position 1167.25 657.909
+inventory 0 0 0 
+equipped 0 -1 6 1 2 3 4 5 
+imap_id 7

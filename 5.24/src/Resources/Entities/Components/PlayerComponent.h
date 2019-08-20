@@ -27,10 +27,12 @@ struct PlayerComponent : public Component {
 
 	void equip_item(int index);
 	void unequip_item(int index);
-
 	void equip_item_stats(ItemComponent *item);
 	void unequip_item_stats(ItemComponent *item);
 
+	void level_up();
+
+	int level, exp, exp_to_level;
 	std::string name;
 	std::vector<Entity *> items;
 	std::array<Entity *, TOTAL_SLOTS> equipped_items = { nullptr };

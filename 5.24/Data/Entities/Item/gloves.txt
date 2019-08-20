@@ -1,0 +1,15 @@
+# Gloves
+
+itexture_id 3
+
+Position
+iwidth 32
+iheight 32
+
+Item
+iitem_slot 5
+sitem_name Gloves
+iitem_mana 20
+
+bitem_equipable 1
+bitem_useable 0

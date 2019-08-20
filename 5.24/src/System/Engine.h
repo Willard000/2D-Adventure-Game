@@ -12,6 +12,8 @@ public:
 
 private:
 	void build_environment();
+
+	void load_game();
 private:
 	Environment _environment;
 

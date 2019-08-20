@@ -16,8 +16,8 @@
 
 #include "Collision.h"
 
-#define CELL_WIDTH 200
-#define CELL_HEIGHT 200
+#define CELL_WIDTH 400
+#define CELL_HEIGHT 400
 
 #define FILE_MAP_WIDTH "iwidth"
 #define FILE_MAP_HEIGHT "iheight"
@@ -54,7 +54,8 @@
 #define WARP_TREE_CAPACITY 2
 #define ENTITY_TREE_CAPACITY 2
 
-const char *MAP_BASE_PATH = "Data/Maps/";
+const char *MAP_BASE_PATH = "Data/Maps/Base/";
+const char *MAP_SAVED_PATH = "Data/Maps/Saved/";
 
 Map::Map() :
 	_id				( 0 ),
@@ -71,9 +72,14 @@ void Map::update() {
 	//build_entity_tree();
 }
 
-bool Map::load(int id) {
+bool Map::load(int id, bool is_base_map) {
 	Environment::get().get_log()->print("Loading map - " + std::to_string(id));
-	std::string path = get_path(id);
+	std::string path = "";
+	if (is_base_map)
+		path = get_base_map_path(id);
+	else
+		path = get_saved_map_path(id);
+
 	FileReader file(path.c_str(), false);
 
 	if (!file.read()) {
@@ -83,7 +89,7 @@ bool Map::load(int id) {
 	}
 
 	if (Environment::get().get_mode() == MODE_EDITOR && _id != 0) {
-		save(); // save current map
+		save(true); // save current map
 	}
 
 	int width, height;
@@ -123,9 +129,13 @@ bool Map::load(int id) {
 	return true;
 }
 
-void Map::save() {
+void Map::save(bool is_base_map) {
 	Environment::get().get_log()->print("Saving map - " + std::to_string(_id));
-	std::string path = get_path(_id);
+	std::string path = "";
+	if (is_base_map)
+		path = get_base_map_path(_id);
+	else
+		path = get_saved_map_path(_id);
 
 	std::ofstream file(path.c_str(), std::ios::out, std::ios::trunc);
 
@@ -166,7 +176,7 @@ void Map::save() {
 }
 
 bool Map::create_new(int id, std::string name, int width, int height, int base_tile_id) {
-	std::string path = get_path(id);
+	std::string base_map_path = get_base_map_path(id);
 
 	Environment::get().get_log()->print(
 		"Creating new map:"
@@ -182,12 +192,12 @@ bool Map::create_new(int id, std::string name, int width, int height, int base_t
 		+ std::to_string(base_tile_id)
 	);
 
-	if (file_exists(path.c_str())) {
+	if (file_exists(base_map_path.c_str())) {
 		Environment::get().get_log()->print("Failed to create map - file already exists");
 		return false;
 	}
 
-	save(); // current map
+	save(true); // current map
 
 	_tiles.clear();
 	_solids.clear();
@@ -213,7 +223,7 @@ bool Map::create_new(int id, std::string name, int width, int height, int base_t
 		_tiles.push_back(tile);
 	}
 
-	save(); // new created map
+	save(true); // new created map
 
 	return true;
 }
@@ -339,8 +349,12 @@ void Map::remove_warp(int index) {
 	_warps.erase(_warps.begin() + index);
 }
 
-std::string Map::get_path(int id) {
+std::string Map::get_base_map_path(int id) {
 	return MAP_BASE_PATH + std::to_string(id) + ".txt";
+}
+
+std::string Map::get_saved_map_path(int id) {
+	return MAP_SAVED_PATH + std::to_string(id) + ".txt";
 }
 
 void Map::load_tiles(FileReader &file) {
