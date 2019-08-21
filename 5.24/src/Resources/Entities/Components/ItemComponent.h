@@ -19,7 +19,22 @@ enum {
 };
 
 struct ItemComponent : public Component {
-	ItemComponent(Entity *entity_, int slot_, std::string name_, int health_, int mana_, int damage_, int armor_, int hps_, int mps_, int leech_, int drain_, int speed_, int luck_, bool is_equipable_, bool is_useable_);
+	ItemComponent(
+		Entity *entity_,
+		int slot_,
+		std::string name_,
+		int health_,
+		int mana_,
+		int damage_,
+		int armor_,
+		int hps_,
+		int mps_,
+		int drain_,
+		int speed_,
+		int luck_,
+		bool is_equipable_,
+		bool is_useable_
+	);
 	ItemComponent(Entity *new_entity, const ItemComponent &rhs);
 	ItemComponent *copy(Entity *new_entity) const;
 
@@ -34,7 +49,7 @@ struct ItemComponent : public Component {
 	int health, mana;
 	int damage, armor;
 	int hps, mps;
-	int leech, drain;
+	int drain;
 	int speed, luck;
 
 	bool is_equipable;

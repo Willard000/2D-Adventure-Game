@@ -62,6 +62,7 @@
 #define FILE_ENEMY_SCRIPT "senemy_script"
 #define FILE_ENEMY_COMBAT_RANGEW "ienemy_combat_range_w"
 #define FILE_ENEMY_COMBAT_RANGEH "ienemy_combat_range_h"
+#define FILE_ENEMY_DROP_TABLE "enemy_drop_table"
 
 #define FILE_EFFECT_NAME "seffect_name"
 #define FILE_EFFECT_SCRIPT "seffect_script"
@@ -74,9 +75,9 @@
 #define FILE_COMBAT_ARMOR "icombat_armor"
 #define FILE_COMBAT_HPS "icombat_hps"
 #define FILE_COMBAT_MPS "icombat_mps"
-#define FILE_COMBAT_LEECH "icombat_leech"
 #define FILE_COMBAT_DRAIN "icombat_drain"
 #define FILE_COMBAT_LUCK "icombat_luck"
+#define FILE_COMBAT_EXP "icombat_exp"
 #define FILE_COMBAT_TIME "icombat_time"
 
 #define FILE_ITEM_SLOT "iitem_slot"
@@ -87,10 +88,10 @@
 #define FILE_ITEM_ARMOR "iitem_armor"
 #define FILE_ITEM_HPS "iitem_hps"
 #define FILE_ITEM_MPS "iitem_mps"
-#define FILE_ITEM_LEECH "iitem_leech"
 #define FILE_ITEM_DRAIN "iitem_drain"
 #define FILE_ITEM_SPEED "iitem_speed"
 #define FILE_ITEM_LUCK "iitem_luck"
+#define FILE_ITEM_DROP_CHANCE "iitem_drop_chance"
 #define FILE_ITEM_EQUIPABLE "bitem_equipable"
 #define FILE_ITEM_USEABLE "bitem_useable"
 
@@ -165,13 +166,21 @@ void load_enemy(FileReader &file, Entity *entity, EnemyComponent *&enemy) {
 	std::string name = " ";
 	std::string script = " ";
 	Combat_Range combat_range = { 0, 0 };
+	std::vector<Drop> drop_table;
 
 	if (file.exists(FILE_ENEMY_NAME)) name = file.get_string(FILE_ENEMY_NAME);
 	if (file.exists(FILE_ENEMY_SCRIPT)) script = file.get_string(FILE_ENEMY_SCRIPT);
 	if (file.exists(FILE_ENEMY_COMBAT_RANGEW)) combat_range.w = file.get_int(FILE_ENEMY_COMBAT_RANGEW);
 	if (file.exists(FILE_ENEMY_COMBAT_RANGEH)) combat_range.h = file.get_int(FILE_ENEMY_COMBAT_RANGEH);
+	if (file.exists(FILE_ENEMY_DROP_TABLE)) {
+		std::istringstream table(file.get_string(FILE_ENEMY_DROP_TABLE));
+		int id, drop_chance;
+		while (table >> id >> drop_chance) {
+			drop_table.push_back({ id, drop_chance });
+		}
+	}
 
-	enemy = new EnemyComponent(entity, name, script, combat_range);
+	enemy = new EnemyComponent(entity, name, script, combat_range, drop_table);
 }
 
 void load_effect(FileReader &file, Entity *entity, EffectComponent *&effect) {
@@ -192,8 +201,9 @@ void load_combat(FileReader &file, Entity *entity, CombatComponent *&combat) {
 	int max_health = 0, max_mana = 0;
 	int damage = 0, armor = 0;
 	int hps = 0, mps = 0;
-	int leech = 0, drain = 0;
+	int drain = 0;
 	int luck = 0;
+	int exp = 0;
 	int combat_time = 10000;
 
 	if (file.exists(FILE_COMBAT_MAX_HEALTH)) max_health = file.get_int(FILE_COMBAT_MAX_HEALTH);
@@ -202,12 +212,12 @@ void load_combat(FileReader &file, Entity *entity, CombatComponent *&combat) {
 	if (file.exists(FILE_COMBAT_ARMOR)) armor = file.get_int(FILE_COMBAT_ARMOR);
 	if (file.exists(FILE_COMBAT_HPS)) hps = file.get_int(FILE_COMBAT_HPS);
 	if (file.exists(FILE_COMBAT_MPS)) mps = file.get_int(FILE_COMBAT_MPS);
-	if (file.exists(FILE_COMBAT_LEECH)) leech = file.get_int(FILE_COMBAT_LEECH);
 	if (file.exists(FILE_COMBAT_DRAIN)) drain = file.get_int(FILE_COMBAT_DRAIN);
 	if (file.exists(FILE_COMBAT_LUCK)) luck = file.get_int(FILE_COMBAT_LUCK);
+	if (file.exists(FILE_COMBAT_EXP)) exp = file.get_int(FILE_COMBAT_EXP);
 	if (file.exists(FILE_COMBAT_TIME)) combat_time = file.get_int(FILE_COMBAT_TIME);
 
-	combat = new CombatComponent(entity, max_health, max_mana, damage, armor, hps, mps, leech, drain, luck, combat_time);
+	combat = new CombatComponent(entity, max_health, max_mana, damage, armor, hps, mps, drain, luck, exp, combat_time);
 }
 
 void load_item(FileReader &file, Entity *entity, ItemComponent *&item) {
@@ -228,20 +238,19 @@ void load_item(FileReader &file, Entity *entity, ItemComponent *&item) {
 	if (file.exists(FILE_ITEM_ARMOR)) armor = file.get_int(FILE_ITEM_ARMOR);
 	if (file.exists(FILE_ITEM_HPS)) hps = file.get_int(FILE_ITEM_HPS);
 	if (file.exists(FILE_ITEM_MPS)) mps = file.get_int(FILE_ITEM_MPS);
-	if (file.exists(FILE_ITEM_LEECH)) leech = file.get_int(FILE_ITEM_LEECH);
 	if (file.exists(FILE_ITEM_DRAIN)) drain = file.get_int(FILE_ITEM_DRAIN);
 	if (file.exists(FILE_ITEM_SPEED)) speed = file.get_int(FILE_ITEM_SPEED);
 	if (file.exists(FILE_ITEM_LUCK)) luck = file.get_int(FILE_ITEM_LUCK);
 	if (file.exists(FILE_ITEM_EQUIPABLE)) is_equipable = file.get_bool(FILE_ITEM_EQUIPABLE);
 	if (file.exists(FILE_ITEM_USEABLE)) is_useable = file.get_bool(FILE_ITEM_USEABLE);
 
-	item = new ItemComponent(entity, slot, name, health, mana, damage, armor, hps, mps, leech, drain, speed, luck, is_equipable, is_useable);
+	item = new ItemComponent(entity, slot, name, health, mana, damage, armor, hps, mps, drain, speed, luck, is_equipable, is_useable);
 }
 
 bool load_components(Entity *entity) {
 	/*
 	Environment::get().get_log()->print(
-		"Loading Entity with type: \n "
+		"Loading Entity with type: \n "e
 		+ entity->get_type()
 		+ "\n type_id: "
 		+ std::to_string(entity->get_type_id())

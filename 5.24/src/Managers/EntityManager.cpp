@@ -80,6 +80,8 @@ void EntityManager::clear_spells() {
 }
 
 void EntityManager::update_entities() {
+	remove_destroyed_entities();
+
 	_player->update();
 
 	for (auto it = _entities.begin(); it != _entities.end(); ++it) {
@@ -92,8 +94,6 @@ void EntityManager::update_entities() {
 			}
 		}
 	}
-
-	remove_destroyed_entities();
 }
 
 void EntityManager::remove_destroyed_entities() {

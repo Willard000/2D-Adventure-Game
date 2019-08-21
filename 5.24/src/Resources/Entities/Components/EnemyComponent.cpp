@@ -72,11 +72,12 @@ bool path_collision(const Path &path, SDL_Rect rect) {
 	return false;
 }
 
-EnemyComponent::EnemyComponent(Entity *entity_, std::string name_, std::string script_, Combat_Range combat_range_) :
+EnemyComponent::EnemyComponent(Entity *entity_, std::string name_, std::string script_, Combat_Range combat_range_, std::vector<Drop> &drop_table_) :
 	Component		( entity_ ),
 	name			( name_ ),
 	script			( script_ ),
 	combat_range	( {combat_range_.w, combat_range_.h} ),
+	drop_table		( drop_table_ ),
 	in_combat		( false )
 {
 	Environment::get().get_lua()->load_script(script);
@@ -87,6 +88,7 @@ EnemyComponent::EnemyComponent(Entity *new_entity, const EnemyComponent &rhs) :
 	name			( rhs.name ),
 	script			( rhs.script ),
 	combat_range	( {rhs.combat_range.w, rhs.combat_range.h} ),
+	drop_table		( rhs.drop_table ),
 	in_combat		( rhs.in_combat )
 {}
 
@@ -116,24 +118,24 @@ void EnemyComponent::update() {
 
 void EnemyComponent::update_path() {
 	PositionComponent *position = GetPosition(entity);
-	if (position && _pathing.size() > 0) {
-		if (!path_collision(_pathing[0], position->rect)) {
-			if (_pathing[0].dx == 0 && _pathing[0].dy == 0) {
-				float x = (float)_pathing[0].x - (position->rect.x + position->rect.w / 2);
-				float y = (float)_pathing[0].y - (position->rect.y + position->rect.h / 2);
+	if (position && pathing.size() > 0) {
+		if (!path_collision(pathing[0], position->rect)) {
+			if (pathing[0].dx == 0 && pathing[0].dy == 0) {
+				float x = (float)pathing[0].x - (position->rect.x + position->rect.w / 2);
+				float y = (float)pathing[0].y - (position->rect.y + position->rect.h / 2);
 
 				float vec_mag = 1.0f / sqrt(pow(x, 2) + pow(y, 2));
 				x *= vec_mag * position->speed;
 				y *= vec_mag * position->speed;
 
-				_pathing[0].dx = x;
-				_pathing[0].dy = y;
+				pathing[0].dx = x;
+				pathing[0].dy = y;
 			}
-			position->move_freely(_pathing[0].dx, _pathing[0].dy);
+			position->move_freely(pathing[0].dx, pathing[0].dy);
 		}
 		else {
-			_pathing.push_back({_pathing[0].x, _pathing[0].y, 0.0f, 0.0f});
-			_pathing.erase(_pathing.begin());
+			pathing.push_back({pathing[0].x, pathing[0].y, 0.0f, 0.0f});
+			pathing.erase(pathing.begin());
 		}
 	}
 }

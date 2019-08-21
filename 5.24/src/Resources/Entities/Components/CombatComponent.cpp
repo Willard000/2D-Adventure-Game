@@ -4,6 +4,8 @@
 
 #include "Entity.h"
 #include "PositionComponent.h"
+#include "PlayerComponent.h"
+#include "EnemyComponent.h"
 
 #include "Environment.h"
 #include "Window.h"
@@ -19,10 +21,12 @@
 
 #define DAMAGE_TEXT_COLOR {225, 55, 55, 150}
 #define DAMAGE_TEXT_WRAP_LENGTH 1000
-#define DAMAGE_TEXT_FTSIZE 14
+#define DAMAGE_TEXT_FTSIZE 24
 #define DAMAGE_TEXT_DISPLAY_TIME 400
 
-CombatComponent::CombatComponent(Entity *entity_, int max_health_, int max_mana_, int damage_, int armor_, int hps_, int mps_, int leech_, int drain_, int luck_, int combat_time) :
+#define ITEM_DROP_RANGE 50
+
+CombatComponent::CombatComponent(Entity *entity_, int max_health_, int max_mana_, int damage_, int armor_, int hps_, int mps_, int drain_, int luck_, int exp_, int combat_time) :
 	Component		( entity_ ),
 	max_health		( max_health_ ),
 	health			( max_health_ ),
@@ -32,11 +36,12 @@ CombatComponent::CombatComponent(Entity *entity_, int max_health_, int max_mana_
 	armor			( armor_ ),
 	hps				( hps_ ),
 	mps				( mps_ ),
-	leech			( leech_ ),
 	drain			( drain_ ),
 	luck			( luck_ ),
+	exp				( exp_ ),
 	in_combat       ( false ),
-	combat_timer	( combat_time )
+	combat_timer	( combat_time ),
+	hps_mps_timer   ( 1000 )
 {}
 
 CombatComponent::CombatComponent(Entity *new_entity, const CombatComponent &rhs) :
@@ -49,11 +54,12 @@ CombatComponent::CombatComponent(Entity *new_entity, const CombatComponent &rhs)
 	armor			( rhs.armor ),
 	hps				( rhs.hps ),
 	mps				( rhs.mps ),
-	leech			( rhs.leech ),
 	drain			( rhs.drain ),
 	luck			( rhs.luck ),
+	exp				( rhs.exp ),
 	in_combat       ( rhs.in_combat ),
-	combat_timer    ( rhs.combat_timer )
+	combat_timer    ( rhs.combat_timer ),
+	hps_mps_timer   ( rhs.hps_mps_timer )
 {}
 
 CombatComponent *CombatComponent::copy(Entity *new_entity) const {
@@ -64,25 +70,50 @@ void CombatComponent::update() {
 	if (in_combat) {
 		in_combat = !combat_timer.update();
 	}
+
+	if (hps_mps_timer.update()) {
+		health += hps;
+		if (health > max_health) {
+			health = max_health;
+		}
+		mana += mps;
+		if (mana > max_mana) {
+			mana = max_mana;
+		}
+	}
 }
 
 const int CombatComponent::get_type() const {
 	return COMPONENT_COMBAT;
 }
 
-void CombatComponent::apply_damage(int damage_, const SDL_Color &color) {
+void CombatComponent::apply_damage(Combat_Info &attacker_info, const SDL_Color &color) {
 	start_combat();
 
-	health -= damage_;
+	//armor
+	int final_damage = attacker_info.damage -= armor;
 
+	//luck
+	if (rand() % 100 < attacker_info.luck) {
+		final_damage *= 2;
+	}
+	
+	//drain
+	mana -= attacker_info.drain;
+	if (mana < 0) {
+		mana = 0;
+	}
+
+	// apply damage
+	health -= final_damage;
 	if (health <= 0) {
-		entity->destroy();
+		death();
 	}
 
 	PositionComponent *position = GetPosition(entity);
 	if (position) {
 		Text_Timed *text = new Text_Timed(
-			std::to_string(damage_),
+			std::to_string(final_damage),
 			color,
 			DAMAGE_TEXT_FTSIZE,
 			DAMAGE_TEXT_WRAP_LENGTH,
@@ -126,4 +157,29 @@ void CombatComponent::draw_health() {
 void CombatComponent::start_combat() {
 	in_combat = true;
 	combat_timer.reset();
+}
+
+void CombatComponent::death() {
+	PlayerComponent *player = GetPlayer(entity);
+	if (player) {
+
+		return;
+	}
+
+	EnemyComponent *enemy = GetEnemy(entity);
+	if (enemy) {
+		drop_items(enemy);
+		entity->destroy();
+	}
+}
+
+void CombatComponent::drop_items(EnemyComponent *enemy) {
+	for (auto &drop : enemy->drop_table) {
+		if (rand() % 100 < drop.drop_chance) {
+			PositionComponent *position = GetPosition(entity);
+			float x = position->pos_x + rand() % ITEM_DROP_RANGE - rand() % ITEM_DROP_RANGE;
+			float y = position->pos_y + rand() % ITEM_DROP_RANGE - rand() % ITEM_DROP_RANGE;
+			Environment::get().get_resource_manager()->create_entity(TYPE_ITEM, drop.id, x, y);
+		}
+	}
 }

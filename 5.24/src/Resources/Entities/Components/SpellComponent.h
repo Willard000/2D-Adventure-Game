@@ -1,4 +1,5 @@
 #include "Component.h"
+#include "CombatComponent.h"
 
 #include "_Lua.h"
 
@@ -20,15 +21,14 @@ struct SpellComponent : public Component {
 
 	const int get_type() const { return COMPONENT_SPELL; }
 
-	void cast(float x, float y);
+	void cast(float x, float y, Combat_Info attacker_info_);
 
 	void move(float x, float y);
 
 	bool is_collision();
+	void on_collision(Entity *e);
 
 	void death();
-
-	int calc_damage();
 
 	Entity *caster;
 	float dis, max_dis;
@@ -43,6 +43,8 @@ struct SpellComponent : public Component {
 
 	std::string script_name;
 	std::string script;
+
+	Combat_Info attacker_info;
 };
 
 #endif

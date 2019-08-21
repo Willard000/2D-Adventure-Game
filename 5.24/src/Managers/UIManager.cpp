@@ -488,7 +488,7 @@ void UIManager::place_enemy(float x, float y) {
 		return;
 	}
 
-	std::vector<Path> pathing;
+	std::vector<Path> pathing_;
 	while (Environment::get().get_input_manager()->get()) {
 		Environment::get().get_window()->get_renderer()->clear();
 
@@ -497,7 +497,7 @@ void UIManager::place_enemy(float x, float y) {
 		Environment::get().get_input_manager()->update_editor_camera();
 
 		if (Environment::get().get_input_manager()->is_key(SDL_SCANCODE_SPACE)) {
-			enemy->_pathing = pathing;
+			enemy->pathing = pathing_;
 			break;
 		}
 
@@ -514,7 +514,7 @@ void UIManager::place_enemy(float x, float y) {
 			path.y = mouse_y;
 
 			bool already_exists = false;
-			for (auto &p : pathing) {
+			for (auto &p : pathing_) {
 				if (p.x == path.x && p.y == path.y) {
 					already_exists = true;
 					break;
@@ -522,14 +522,14 @@ void UIManager::place_enemy(float x, float y) {
 			}
 
 			if (!already_exists) {
-				pathing.push_back(path);
+				pathing_.push_back(path);
 			}
 		}
 
 		Environment::get().get_resource_manager()->render();
 		Environment::get().get_resource_manager()->render_entity(entity);
 
-		for (auto &p : pathing) {
+		for (auto &p : pathing_) {
 			Environment::get().get_window()->get_renderer()->draw_rect({ p.x - PATH_WIDTH / 2, p.y - PATH_HEIGHT / 2, PATH_WIDTH, PATH_HEIGHT }, PATH_COLOR, DRAW_RECT_CAMERA);
 		}
 

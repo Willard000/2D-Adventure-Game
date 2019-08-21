@@ -31,6 +31,7 @@ struct PlayerComponent : public Component {
 	void unequip_item_stats(ItemComponent *item);
 
 	void level_up();
+	void add_exp(int amount);
 
 	int level, exp, exp_to_level;
 	std::string name;

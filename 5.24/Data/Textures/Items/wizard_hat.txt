@@ -1,4 +1,4 @@
 # Wizard Hat
 stexture Data/Textures/Items/wizard_hat.png
-iwidth 32
-iheight 32
+iwidth 15
+iheight 15

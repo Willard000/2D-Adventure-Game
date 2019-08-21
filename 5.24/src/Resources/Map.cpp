@@ -480,7 +480,7 @@ void Map::load_entities(FileReader &file) {
 			}
 			if (EnemyComponent *enemy = GetEnemy(entity)) {
 				if (pathing.size() > 0) {
-					enemy->_pathing = pathing;
+					enemy->pathing = pathing;
 					pathing.clear();
 				}
 			}
@@ -513,7 +513,7 @@ void Map::save_entities(std::ostream &file) {
 				}
 
 				if (EnemyComponent *enemy = GetEnemy(itt->second)) {
-					for (auto &p : enemy->_pathing) {
+					for (auto &p : enemy->pathing) {
 						file << FILE_ENTITY_PATHING_X << " " << p.x << " "
 							<< FILE_ENTITY_PATHING_Y << " " << p.y << " ";
 					}
@@ -562,4 +562,5 @@ void Map::test() {
 	for (auto it = rects.begin(); it != rects.end(); ++it) {
 		Environment::get().get_window()->get_renderer()->draw_rect(it->first, it->second, DRAW_RECT_CAMERA);
 	}
+	
 }

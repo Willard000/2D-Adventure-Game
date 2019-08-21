@@ -18,7 +18,7 @@ iwindow_y 200
 iwindow_w 1600
 iwindow_h 900
 iwindow_mode 5
-window_color 140 240 240 100
+window_color 0 0 0 255
 
 # Clock
-iclock_fps -1
+iclock_fps 144

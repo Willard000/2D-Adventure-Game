@@ -1,5 +1,6 @@
 #include "Component.h"
 #include "Entity.h"
+#include "SpellComponent.h"
 
 #include "Timer.h"
 

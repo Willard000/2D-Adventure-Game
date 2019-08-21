@@ -1,4 +1,4 @@
 # Pants
 stexture Data/Textures/Items/pants.png
-iwidth 32
-iheight 32
+iwidth 15
+iheight 15

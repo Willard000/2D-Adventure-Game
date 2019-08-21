@@ -93,7 +93,7 @@ void ResourceManager::render_entity(Entity *entity) {
 	if (SHOW_PATHING) {
 		EnemyComponent *enemy = GetEnemy(entity);
 		if (enemy) {
-			for (auto &p : enemy->_pathing) {
+			for (auto &p : enemy->pathing) {
 				SDL_Rect path_rect = { p.x - PATH_WIDTH / 2, p.y - PATH_HEIGHT / 2, PATH_WIDTH, PATH_HEIGHT };
 				Environment::get().get_window()->get_renderer()->draw_rect(path_rect, { 0, 0, 255, 150 }, DRAW_RECT_CAMERA);
 			}

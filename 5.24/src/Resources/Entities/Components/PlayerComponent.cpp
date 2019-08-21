@@ -7,6 +7,13 @@
 
 #include "Collision.h"
 
+#include "Text_Timed.h"
+
+#define EXP_TEXT_COLOR {150, 100, 200, 200}
+#define EXP_TEXT_FTSIZE 24
+#define EXP_TEXT_WRAP_LENGTH 1000
+#define EXP_TEXT_DISPLAY_TIME 800
+
 PlayerComponent::PlayerComponent(Entity *entity_, std::string name_) :
 	Component		 ( entity_ ),
 	name			 ( name_ ),
@@ -56,7 +63,7 @@ void PlayerComponent::update() {
 	// exp
 	if (exp >= exp_to_level) {
 		level_up();
-		exp -= exp_to_level;
+		exp = 0;
 	}
 }
 
@@ -130,7 +137,6 @@ void PlayerComponent::equip_item_stats(ItemComponent *item) {
 	stats->armor += item->armor;
 	stats->hps += item->hps;
 	stats->mps += item->mps;
-	stats->leech += item->leech;
 	stats->drain += item->drain;
 	position->speed += item->speed;
 	stats->luck += item->luck;
@@ -150,7 +156,6 @@ void PlayerComponent::unequip_item_stats(ItemComponent *item) {
 	stats->armor -= item->armor;
 	stats->hps -= item->hps;
 	stats->mps -= item->mps;
-	stats->leech -= item->leech;
 	stats->drain -= item->drain;
 	position->speed -= item->speed;
 	stats->luck -= item->luck;
@@ -158,7 +163,7 @@ void PlayerComponent::unequip_item_stats(ItemComponent *item) {
 
 void PlayerComponent::level_up() {
 	++level;
-	exp_to_level = exp_to_level * 1.1 + 50; // change this?
+	exp_to_level = int(exp_to_level * 1.1f + 50); // change this?
 
 	PositionComponent *position = GetPosition(entity);
 	CombatComponent *stats = GetCombat(entity);
@@ -174,4 +179,24 @@ void PlayerComponent::level_up() {
 		position->speed += 10;
 		stats->luck += 1;
 	}
+}
+
+void PlayerComponent::add_exp(int amount) {
+	exp += amount;
+
+	PositionComponent *position = GetPosition(entity);
+	int x = position->rect.x + rand() % position->rect.w;
+	int y = position->rect.y - rand() % position->rect.h;
+
+	Text_Timed *exp_text = new Text_Timed(
+		std::to_string(amount),
+		EXP_TEXT_COLOR,
+		EXP_TEXT_FTSIZE,
+		EXP_TEXT_WRAP_LENGTH,
+		x,
+		y,
+		EXP_TEXT_DISPLAY_TIME
+	);
+
+	Environment::get().get_resource_manager()->add_text(exp_text);
 }

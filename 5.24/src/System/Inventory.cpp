@@ -52,7 +52,6 @@
 #define ARMOR_COLOR {210, 130, 200, 200}
 #define HPS_COLOR {225, 55, 55, 200}
 #define MPS_COLOR {100, 185, 225, 200}
-#define LEECH_COLOR {225, 55, 55, 200}
 #define DRAIN_COLOR {100, 185, 225, 200}
 #define SPEED_COLOR {135, 210, 140, 200}
 #define LUCK_COLOR {250, 170, 100, 200}
@@ -285,9 +284,6 @@ void Inventory::render_item_info() {
 	if (item->mps > 0) {
 		renderer->draw_text(&_selection_info.mps, true);		renderer->draw_text(&_selection_info.mps_val, true);
 	}
-	if (item->leech > 0) {
-		renderer->draw_text(&_selection_info.leech, true);		renderer->draw_text(&_selection_info.leech_val, true);
-	}
 	if (item->drain > 0) {
 		renderer->draw_text(&_selection_info.drain, true);		renderer->draw_text(&_selection_info.drain_val, true);
 	}
@@ -311,7 +307,6 @@ void Inventory::render_entity_info() {
 	renderer->draw_text(&_entity_info.armor, true);		renderer->draw_text(&_entity_info.armor_val, true);
 	renderer->draw_text(&_entity_info.hps, true);		renderer->draw_text(&_entity_info.hps_val, true);
 	renderer->draw_text(&_entity_info.mps, true);		renderer->draw_text(&_entity_info.mps_val, true);
-	renderer->draw_text(&_entity_info.leech, true);		renderer->draw_text(&_entity_info.leech_val, true);
 	renderer->draw_text(&_entity_info.drain, true);		renderer->draw_text(&_entity_info.drain_val, true);
 	renderer->draw_text(&_entity_info.speed, true);		renderer->draw_text(&_entity_info.speed_val, true);
 	renderer->draw_text(&_entity_info.luck, true);		renderer->draw_text(&_entity_info.luck_val, true);
@@ -415,12 +410,6 @@ void Inventory::set_item_info(ItemComponent *item) {
 		y += font_size + 2;
 	}
 
-	if (item->leech > 0) {
-		_selection_info.leech = Text("Leech:", LEECH_COLOR, font_size, wrap_length, label_x, y);
-		_selection_info.leech_val = Text(std::to_string(item->leech), LEECH_COLOR, font_size, wrap_length, val_x, y);
-		y += font_size + 2;
-	}
-
 	if (item->drain > 0) {
 		_selection_info.drain = Text("Drain:", DRAIN_COLOR, font_size, wrap_length, label_x, y);
 		_selection_info.drain_val = Text(std::to_string(item->drain), DRAIN_COLOR, font_size, wrap_length, val_x, y);
@@ -501,10 +490,6 @@ void Inventory::set_entity_info() {
 	y += font_size + 2;
 	_entity_info.armor = Text("Armor:", ARMOR_COLOR, font_size, wrap_length, label_x, y);
 	_entity_info.armor_val = Text(std::to_string(combat_info->armor), ARMOR_COLOR, font_size, wrap_length, val_x, y);
-
-	y += font_size + 2;
-	_entity_info.leech = Text("Leech:", LEECH_COLOR, font_size, wrap_length, label_x, y);
-	_entity_info.leech_val = Text(std::to_string(combat_info->leech), LEECH_COLOR, font_size, wrap_length, val_x, y);
 
 	y += font_size + 2;
 	_entity_info.drain = Text("Drain:", DRAIN_COLOR, font_size, wrap_length, label_x, y);

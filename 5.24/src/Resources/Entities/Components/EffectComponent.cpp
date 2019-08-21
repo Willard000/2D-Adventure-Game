@@ -10,6 +10,7 @@
 #include <cstdlib>
 
 #include <iostream>
+
 EffectComponent::EffectComponent(Entity *entity_, std::string name_, std::string script_, int rand_rotation_, int rand_time_) :
 	Component				( entity_ ),
 	name					( name_ ),

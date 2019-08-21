@@ -39,7 +39,13 @@ void MagicComponent::cast_main(float x_, float y_) {
 		Entity *spell = new Entity(main_spell);
 		SpellComponent *spell_comp = GetSpell(spell);
 		spell_comp->caster = entity;
-		spell_comp->cast(x_, y_);
+		
+		Combat_Info attacker_info;
+		CombatComponent *combat_info = GetCombat(entity);
+		if (combat_info) {
+			attacker_info = { combat_info->damage, combat_info->armor, combat_info->drain, combat_info->luck };
+		}
+		spell_comp->cast(x_, y_, attacker_info);
 		Environment::get().get_resource_manager()->add_entity(spell);
 		can_cast = false;
 	}
