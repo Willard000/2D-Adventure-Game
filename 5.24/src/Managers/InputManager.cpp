@@ -38,7 +38,11 @@ InputManager::InputManager() :
 	_mouse_y_prev		( 0 ),
 	_mouse_wheel		( 0 ),
 	_get_text_input		( false ),
-	_text_input			( "" )
+	_text_input			( "" ),
+	_clicked_button		( false ),
+	_shift_mod			( false ),
+	_start_x			( 0 ),
+	_start_y			( 0 )
 {
 	Environment::get().get_log()->print("Loading Input Manager");
 }
@@ -203,21 +207,29 @@ void InputManager::update_editor() {
 		Environment::get().get_ui_manager()->delete_map_selection();
 	}
 
-	static bool clicked_button = false;
 	if (is_mouse(SDL_BUTTON_LEFT)) {
-		clicked_button = Environment::get().get_ui_manager()->check_buttons();
-		if (!clicked_button && Environment::get().get_ui_manager()->get_selection_type() != TYPE_TILE) {
-			Environment::get().get_ui_manager()->check_selection(MOUSE_LEFT);
+		_clicked_button = Environment::get().get_ui_manager()->check_buttons();
+		if (!_clicked_button && Environment::get().get_ui_manager()->get_selection_type() != TYPE_TILE) {
+			Environment::get().get_ui_manager()->check_placement(MOUSE_LEFT);
+		}
+		else if (!_clicked_button && !_shift_mod && is_held(SDL_SCANCODE_LSHIFT)) {
+			_shift_mod = true;
+			_start_x = get_mouse_x();
+			_start_y = get_mouse_y();
+		}
+		else if (!_clicked_button && _shift_mod) {
+			Environment::get().get_ui_manager()->check_mass_placement(SDL_BUTTON_LEFT, _start_x, _start_y);
+			_shift_mod = false;
 		}
 	}
 
-	if (!clicked_button && Environment::get().get_ui_manager()->get_state() != UI::STATE_WAITING) {
+	if (!_clicked_button && !is_held(SDL_SCANCODE_LSHIFT) && Environment::get().get_ui_manager()->get_state() != UI::STATE_WAITING) {
 		int type = Environment::get().get_ui_manager()->get_selection_type();
 		if ((type == TYPE_TILE || type == TYPE_SOLID) && is_mouse_held(SDL_BUTTON_LEFT)) {
-			Environment::get().get_ui_manager()->check_selection(MOUSE_LEFT);
+			Environment::get().get_ui_manager()->check_placement(MOUSE_LEFT);
 		}
 		else if(type == TYPE_SOLID && is_mouse_held(SDL_BUTTON_RIGHT)) {
-			Environment::get().get_ui_manager()->check_selection(MOUSE_RIGHT);
+			Environment::get().get_ui_manager()->check_placement(MOUSE_RIGHT);
 		}
 	}
 

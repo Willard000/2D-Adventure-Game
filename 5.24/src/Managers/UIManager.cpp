@@ -153,7 +153,7 @@ void UIManager::update_mouse_location() {
 
 	if (mouse_update.update()) {
 		int x, y;
-		calc_real_mouse_location(x, y);
+		get_real_mouse_location(x, y);
 		x = x / TILE_WIDTH + 1, y = y / TILE_HEIGHT + 1;
 
 		_mouse_location = Text(
@@ -208,7 +208,7 @@ bool UIManager::check_buttons() {
 	return false;
 }
 
-bool UIManager::check_selection(int mouse_button) {
+bool UIManager::check_placement(int mouse_button) {
 	_mouse_button = mouse_button;
 
 	if (_mouse_x >= _element_area.area.x) {
@@ -235,6 +235,15 @@ bool UIManager::check_selection(int mouse_button) {
 	return false;
 }
 
+bool UIManager::check_mass_placement(int mouse_button, int start_x, int start_y) {
+	if (_state == STATE_PLACING) {
+		mass_place_on_map(start_x, start_y);
+		return true;
+	}
+
+	return false;
+}
+
 void UIManager::render() {
 	Renderer *renderer = Environment::get().get_window()->get_renderer();
 
@@ -244,7 +253,7 @@ void UIManager::render() {
 	else if (_state == STATE_PLACING) {
 		if (_selection.id != -1) {
 			int x, y;
-			calc_real_mouse_location(x, y);
+			get_real_mouse_location(x, y);
 			Texture *img = nullptr;
 			if (_selection.type == TYPE_ENEMY || _selection.type == TYPE_EFFECT)
 				img = Environment::get().get_resource_manager()->get_texture_info(_selection.type + TYPE_EX_ICON, _selection.id);
@@ -340,7 +349,7 @@ bool UIManager::place_on_map() {
 	}
 	SDL_Rect boundry = Environment::get().get_resource_manager()->get_map()->get_rect();
 	int x, y;
-	calc_real_mouse_location(x, y);
+	get_real_mouse_location(x, y);
 
 	if (x < 0 || x > boundry.x + boundry.w || y < 0 || y > boundry.y + boundry.h) {
 		return false;
@@ -383,9 +392,63 @@ bool UIManager::place_on_map() {
 
 	if (_selection.type == TYPE_OBJECT || _selection.type == TYPE_EFFECT || _selection.type == TYPE_ITEM) {
 		Environment::get().get_resource_manager()->create_entity(_selection.type, _selection.id, (float)x, (float)y);
+		return true;
 	}
 
-	return true;
+	return false;
+}
+
+bool UIManager::mass_place_on_map(int start_x, int start_y) {
+	if (_state == STATE_WAITING) {
+		return false;
+	}
+	SDL_Rect boundry = Environment::get().get_resource_manager()->get_map()->get_rect();
+	int end_x, end_y;
+	get_real_mouse_location(end_x, end_y);
+	calc_real_mouse_location(start_x, start_y);
+
+	if (end_x < 0 || end_x > boundry.x + boundry.w || end_y < 0 || end_y > boundry.y + boundry.h) {
+		return false;
+	}
+
+	if (start_x < 0 || start_x > boundry.x + boundry.w || start_y < 0 || start_y > boundry.y + boundry.h) {
+		return false;
+	}
+
+	int width = (end_x / TILE_WIDTH) - (start_x / TILE_WIDTH);
+	int height = (end_y / TILE_HEIGHT) - (start_y / TILE_HEIGHT);
+
+	int start_index = 0;
+	
+	if (width >= 0 && height >= 0) {
+		start_index = int(start_x / TILE_WIDTH) + ((int(start_y / TILE_HEIGHT) * int(boundry.w / TILE_WIDTH)));
+	}
+	else if (width < 0 && height < 0) {
+		start_index = int(end_x / TILE_WIDTH) + ((int(end_y / TILE_HEIGHT) * int(boundry.w / TILE_WIDTH)));
+	}
+	else if (width >= 0 && height < 0) {
+		start_index = int(start_x / TILE_WIDTH) + ((int(end_y / TILE_HEIGHT) * int(boundry.w / TILE_WIDTH)));
+	}
+	else if (width < 0 && height >= 0) {
+		start_index = int(end_x / TILE_WIDTH) + ((int(start_y / TILE_HEIGHT) * int(boundry.w / TILE_WIDTH)));
+	}
+	
+	width = abs(width);
+	height = abs(height);
+
+	if (_selection.type == TYPE_TILE) {
+		int index = start_index;
+		for (int y = 0; y < height + 1; ++y) {
+			for (int x = 0; x < width + 1; ++x) {
+				Environment::get().get_resource_manager()->edit_map(index, _selection.id);
+				++index;
+			}
+			index += int(boundry.w / TILE_WIDTH) - width - 1;
+		}
+		return true;
+	}
+
+	return false;
 }
 
 void UIManager::place_warp() {
@@ -435,7 +498,7 @@ SDL_Rect UIManager::place_warp_rect() {
 
 		if ((Environment::get().get_input_manager()->is_mouse(SDL_BUTTON_LEFT))) {
 			if (start_point) {
-				calc_real_mouse_location(pos.x, pos.y);
+				get_real_mouse_location(pos.x, pos.y);
 				start_point = false;
 				set_current_text("Select Warp End Point");
 			}
@@ -448,7 +511,7 @@ SDL_Rect UIManager::place_warp_rect() {
 		Environment::get().get_ui_manager()->render();
 
 		if (!start_point) {
-			calc_real_mouse_location(x, y);
+			get_real_mouse_location(x, y);
 			pos.w = x - pos.x;
 			pos.h = y - pos.y;
 
@@ -503,7 +566,7 @@ void UIManager::place_enemy(float x, float y) {
 
 		if (Environment::get().get_input_manager()->is_mouse(SDL_BUTTON_LEFT)) {
 			int mouse_x, mouse_y;
-			calc_real_mouse_location(mouse_x, mouse_y);
+			get_real_mouse_location(mouse_x, mouse_y);
 
 			if (_align_placement) {
 				calc_align_mouse_location(mouse_x, mouse_y);
@@ -549,7 +612,7 @@ void UIManager::place_enemy(float x, float y) {
 
 Element UIManager::select_from_map() {
 	int x, y;
-	calc_real_mouse_location(x, y);
+	get_real_mouse_location(x, y);
 
 	std::map<int, EntityManager::Entity_Map> *entities = Environment::get().get_resource_manager()->get_entities();
 	SDL_Rect mouse = get_mouse_rect((int)x, (int)y);
@@ -613,10 +676,16 @@ void UIManager::toggle_alignment() {
 	_alignment_text.set_text(_align_placement ? ALIGNMENT_TEXT + std::string("On") : ALIGNMENT_TEXT + std::string("Off"));
 }
 
-void UIManager::calc_real_mouse_location(int &x, int &y) {
+void UIManager::get_real_mouse_location(int &x, int &y) {
 	Camera *camera = Environment::get().get_window()->get_camera();
 	x = int(double((_mouse_x / camera->get_scale()) + camera->get_x()));
 	y = int(double((_mouse_y / camera->get_scale()) + camera->get_y()));
+}
+
+void UIManager::calc_real_mouse_location(int &x, int &y) {
+	Camera *camera = Environment::get().get_window()->get_camera();
+	x = int(double((x / camera->get_scale()) + camera->get_x()));
+	y = int(double((y / camera->get_scale()) + camera->get_y()));
 }
 
 void UIManager::calc_align_mouse_location(int &x, int &y) {

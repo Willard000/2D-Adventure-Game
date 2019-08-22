@@ -63,7 +63,8 @@ public:
 	void highlight_button();
 
 	bool check_buttons();
-	bool check_selection(int mouse_button);
+	bool check_placement(int mouse_button);
+	bool check_mass_placement(int mouse_button, int start_x, int start_y);
 	void render();
 
 	void set_state(int flag);
@@ -75,6 +76,8 @@ public:
 	Element select_from_map();
 	bool place_on_map();
 	void delete_map_selection();
+
+	bool mass_place_on_map(int start_x, int start_y);
 
 	// returns element id ( -1 if mouse is not hovering an element)
 	int select();
@@ -89,6 +92,7 @@ public:
 
 	int get_state() { return _state; }
 private:
+	void get_real_mouse_location(int &x, int &y);
 	void calc_real_mouse_location(int &x, int &y);
 	void calc_align_mouse_location(int &x, int &y);
 	SDL_Rect place_warp_rect();

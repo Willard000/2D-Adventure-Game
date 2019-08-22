@@ -49,3 +49,16 @@
 47 Data/Textures/Tiles/bridge4.png
 48 Data/Textures/Tiles/bridge5.png
 49 Data/Textures/Tiles/bridge6.png
+50 Data/Textures/Tiles/dirt.png
+51 Data/Textures/Tiles/dirt2.png
+52 Data/Textures/Tiles/dirt3.png
+53 Data/Textures/Tiles/dirt4.png
+54 Data/Textures/Tiles/dirt5.png
+55 Data/Textures/Tiles/dirt6.png
+56 Data/Textures/Tiles/dirt7.png
+57 Data/Textures/Tiles/dirt8.png
+58 Data/Textures/Tiles/dirt9.png
+59 Data/Textures/Tiles/dirt10.png
+60 Data/Textures/Tiles/dirt11.png
+61 Data/Textures/Tiles/dirt12.png
+62 Data/Textures/Tiles/dirt13.png

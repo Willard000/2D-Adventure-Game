@@ -46,6 +46,12 @@ private:
 	int _state;
 	bool _get_text_input;
 	std::string _text_input;
+
+	// editor stuff
+	bool _clicked_button;
+	bool _shift_mod;
+	int _start_x;
+	int _start_y;
 };
 
 #endif
