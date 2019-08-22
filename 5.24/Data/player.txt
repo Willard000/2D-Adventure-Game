@@ -4,7 +4,7 @@ ilevel 3
 iexp 160
 ihealth 135
 imana 175
-position 1744.19 62.5523
+position 713.75 169.567
 inventory 
 equipped 0 -1 6 1 2 3 4 5 
-imap_id 7
+imap_id 11

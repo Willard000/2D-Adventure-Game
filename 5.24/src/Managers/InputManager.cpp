@@ -200,7 +200,7 @@ void InputManager::update_editor() {
 	}
 
 	if (is_key(SDL_SCANCODE_O)) {
-		Environment::get().get_window()->get_camera()->set_scale(1.0f);
+		Environment::get().get_window()->get_camera()->set_scale(0.05f);
 	}
 
 	if (is_key(SDL_SCANCODE_Q)) {
