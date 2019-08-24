@@ -4,3 +4,5 @@
 2 Data/Textures/Objects/bush.png
 3 Data/Textures/Objects/house.png
 4 Data/Textures/Objects/post.png
+5 Data/Textures/Objects/logs.png
+6 Data/Textures/Objects/log.png

@@ -1,3 +1,4 @@
 # Effect Icons
 0 Data/Textures/Effects/Icons/ripple.txt
 1 Data/Textures/Effects/Icons/pond_leaf.txt
+2 Data/Textures/Effects/Icons/fire.txt

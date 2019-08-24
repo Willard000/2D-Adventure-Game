@@ -207,10 +207,26 @@ void InputManager::update_editor() {
 		Environment::get().get_ui_manager()->delete_map_selection();
 	}
 
+	if (is_held(SDL_SCANCODE_X)) {
+		Environment::get().get_ui_manager()->rotate_map_selection(MAP_SELECTION_ROTATION_FACTOR);
+	}
+	else if (is_held(SDL_SCANCODE_Z)) {
+		Environment::get().get_ui_manager()->rotate_map_selection(-MAP_SELECTION_ROTATION_FACTOR);
+	}
+	if (is_held(SDL_SCANCODE_V)) {
+		Environment::get().get_ui_manager()->scale_map_selection(MAP_SELECTION_SCALE_FACTOR);
+	}
+	else if (is_held(SDL_SCANCODE_C)) {
+		Environment::get().get_ui_manager()->scale_map_selection(-MAP_SELECTION_SCALE_FACTOR);
+	}
+
+
+
 	if (is_mouse(SDL_BUTTON_LEFT)) {
 		_clicked_button = Environment::get().get_ui_manager()->check_buttons();
 		if (!_clicked_button && Environment::get().get_ui_manager()->get_selection_type() != TYPE_TILE) {
-			Environment::get().get_ui_manager()->check_placement(MOUSE_LEFT);
+			if(!is_held(SDL_SCANCODE_LCTRL))
+				Environment::get().get_ui_manager()->check_placement(MOUSE_LEFT);
 		}
 		else if (!_clicked_button && !_shift_mod && is_held(SDL_SCANCODE_LSHIFT)) {
 			_shift_mod = true;
@@ -221,6 +237,10 @@ void InputManager::update_editor() {
 			Environment::get().get_ui_manager()->check_mass_placement(SDL_BUTTON_LEFT, _start_x, _start_y);
 			_shift_mod = false;
 		}
+	}
+
+	if (!_clicked_button && is_mouse_held(SDL_BUTTON_LEFT) && is_held(SDL_SCANCODE_LCTRL)) {
+		Environment::get().get_ui_manager()->move_map_selection();
 	}
 
 	if (!_clicked_button && !is_held(SDL_SCANCODE_LSHIFT) && Environment::get().get_ui_manager()->get_state() != UI::STATE_WAITING) {
@@ -322,6 +342,7 @@ std::string InputManager::start_text_input() {
 
 		Environment::get().get_resource_manager()->render();
 		Environment::get().get_ui_manager()->render();
+		Environment::get().get_ui_manager()->render_current_text();
 
 		if (text_size != _text_input.size()) {		// update text when it changes
 			text_size = _text_input.size();

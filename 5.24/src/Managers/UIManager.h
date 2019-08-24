@@ -17,6 +17,9 @@
 #define MOUSE_LEFT 0
 #define MOUSE_RIGHT 1
 
+#define MAP_SELECTION_ROTATION_FACTOR 10
+#define MAP_SELECTION_SCALE_FACTOR .01f
+
 namespace UI {
 
 	struct Element_Area {
@@ -66,6 +69,7 @@ public:
 	bool check_placement(int mouse_button);
 	bool check_mass_placement(int mouse_button, int start_x, int start_y);
 	void render();
+	void render_current_text();
 
 	void set_state(int flag);
 	void set_current_text(std::string text);
@@ -86,16 +90,26 @@ public:
 	int get_selection_type();
 
 	void toggle_alignment();
+	void toggle_stacking();
 
 	void place_warp();
 	void place_enemy(float x = 0.0f, float y = 0.0f);
 
 	int get_state() { return _state; }
+
+	void rotate_map_selection(float rotation);
+	void scale_map_selection(float scale);
+	void set_map_selection_rotation(float rotation);
+	void set_map_selection_scale(float scale);
+
+	void move_map_selection();
 private:
 	void get_real_mouse_location(int &x, int &y);
 	void calc_real_mouse_location(int &x, int &y);
 	void calc_align_mouse_location(int &x, int &y);
 	SDL_Rect place_warp_rect();
+
+	void update_map_selection_text();
 private:
 	int _state;
 	int _state_prev;
@@ -108,6 +122,9 @@ private:
 	Text _mouse_location;
 	Text _alignment_text;
 	Text _selection_text;
+	Text _stacking_text;
+	Text _rotation_text;
+	Text _scale_text;
 
 	Callback _on_confirm;
 	Callback _on_deny;
@@ -119,6 +136,7 @@ private:
 	Button *_highlighted_button;
 
 	bool _align_placement;
+	bool _allow_stacking;
 
 	std::map<std::string, Button *> _buttons;
 

@@ -71,11 +71,10 @@ public:
 	void remove_warp(int index);
 
 	int get_id() { return _id; }
-	// in pixels
 	int get_width() { return _width; }
-	// in pixels
 	int get_height() { return _height; }
 
+	// in pixels
 	SDL_Rect get_rect() { return _rect; }
 
 	void test();

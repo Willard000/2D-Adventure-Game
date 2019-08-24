@@ -1,3 +1,4 @@
 # Effects
 0 Data/Entities/Effect/ripple.txt
 1 Data/Entities/Effect/pond_leaf.txt
+2 Data/Entities/Effect/fire.txt

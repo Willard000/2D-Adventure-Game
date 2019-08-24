@@ -41,6 +41,8 @@
 #define FILE_ENTITY_TYPE_ID "itype_id"
 #define FILE_ENTITY_POSITION_X "fposition_x"
 #define FILE_ENTITY_POSITION_Y "fposition_y"
+#define FILE_ENTITY_ROTATION "frotation"
+#define FILE_ENTITY_SCALE "fscale"
 
 #define FILE_ENTITY_PATHING_X "ipathing_x"
 #define FILE_ENTITY_PATHING_Y "ipathing_y"
@@ -469,6 +471,7 @@ void Map::load_entities(FileReader &file) {
 	int type = 0;
 	int type_id = 0;
 	float position_x = 0, position_y = 0;
+	float rotation = 0, scale = 1;
 	Path path;
 	std::vector<Path> pathing;
 
@@ -477,6 +480,8 @@ void Map::load_entities(FileReader &file) {
 			Entity *entity = new Entity(type, type_id);
 			if (PositionComponent *position = GetPosition(entity)) {
 				position->set(position_x, position_y);
+				position->set_rotation(rotation);
+				position->set_scale(scale);
 			}
 			if (EnemyComponent *enemy = GetEnemy(entity)) {
 				if (pathing.size() > 0) {
@@ -492,6 +497,8 @@ void Map::load_entities(FileReader &file) {
 			else if (key == FILE_ENTITY_TYPE_ID) type_id = std::stoi(data);
 			else if (key == FILE_ENTITY_POSITION_X) position_x = std::stof(data);  
 			else if (key == FILE_ENTITY_POSITION_Y) position_y = std::stof(data);
+			else if (key == FILE_ENTITY_ROTATION) rotation = std::stof(data);
+			else if (key == FILE_ENTITY_SCALE) scale = std::stof(data);
 			else if (key == FILE_ENTITY_PATHING_X) path.x = std::stoi(data);
 			else if (key == FILE_ENTITY_PATHING_Y) { path.y = std::stoi(data);	pathing.push_back(path); }
 		}
@@ -509,7 +516,9 @@ void Map::save_entities(std::ostream &file) {
 
 				if (PositionComponent *position = GetPosition(itt->second)) {
 					file << FILE_ENTITY_POSITION_X << " " << position->pos_x << " "
-						<< FILE_ENTITY_POSITION_Y << " " << position->pos_y << " ";
+						<< FILE_ENTITY_POSITION_Y << " " << position->pos_y << " "
+						<< FILE_ENTITY_ROTATION << " " << position->rotation << " "
+						<< FILE_ENTITY_SCALE << " " << position->scale_f << " ";
 				}
 
 				if (EnemyComponent *enemy = GetEnemy(itt->second)) {

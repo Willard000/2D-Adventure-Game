@@ -41,9 +41,18 @@
 #define SELECTION_TEXT "Selection: "
 #define SELECTION_TEXT_XOFFSET 500
 
+#define STACKING_TEXT "Stacking: "
+#define STACKING_TEXT_XOFFSET 800
+
+#define ROTATION_TEXT "Rotation: " 
+#define ROTATION_TEXT_XOFFSET 1000
+
+#define SCALE_TEXT "Scale: " 
+#define SCALE_TEXT_XOFFSET 1200
+
 #define INFO_TEXT_COLOR {255, 255, 255, 255}
 #define INFO_TEXT_FTSIZE 14
-#define INFO_TEXT_WRAP_SIZE 1000
+#define INFO_TEXT_WRAP_SIZE 1500
 #define INFO_TEXT_YOFFSET -20
 
 #define ELEMENT_SELECTION_COLOR { 0, 250, 240, 50 }
@@ -78,25 +87,29 @@ bool element_collision(const int &x, const int &y) {
 }
 
 UIManager::UIManager() :
-	_state					( STATE_IDLE ),
-	_element_area			( { {Environment::get().get_window()->get_width() - ELEMENT_AREA_WIDTH, 0, ELEMENT_AREA_WIDTH, Environment::get().get_window()->get_height()},
+	_state(STATE_IDLE),
+	_element_area({ {Environment::get().get_window()->get_width() - ELEMENT_AREA_WIDTH, 0, ELEMENT_AREA_WIDTH, Environment::get().get_window()->get_height()},
 								 ELEMENT_AREA_COLOR,
 								{Environment::get().get_window()->get_width() - ELEMENT_AREA_WIDTH, ELEMENT_SELECTION_HEIGHT, ELEMENT_AREA_WIDTH, Environment::get().get_window()->get_height()},
-								{Environment::get().get_window()->get_width() - ELEMENT_AREA_WIDTH, 0, ELEMENT_AREA_WIDTH, ELEMENT_SELECTION_HEIGHT} } ),
-	_selection				( { TYPE_TILE, -1 } ),
-	_map_selection			( { TYPE_OBJECT, -1 } ),
-	_align_placement		( true ),
-	_mouse_button			( 0 ),
-	_mouse_x				( 0 ),
-	_mouse_y				( 0 ),
-	_on_confirm				( nullptr ),
-	_on_deny				( nullptr ),
-	_highlighted_button		( nullptr ),
-	_current_text           ( "", CURRENT_TEXT_COLOR, CURRENT_TEXT_FTSIZE, 0,
-						   	  Environment::get().get_window()->get_width_half(),
-							  Environment::get().get_window()->get_height_half() - CURRENT_TEXT_YOFFSET ),
-	_alignment_text			( ALIGNMENT_TEXT + std::string("On"), INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, ALIGNMENT_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET ),
-	_selection_text         ( SELECTION_TEXT + STYPE(TYPE_TILE), INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, SELECTION_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET )
+								{Environment::get().get_window()->get_width() - ELEMENT_AREA_WIDTH, 0, ELEMENT_AREA_WIDTH, ELEMENT_SELECTION_HEIGHT} }),
+	_selection({ TYPE_TILE, -1 }),
+	_map_selection({ TYPE_OBJECT, -1 }),
+	_align_placement(true),
+	_allow_stacking(false),
+	_mouse_button(0),
+	_mouse_x(0),
+	_mouse_y(0),
+	_on_confirm(nullptr),
+	_on_deny(nullptr),
+	_highlighted_button(nullptr),
+	_current_text("", CURRENT_TEXT_COLOR, CURRENT_TEXT_FTSIZE, 0,
+		Environment::get().get_window()->get_width_half(),
+		Environment::get().get_window()->get_height_half() - CURRENT_TEXT_YOFFSET),
+	_alignment_text(ALIGNMENT_TEXT + std::string("On"), INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, ALIGNMENT_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET),
+	_selection_text(SELECTION_TEXT + STYPE(TYPE_TILE), INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, SELECTION_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET),
+	_stacking_text(STACKING_TEXT + std::string("Off"), INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, STACKING_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET),
+	_rotation_text(ROTATION_TEXT, INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, ROTATION_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET),
+	_scale_text(SCALE_TEXT, INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, SCALE_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET)
 {
 	Environment::get().get_log()->print("Loading UI Manager");
 }
@@ -229,6 +242,7 @@ bool UIManager::check_placement(int mouse_button) {
 
 	if (_state == STATE_SELECTING) {
 		_map_selection = select_from_map();
+		update_map_selection_text();
 		return true;
 	}
 
@@ -286,6 +300,12 @@ void UIManager::render() {
 	renderer->draw_text(&_mouse_location, true);
 	renderer->draw_text(&_alignment_text, true);
 	renderer->draw_text(&_selection_text, true);
+	renderer->draw_text(&_stacking_text, true);
+
+	if (_map_selection.id != -1) {
+		renderer->draw_text(&_rotation_text, true);
+		renderer->draw_text(&_scale_text, true);
+	}
 }
 
 void UIManager::set_state(int flag) {
@@ -344,7 +364,7 @@ int UIManager::select() {
 }
 
 bool UIManager::place_on_map() {
-	if (_state == STATE_WAITING) {
+	if (_state == STATE_WAITING || _selection.id == -1) {
 		return false;
 	}
 	SDL_Rect boundry = Environment::get().get_resource_manager()->get_map()->get_rect();
@@ -381,7 +401,7 @@ bool UIManager::place_on_map() {
 		y = (index / map_width) * TILE_HEIGHT + (TILE_HEIGHT / 2);
 	}
 
-	if (element_collision((int)x, (int)y)) {
+	if (!_allow_stacking && element_collision((int)x, (int)y)) {
 		return false;
 	}
 
@@ -676,6 +696,11 @@ void UIManager::toggle_alignment() {
 	_alignment_text.set_text(_align_placement ? ALIGNMENT_TEXT + std::string("On") : ALIGNMENT_TEXT + std::string("Off"));
 }
 
+void UIManager::toggle_stacking() {
+	_allow_stacking = !_allow_stacking;
+	_stacking_text.set_text(_allow_stacking ? STACKING_TEXT + std::string("On") :STACKING_TEXT + std::string("Off"));
+}
+
 void UIManager::get_real_mouse_location(int &x, int &y) {
 	Camera *camera = Environment::get().get_window()->get_camera();
 	x = int(double((_mouse_x / camera->get_scale()) + camera->get_x()));
@@ -694,4 +719,123 @@ void UIManager::calc_align_mouse_location(int &x, int &y) {
 	int map_width = Environment::get().get_resource_manager()->get_map()->get_width();
 	x = (index % map_width) * TILE_WIDTH + (TILE_WIDTH / 2);
 	y = (index / map_width) * TILE_HEIGHT + (TILE_HEIGHT / 2);
+}
+
+void UIManager::rotate_map_selection(float rotation) {
+	if (_state != STATE_SELECTING) {
+		return;
+	}
+
+	if (_map_selection.id == -1) {
+		return;
+	}
+
+	Entity *selection = Environment::get().get_resource_manager()->get_entity(_map_selection.type, _map_selection.id);
+	if (PositionComponent *position = GetPosition(selection)) {
+		position->rotate(rotation);
+		_rotation_text.set_text(ROTATION_TEXT + std::to_string(position->rotation));
+	}
+}
+
+void UIManager::scale_map_selection(float scale) {
+	if (_state != STATE_SELECTING) {
+		return;
+	}
+
+	if (_map_selection.id == -1) {
+		return;
+	}
+
+	Entity *selection = Environment::get().get_resource_manager()->get_entity(_map_selection.type, _map_selection.id);
+	if (PositionComponent *position = GetPosition(selection)) {
+		position->scale(scale);
+		_scale_text.set_text(SCALE_TEXT + std::to_string(position->scale_f));
+	}
+}
+
+void UIManager::update_map_selection_text() {
+	if (_map_selection.id == -1)
+		return;
+
+	Entity *selection = Environment::get().get_resource_manager()->get_entity(_map_selection.type, _map_selection.id);
+	if (!selection)
+		return;
+
+	PositionComponent *position = GetPosition(selection);
+	if (!position)
+		return;
+
+
+
+	_scale_text.set_text(SCALE_TEXT + std::to_string(position->scale_f));
+	_rotation_text.set_text(ROTATION_TEXT + std::to_string(position->rotation));
+	
+}
+
+void UIManager::set_map_selection_rotation(float rotation) {
+	if (_state != STATE_SELECTING) {
+		return;
+	}
+
+	if (_map_selection.id == -1) {
+		return;
+	}
+
+	Entity *selection = Environment::get().get_resource_manager()->get_entity(_map_selection.type, _map_selection.id);
+	if (PositionComponent *position = GetPosition(selection)) {
+		position->set_rotation(rotation);
+		_rotation_text.set_text(ROTATION_TEXT + std::to_string(position->rotation));
+	}
+}
+
+void UIManager::set_map_selection_scale(float scale) {
+	if (_state != STATE_SELECTING) {
+		return;
+	}
+
+	if (_map_selection.id == -1) {
+		return;
+	}
+
+	Entity *selection = Environment::get().get_resource_manager()->get_entity(_map_selection.type, _map_selection.id);
+	if (PositionComponent *position = GetPosition(selection)) {
+		position->set_scale(scale);
+		_scale_text.set_text(SCALE_TEXT + std::to_string(position->scale_f));
+	}
+}
+
+void UIManager::render_current_text() {
+	Environment::get().get_window()->get_renderer()->draw_text(&_current_text, true);
+}
+
+void UIManager::move_map_selection() {
+	if (_map_selection.id == -1)
+		return;
+
+	Entity *selection = Environment::get().get_resource_manager()->get_entity(_map_selection.type, _map_selection.id);
+	if (!selection)
+		return;
+
+	PositionComponent *position = GetPosition(selection);
+	if (!position)
+		return;
+
+	SDL_Rect boundry = Environment::get().get_resource_manager()->get_map()->get_rect();
+	int x, y;
+	get_real_mouse_location(x, y);
+
+	if (x < 0 || x > boundry.x + boundry.w || y < 0 || y > boundry.y + boundry.h) {
+		return;
+	}
+
+	if (_align_placement) {
+		int index = int(x / TILE_WIDTH) + ((int(y / TILE_HEIGHT) * int(boundry.w / TILE_WIDTH)));
+		int map_width = Environment::get().get_resource_manager()->get_map()->get_width();
+		x = (index % map_width) * TILE_WIDTH + (TILE_WIDTH / 2);
+		y = (index / map_width) * TILE_HEIGHT + (TILE_HEIGHT / 2);
+	}
+
+	x -= position->rect.w / 2;
+	y -= position->rect.h / 2;	
+	position->set(x, y);
 }

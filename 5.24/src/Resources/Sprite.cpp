@@ -7,14 +7,15 @@ void Sprite::load_frames() {
 	int x = 0, y = 0;
 
 	for (unsigned int i = 0; i < num_frames; ++i) {
-		_frames[i].x = x;
-		_frames[i].y = y;
-
-		x += rect.w;
 		if (i != 0 && (i % SPRITE_SHEET_WIDTH) == 0) {
 			x = 0;
 			y += rect.h;
 		}
+
+		_frames[i].x = x;
+		_frames[i].y = y;
+
+		x += rect.w;
 	}
 }
 

@@ -1,0 +1,4 @@
+# Logs
+stexture Data/Textures/Objects/logs.png
+iwidth 96
+iheight 57

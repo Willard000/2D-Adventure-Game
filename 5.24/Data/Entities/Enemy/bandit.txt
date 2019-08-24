@@ -1,0 +1,35 @@
+# Bandit
+
+itexture_id 1
+
+Position
+iwidth 32
+iheight 64
+fspeed 100
+
+Sprite
+isprite_time 125
+isprite_cast_time 500
+
+Enemy
+senemy_name Bushki
+senemy_script Data/Lua/Enemies/bushki.lua
+ienemy_combat_range_w 300
+ienemy_combat_range_h 300
+enemy_drop_table 0 20
+
+Magic
+imain_spell_id 1
+icast_speed 500
+
+Combat
+icombat_max_health 100
+icombat_max_mana 100
+icombat_damage 1
+icombat_armor 1
+icombat_hps 0
+icombat_mps 0
+icombat_drain 0
+icombat_luck 0
+icombat_exp 10
+icombat_time 10000

@@ -1,0 +1,4 @@
+# Fire Icon
+stexture Data/Textures/Effects/Icons/fire.png
+iwidth 50
+iheight 50

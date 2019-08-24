@@ -23,6 +23,8 @@ struct SpriteComponent : public Component {
 
 	void update(Sprite *img);
 
+	void set_ani(Uint8 ani_);
+
 	Uint8
 		frame,
 		ani, ani_prev, 
@@ -32,6 +34,7 @@ struct SpriteComponent : public Component {
 	bool is_update;
 	Timer time;
 	Timer cast_timer;
+	Timer cast_ani_time;
 };
 
 #endif

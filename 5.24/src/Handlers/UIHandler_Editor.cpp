@@ -124,3 +124,29 @@ void UI::button_select_free() {
 void UI::button_align_placement() {
 	Environment::get().get_ui_manager()->toggle_alignment();
 }
+
+void UI::button_allow_stacking() {
+	Environment::get().get_ui_manager()->toggle_stacking();
+}
+
+void UI::button_rotate_selection() {
+	int rotation = 0;
+	Environment::get().get_ui_manager()->set_current_text("Enter Rotation:");
+	Environment::get().get_input_manager()->get_text_input(&rotation);
+	if (rotation == -1) {
+		return;
+	}
+
+	Environment::get().get_ui_manager()->set_map_selection_rotation(rotation);
+}
+
+void UI::button_scale_selection() {
+	int scale = 0;
+	Environment::get().get_ui_manager()->set_current_text("Enter Scale:");
+	Environment::get().get_input_manager()->get_text_input(&scale);
+	if (scale == -1) {
+		return;
+	}
+
+	Environment::get().get_ui_manager()->set_map_selection_scale(scale);
+}

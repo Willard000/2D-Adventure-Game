@@ -4,3 +4,5 @@
 2 Data/Entities/Object/bush.txt
 3 Data/Entities/Object/house.txt
 4 Data/Entities/Object/post.txt
+5 Data/Entities/Object/logs.txt
+6 Data/Entities/Object/log.txt

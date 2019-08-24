@@ -62,7 +62,8 @@ void PositionComponent::move(int dir_, float dis_) {
 
 	SpriteComponent *sprite = GetSprite(entity);
 	if (sprite != nullptr) {
-		sprite->ani = MOVE;
+		sprite->set_ani(MOVE);
+	//	sprite->ani = MOVE;
 		sprite->dir = dir_;
 	}
 
@@ -84,7 +85,8 @@ void PositionComponent::move_freely(float dx, float dy) {
 
 	SpriteComponent *sprite = GetSprite(entity);
 	if (sprite != nullptr) {
-		sprite->ani = MOVE;
+		sprite->set_ani(MOVE);
+		//sprite->ani = MOVE;
 
 		if (dy > .75) {
 			sprite->dir = MOVE_DOWN;
@@ -126,8 +128,10 @@ void PositionComponent::set_scale(float factor_) {
 
 void PositionComponent::rotate(double angle_) {
 	rotation += angle_;
+	rotation = std::fmod(rotation, 360.0);
 }
 
 void PositionComponent::set_rotation(double angle_) {
 	rotation = angle_;
+	rotation = std::fmod(rotation, 360.0);
 }

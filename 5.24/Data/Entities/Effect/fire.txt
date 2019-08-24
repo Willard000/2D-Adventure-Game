@@ -1,0 +1,16 @@
+# Fire
+
+itexture_id 2
+
+Position
+iwidth 50
+iheight 50
+
+Sprite
+isprite_time 225
+
+Effect
+seffect_name Fire
+seffect_script Data/Lua/Effects/fire.lua
+ieffect_rand_rotation 0
+ieffect_rand_time 200

@@ -1,0 +1,4 @@
+# Stickman Icon
+stexture Data/Textures/Enemies/Icons/stickman.png
+iwidth 32
+iheight 64

@@ -21,7 +21,8 @@ EffectComponent::EffectComponent(Entity *entity_, std::string name_, std::string
 	Environment::get().get_lua()->load_script(script);
 
 	if (PositionComponent *position = GetPosition(entity)) {
-		position->set_rotation((rand() % rand_rotation) % 360);
+		if(rand_rotation != 0) 
+			position->set_rotation((rand() % rand_rotation) % 360);
 	}
 
 	if (SpriteComponent *sprite = GetSprite(entity)) {

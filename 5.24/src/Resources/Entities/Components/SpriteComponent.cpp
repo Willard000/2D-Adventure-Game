@@ -15,7 +15,8 @@ SpriteComponent::SpriteComponent(Entity *entity_, int w_, int h_, int time_, int
 	dir				( NULL ),		
 	dir_prev		( NULL ),
 	time			( time_ ),
-	cast_timer		( cast_time_ )
+	cast_timer		( cast_time_ ),
+	cast_ani_time	( 10000 )
 {}
 
 SpriteComponent::SpriteComponent(Entity *new_entity, const SpriteComponent &rhs) :
@@ -28,7 +29,8 @@ SpriteComponent::SpriteComponent(Entity *new_entity, const SpriteComponent &rhs)
 	dir				( rhs.dir ),
 	dir_prev		( rhs.dir_prev ),
 	time			( rhs.time ),
-	cast_timer		( rhs.cast_timer )
+	cast_timer		( rhs.cast_timer ),
+	cast_ani_time	( rhs.cast_ani_time )
 {}
 
 SpriteComponent *SpriteComponent::copy(Entity *new_entity) const {
@@ -103,4 +105,16 @@ void SpriteComponent::update(Sprite *img) {
 
 	pos.x = img->get_frame(frame).x;
 	pos.y = img->get_frame(frame).y;
+}
+
+#include <iostream>
+void SpriteComponent::set_ani(Uint8 ani_) {
+	if (ani == CAST) {
+		bool r = cast_ani_time.update();
+		if (!r) {
+			return;
+		}
+	}
+
+	ani = ani_;
 }

@@ -4,3 +4,5 @@
 2 Data/Textures/Objects/bush.txt
 3 Data/Textures/Objects/house.txt
 4 Data/Textures/Objects/post.txt
+5 Data/Textures/Objects/logs.txt
+6 Data/Textures/Objects/log.txt

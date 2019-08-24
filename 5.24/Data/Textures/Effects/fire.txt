@@ -1,0 +1,9 @@
+# Fire
+Sprite
+stexture Data/Textures/Effects/fire.png
+iwidth 50
+iheight 50
+iidle 0
+imin_idle 0
+imax_idle 3
+inum_frames 4

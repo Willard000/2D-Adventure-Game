@@ -23,10 +23,14 @@
 #define BUTTON_EFFECTS_POSITION {1245, 75, 100, 25}
 #define BUTTON_ITEMS_POSITION {1245, 100, 100, 25}
 
-#define BUTTON_SELECT_FREE {600, 0, 100, 25}
-#define BUTTON_ALIGN_PLACEMENT {700, 0, 100, 25}
-#define BUTTON_SOLIDS_POSITION {800, 0, 100, 25}
-#define BUTTON_WARPS_POSITION {900, 0, 100, 25}
+#define BUTTON_SELECT_FREE_POSITION {600, 0, 100, 25}
+#define BUTTON_ALIGN_PLACEMENT_POSITION {700, 0, 100, 25}
+#define BUTTON_STACKING_POSITION {800, 0, 100, 25}
+#define BUTTON_SOLIDS_POSITION {900, 0, 100, 25}
+#define BUTTON_WARPS_POSITION {1000, 0, 100, 25}
+
+#define BUTTON_ROTATE_POSITION {200, 0, 75, 25}
+#define BUTTON_SCALE_POSITION {275, 0, 75, 25}
 
 Editor::Editor() :
 	_isRunning		( true )
@@ -106,8 +110,12 @@ void Editor::load_buttons() {
 	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_effects, "Effects", BUTTON_EFFECTS_POSITION));
 	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_items, "Items", BUTTON_ITEMS_POSITION));
 
-	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_free, "Select", BUTTON_SELECT_FREE));
-	ui_manager->add_button(new UI::Button_Pressable(&UI::button_align_placement, "Align", BUTTON_ALIGN_PLACEMENT));
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_free, "Select", BUTTON_SELECT_FREE_POSITION));
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_align_placement, "Align", BUTTON_ALIGN_PLACEMENT_POSITION));
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_allow_stacking, "Stacking", BUTTON_STACKING_POSITION));
 	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_solids, "Solids", BUTTON_SOLIDS_POSITION));
 	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_warps, "Warps", BUTTON_WARPS_POSITION));
+
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_rotate_selection, "Rotate", BUTTON_ROTATE_POSITION));
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_scale_selection, "Scale", BUTTON_SCALE_POSITION));
 }

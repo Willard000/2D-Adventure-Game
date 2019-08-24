@@ -1,2 +1,3 @@
-﻿  ResourceManager.cpp
+﻿  UIManager.cpp
+d:\documents\visual studio 2017\projects\5.24\5.24\src\managers\uimanager.cpp(840): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   5.24.vcxproj -> D:\Documents\Visual Studio 2017\Projects\5.24\Debug\5.24.exe

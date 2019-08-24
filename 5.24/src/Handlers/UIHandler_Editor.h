@@ -17,6 +17,10 @@ namespace UI {
 	void button_select_free();
 
 	void button_align_placement();
+	void button_allow_stacking();
+
+	void button_rotate_selection();
+	void button_scale_selection();
 }
 
 #endif
