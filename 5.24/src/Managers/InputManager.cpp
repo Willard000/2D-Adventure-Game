@@ -30,6 +30,28 @@ bool valid_string_to_int(std::string str) {
 	return true;
 }
 
+bool valid_string_to_float(std::string str) {
+	if (str == "") {
+		return false;
+	}
+
+	bool point = false;
+
+	for (auto it = str.begin(); it != str.end(); ++it) {
+		int val = int(*it);
+		if (val == 46) {
+			if (point)	
+				return false;
+			else
+				point = true;
+		}
+		else if (val < 48 || val > 57) {
+			return false;
+		}
+	}
+	return true;
+}
+
 InputManager::InputManager() :
 	_state				( STATE_IDLE ),
 	_mouse_x			( 0 ),
@@ -313,6 +335,16 @@ void InputManager::get_text_input(int *val) {
 	std::string input = start_text_input();
 	if (valid_string_to_int(input)) {
 		*val = std::stoi(input);
+	}
+	else {
+		*val = -1;
+	}
+}
+
+void InputManager::get_text_input(float *val) {
+	std::string input = start_text_input();
+	if (valid_string_to_float(input)) {
+		*val = std::stof(input);
 	}
 	else {
 		*val = -1;

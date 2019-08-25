@@ -1,0 +1,7 @@
+# Log2
+
+itexture_id 8
+
+Position
+iwidth 16
+iheight 160

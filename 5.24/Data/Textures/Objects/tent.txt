@@ -1,0 +1,4 @@
+# Tent
+stexture Data/Textures/Objects/tent.png
+iwidth 150
+iheight 200

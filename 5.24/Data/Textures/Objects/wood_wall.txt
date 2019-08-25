@@ -1,0 +1,4 @@
+# Wood Wall
+stexture Data/Textures/Objects/wood_wall.png
+iwidth 40
+iheight 80

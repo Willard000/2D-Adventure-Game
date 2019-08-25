@@ -47,10 +47,6 @@ void ResourceManager::render_entities() {
 		render_entity(item.second);
 	}
 
-	for (auto &effect : _entities[TYPE_EFFECT]) {
-		render_entity(effect.second);
-	}
-
 	for (auto &enemy : _entities[TYPE_ENEMY]) {
 		render_entity(enemy.second);
 	}
@@ -59,6 +55,10 @@ void ResourceManager::render_entities() {
 
 	for (auto &spell : _entities[TYPE_SPELL]) {
 		render_entity(spell.second);
+	}
+
+	for (auto &effect : _entities[TYPE_EFFECT]) {
+		render_entity(effect.second);
 	}
 }
 

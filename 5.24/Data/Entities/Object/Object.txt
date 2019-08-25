@@ -6,3 +6,8 @@
 4 Data/Entities/Object/post.txt
 5 Data/Entities/Object/logs.txt
 6 Data/Entities/Object/log.txt
+7 Data/Entities/Object/wood_wall.txt
+8 Data/Entities/Object/log2.txt
+9 Data/Entities/Object/tent.txt
+10 Data/Entities/Object/table.txt
+11 Data/Entities/Object/campfire.txt

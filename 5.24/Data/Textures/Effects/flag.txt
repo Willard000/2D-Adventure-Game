@@ -1,0 +1,9 @@
+# Flag
+Sprite
+stexture Data/Textures/Effects/flag.png
+iwidth 48
+iheight 32
+iidle 0
+imin_idle 0
+imax_idle 3
+inum_frames 4

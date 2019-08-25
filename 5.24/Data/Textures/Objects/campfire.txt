@@ -1,0 +1,4 @@
+# Campfire
+stexture Data/Textures/Objects/campfire.png
+iwidth 56
+iheight 54

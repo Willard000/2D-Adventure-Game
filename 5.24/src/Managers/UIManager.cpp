@@ -88,28 +88,28 @@ bool element_collision(const int &x, const int &y) {
 
 UIManager::UIManager() :
 	_state(STATE_IDLE),
-	_element_area({ {Environment::get().get_window()->get_width() - ELEMENT_AREA_WIDTH, 0, ELEMENT_AREA_WIDTH, Environment::get().get_window()->get_height()},
+	_element_area			( { {Environment::get().get_window()->get_width() - ELEMENT_AREA_WIDTH, 0, ELEMENT_AREA_WIDTH, Environment::get().get_window()->get_height()},
 								 ELEMENT_AREA_COLOR,
 								{Environment::get().get_window()->get_width() - ELEMENT_AREA_WIDTH, ELEMENT_SELECTION_HEIGHT, ELEMENT_AREA_WIDTH, Environment::get().get_window()->get_height()},
-								{Environment::get().get_window()->get_width() - ELEMENT_AREA_WIDTH, 0, ELEMENT_AREA_WIDTH, ELEMENT_SELECTION_HEIGHT} }),
-	_selection({ TYPE_TILE, -1 }),
-	_map_selection({ TYPE_OBJECT, -1 }),
-	_align_placement(true),
-	_allow_stacking(false),
-	_mouse_button(0),
-	_mouse_x(0),
-	_mouse_y(0),
-	_on_confirm(nullptr),
-	_on_deny(nullptr),
-	_highlighted_button(nullptr),
-	_current_text("", CURRENT_TEXT_COLOR, CURRENT_TEXT_FTSIZE, 0,
-		Environment::get().get_window()->get_width_half(),
-		Environment::get().get_window()->get_height_half() - CURRENT_TEXT_YOFFSET),
-	_alignment_text(ALIGNMENT_TEXT + std::string("On"), INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, ALIGNMENT_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET),
-	_selection_text(SELECTION_TEXT + STYPE(TYPE_TILE), INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, SELECTION_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET),
-	_stacking_text(STACKING_TEXT + std::string("Off"), INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, STACKING_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET),
-	_rotation_text(ROTATION_TEXT, INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, ROTATION_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET),
-	_scale_text(SCALE_TEXT, INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, SCALE_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET)
+								{Environment::get().get_window()->get_width() - ELEMENT_AREA_WIDTH, 0, ELEMENT_AREA_WIDTH, ELEMENT_SELECTION_HEIGHT} } ),
+	_selection				( { TYPE_TILE, -1 } ),
+	_map_selection			( { TYPE_OBJECT, -1 } ),
+	_align_placement		( true ),
+	_allow_stacking			( false ),
+	_mouse_button			( 0 ),
+	_mouse_x				( 0 ),
+	_mouse_y				( 0 ),
+	_on_confirm				( nullptr ),
+	_on_deny				( nullptr ),
+	_highlighted_button		( nullptr ),
+	_current_text			( "", CURRENT_TEXT_COLOR, CURRENT_TEXT_FTSIZE, 0,
+								Environment::get().get_window()->get_width_half(),
+								Environment::get().get_window()->get_height_half() - CURRENT_TEXT_YOFFSET ),
+	_alignment_text			( ALIGNMENT_TEXT + std::string("On"), INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, ALIGNMENT_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET ),
+	_selection_text			( SELECTION_TEXT + STYPE(TYPE_TILE), INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, SELECTION_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET ),
+	_stacking_text			( STACKING_TEXT + std::string("Off"), INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, STACKING_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET ),
+	_rotation_text			( ROTATION_TEXT, INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, ROTATION_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET ),
+	_scale_text				( SCALE_TEXT, INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, SCALE_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET )
 {
 	Environment::get().get_log()->print("Loading UI Manager");
 }
@@ -364,7 +364,7 @@ int UIManager::select() {
 }
 
 bool UIManager::place_on_map() {
-	if (_state == STATE_WAITING || _selection.id == -1) {
+	if (_state == STATE_WAITING || (_selection.id == -1 && _selection.type != TYPE_SOLID)) {
 		return false;
 	}
 	SDL_Rect boundry = Environment::get().get_resource_manager()->get_map()->get_rect();

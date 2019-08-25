@@ -1,0 +1,4 @@
+# Table
+stexture Data/Textures/Objects/table.png
+iwidth 100
+iheight 40

@@ -1,0 +1,7 @@
+# Campfire
+
+itexture_id 11
+
+Position
+iwidth 56
+iheight 54

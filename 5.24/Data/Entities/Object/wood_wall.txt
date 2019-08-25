@@ -1,0 +1,7 @@
+# Wood Wall
+
+itexture_id 7
+
+Position
+iwidth 80
+iheight 160

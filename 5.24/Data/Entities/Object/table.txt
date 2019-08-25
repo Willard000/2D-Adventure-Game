@@ -1,0 +1,7 @@
+# Table
+
+itexture_id 10
+
+Position
+iwidth 100
+iheight 40

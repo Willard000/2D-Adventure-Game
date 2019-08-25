@@ -1,0 +1,4 @@
+# Flag Icon
+stexture Data/Textures/Effects/Icons/flag.png
+iwidth 48
+iheight 32

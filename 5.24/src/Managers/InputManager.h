@@ -23,6 +23,7 @@ public:
 	void update_editor_camera();
 
 	void get_text_input(int *val);
+	void get_text_input(float *val);
 	void get_text_input(std::string *val);
 
 	int get_mouse_x();

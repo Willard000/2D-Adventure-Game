@@ -6,3 +6,8 @@
 4 Data/Textures/Objects/post.txt
 5 Data/Textures/Objects/logs.txt
 6 Data/Textures/Objects/log.txt
+7 Data/Textures/Objects/wood_wall.txt
+8 Data/Textures/Objects/log2.txt
+9 Data/Textures/Objects/tent.txt
+10 Data/Textures/Objects/table.txt
+11 Data/Textures/Objects/campfire.txt

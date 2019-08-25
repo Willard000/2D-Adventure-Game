@@ -6,3 +6,8 @@
 4 Data/Textures/Objects/post.png
 5 Data/Textures/Objects/logs.png
 6 Data/Textures/Objects/log.png
+7 Data/Textures/Objects/wood_wall.png
+8 Data/Textures/Objects/log2.png
+9 Data/Textures/Objects/tent.png
+10 Data/Textures/Objects/table.png
+11 Data/Textures/Objects/campfire.png

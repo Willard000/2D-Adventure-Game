@@ -470,8 +470,8 @@ void Map::load_entities(FileReader &file) {
 	std::string key, data;
 	int type = 0;
 	int type_id = 0;
-	float position_x = 0, position_y = 0;
-	float rotation = 0, scale = 1;
+	float position_x = 0.0f, position_y = 0.0f;
+	float rotation = 0.0f, scale = 1.0f;
 	Path path;
 	std::vector<Path> pathing;
 
@@ -482,6 +482,8 @@ void Map::load_entities(FileReader &file) {
 				position->set(position_x, position_y);
 				position->set_rotation(rotation);
 				position->set_scale(scale);
+				rotation = 0.0f;
+				scale = 1.0f;
 			}
 			if (EnemyComponent *enemy = GetEnemy(entity)) {
 				if (pathing.size() > 0) {
@@ -516,9 +518,9 @@ void Map::save_entities(std::ostream &file) {
 
 				if (PositionComponent *position = GetPosition(itt->second)) {
 					file << FILE_ENTITY_POSITION_X << " " << position->pos_x << " "
-						<< FILE_ENTITY_POSITION_Y << " " << position->pos_y << " "
-						<< FILE_ENTITY_ROTATION << " " << position->rotation << " "
-						<< FILE_ENTITY_SCALE << " " << position->scale_f << " ";
+						<< FILE_ENTITY_POSITION_Y << " " << position->pos_y << " ";
+					if (position->rotation != 0.0f)		file << FILE_ENTITY_ROTATION << " " << position->rotation << " ";
+					if (position->scale_f != 1.0f)		file << FILE_ENTITY_SCALE << " " << position->scale_f << " ";
 				}
 
 				if (EnemyComponent *enemy = GetEnemy(itt->second)) {
