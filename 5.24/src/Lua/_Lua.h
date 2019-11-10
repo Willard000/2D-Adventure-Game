@@ -5,6 +5,7 @@
 #include "luawrapper.hpp"
 
 #include "Globals_Lua.h"
+#include "Commands_Lua.h"
 #include "Entity_lua.h"
 #include "Position_Lua.h"
 #include "Sprite_Lua.h"
@@ -39,6 +40,7 @@ public:
 
 		lua_init_entity(this, _L);
 
+		lua_init_commands(this, _L);
 		lua_init_globals(this, _L);  // do this after lua tables are made
 	}
 

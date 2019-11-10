@@ -1,0 +1,7 @@
+# Chest
+
+itexture_id 12
+
+Position
+iwidth 64
+iheight 32

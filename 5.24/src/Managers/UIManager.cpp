@@ -364,7 +364,7 @@ int UIManager::select() {
 }
 
 bool UIManager::place_on_map() {
-	if (_state == STATE_WAITING || (_selection.id == -1 && _selection.type != TYPE_SOLID)) {
+	if (_state == STATE_WAITING || (_selection.id == -1 && (_selection.type != TYPE_SOLID && _selection.type != TYPE_WARP))) {
 		return false;
 	}
 	SDL_Rect boundry = Environment::get().get_resource_manager()->get_map()->get_rect();
@@ -837,5 +837,5 @@ void UIManager::move_map_selection() {
 
 	x -= position->rect.w / 2;
 	y -= position->rect.h / 2;	
-	position->set(x, y);
+	position->set((float)x, (float)y);
 }

@@ -205,6 +205,14 @@ void InputManager::update() {
 	else if (_mouse_wheel < 0 && !Environment::get().get_window()->get_camera()->get_locked()) {
 		Environment::get().get_window()->get_camera()->zoom(-MOUSE_SCROLL_FACTOR);
 	}
+
+	if (is_key(SDL_SCANCODE_RETURN)) {
+		execute_command();
+	}
+
+	if (is_key(SDL_SCANCODE_SPACE)) {
+		Environment::get().get_resource_manager()->get_textbox().toggle();
+	}
 }
 
 void InputManager::update_editor() {
@@ -351,11 +359,14 @@ void InputManager::get_text_input(float *val) {
 	}
 }
 
-void InputManager::get_text_input(std::string *val) {
-	*val = start_text_input();
+void InputManager::get_text_input(std::string *val, int flag) {
+	*val = start_text_input(flag);
 }
 
-std::string InputManager::start_text_input() {
+// FLAG 
+// 0 - show text in center of screen
+// 1 - show text in textbox
+std::string InputManager::start_text_input(int flag) {
 	unsigned int text_size = 0;
 	bool end_input = false;
 	_text_input = "";
@@ -373,15 +384,34 @@ std::string InputManager::start_text_input() {
 		Environment::get().get_ui_manager()->update();
 
 		Environment::get().get_resource_manager()->render();
-		Environment::get().get_ui_manager()->render();
-		Environment::get().get_ui_manager()->render_current_text();
+		if (Environment::get().get_mode() == MODE_EDITOR) {
+			Environment::get().get_ui_manager()->render();
+			Environment::get().get_ui_manager()->render_current_text();
+		}
 
 		if (text_size != _text_input.size()) {		// update text when it changes
 			text_size = _text_input.size();
-			text = Text(_text_input, { 255, 255, 255, 255 }, 24, 3000, width, height);
+			if (flag == TEXT_INPUT_TEXTBOX) {
+				SDL_Rect pos = Environment::get().get_resource_manager()->get_textbox().get_rect();
+				text = Text(_text_input, { 255, 255, 255, 255 }, 18, 10000, pos.x, pos.y + pos.h - 20);
+			}
+			else {
+				text = Text(_text_input, { 255, 255, 255, 255 }, 24, 5000, width, height);
+			}
 		}
 
-		Environment::get().get_window()->get_renderer()->draw_text(&text, true);
+		if (flag == TEXT_INPUT_TEXTBOX) {
+			SDL_Rect pos = Environment::get().get_resource_manager()->get_textbox().get_rect();
+			pos.y = pos.y + pos.h - 20;
+			pos.h = 20;
+			SDL_Color color = Environment::get().get_resource_manager()->get_textbox().get_color();
+			color.a = 200;
+			Environment::get().get_window()->get_renderer()->draw_rect(pos, color);
+			Environment::get().get_window()->get_renderer()->draw_text(&text, true, DRAW_TEXT_NON_CENTER);
+		}
+		else {
+			Environment::get().get_window()->get_renderer()->draw_text(&text, true);
+		}
 
 		Environment::get().get_window()->get_renderer()->render();
 

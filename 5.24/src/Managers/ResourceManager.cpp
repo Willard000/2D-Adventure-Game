@@ -36,6 +36,7 @@ void ResourceManager::update() {
 	update_text();
 	Environment::get().get_window()->get_camera()->update();
 	_map->update();
+	_textbox.update();
 }
 
 void ResourceManager::render_entities() {
@@ -153,10 +154,21 @@ void ResourceManager::render_editor(const UI::Element_Area &element_area, const 
 	}
 }
 
+void ResourceManager::render_textbox() {
+	if (!_textbox.get_show())
+		return;
+
+	Renderer *renderer = Environment::get().get_window()->get_renderer();
+
+	//renderer->draw_rect(_textbox.get_rect(), _textbox.get_color());
+	_textbox.draw(renderer);
+}
+
 void ResourceManager::render() {
 	render_map();
 	render_entities();
 	render_text();
+	render_textbox();
 }
 
 bool ResourceManager::load_map(int id, bool is_base_map) {

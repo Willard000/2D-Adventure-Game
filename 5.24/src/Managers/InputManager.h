@@ -7,6 +7,9 @@
 
 #define MOUSE_SCROLL_FACTOR 0.05f
 
+#define TEXT_INPUT_CENTER 0
+#define TEXT_INPUT_TEXTBOX 1
+
 class InputManager {
 public:
 	InputManager();
@@ -24,12 +27,12 @@ public:
 
 	void get_text_input(int *val);
 	void get_text_input(float *val);
-	void get_text_input(std::string *val);
+	void get_text_input(std::string *val, int flag = TEXT_INPUT_CENTER);
 
 	int get_mouse_x();
 	int get_mouse_y();
 private:
-	std::string start_text_input();
+	std::string start_text_input(int flag = TEXT_INPUT_CENTER);
 public:
 	enum {
 		STATE_IDLE = 1,

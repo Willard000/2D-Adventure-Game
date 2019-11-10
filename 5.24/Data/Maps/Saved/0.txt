@@ -1,5 +1,7 @@
 # Map0
-iwidth 50
-iheight 50
+iwidth 0
+iheight 0
 Tiles
+Solids
+Warps 
 Entities 

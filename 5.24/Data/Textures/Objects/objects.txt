@@ -11,3 +11,5 @@
 9 Data/Textures/Objects/tent.txt
 10 Data/Textures/Objects/table.txt
 11 Data/Textures/Objects/campfire.txt
+12 Data/Textures/Objects/chest.txt
+13 Data/Textures/Objects/lantern.txt

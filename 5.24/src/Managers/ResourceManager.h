@@ -22,6 +22,7 @@ public:
 
 	void render_entity(Entity *entity);
 	void render_map();
+	void render_textbox();
 
 	void render();
 

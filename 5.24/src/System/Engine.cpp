@@ -24,6 +24,7 @@ Engine::Engine() :
 void Engine::run() {
 	_environment.get_log()->print("Engine Main Loop\n");
 
+	std::string test = "";
 	while (_isRunning) {
 
 		_environment.get_window()->get_renderer()->clear();
@@ -80,6 +81,9 @@ void Engine::build_environment() {
 
 	InputManager *input_manager = new InputManager();
 	_environment.set_input_manager(input_manager);
+
+	UIManager *ui_manager = new UIManager();
+	_environment.set_ui_manager(ui_manager);
 }
 
 void Engine::load_game() {

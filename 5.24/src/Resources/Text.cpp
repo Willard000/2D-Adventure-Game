@@ -58,20 +58,40 @@ void Text::set_text(std::string text) {
 	_rect.y += _rect.h / FONT_TEXT_YOFFSET_FACTOR;
 }
 
-void Text::load() {
+// FLAGS
+// DRAW_TEXT_NON_CENTER 1
+void Text::load(int flag) {
 	if (_text == "") {
 		return;
 	}
 	if (_texture) {
 		SDL_DestroyTexture(_texture);
 	}
-	SDL_Surface *surface = TTF_RenderText_Blended_Wrapped(Environment::get().get_window()->get_renderer()->get_font(), _text.c_str(), _color, _wrap_length);
+	SDL_Surface *surface = nullptr;
+
+	if (flag == DRAW_TEXT_NON_CENTER) {
+		surface = TTF_RenderText_Blended(Environment::get().get_window()->get_renderer()->get_font(), _text.c_str(), _color);
+	}
+	else {
+		surface = TTF_RenderText_Blended_Wrapped(Environment::get().get_window()->get_renderer()->get_font(), _text.c_str(), _color, _wrap_length);
+	}
+
 	SDL_SetSurfaceAlphaMod(surface, _color.a);
 	_texture = SDL_CreateTextureFromSurface(Environment::get().get_window()->get_renderer()->get_renderer(), surface);
+
+	if (!_texture) {
+		SDL_FreeSurface(surface);
+		return;
+	}
+
 	_rect.w = int((float)surface->clip_rect.w * ((float)_font_size / (float)FONT_PTSIZE));
 	_rect.h = int((float)surface->clip_rect.h * ((float)_font_size / (float)FONT_PTSIZE));
-	_rect.x -= _rect.w / FONT_TEXT_XOFFSET_FACTOR;
-	_rect.y -= _rect.h / FONT_TEXT_YOFFSET_FACTOR;
+
+	if (flag != 1) {
+		_rect.x -= _rect.w / FONT_TEXT_XOFFSET_FACTOR;
+		_rect.y -= _rect.h / FONT_TEXT_YOFFSET_FACTOR;
+	}
+
 	SDL_FreeSurface(surface);
 	_is_loaded = true;
 }

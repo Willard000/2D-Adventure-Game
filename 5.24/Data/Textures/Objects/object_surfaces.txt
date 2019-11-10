@@ -11,3 +11,5 @@
 9 Data/Textures/Objects/tent.png
 10 Data/Textures/Objects/table.png
 11 Data/Textures/Objects/campfire.png
+12 Data/Textures/Objects/chest.png
+13 Data/Textures/Objects/lantern.png

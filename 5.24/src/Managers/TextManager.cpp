@@ -3,7 +3,15 @@
 #include "Environment.h"
 #include "Window.h"
 
-TextManager::TextManager() {}
+#define TEXTBOX_HEIGHT 200
+#define TEXTBOX_COLOR { 50, 50, 50, 50 }
+
+#define WINDOW_WIDTH Environment::get().get_window()->get_width()
+#define WINDOW_HEIGHT Environment::get().get_window()->get_height()
+
+TextManager::TextManager() :
+	_textbox{ {0, WINDOW_HEIGHT - TEXTBOX_HEIGHT, WINDOW_WIDTH / 3, TEXTBOX_HEIGHT}, TEXTBOX_COLOR }
+{}
 
 TextManager::~TextManager() {
 	for (auto &t : _texts) {

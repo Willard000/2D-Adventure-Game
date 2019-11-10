@@ -6,6 +6,8 @@
 #ifndef TEXT_H
 #define TEXT_H
 
+#define DRAW_TEXT_NON_CENTER 1
+
 class Text {
 public:
 	Text();
@@ -22,7 +24,9 @@ public:
 
 	void set_text(std::string text);
 
-	void load();
+	void load(int flag = 0);
+
+	SDL_Rect &get_rect() { return _rect; }
 
 	friend class Renderer;
 private:

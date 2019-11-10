@@ -150,9 +150,9 @@ void Renderer::render(Sprite *img, SpriteComponent *sprite, const SDL_Rect &posi
 	}
 }
 
-void Renderer::draw_text(Text *text, bool ui_element) {
+void Renderer::draw_text(Text *text, bool ui_element, int text_flag) {
 	if (!text->_is_loaded) {
-		text->load();
+		text->load(text_flag);
 	}
 	if (text->_texture != nullptr) {
 		if (ui_element) {

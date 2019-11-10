@@ -9,6 +9,8 @@
 #include "Quadtree.h"
 #include "Grid.h"
 
+#include "Timer.h"
+
 #include "Globals.h"
 
 #ifndef MAP_H
@@ -111,7 +113,7 @@ private:
 	int _width, _height;
 	SDL_Rect _rect;
 	std::string _name;
-	bool _is_loaded;
+	bool _is_loaded; 
 };
 
 #endif

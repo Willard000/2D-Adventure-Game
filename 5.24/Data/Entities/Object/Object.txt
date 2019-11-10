@@ -11,3 +11,5 @@
 9 Data/Entities/Object/tent.txt
 10 Data/Entities/Object/table.txt
 11 Data/Entities/Object/campfire.txt
+12 Data/Entities/Object/chest.txt
+13 Data/Entities/Object/lantern.txt

@@ -1,6 +1,7 @@
 #include "InputHandler.h"
 
 #include "Environment.h"
+#include "InputManager.h"
 #include "ResourceManager.h"
 #include "Window.h"
 
@@ -54,4 +55,15 @@ void pickup_item() {
 			}
 		}
 	}
+}
+
+void execute_command() {
+	if (!Environment::get().get_resource_manager()->get_textbox().get_show())
+		Environment::get().get_resource_manager()->get_textbox().toggle();
+
+	std::string input = "";
+	Environment::get().get_input_manager()->get_text_input(&input, TEXT_INPUT_TEXTBOX);
+
+	Environment::get().get_resource_manager()->get_textbox().print(input);
+	luaL_dostring(Environment::get().get_lua()->get_state(), input.c_str());
 }

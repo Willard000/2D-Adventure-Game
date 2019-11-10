@@ -1,3 +1,4 @@
 # Spells
 0 Data/Textures/Spells/fireball.txt
 1 Data/Textures/Spells/bushki_attack.txt
+2 Data/Textures/Spells/bandit_attack.txt

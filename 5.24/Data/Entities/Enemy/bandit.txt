@@ -19,7 +19,7 @@ ienemy_combat_range_h 300
 enemy_drop_table 0 20
 
 Magic
-imain_spell_id 1
+imain_spell_id 2
 icast_speed 500
 
 Combat

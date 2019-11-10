@@ -1,0 +1,4 @@
+# Chest
+stexture Data/Textures/Objects/chest.png
+iwidth 64
+iheight 32

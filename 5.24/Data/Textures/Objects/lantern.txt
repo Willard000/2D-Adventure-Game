@@ -1,0 +1,4 @@
+# Lantern
+stexture Data/Textures/Objects/lantern.png
+iwidth 24
+iheight 24

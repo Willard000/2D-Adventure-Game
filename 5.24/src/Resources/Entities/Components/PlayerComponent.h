@@ -39,6 +39,8 @@ struct PlayerComponent : public Component {
 	std::array<Entity *, TOTAL_SLOTS> equipped_items = { nullptr };
 
 	Inventory inventory;
+
+	bool debug_collision;
 };
 
 #endif

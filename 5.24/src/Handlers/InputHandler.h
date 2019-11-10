@@ -9,5 +9,6 @@ void move_camera(int dir);
 void toggle_camera();
 void cast_spell(float x, float y);
 void pickup_item();
+void execute_command();
 
 #endif

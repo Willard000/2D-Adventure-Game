@@ -1,0 +1,19 @@
+# Bandit_Attack
+
+itexture_id 2
+
+Position
+iwidth 14
+iheight 14
+
+Sprite
+isprite_time -1
+
+Spell
+fmax_dis 800
+fspell_speed 400
+ideath_time 10000
+sspell_script_name Bandit_Attack
+sspell_script Data/Lua/Spells/bandit_attack.lua
+ispell_damage 5
+spell_color 238 238 238 150
