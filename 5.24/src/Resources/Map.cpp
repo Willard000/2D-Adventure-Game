@@ -9,10 +9,12 @@
 #include "Log.h"
 #include "ResourceManager.h"
 #include "Window.h"
+#include "_Lua.h"
 
 #include "Entity.h"
 #include "PositionComponent.h"
 #include "EnemyComponent.h"
+#include "InteractComponent.h"
 
 #include "Collision.h"
 
@@ -47,6 +49,8 @@
 #define FILE_ENTITY_PATHING_X "ipathing_x"
 #define FILE_ENTITY_PATHING_Y "ipathing_y"
 
+#define FILE_ENTITY_SPECIAL_ID "ispecial_id" // used for specific purposed based on object / interact script
+
 #define FILE_MAP_SEPERATOR "."
 
 #define WARP_DRAW_COLOR {0, 225, 0, 100}
@@ -58,6 +62,7 @@
 
 const char *MAP_BASE_PATH = "Data/Maps/Base/";
 const char *MAP_SAVED_PATH = "Data/Maps/Saved/";
+const char *MAP_SCRIPT_PATH = "Data/Lua/Maps/";
 
 Map::Map() :
 	_id				( 0 ),
@@ -72,6 +77,16 @@ Map::Map() :
 void Map::update() {
 	build_entity_grid();
 	//build_entity_tree();
+
+	update_lua();
+}
+
+void Map::update_lua() {
+	lua_State *L = Environment::get().get_lua()->get_state();
+	lua_getglobal(L, _script_name.c_str());
+	lua_getfield(L, -1, "update");
+	lua_remove(L, -2);
+	lua_pcall(L, 0, 0, 0);
 }
 
 bool Map::load(int id, bool is_base_map) {
@@ -125,6 +140,10 @@ bool Map::load(int id, bool is_base_map) {
 	load_solids(file);
 	load_warps(file);
 	load_entities(file);
+
+	_script = MAP_SCRIPT_PATH + std::to_string(id) + ".lua";
+	_script_name = "Map" + std::to_string(id);
+	Environment::get().get_lua()->load_script(_script);
 
 	Environment::get().get_log()->print("Map Loaded");
 
@@ -224,6 +243,8 @@ bool Map::create_new(int id, std::string name, int width, int height, int base_t
 		tile.pos.y = ((i / _width) + 1) * TILE_HEIGHT;
 		_tiles.push_back(tile);
 	}
+
+	create_lua_file();
 
 	save(true); // new created map
 
@@ -475,6 +496,8 @@ void Map::load_entities(FileReader &file) {
 	Path path;
 	std::vector<Path> pathing;
 
+	int special_id = 0;
+
 	while ((stream >> key)) {
 		if (key == FILE_MAP_SEPERATOR) {
 			Entity *entity = new Entity(type, type_id);
@@ -491,6 +514,9 @@ void Map::load_entities(FileReader &file) {
 					pathing.clear();
 				}
 			}
+			if (InteractComponent *interact = GetInteract(entity)) {
+				interact->special_id = special_id;
+			}
 			Environment::get().get_resource_manager()->add_entity(entity);
 		}
 		else {
@@ -503,6 +529,7 @@ void Map::load_entities(FileReader &file) {
 			else if (key == FILE_ENTITY_SCALE) scale = std::stof(data);
 			else if (key == FILE_ENTITY_PATHING_X) path.x = std::stoi(data);
 			else if (key == FILE_ENTITY_PATHING_Y) { path.y = std::stoi(data);	pathing.push_back(path); }
+			else if (key == FILE_ENTITY_SPECIAL_ID) special_id = std::stoi(data);
 		}
 	}
 }
@@ -528,6 +555,10 @@ void Map::save_entities(std::ostream &file) {
 						file << FILE_ENTITY_PATHING_X << " " << p.x << " "
 							<< FILE_ENTITY_PATHING_Y << " " << p.y << " ";
 					}
+				}
+
+				if (InteractComponent *interact = GetInteract(itt->second)) {
+					file << FILE_ENTITY_SPECIAL_ID << " " << interact->special_id << " ";
 				}
 
 				file << FILE_MAP_SEPERATOR << " ";
@@ -574,4 +605,14 @@ void Map::test() {
 		Environment::get().get_window()->get_renderer()->draw_rect(it->first, it->second, DRAW_RECT_CAMERA);
 	}
 	
+}
+
+void Map::create_lua_file() {
+	std::ofstream file(MAP_SCRIPT_PATH + std::to_string(_id) + ".lua");
+	std::string name = "Map" + std::to_string(_id);
+	file << name + " = {}\n";
+	file << "\n";
+	file << "function " + name + ".update()\n";
+	file << "end";
+	file.close();
 }

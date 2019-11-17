@@ -11,9 +11,8 @@
 
 #include "Collision.h"
 
-
 // int get_mouse_x()
-static int mouse_get_x(lua_State *L) {
+static int get_mouse_x(lua_State *L) {
 	int x = Environment::get().get_input_manager()->get_mouse_x();
 	Camera *camera = Environment::get().get_window()->get_camera();
 	x = int(x / float(camera->get_scale()) + camera->get_x());
@@ -23,7 +22,7 @@ static int mouse_get_x(lua_State *L) {
 }
 
 // int get_mouse_y()
-static int mouse_get_y(lua_State *L) {
+static int get_mouse_y(lua_State *L) {
 	int y = Environment::get().get_input_manager()->get_mouse_y();
 	Camera *camera = Environment::get().get_window()->get_camera();
 	y = int(y / float(camera->get_scale()) + camera->get_y());
@@ -54,8 +53,8 @@ static int collision(lua_State *L) {
 }
 
 void lua_init_globals(Lua *lua, lua_State *L) {
-	lua->register_global("get_mouse_x", mouse_get_x);
-	lua->register_global("get_mouse_y", mouse_get_y);
+	lua->register_global("get_mouse_x", get_mouse_x);
+	lua->register_global("get_mouse_y", get_mouse_y);
 	lua->register_global("get_time", get_time);
 	lua->register_global("get_player", get_player);
 	lua->register_global("collision", collision);

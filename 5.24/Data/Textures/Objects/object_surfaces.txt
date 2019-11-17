@@ -13,3 +13,5 @@
 11 Data/Textures/Objects/campfire.png
 12 Data/Textures/Objects/chest.png
 13 Data/Textures/Objects/lantern.png
+14 Data/Textures/Objects/steel_button.png
+15 Data/Textures/Objects/steel_bars.png

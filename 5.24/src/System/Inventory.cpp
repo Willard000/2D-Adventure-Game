@@ -56,7 +56,7 @@
 #define SPEED_COLOR {135, 210, 140, 200}
 #define LUCK_COLOR {250, 170, 100, 200}
 
-#define ENTITY_INFO_LABEL_XOFFSET 50
+#define ENTITY_INFO_LABEL_XOFFSET 25
 #define ENTITY_INFO_VAL_XOFFSET 350
 #define ENTITY_INFO_YOFFSET 100
 #define ENTITY_INFO_FT_SIZE 20
@@ -151,6 +151,10 @@ void Inventory::input() {
 
 	if (input_manager->is_key(SDL_SCANCODE_Q)) {
 		drop_item();
+	}
+
+	if (input_manager->is_key(SDL_SCANCODE_F)) {
+		_exit = true;
 	}
 }
 
@@ -298,18 +302,18 @@ void Inventory::render_item_info() {
 void Inventory::render_entity_info() {
 	Renderer *renderer = Environment::get().get_window()->get_renderer();
 
-	renderer->draw_text(&_entity_info.name, true);
-	renderer->draw_text(&_entity_info.level, true);		renderer->draw_text(&_entity_info.level_val, true);
-	renderer->draw_text(&_entity_info.exp, true);		renderer->draw_text(&_entity_info.exp_val, true);
-	renderer->draw_text(&_entity_info.health, true);	renderer->draw_text(&_entity_info.health_val, true);
-	renderer->draw_text(&_entity_info.mana, true);		renderer->draw_text(&_entity_info.mana_val, true);
-	renderer->draw_text(&_entity_info.damage, true);	renderer->draw_text(&_entity_info.damage_val, true);
-	renderer->draw_text(&_entity_info.armor, true);		renderer->draw_text(&_entity_info.armor_val, true);
-	renderer->draw_text(&_entity_info.hps, true);		renderer->draw_text(&_entity_info.hps_val, true);
-	renderer->draw_text(&_entity_info.mps, true);		renderer->draw_text(&_entity_info.mps_val, true);
-	renderer->draw_text(&_entity_info.drain, true);		renderer->draw_text(&_entity_info.drain_val, true);
-	renderer->draw_text(&_entity_info.speed, true);		renderer->draw_text(&_entity_info.speed_val, true);
-	renderer->draw_text(&_entity_info.luck, true);		renderer->draw_text(&_entity_info.luck_val, true);
+	renderer->draw_text(&_entity_info.name, true, DRAW_TEXT_NON_CENTER);
+	renderer->draw_text(&_entity_info.level, true, DRAW_TEXT_NON_CENTER);		renderer->draw_text(&_entity_info.level_val, true);
+	renderer->draw_text(&_entity_info.exp, true, DRAW_TEXT_NON_CENTER);			renderer->draw_text(&_entity_info.exp_val, true);
+	renderer->draw_text(&_entity_info.health, true, DRAW_TEXT_NON_CENTER);		renderer->draw_text(&_entity_info.health_val, true);
+	renderer->draw_text(&_entity_info.mana, true, DRAW_TEXT_NON_CENTER);		renderer->draw_text(&_entity_info.mana_val, true);
+	renderer->draw_text(&_entity_info.damage, true, DRAW_TEXT_NON_CENTER);		renderer->draw_text(&_entity_info.damage_val, true);
+	renderer->draw_text(&_entity_info.armor, true, DRAW_TEXT_NON_CENTER);		renderer->draw_text(&_entity_info.armor_val, true);
+	renderer->draw_text(&_entity_info.hps, true, DRAW_TEXT_NON_CENTER);			renderer->draw_text(&_entity_info.hps_val, true);
+	renderer->draw_text(&_entity_info.mps, true, DRAW_TEXT_NON_CENTER);			renderer->draw_text(&_entity_info.mps_val, true);
+	renderer->draw_text(&_entity_info.drain, true, DRAW_TEXT_NON_CENTER);		renderer->draw_text(&_entity_info.drain_val, true);
+	renderer->draw_text(&_entity_info.speed, true, DRAW_TEXT_NON_CENTER);		renderer->draw_text(&_entity_info.speed_val, true);
+	renderer->draw_text(&_entity_info.luck, true, DRAW_TEXT_NON_CENTER);		renderer->draw_text(&_entity_info.luck_val, true);
 }
 
 void Inventory::render_buttons() {

@@ -1,0 +1,4 @@
+# Steel Button
+stexture Data/Textures/Objects/steel_button.png
+iwidth 20
+iheight 9

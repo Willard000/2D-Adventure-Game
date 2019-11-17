@@ -1,0 +1,13 @@
+# Steel Bars
+
+itexture_id 15
+
+Position
+iwidth 80
+iheight 160
+
+Interact
+sinteract_name Steel_Bars
+sinteract_script_name Empty
+sinteract_script Data/Lua/Objects/empty.lua
+sinteract_ui_info  

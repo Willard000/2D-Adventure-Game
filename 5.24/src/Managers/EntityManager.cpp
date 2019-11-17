@@ -4,9 +4,12 @@
 #include "Lua.h"
 #include "Window.h"
 #include "Log.h"
+#include "InputManager.h"
+#include "UIManager.h"
 
 #include "ComponentLoader.h"
 #include "SpriteComponent.h"
+#include "InteractComponent.h"
 
 EntityManager::EntityManager() :
 	_player		( new Entity(TYPE_PLAYER, 0) )
@@ -34,6 +37,8 @@ void EntityManager::create_entity(const Type &type, Type_ID type_id, float x, fl
 	}
 
 	add_entity(entity);
+
+	create_interact_special_id(entity);
 
 	//Environment::get().get_log()->print("Creating Entity - " + type + " " + std::to_string(type_id) + " " + std::to_string(entity->get_id()));
 }
@@ -101,4 +106,11 @@ void EntityManager::remove_destroyed_entities() {
 		remove_entity(*it);
 	}
 	_entities_to_remove.clear();
+}
+
+void EntityManager::create_interact_special_id(Entity *entity) {
+	if (InteractComponent *interact = GetInteract(entity)) {
+		Environment::get().get_ui_manager()->set_current_text("Enter Special ID:");
+		Environment::get().get_input_manager()->get_text_input(&interact->special_id);
+	}
 }

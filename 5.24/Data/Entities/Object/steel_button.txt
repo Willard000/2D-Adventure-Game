@@ -1,0 +1,13 @@
+# Steel Button
+
+itexture_id 14
+
+Position
+iwidth 20
+iheight 8
+
+Interact
+sinteract_name Steel_Button
+sinteract_script_name Steel_Button
+sinteract_script Data/Lua/Objects/steel_button.lua
+sinteract_ui_info Press

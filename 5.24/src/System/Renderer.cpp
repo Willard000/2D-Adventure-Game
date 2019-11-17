@@ -150,6 +150,8 @@ void Renderer::render(Sprite *img, SpriteComponent *sprite, const SDL_Rect &posi
 	}
 }
 
+// flags
+// DRAW_TEXT_NON_CENTER - text.h // doesn't center text around x position ex. centered - (   text   ) non centered - ( text     )
 void Renderer::draw_text(Text *text, bool ui_element, int text_flag) {
 	if (!text->_is_loaded) {
 		text->load(text_flag);
@@ -177,7 +179,7 @@ void Renderer::draw_text(Text *text, bool ui_element, int text_flag) {
 }
 
 // flags
-// DRAW_RECT_EMPTY // doesnt not fill rectangle
+// DRAW_RECT_EMPTY // doesn't not fill rectangle
 // DRAW_RECT_CAMERA // applys camera
 void Renderer::draw_rect(const SDL_Rect &rect, const SDL_Color &color, int flag) {
 	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);

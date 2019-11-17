@@ -24,6 +24,7 @@
 
 extern const char *MAP_BASE_PATH;
 extern const char *MAP_SAVED_PATH;
+extern const char *MAP_SCRIPT_PATH;
 
 struct Map_Surface {
 	SDL_Surface *surfaces;
@@ -48,9 +49,12 @@ public:
 
 	void update();
 
+	void update_lua();
+
 	bool load(int id, bool is_base_map);
 	void save(bool is_base_map);
 	bool create_new(int id, std::string name, int width, int height, int base_tile_id);
+	void create_lua_file();
 
 	bool bound_collision(const SDL_Rect &pos);
 	bool solid_collision(const SDL_Rect &pos);
@@ -114,6 +118,9 @@ private:
 	SDL_Rect _rect;
 	std::string _name;
 	bool _is_loaded; 
+
+	std::string _script;
+	std::string _script_name;
 };
 
 #endif

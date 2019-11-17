@@ -18,6 +18,7 @@
 #include "EffectComponent.h"
 #include "CombatComponent.h"
 #include "ItemComponent.h"
+#include "InteractComponent.h"
 
 #include "Environment.h"
 #include "Log.h"
@@ -35,6 +36,7 @@
 #define FILE_EFFECT_COMPONENT "Effect"
 #define FILE_COMBAT_COMPONENT "Combat"
 #define FILE_ITEM_COMPONENT "Item"
+#define FILE_INTERACT_COMPONENT "Interact"
 
 #define FILE_POSITION_WIDTH "iwidth"
 #define FILE_POSITION_HEIGHT "iheight"
@@ -94,6 +96,11 @@
 #define FILE_ITEM_DROP_CHANCE "iitem_drop_chance"
 #define FILE_ITEM_EQUIPABLE "bitem_equipable"
 #define FILE_ITEM_USEABLE "bitem_useable"
+
+#define FILE_INTERACT_NAME "sinteract_name"
+#define FILE_INTERACT_SCRIPT_NAME "sinteract_script_name"
+#define FILE_INTERACT_SCRIPT "sinteract_script"
+#define FILE_INTERACT_UI_INFO "sinteract_ui_info"
 
 void load_position(FileReader &file, Entity *entity, PositionComponent *&position) {
 	int w = 32, h = 32;
@@ -247,6 +254,20 @@ void load_item(FileReader &file, Entity *entity, ItemComponent *&item) {
 	item = new ItemComponent(entity, slot, name, health, mana, damage, armor, hps, mps, drain, speed, luck, is_equipable, is_useable);
 }
 
+void load_interact(FileReader &file, Entity *entity, InteractComponent *&interact) {
+	std::string name = "";
+	std::string script_name = "";
+	std::string script = "";
+	std::string ui_info = "";
+
+	if (file.exists(FILE_INTERACT_NAME)) name = file.get_string(FILE_INTERACT_NAME);
+	if (file.exists(FILE_INTERACT_SCRIPT_NAME)) script_name = file.get_string(FILE_INTERACT_SCRIPT_NAME);
+	if (file.exists(FILE_INTERACT_SCRIPT)) script = file.get_string(FILE_INTERACT_SCRIPT);
+	if (file.exists(FILE_INTERACT_UI_INFO)) ui_info = file.get_string(FILE_INTERACT_UI_INFO);
+
+	interact = new InteractComponent(entity, name, script_name, script, ui_info);
+}
+
 bool load_components(Entity *entity) {
 	/*
 	Environment::get().get_log()->print(
@@ -343,6 +364,13 @@ bool load_components(Entity *entity) {
 		ItemComponent *item = nullptr;
 		load_item(file, entity, item);
 		entity->add_component(item);
+		numComponents++;
+	}
+
+	if (file.exists(FILE_INTERACT_COMPONENT)) {
+		InteractComponent *interact = nullptr;
+		load_interact(file, entity, interact);
+		entity->add_component(interact);
 		numComponents++;
 	}
 

@@ -8,6 +8,10 @@
 #include "PositionComponent.h"
 #include "MagicComponent.h"
 #include "PlayerComponent.h"
+#include "InteractComponent.h"
+
+#define INTERACT_RANGE_W 96
+#define INTERACT_RANGE_H 96
 
 void move_entity(Entity *entity, int dir) {
 	if (PositionComponent *position = GetPosition(entity)) {
@@ -52,6 +56,36 @@ void pickup_item() {
 				player_component->items.push_back(it->second);
 				items->erase(it);
 				return;
+			}
+		}
+	}
+}
+
+void interact() {
+	Entity *player = Environment::get().get_resource_manager()->get_player();
+	PositionComponent *player_position = GetPosition(player);
+
+	const auto entity_vec = Environment::get().get_resource_manager()->get_map()->get_entity_grid()->get_cells(player_position->rect);
+
+	for (auto &vec : entity_vec) {
+		for (auto &e : *vec) {
+			const int &type = e->get_type();
+			if (type == TYPE_OBJECT) {
+				InteractComponent *interact = GetInteract(e);
+				if (interact) {
+					PositionComponent *position = GetPosition(e);
+					SDL_Rect object_range = {
+						(position->rect.x + position->rect.w / 2) - INTERACT_RANGE_W / 2,
+						(position->rect.y + position->rect.h / 2) - INTERACT_RANGE_H / 2,
+						INTERACT_RANGE_W,
+						INTERACT_RANGE_H
+					};
+
+					if (collision(player_position->rect, object_range)) {
+						interact->interact();
+						break;
+					}
+				}
 			}
 		}
 	}

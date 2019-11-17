@@ -38,6 +38,8 @@ public:
 	std::map<ID, Entity *> *get_entities(const Type &type) { return &_entities[type]; }
 	std::map<Type, Entity_Map> *get_entities() { return &_entities; }
 
+	void create_interact_special_id(Entity *entity);
+
 	friend class ResourceManager;
 private:
 	void remove_destroyed_entities();

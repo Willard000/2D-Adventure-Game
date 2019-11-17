@@ -171,13 +171,17 @@ void InputManager::update() {
 		toggle_camera();
 	}
 
-	if (is_key(SDL_SCANCODE_E)) {
+	if (is_key(SDL_SCANCODE_F)) {
 		Entity *player = Environment::get().get_resource_manager()->get_player();
 		GetPlayer(player)->inventory.open();
 	}
 
 	if (is_key(SDL_SCANCODE_Q)) {
 		pickup_item();
+	}
+
+	if (is_key(SDL_SCANCODE_E)) {
+		interact();
 	}
 
 	if (is_key(SDL_SCANCODE_1)) {

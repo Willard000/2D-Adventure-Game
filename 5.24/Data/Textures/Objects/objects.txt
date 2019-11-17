@@ -13,3 +13,5 @@
 11 Data/Textures/Objects/campfire.txt
 12 Data/Textures/Objects/chest.txt
 13 Data/Textures/Objects/lantern.txt
+14 Data/Textures/Objects/steel_button.txt
+15 Data/Textures/Objects/steel_bars.txt

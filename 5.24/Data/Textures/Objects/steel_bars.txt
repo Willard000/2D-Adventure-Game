@@ -1,0 +1,4 @@
+# Steel Bars
+stexture Data/Textures/Objects/steel_bars.png
+iwidth 40
+iheight 80
