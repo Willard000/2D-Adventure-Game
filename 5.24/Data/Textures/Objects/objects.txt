@@ -15,3 +15,4 @@
 13 Data/Textures/Objects/lantern.txt
 14 Data/Textures/Objects/steel_button.txt
 15 Data/Textures/Objects/steel_bars.txt
+16 Data/Textures/Objects/ladder.txt

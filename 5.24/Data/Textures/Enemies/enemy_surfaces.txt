@@ -1,3 +1,4 @@
 # Enemy Surfaces
 0 Data/Textures/Enemies/Icons/bushki.png
 1 Data/Textures/Enemies/Icons/stickman.png
+2 Data/Textures/Enemies/Icons/stickman.png

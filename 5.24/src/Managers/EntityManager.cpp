@@ -110,7 +110,7 @@ void EntityManager::remove_destroyed_entities() {
 
 void EntityManager::create_interact_special_id(Entity *entity) {
 	if (InteractComponent *interact = GetInteract(entity)) {
-		Environment::get().get_ui_manager()->set_current_text("Enter Special ID:");
-		Environment::get().get_input_manager()->get_text_input(&interact->special_id);
+		Environment::get().get_ui_manager()->set_current_text("Enter Unique Object Data:");
+		Environment::get().get_input_manager()->get_text_input(&interact->data);
 	}
 }

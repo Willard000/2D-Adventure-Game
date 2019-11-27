@@ -33,7 +33,6 @@ ResourceManager::~ResourceManager() {
 
 void ResourceManager::update() {
 	update_entities();
-	update_text();
 	Environment::get().get_window()->get_camera()->update();
 	_map->update();
 	_textbox.update();

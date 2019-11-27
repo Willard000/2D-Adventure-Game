@@ -4,9 +4,10 @@
     "\\5.24",
     "\\5.24\\src",
     "\\5.24\\src\\Lua",
-    "\\5.24\\src\\System",
-    "\\5.24\\src\\System\\Utility"
+    "\\5.24\\src\\Resources",
+    "\\5.24\\src\\Resources\\Entities",
+    "\\5.24\\src\\Resources\\Entities\\Components"
   ],
-  "SelectedNode": "\\5.24\\src\\Lua\\Commands_Lua.cpp",
+  "SelectedNode": "\\5.24\\src\\Lua\\Interact_Lua.cpp",
   "PreviewInSolutionExplorer": false
 }

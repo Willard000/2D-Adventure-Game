@@ -1,3 +1,4 @@
 # Enemies
 0 Data/Entities/Enemy/bushki.txt
 1 Data/Entities/Enemy/bandit.txt
+2 Data/Entities/Enemy/bandit_leader.txt

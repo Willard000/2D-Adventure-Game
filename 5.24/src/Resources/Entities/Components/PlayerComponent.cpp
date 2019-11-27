@@ -52,13 +52,9 @@ PlayerComponent::~PlayerComponent() {
 void PlayerComponent::update() {
 	// WARP
 	if (PositionComponent *position = GetPosition(entity)) {
-		Map::Warp *warp = Environment::get().get_resource_manager()->get_map()->warp_collision(position->rect);
-		if (warp != nullptr) {
-			position->set(float(warp->to.x + (warp->to.w / 2) - (position->rect.w / 2)), float(warp->to.y + (warp->to.h / 2) - (position->rect.h / 2)));
-			if (warp->to_id != Environment::get().get_resource_manager()->get_map()->get_id()) {
-				Environment::get().get_resource_manager()->get_map()->save(false);
-				Environment::get().get_resource_manager()->load_map(warp->to_id, false);
-			}
+		Map::Warp *map_warp = Environment::get().get_resource_manager()->get_map()->warp_collision(position->rect);
+		if (map_warp != nullptr) {
+			warp(map_warp->to_id, map_warp->to);
 		}
 	}
 
@@ -204,4 +200,11 @@ void PlayerComponent::add_exp(int amount) {
 	);
 
 	Environment::get().get_resource_manager()->add_text(exp_text);
+}
+
+void PlayerComponent::warp(int map_id, SDL_Rect warp_rect) {
+	PositionComponent *position = GetPosition(entity);
+	position->set(float(warp_rect.x + (warp_rect.w / 2) - (position->rect.w / 2)), float(warp_rect.y + (warp_rect.h / 2) - (position->rect.h / 2)));
+	Environment::get().get_resource_manager()->get_map()->save(false);
+	Environment::get().get_resource_manager()->load_map(map_id, false);
 }

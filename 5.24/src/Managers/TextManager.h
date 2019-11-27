@@ -10,7 +10,7 @@ class TextManager {
 public:
 	TextManager();
 	~TextManager();
-	void update_text();
+	//void update_text();
 	void add_text(Text *text);
 	void remove_text(Text *text);
 	void render_text();

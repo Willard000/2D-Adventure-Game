@@ -47,6 +47,7 @@ void MagicComponent::cast_main(float x_, float y_) {
 		}
 		spell_comp->cast(x_, y_, attacker_info);
 		Environment::get().get_resource_manager()->add_entity(spell);
-		can_cast = false;
+		cast_timer.reset();
+		//can_cast = false;
 	}
 }

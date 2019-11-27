@@ -11,6 +11,7 @@
 #include "CombatComponent.h"
 
 #include "Environment.h"
+#include "ResourceManager.h"
 #include "Log.h"
 
 static Entity *entity_new(lua_State *L) {
@@ -114,6 +115,8 @@ static int entity_get_combat(lua_State *L) {
 	return 1;
 }
 
+
+
 static luaL_Reg entity_table[] = {
 	{NULL, NULL}
 };
@@ -138,6 +141,19 @@ static luaL_Reg entity_metatable[] = {
 	{NULL, NULL}
 };
 
+// void create_entity(int type, int type_id, float x, float y)
+static int create_entity(lua_State *L) {
+	int type = (int)luaL_checknumber(L, -4);
+	int type_id = (int)luaL_checknumber(L, -3);
+	float x = (float)luaL_checknumber(L, -2);
+	float y = (float)luaL_checknumber(L, -1);
+
+	Environment::get().get_resource_manager()->create_entity(type, type_id, x, y);
+
+	return 0;
+}
+
 void lua_init_entity(Lua *lua, lua_State *L) {
 	luaW_register<Entity>(L, "Entity", entity_table, entity_metatable, entity_new);
+	lua->register_global("create_entity", create_entity);
 }

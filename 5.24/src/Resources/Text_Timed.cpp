@@ -6,7 +6,8 @@ Text_Timed::Text_Timed(
 	int font_size,
 	Uint32 wrap_length,
 	int x, int y,
-	int time
+	int time,
+	bool ui_element
 ) :
 	Text		( text, color, font_size, wrap_length, x, y ),
 	_timer		( time ),

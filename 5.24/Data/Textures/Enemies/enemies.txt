@@ -1,3 +1,4 @@
 # Enemies
 0 Data/Textures/Enemies/bushki.txt
 1 Data/Textures/Enemies/stickman.txt
+2 Data/Textures/Enemies/stickman.txt

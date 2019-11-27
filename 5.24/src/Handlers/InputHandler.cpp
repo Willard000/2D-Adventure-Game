@@ -38,6 +38,7 @@ void cast_spell(float x, float y) {
 	MagicComponent *magic = GetMagic(Environment::get().get_resource_manager()->get_player());
 	if (magic) {
 		magic->cast_main(x, y);
+		magic->can_cast = false;
 	}
 }
 
@@ -73,15 +74,8 @@ void interact() {
 			if (type == TYPE_OBJECT) {
 				InteractComponent *interact = GetInteract(e);
 				if (interact) {
-					PositionComponent *position = GetPosition(e);
-					SDL_Rect object_range = {
-						(position->rect.x + position->rect.w / 2) - INTERACT_RANGE_W / 2,
-						(position->rect.y + position->rect.h / 2) - INTERACT_RANGE_H / 2,
-						INTERACT_RANGE_W,
-						INTERACT_RANGE_H
-					};
-
-					if (collision(player_position->rect, object_range)) {
+					PositionComponent *object_position = GetPosition(e);
+					if (interact_in_range(player_position->rect, object_position->rect)) {
 						interact->interact();
 						break;
 					}

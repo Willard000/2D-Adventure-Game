@@ -15,3 +15,4 @@
 13 Data/Entities/Object/lantern.txt
 14 Data/Entities/Object/steel_button.txt
 15 Data/Entities/Object/steel_bars.txt
+16 Data/Entities/Object/ladder.txt

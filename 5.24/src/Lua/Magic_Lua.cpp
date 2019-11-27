@@ -23,6 +23,20 @@ static int magic_cast(lua_State *L) {
 	return 0;
 }
 
+// void Magic:reset_cast_time()
+static int magic_reset_cast_time(lua_State *L) {
+	MagicComponent *magic = luaW_check<MagicComponent>(L, -1);
+	magic->can_cast = true;
+	return 0;
+}
+
+// void Magic:stop_cast_time()
+static int magic_stop_cast_time(lua_State *L) {
+	MagicComponent *magic = luaW_check<MagicComponent>(L, -1);
+	magic->can_cast = false;
+	return 0;
+}
+
 static luaL_Reg magic_table[] = {
 	{NULL, NULL}
 };
@@ -30,6 +44,8 @@ static luaL_Reg magic_table[] = {
 static luaL_Reg magic_metatable[] = {
 	// func
 	{"cast", magic_cast},
+	{"reset_cast_time", magic_reset_cast_time},
+	{"stop_cast_time", magic_stop_cast_time},
 
 	// set
 

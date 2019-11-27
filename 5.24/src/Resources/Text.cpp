@@ -15,7 +15,7 @@ Text::Text() :
 	_is_loaded		( false )
 {}
 
-Text::Text(std::string text, SDL_Color color, int font_size, Uint32 wrap_length, int x, int y) :
+Text::Text(std::string text, SDL_Color color, int font_size, Uint32 wrap_length, int x, int y, bool ui_element) :
 	_text			( text ),
 	_color			( color ),
 	_font_size		( font_size ),
@@ -23,6 +23,7 @@ Text::Text(std::string text, SDL_Color color, int font_size, Uint32 wrap_length,
 	_texture		( nullptr ),
 	_x				( x ),
 	_y				( y ),
+	_ui_element		( ui_element ),
 	_rect			( { x, y, 0, 0 } ),
 	_is_loaded		( false )
 {}
@@ -35,6 +36,7 @@ Text &Text::operator=(const Text& rhs) {
 	_wrap_length = _wrap_length;
 	_x = rhs._x;
 	_y = rhs._y;
+	_ui_element = rhs._ui_element;
 	_rect = { _x, _y, 0, 0 };
 
 	if (_texture)

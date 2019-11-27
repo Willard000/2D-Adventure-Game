@@ -13,12 +13,15 @@ public:
 		int font_size,
 		Uint32 wrap_length,
 		int x, int y,
-		int time 
+		int time,
+		bool ui_element = false
 	);
 
 	void update();
 
 	bool end() { return _end; }
+
+	int get_type() { return TEXT_TYPE_TIMED; }
 private:
 	bool _end;
 	Timer _timer;

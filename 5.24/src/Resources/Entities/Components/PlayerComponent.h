@@ -33,6 +33,8 @@ struct PlayerComponent : public Component {
 	void level_up();
 	void add_exp(int amount);
 
+	void warp(int map_id, SDL_Rect warp_rect);
+
 	int level, exp, exp_to_level;
 	std::string name;
 	std::vector<Entity *> items;

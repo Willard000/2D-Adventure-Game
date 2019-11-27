@@ -1,3 +1,4 @@
 # Icons
 0 Data/Textures/Enemies/Icons/bushki.txt
 1 Data/Textures/Enemies/Icons/stickman.txt
+2 Data/Textures/Enemies/Icons/stickman.txt

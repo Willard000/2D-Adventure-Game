@@ -49,7 +49,7 @@
 #define FILE_ENTITY_PATHING_X "ipathing_x"
 #define FILE_ENTITY_PATHING_Y "ipathing_y"
 
-#define FILE_ENTITY_SPECIAL_ID "ispecial_id" // used for specific purposed based on object / interact script
+#define FILE_ENTITY_INTERACT_DATA "sinteract_data" // used for specific purposed based on object / interact script
 
 #define FILE_MAP_SEPERATOR "."
 
@@ -496,7 +496,7 @@ void Map::load_entities(FileReader &file) {
 	Path path;
 	std::vector<Path> pathing;
 
-	int special_id = 0;
+	std::string interact_data = "";
 
 	while ((stream >> key)) {
 		if (key == FILE_MAP_SEPERATOR) {
@@ -515,7 +515,8 @@ void Map::load_entities(FileReader &file) {
 				}
 			}
 			if (InteractComponent *interact = GetInteract(entity)) {
-				interact->special_id = special_id;
+				for (auto it = interact_data.begin(); it != interact_data.end(); ++it) { if (*it == '_') *it = ' '; }
+				interact->data = interact_data;
 			}
 			Environment::get().get_resource_manager()->add_entity(entity);
 		}
@@ -529,7 +530,7 @@ void Map::load_entities(FileReader &file) {
 			else if (key == FILE_ENTITY_SCALE) scale = std::stof(data);
 			else if (key == FILE_ENTITY_PATHING_X) path.x = std::stoi(data);
 			else if (key == FILE_ENTITY_PATHING_Y) { path.y = std::stoi(data);	pathing.push_back(path); }
-			else if (key == FILE_ENTITY_SPECIAL_ID) special_id = std::stoi(data);
+			else if (key == FILE_ENTITY_INTERACT_DATA) interact_data = data;
 		}
 	}
 }
@@ -558,7 +559,9 @@ void Map::save_entities(std::ostream &file) {
 				}
 
 				if (InteractComponent *interact = GetInteract(itt->second)) {
-					file << FILE_ENTITY_SPECIAL_ID << " " << interact->special_id << " ";
+					std::string interact_data = interact->data;
+					for (auto it = interact_data.begin(); it != interact_data.end(); ++it) { if (*it == ' ') *it = '_'; }
+					file << FILE_ENTITY_INTERACT_DATA << " " << interact_data << " ";
 				}
 
 				file << FILE_MAP_SEPERATOR << " ";
