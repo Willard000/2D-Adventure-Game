@@ -15,6 +15,7 @@
 #include "PositionComponent.h"
 #include "EnemyComponent.h"
 #include "InteractComponent.h"
+#include "NPCComponent.h"
 
 #include "Collision.h"
 
@@ -514,6 +515,12 @@ void Map::load_entities(FileReader &file) {
 					pathing.clear();
 				}
 			}
+			if (NPCComponent *npc = GetNPC(entity)) {
+				if (pathing.size() > 0) {
+					npc->pathing = pathing;
+					pathing.clear();
+				}
+			}
 			if (InteractComponent *interact = GetInteract(entity)) {
 				for (auto it = interact_data.begin(); it != interact_data.end(); ++it) { if (*it == '_') *it = ' '; }
 				interact->data = interact_data;
@@ -542,11 +549,11 @@ void Map::save_entities(std::ostream &file) {
 		if (it->first != TYPE_SPELL) {
 			for (auto itt = it->second.begin(); itt != it->second.end(); ++itt) {
 				file << FILE_ENTITY_TYPE << " " << itt->second->get_type() << " "
-					<< FILE_ENTITY_TYPE_ID << " " << itt->second->get_type_id() << " ";
+					 << FILE_ENTITY_TYPE_ID << " " << itt->second->get_type_id() << " ";
 
 				if (PositionComponent *position = GetPosition(itt->second)) {
 					file << FILE_ENTITY_POSITION_X << " " << position->pos_x << " "
-						<< FILE_ENTITY_POSITION_Y << " " << position->pos_y << " ";
+						 << FILE_ENTITY_POSITION_Y << " " << position->pos_y << " ";
 					if (position->rotation != 0.0f)		file << FILE_ENTITY_ROTATION << " " << position->rotation << " ";
 					if (position->scale_f != 1.0f)		file << FILE_ENTITY_SCALE << " " << position->scale_f << " ";
 				}
@@ -554,7 +561,14 @@ void Map::save_entities(std::ostream &file) {
 				if (EnemyComponent *enemy = GetEnemy(itt->second)) {
 					for (auto &p : enemy->pathing) {
 						file << FILE_ENTITY_PATHING_X << " " << p.x << " "
-							<< FILE_ENTITY_PATHING_Y << " " << p.y << " ";
+						 	 << FILE_ENTITY_PATHING_Y << " " << p.y << " ";
+					}
+				}
+
+				if (NPCComponent *npc = GetNPC(itt->second)) {
+					for (auto &p : npc->pathing) {
+						file << FILE_ENTITY_PATHING_X << " " << p.x << " "
+						 	 << FILE_ENTITY_PATHING_Y << " " << p.y << " ";
 					}
 				}
 

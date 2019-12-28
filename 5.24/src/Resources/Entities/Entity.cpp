@@ -6,6 +6,7 @@
 #include "PlayerComponent.h"
 #include "EnemyComponent.h"
 #include "SpellComponent.h"
+#include "NPCComponent.h"
 
 int create_id() {
 	static int id = 0;
@@ -66,6 +67,8 @@ bool Entity::is_collision() {
 		return GetEnemy(this)->is_collision();
 	case TYPE_SPELL:
 		return GetSpell(this)->is_collision();
+	case TYPE_NPC:
+		return GetNPC(this)->is_collision();
 	}
 
 	return false;

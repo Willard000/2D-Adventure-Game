@@ -7,6 +7,8 @@
 #include "ResourceManager.h"
 #include "Window.h"
 
+#include "QuestLoader.h"
+
 #include "FileReader.h"
 
 #include "Globals.h"
@@ -20,6 +22,7 @@
 
 #define FILE_PLAYER_INVENTORY "inventory"
 #define FILE_PLAYER_EQUIPPED "equipped"
+#define FILE_PLAYER_QUEST_LOG "quest_log"
 
 #define FILE_PLAYER_NAME "sname"
 #define FILE_PLAYER_LEVEL "ilevel"
@@ -27,6 +30,8 @@
 #define FILE_PLAYER_HEALTH "ihealth"
 #define FILE_PLAYER_MANA "imana"
 #define FILE_PLAYER_MAP_ID "imap_id"
+
+#define FILE_PLAYER_SEPERATOR "."
 
 void load_position(FileReader &file, Entity *player) {
 	PositionComponent *player_position = GetPosition(player);
@@ -95,6 +100,30 @@ void load_info(FileReader &file, Entity *player) {
 	}
 }
 
+void load_quest_log(FileReader &file, Entity *player) {
+	PlayerComponent *player_component = GetPlayer(player);
+	
+	if (!file.exists(FILE_PLAYER_QUEST_LOG))
+		return;
+
+	std::stringstream stream(file.get_string(FILE_PLAYER_QUEST_LOG));
+	std::string quest_data, data;	
+
+	int i = 0;
+	while (stream >> data) {
+		if (data == FILE_PLAYER_SEPERATOR) {
+			if (i < QUEST_LOG_CAPACITY && player_component->quest_log[i] != nullptr) {
+				std::cout << quest_data << std::endl;
+				player_component->quest_log[i]->load(std::stringstream(quest_data));
+				++i;
+			}
+		}
+		else {
+			quest_data += data + " ";
+		}
+	}
+}
+
 void load_player() {
 	FileReader file(PLAYER_FILE);
 	Entity *player = Environment::get().get_resource_manager()->get_player();
@@ -102,6 +131,8 @@ void load_player() {
 	load_position(file, player);
 	load_items(file, player);
 	load_info(file, player);
+	load_quests(); // loads quest informaiton
+	load_quest_log(file, player); // loads the save data for quests
 
 	if (file.exists(FILE_PLAYER_MAP_ID)) Environment::get().get_resource_manager()->load_map(file.get_int(FILE_PLAYER_MAP_ID), false);
 }
@@ -136,6 +167,15 @@ void save_player() {
 			file << -1 << " ";
 		else
 			file << item->get_type_id() << " ";
+	}
+	file << std::endl;
+
+	file << FILE_PLAYER_QUEST_LOG << " ";
+	for (auto &quest : player_component->quest_log) {
+		if (quest != nullptr)
+			quest->save(file);
+
+		file << ". ";
 	}
 	file << std::endl;
 

@@ -1,10 +1,14 @@
 #include <SDL.h>
 
 #include <map>
+#include <vector>
 
+#include "Entity.h"
 #include "Button.h"
+#include "Path.h"
 
 #include "Globals.h"
+
 
 #ifndef UI_MANAGER_H
 #define UI_MANAGER_H
@@ -94,6 +98,9 @@ public:
 
 	void place_warp();
 	void place_enemy(float x = 0.0f, float y = 0.0f);
+	void place_npc(float x = 0.0f, float y = 0.0f);
+
+	std::vector<Path> get_path(Entity *entity);
 
 	int get_state() { return _state; }
 

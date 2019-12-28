@@ -120,8 +120,9 @@ bool SpellComponent::is_collision() {
 		for (auto &e : *vec) {
 			const int &type = e->get_type();
 			if (type == TYPE_OBJECT ||
-				type == TYPE_ENEMY ||
-				type == TYPE_PLAYER) {
+				type == TYPE_ENEMY  ||
+				type == TYPE_PLAYER ||
+				type == TYPE_NPC) {
 				if (collision(position->rect, GetPosition(e)->rect) &&
 					e != caster && e->get_type() != caster->get_type()) {
 

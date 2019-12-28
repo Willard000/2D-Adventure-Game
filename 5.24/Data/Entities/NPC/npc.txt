@@ -1,0 +1,3 @@
+# NPCS
+0 Data/Entities/NPC/old_man.txt
+1 Data/Entities/NPC/greg.txt

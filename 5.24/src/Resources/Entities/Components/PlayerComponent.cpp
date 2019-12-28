@@ -47,6 +47,10 @@ PlayerComponent::~PlayerComponent() {
 	for (auto &item : equipped_items) {
 		delete item;
 	}
+
+	for (auto &quest : quest_log) {
+		delete quest;
+	}
 }
 
 void PlayerComponent::update() {
@@ -79,7 +83,8 @@ bool PlayerComponent::is_collision() {
 		for (auto &e : *vec) {
 			const int &type = e->get_type();
 			if (type == TYPE_OBJECT ||
-				type == TYPE_ENEMY) {
+				type == TYPE_ENEMY  ||
+				type == TYPE_NPC) {
 				if (collision(position->rect, GetPosition(e)->rect))
 					return true;
 			}

@@ -51,6 +51,10 @@ void ResourceManager::render_entities() {
 		render_entity(enemy.second);
 	}
 
+	for (auto &npc : _entities[TYPE_NPC]) {
+		render_entity(npc.second);
+	}
+
 	render_entity(_player);
 
 	for (auto &spell : _entities[TYPE_SPELL]) {
@@ -142,9 +146,11 @@ void ResourceManager::render_editor(const UI::Element_Area &element_area, const 
 		renderer->render(_editor_effects_texture, element_area.area, true);
 	else if (selection.type == TYPE_ITEM)
 		renderer->render(_editor_items_texture, element_area.area, true);
+	else if (selection.type == TYPE_NPC)
+		renderer->render(_editor_npcs_texture, element_area.area, true);
 
 	if (selection.id != -1) {
-		if (selection.type == TYPE_ENEMY || selection.type == TYPE_EFFECT) {
+		if (selection.type == TYPE_ENEMY || selection.type == TYPE_EFFECT || selection.type == TYPE_NPC) {
 			renderer->render(get_texture_info(selection.type + TYPE_EX_ICON, selection.id), element_area.info, true);
 		}
 		else {

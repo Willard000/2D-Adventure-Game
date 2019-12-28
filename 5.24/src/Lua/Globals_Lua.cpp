@@ -52,10 +52,30 @@ static int collision(lua_State *L) {
 	return 1;
 }
 
+// void print_blank()
+static int print_blank(lua_State *L) {
+	std::string string = luaL_checkstring(L, -1);
+	Environment::get().get_resource_manager()->get_textbox().print(string);
+	return 0;
+}
+
+// void print_color()
+static int print_color(lua_State *L) {
+	std::string string = luaL_checkstring(L, -5);
+	Uint8 r = luaL_checkint(L, -4);
+	Uint8 g = luaL_checkint(L, -3);
+	Uint8 b = luaL_checkint(L, -2);
+	Uint8 a = luaL_checkint(L, -1);
+	Environment::get().get_resource_manager()->get_textbox().print(string, { r, g, b, a });
+	return 0;
+}
+
 void lua_init_globals(Lua *lua, lua_State *L) {
 	lua->register_global("get_mouse_x", get_mouse_x);
 	lua->register_global("get_mouse_y", get_mouse_y);
 	lua->register_global("get_time", get_time);
 	lua->register_global("get_player", get_player);
 	lua->register_global("collision", collision);
+	lua->register_global("print_blank", print_blank);
+	lua->register_global("print_color", print_color);
 }

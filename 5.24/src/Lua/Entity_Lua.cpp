@@ -9,6 +9,7 @@
 #include "MagicComponent.h"
 #include "EffectComponent.h"
 #include "CombatComponent.h"
+#include "NPCComponent.h"
 
 #include "Environment.h"
 #include "ResourceManager.h"
@@ -115,6 +116,17 @@ static int entity_get_combat(lua_State *L) {
 	return 1;
 }
 
+// NPCComponent Entity:get_npc()
+static int entity_get_npc(lua_State *L) {
+	Entity *entity = luaW_check<Entity>(L, -1);
+	NPCComponent *npc = GetNPC(entity);
+	if (npc)
+		luaW_push<NPCComponent>(L, npc);
+	else
+		lua_pushnil(L);
+	return 1;
+}
+
 
 
 static luaL_Reg entity_table[] = {
@@ -137,6 +149,7 @@ static luaL_Reg entity_metatable[] = {
 	{"get_magic", entity_get_magic},
 	{"get_effect", entity_get_effect},
 	{"get_combat", entity_get_combat},
+	{"get_npc", entity_get_npc},
 
 	{NULL, NULL}
 };

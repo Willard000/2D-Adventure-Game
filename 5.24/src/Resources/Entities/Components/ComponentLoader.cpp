@@ -19,6 +19,7 @@
 #include "CombatComponent.h"
 #include "ItemComponent.h"
 #include "InteractComponent.h"
+#include "NPCComponent.h"
 
 #include "Environment.h"
 #include "Log.h"
@@ -37,6 +38,7 @@
 #define FILE_COMBAT_COMPONENT "Combat"
 #define FILE_ITEM_COMPONENT "Item"
 #define FILE_INTERACT_COMPONENT "Interact"
+#define FILE_NPC_COMPONENT "NPC"
 
 #define FILE_POSITION_WIDTH "iwidth"
 #define FILE_POSITION_HEIGHT "iheight"
@@ -101,6 +103,10 @@
 #define FILE_INTERACT_SCRIPT_NAME "sinteract_script_name"
 #define FILE_INTERACT_SCRIPT "sinteract_script"
 #define FILE_INTERACT_UI_INFO "sinteract_ui_info"
+
+#define FILE_NPC_SCRIPT_NAME "snpc_script_name"
+#define FILE_NPC_SCRIPT "snpc_script"
+#define FILE_NPC_QUEST_ID "inpc_quest_id"
 
 void load_position(FileReader &file, Entity *entity, PositionComponent *&position) {
 	int w = 32, h = 32;
@@ -268,6 +274,18 @@ void load_interact(FileReader &file, Entity *entity, InteractComponent *&interac
 	interact = new InteractComponent(entity, name, script_name, script, ui_info);
 }
 
+void load_npc(FileReader &file, Entity *entity, NPCComponent *&npc) {
+	std::string script_name = "";
+	std::string script = "";
+	int quest_id = 0;
+
+	if (file.exists(FILE_NPC_SCRIPT_NAME)) script_name = file.get_string(FILE_NPC_SCRIPT_NAME);
+	if (file.exists(FILE_NPC_SCRIPT)) script = file.get_string(FILE_NPC_SCRIPT);
+	if (file.exists(FILE_NPC_QUEST_ID)) quest_id = file.get_int(FILE_NPC_QUEST_ID);
+
+	npc = new NPCComponent(entity, script_name, script, quest_id);
+}
+
 bool load_components(Entity *entity) {
 	/*
 	Environment::get().get_log()->print(
@@ -371,6 +389,13 @@ bool load_components(Entity *entity) {
 		InteractComponent *interact = nullptr;
 		load_interact(file, entity, interact);
 		entity->add_component(interact);
+		numComponents++;
+	}
+
+	if (file.exists(FILE_NPC_COMPONENT)) {
+		NPCComponent *npc = nullptr;
+		load_npc(file, entity, npc);
+		entity->add_component(npc);
 		numComponents++;
 	}
 

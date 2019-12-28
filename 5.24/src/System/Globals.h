@@ -12,6 +12,8 @@
 
 #define PLAYER_FILE "Data/player.txt"
 
+#define QUEST_FOLDER "Data/Quests"
+
 enum {
 	MOVE_UP = 1,
 	MOVE_DOWN,
@@ -32,6 +34,7 @@ enum {
 	TYPE_ENEMY,
 	TYPE_EFFECT,
 	TYPE_ITEM,
+	TYPE_NPC,
 
 
 	// ^ have textures ^
@@ -53,6 +56,7 @@ const std::string STYPE_SPELL = "Spell";
 const std::string STYPE_ENEMY = "Enemy";
 const std::string STYPE_EFFECT = "Effect";
 const std::string STYPE_ITEM = "Item";
+const std::string STYPE_NPC = "NPC";
 
 const std::string STYPE_SOLID = "Solid";
 const std::string STYPE_WARP = "Warp";
@@ -68,6 +72,7 @@ const inline std::string &STYPE(const int &type) {
 	case TYPE_ENEMY:		return STYPE_ENEMY;
 	case TYPE_EFFECT:		return STYPE_EFFECT;
 	case TYPE_ITEM:			return STYPE_ITEM;
+	case TYPE_NPC:			return STYPE_NPC;
 	case TYPE_SOLID:		return STYPE_SOLID;
 	case TYPE_WARP:			return STYPE_WARP;
 	case TYPE_SELECT:		return STYPE_SELECT;

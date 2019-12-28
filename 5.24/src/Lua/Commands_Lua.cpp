@@ -50,5 +50,5 @@ static int player_collision(lua_State *L) {
 void lua_init_commands(Lua *lua, lua_State *L) {
 	lua->register_global("teleport", teleport);
 	lua->register_global("teleport_to", teleport_to);
-	lua->register_global("player_collision", player_collision);
+	lua->register_global("tcl", player_collision);
 }

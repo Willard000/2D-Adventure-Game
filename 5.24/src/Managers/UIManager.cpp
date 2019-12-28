@@ -16,6 +16,7 @@
 
 #include "PositionComponent.h"
 #include "EnemyComponent.h"
+#include "NPCComponent.h"
 
 #define MOUSE_WIDTH 1
 #define MOUSE_HEIGHT 1
@@ -269,7 +270,7 @@ void UIManager::render() {
 			int x, y;
 			get_real_mouse_location(x, y);
 			Texture *img = nullptr;
-			if (_selection.type == TYPE_ENEMY || _selection.type == TYPE_EFFECT)
+			if (_selection.type == TYPE_ENEMY || _selection.type == TYPE_EFFECT || _selection.type == TYPE_NPC)
 				img = Environment::get().get_resource_manager()->get_texture_info(_selection.type + TYPE_EX_ICON, _selection.id);
 			else
 				img = Environment::get().get_resource_manager()->get_texture_info(_selection.type, _selection.id);
@@ -407,6 +408,11 @@ bool UIManager::place_on_map() {
 
 	if (_selection.type == TYPE_ENEMY) {
 		place_enemy((float)x, (float)y);
+		return true;
+	}
+
+	if (_selection.type == TYPE_NPC) {
+		place_npc((float)x, (float)y);
 		return true;
 	}
 
@@ -566,12 +572,31 @@ void UIManager::place_enemy(float x, float y) {
 	}
 
 	EnemyComponent *enemy = GetEnemy(entity);
-	if (!enemy) {
-		Environment::get().get_resource_manager()->add_entity(entity);
-		return;
+	if (enemy) {
+		enemy->pathing = get_path(entity);
 	}
 
-	std::vector<Path> pathing_;
+	Environment::get().get_resource_manager()->add_entity(entity);
+}
+
+void UIManager::place_npc(float x, float y) {
+	Entity *entity = new Entity(_selection.type, _selection.id);
+	if (PositionComponent *position = GetPosition(entity)) {
+		position->set(x - (position->rect.w / 2), y - (position->rect.h / 2));
+	}
+
+	NPCComponent *npc = GetNPC(entity);
+	if (npc) {
+		npc->pathing = get_path(entity);
+	}
+
+	Environment::get().get_resource_manager()->add_entity(entity);
+
+	Environment::get().get_resource_manager()->create_interact_special_id(entity);
+}
+
+std::vector<Path> UIManager::get_path(Entity *entity) {
+	std::vector<Path> pathing;
 	while (Environment::get().get_input_manager()->get()) {
 		Environment::get().get_window()->get_renderer()->clear();
 
@@ -580,7 +605,7 @@ void UIManager::place_enemy(float x, float y) {
 		Environment::get().get_input_manager()->update_editor_camera();
 
 		if (Environment::get().get_input_manager()->is_key(SDL_SCANCODE_SPACE)) {
-			enemy->pathing = pathing_;
+			return pathing;
 			break;
 		}
 
@@ -597,7 +622,7 @@ void UIManager::place_enemy(float x, float y) {
 			path.y = mouse_y;
 
 			bool already_exists = false;
-			for (auto &p : pathing_) {
+			for (auto &p : pathing) {
 				if (p.x == path.x && p.y == path.y) {
 					already_exists = true;
 					break;
@@ -605,14 +630,14 @@ void UIManager::place_enemy(float x, float y) {
 			}
 
 			if (!already_exists) {
-				pathing_.push_back(path);
+				pathing.push_back(path);
 			}
 		}
 
 		Environment::get().get_resource_manager()->render();
 		Environment::get().get_resource_manager()->render_entity(entity);
 
-		for (auto &p : pathing_) {
+		for (auto &p : pathing) {
 			Environment::get().get_window()->get_renderer()->draw_rect({ p.x - PATH_WIDTH / 2, p.y - PATH_HEIGHT / 2, PATH_WIDTH, PATH_HEIGHT }, PATH_COLOR, DRAW_RECT_CAMERA);
 		}
 
@@ -627,7 +652,7 @@ void UIManager::place_enemy(float x, float y) {
 		}
 	}
 
-	Environment::get().get_resource_manager()->add_entity(entity);
+	return pathing;
 }
 
 Element UIManager::select_from_map() {
@@ -764,7 +789,6 @@ void UIManager::update_map_selection_text() {
 	PositionComponent *position = GetPosition(selection);
 	if (!position)
 		return;
-
 
 
 	_scale_text.set_text(SCALE_TEXT + std::to_string(position->scale_f));

@@ -4,3 +4,4 @@
 4 Data/Textures/Enemies/enemy_surfaces.txt
 5 Data/Textures/Effects/effect_surfaces.txt
 6 Data/Textures/Items/item_surfaces.txt
+7 Data/Textures/NPCS/npc_surfaces.txt

@@ -6,11 +6,13 @@
 #include "Entity.h"
 
 #include "Inventory.h"
+#include "Quest.h"
 
 #ifndef PLAYER_COMPONENT_H
 #define PLAYER_COMPONENT_H
 
 #define MAX_ITEMS 100
+#define QUEST_LOG_CAPACITY 50
 
 struct PlayerComponent : public Component {
 	PlayerComponent(Entity *entity_, std::string name);
@@ -39,6 +41,7 @@ struct PlayerComponent : public Component {
 	std::string name;
 	std::vector<Entity *> items;
 	std::array<Entity *, TOTAL_SLOTS> equipped_items = { nullptr };
+	std::array<Quest *, QUEST_LOG_CAPACITY> quest_log = { nullptr };
 
 	Inventory inventory;
 

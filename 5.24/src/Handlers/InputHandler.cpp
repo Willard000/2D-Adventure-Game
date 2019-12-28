@@ -71,7 +71,7 @@ void interact() {
 	for (auto &vec : entity_vec) {
 		for (auto &e : *vec) {
 			const int &type = e->get_type();
-			if (type == TYPE_OBJECT) {
+			if (type == TYPE_OBJECT || type == TYPE_NPC) {
 				InteractComponent *interact = GetInteract(e);
 				if (interact) {
 					PositionComponent *object_position = GetPosition(e);

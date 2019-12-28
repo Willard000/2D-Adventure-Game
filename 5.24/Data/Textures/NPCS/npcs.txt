@@ -1,0 +1,3 @@
+# NPCS
+0 Data/Textures/NPCS/stickman.txt
+1 Data/Textures/NPCS/stickman.txt

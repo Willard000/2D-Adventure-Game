@@ -10,68 +10,6 @@
 
 #include "Collision.h"
 
-bool path_collision(const Path &path, SDL_Rect rect) {
-	rect.x += rect.w / 2;
-	rect.y += rect.h / 2;
-
-	if (path.dx > 0) {
-		if (path.dy > 0) {
-			if (rect.x >= path.x && rect.y >= path.y) {
-				return true;
-			}
-			return false;
-		}
-		if (path.dy < 0) {
-			if (rect.x >= path.x && rect.y <= path.y) {
-				return true;
-			}
-			return false;
-		}
-		if (path.dy == 0) {
-			if (rect.x >= path.x) {
-				return true;
-			}
-			return false;
-		}
-	}
-	else if (path.dx < 0) {
-		if (path.dy > 0) {
-			if (rect.x <= path.x && rect.y >= path.y) {
-				return true;
-			}
-			return false;
-		}
-		if (path.dy < 0) {
-			if (rect.x <= path.x && rect.y <= path.y) {
-				return true;
-			}
-			return false;
-		}
-		if (path.dy == 0) {
-			if (rect.x <= path.x) {
-				return true;
-			}
-			return false;
-		}
-	}
-	else if (path.dx == 0) {
-		if (path.dy > 0) {
-			if (rect.y >= path.y) {
-				return true;
-			}
-			return false;
-		}
-		if (path.dy < 0) {
-			if (rect.y <= path.y) {
-				return true;
-			}
-			return false;
-		}
-	}
-
-	return false;
-}
-
 EnemyComponent::EnemyComponent(Entity *entity_, std::string name_, std::string script_, Combat_Range combat_range_, std::vector<Drop> &drop_table_) :
 	Component		( entity_ ),
 	name			( name_ ),
@@ -97,7 +35,7 @@ EnemyComponent *EnemyComponent::copy(Entity *new_entity) const {
 }
 
 void EnemyComponent::update() {
-	update_path();
+	update_path(pathing, GetPosition(entity));
 
 	// Lua
 	lua_State *L = Environment::get().get_lua()->get_state();
@@ -116,30 +54,6 @@ void EnemyComponent::update() {
 	}
 }
 
-void EnemyComponent::update_path() {
-	PositionComponent *position = GetPosition(entity);
-	if (position && pathing.size() > 0) {
-		if (!path_collision(pathing[0], position->rect)) {
-			if (pathing[0].dx == 0 && pathing[0].dy == 0) {
-				float x = (float)pathing[0].x - (position->rect.x + position->rect.w / 2);
-				float y = (float)pathing[0].y - (position->rect.y + position->rect.h / 2);
-
-				float vec_mag = 1.0f / sqrt(pow(x, 2) + pow(y, 2));
-				x *= vec_mag * position->speed;
-				y *= vec_mag * position->speed;
-
-				pathing[0].dx = x;
-				pathing[0].dy = y;
-			}
-			position->move_freely(pathing[0].dx, pathing[0].dy);
-		}
-		else {
-			pathing.push_back({pathing[0].x, pathing[0].y, 0.0f, 0.0f});
-			pathing.erase(pathing.begin());
-		}
-	}
-}
-
 bool EnemyComponent::is_collision() {
 	PositionComponent *position = GetPosition(entity);
 	if (!position)
@@ -152,7 +66,8 @@ bool EnemyComponent::is_collision() {
 			const int &type = e->get_type();
 			if (type == TYPE_OBJECT ||
 				type == TYPE_PLAYER ||
-				type == TYPE_ENEMY) {
+				type == TYPE_ENEMY  ||
+				type == TYPE_NPC) {
 				if (collision(position->rect, GetPosition(e)->rect) &&
 					e != entity)
 					return true;

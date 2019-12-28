@@ -1,0 +1,22 @@
+# Greg
+
+itexture_id 0
+
+Position
+iwidth 32
+iheight 64
+fspeed 100
+
+Sprite
+isprite_time 300
+
+NPC
+snpc_script_name Greg
+snpc_script Data/Lua/NPC/greg.lua
+inpc_quest_id 1
+
+Interact
+sinteract_name Greg
+sinteract_script_name Greg
+sinteract_script Data/Lua/NPC/greg.lua
+sinteract_ui_info Talk

@@ -18,6 +18,7 @@
 #define GetCombat(entity) static_cast<CombatComponent *>(entity->get_component(COMPONENT_COMBAT))
 #define GetItem(entity) static_cast<ItemComponent *>(entity->get_component(COMPONENT_ITEM))
 #define GetInteract(entity) static_cast<InteractComponent *>(entity->get_component(COMPONENT_INTERACT))
+#define GetNPC(entity) static_cast<NPCComponent *>(entity->get_component(COMPONENT_NPC))
 
 class Entity {
 public:

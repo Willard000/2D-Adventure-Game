@@ -1,0 +1,6 @@
+# Quest 0
+
+Kill_Quest
+
+itarget_id 0
+itotal 10

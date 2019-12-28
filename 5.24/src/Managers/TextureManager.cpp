@@ -42,6 +42,7 @@ TextureManager::TextureManager() :
 	_editor_enemies_texture     ( nullptr ),
 	_editor_effects_texture		( nullptr ),
 	_editor_items_texture		( nullptr ),
+	_editor_npcs_texture		( nullptr ),
 	_editor_line_background		( nullptr )
 {
 	Environment::get().get_log()->print("Loading Texture Manager");
@@ -102,6 +103,8 @@ TextureManager::~TextureManager() {
 	delete _editor_enemies_texture;
 	delete _editor_effects_texture;
 	delete _editor_items_texture;
+	delete _editor_npcs_texture;
+
 	delete _editor_line_background;
 }
 
@@ -366,6 +369,14 @@ void TextureManager::load_editor_textures() {
 	_editor_items_texture = new Texture();
 	_editor_items_texture->texture = Environment::get().get_window()->get_renderer()->make_blit_texture(
 		_surfaces[TYPE_ITEM],
+		ELEMENT_AREA_WIDTH,
+		Environment::get().get_window()->get_height(),
+		TILE_WIDTH
+	);
+
+	_editor_npcs_texture = new Texture();
+	_editor_npcs_texture->texture = Environment::get().get_window()->get_renderer()->make_blit_texture(
+		_surfaces[TYPE_NPC],
 		ELEMENT_AREA_WIDTH,
 		Environment::get().get_window()->get_height(),
 		TILE_WIDTH

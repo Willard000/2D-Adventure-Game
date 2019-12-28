@@ -13,6 +13,7 @@ namespace UI {
 	void button_select_enemies();
 	void button_select_effects();
 	void button_select_items();
+	void button_select_npcs();
 
 	void button_select_free();
 
