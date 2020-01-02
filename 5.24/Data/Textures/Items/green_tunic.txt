@@ -1,0 +1,4 @@
+# Green Tunic
+stexture Data/Textures/Items/green_tunic.png
+iwidth 15
+iheight 15

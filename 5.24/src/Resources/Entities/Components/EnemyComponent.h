@@ -24,6 +24,8 @@ struct EnemyComponent : public Component {
 
 	void update();
 
+	void death();
+
 	const int get_type() const { return COMPONENT_ENEMY; }
 
 	bool is_collision();

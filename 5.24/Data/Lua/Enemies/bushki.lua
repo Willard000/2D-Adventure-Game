@@ -12,3 +12,11 @@ function Bushki.update(enemy)
 		magic:stop_cast_time()
 	end
 end
+
+function Bushki.death(enemy)
+	player = get_player():get_player()
+	
+	if player:has_quest(0) then
+		player:add_kill_count(0)
+	end
+end

@@ -664,9 +664,11 @@ Element UIManager::select_from_map() {
 
 	for (auto it = entities->begin(); it != entities->end(); ++it) {
 		for (auto itt = it->second.begin(); itt != it->second.end(); ++itt) {
-			if (PositionComponent *position = GetPosition(itt->second)) {
-				if (collision(mouse, position->rect)) {
-					return { itt->second->get_type(), itt->second->get_id() };
+			if (itt->second != nullptr) {
+				if (PositionComponent *position = GetPosition(itt->second)) {
+					if (collision(mouse, position->rect)) {
+						return { itt->second->get_type(), itt->second->get_id() };
+					}
 				}
 			}
 		}

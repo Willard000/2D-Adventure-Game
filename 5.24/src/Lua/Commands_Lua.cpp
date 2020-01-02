@@ -40,7 +40,7 @@ static int player_collision(lua_State *L) {
 		printf("Player Collision Off");
 	}
 	else {
-		Environment::get().get_resource_manager()->get_textbox().print("Player Collision Off");
+		Environment::get().get_resource_manager()->get_textbox().print("Player Collision On");
 		printf("Player Collision On");
 	}
 

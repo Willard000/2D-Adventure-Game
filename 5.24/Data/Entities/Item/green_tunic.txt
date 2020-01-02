@@ -1,0 +1,16 @@
+# Green Tunic
+
+itexture_id 7
+
+Position
+iwidth 32
+iheight 32
+
+Item
+iitem_slot 3
+sitem_name Green_Tunic
+iitem_health 50
+iitem_armor 1
+
+bitem_equipable 1
+bitem_useable 0

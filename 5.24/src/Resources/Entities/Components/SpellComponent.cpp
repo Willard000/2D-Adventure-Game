@@ -142,11 +142,6 @@ void SpellComponent::on_collision(Entity *e) {
 		return;
 
 	target->apply_damage(attacker_info, color);
-	if (target->health <= 0) {
-		if (PlayerComponent *player = GetPlayer(caster)) {
-			player->add_exp(target->exp);
-		}
-	}
 }
 
 void SpellComponent::death() {

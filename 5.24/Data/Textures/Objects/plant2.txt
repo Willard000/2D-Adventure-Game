@@ -1,0 +1,4 @@
+# Plant2
+stexture Data/Textures/Objects/plant2.png
+iwidth 32
+iheight 32

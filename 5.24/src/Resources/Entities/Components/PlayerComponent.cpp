@@ -195,7 +195,7 @@ void PlayerComponent::add_exp(int amount) {
 	int y = position->rect.y - rand() % position->rect.h;
 
 	Text_Timed *exp_text = new Text_Timed(
-		std::to_string(amount),
+		"+" + std::to_string(amount) + "xp",
 		EXP_TEXT_COLOR,
 		EXP_TEXT_FTSIZE,
 		EXP_TEXT_WRAP_LENGTH,

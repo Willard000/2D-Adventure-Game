@@ -1,0 +1,7 @@
+# Well
+
+itexture_id 19
+
+Position
+iwidth 92
+iheight 92

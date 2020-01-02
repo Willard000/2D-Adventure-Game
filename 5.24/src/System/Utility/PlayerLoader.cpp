@@ -113,7 +113,6 @@ void load_quest_log(FileReader &file, Entity *player) {
 	while (stream >> data) {
 		if (data == FILE_PLAYER_SEPERATOR) {
 			if (i < QUEST_LOG_CAPACITY && player_component->quest_log[i] != nullptr) {
-				std::cout << quest_data << std::endl;
 				player_component->quest_log[i]->load(std::stringstream(quest_data));
 				++i;
 			}

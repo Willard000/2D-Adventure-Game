@@ -1,0 +1,7 @@
+# Plant
+
+itexture_id 17
+
+Position
+iwidth 21
+iheight 80

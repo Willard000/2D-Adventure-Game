@@ -19,3 +19,7 @@ function Bandit_Leader.update(enemy)
 		magic:stop_cast_time()
 	end
 end
+
+function Bandit_Leader.death(enemy)
+
+end

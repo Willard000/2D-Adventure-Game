@@ -16,4 +16,4 @@ ideath_time 10000
 sspell_script_name Bandit_Attack
 sspell_script Data/Lua/Spells/bandit_attack.lua
 ispell_damage 5
-spell_color 238 238 238 150
+spell_color 238 238 238 255

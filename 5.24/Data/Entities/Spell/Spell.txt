@@ -2,3 +2,4 @@
 0 Data/Entities/Spell/fireball.txt
 1 Data/Entities/Spell/bushki_attack.txt
 2 Data/Entities/Spell/bandit_attack.txt
+3 Data/Entities/Spell/scarecrow_attack.txt

@@ -6,3 +6,5 @@
 4 Data/Textures/Items/boots.txt
 5 Data/Textures/Items/ring.txt
 6 Data/Textures/Items/wizard_hat.txt
+7 Data/Textures/Items/green_tunic.txt
+8 Data/Textures/Items/green_pants.txt

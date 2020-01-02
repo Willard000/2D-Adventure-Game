@@ -1,0 +1,10 @@
+# Scarecrow Attack
+Sprite
+stexture Data/Textures/Spells/scarecrow_attack.png
+iwidth 10
+iheight 10
+iidle 0
+imin_idle 0
+imax_idle 0
+iend 0
+inum_frames 1

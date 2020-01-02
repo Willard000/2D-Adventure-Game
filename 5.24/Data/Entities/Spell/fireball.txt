@@ -16,4 +16,4 @@ ideath_time 100
 sspell_script_name Fireball
 sspell_script Data/Lua/Spells/fireball.lua
 ispell_damage 5
-spell_color 245 175 15 150
+spell_color 245 175 15 255

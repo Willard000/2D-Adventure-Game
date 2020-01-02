@@ -160,15 +160,17 @@ void CombatComponent::start_combat() {
 }
 
 void CombatComponent::death() {
-	PlayerComponent *player = GetPlayer(entity);
-	if (player) {
+	if (PlayerComponent *player = GetPlayer(entity)) {
 
 		return;
 	}
 
 	EnemyComponent *enemy = GetEnemy(entity);
 	if (enemy) {
+		PlayerComponent *player = GetPlayer(Environment::get().get_resource_manager()->get_player());
+		player->add_exp(exp);
 		drop_items(enemy);
+		enemy->death();
 		entity->destroy();
 	}
 }

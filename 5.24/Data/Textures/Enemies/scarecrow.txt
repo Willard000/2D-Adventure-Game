@@ -1,0 +1,16 @@
+# Scarecrow
+Sprite
+stexture Data/Textures/Enemies/scarecrow.png
+iwidth 32
+iheight 64
+iidle 0
+imin_up 0
+imax_up 4
+imin_down 0
+imax_down 4
+imin_left 0
+imax_left 4
+imin_right 0
+imax_right 4
+icast 5
+inum_frames 6

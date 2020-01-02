@@ -11,7 +11,7 @@
 #ifndef TEXTBOX_H
 #define TEXTBOX_H
 
-#define TEXTBOX_TEXT_COLOR { 255, 255, 255, 200 }
+#define TEXTBOX_TEXT_COLOR { 255, 255, 255, 255 }
 #define TEXTBOX_FT_SIZE 18
 
 class TextBox {

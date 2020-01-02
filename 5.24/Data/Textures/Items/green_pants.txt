@@ -1,0 +1,4 @@
+# Green Pants
+stexture Data/Textures/Items/green_pants.png
+iwidth 15
+iheight 15

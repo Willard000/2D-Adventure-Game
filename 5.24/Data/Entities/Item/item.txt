@@ -6,3 +6,5 @@
 4 Data/Entities/Item/boots.txt
 5 Data/Entities/Item/ring.txt
 6 Data/Entities/Item/wizard_hat.txt
+7 Data/Entities/Item/green_tunic.txt
+8 Data/Entities/Item/green_pants.txt

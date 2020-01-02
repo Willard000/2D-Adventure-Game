@@ -54,6 +54,15 @@ void EnemyComponent::update() {
 	}
 }
 
+void EnemyComponent::death() {
+	lua_State *L = Environment::get().get_lua()->get_state();
+	lua_getglobal(L, name.c_str());
+	lua_getfield(L, -1, "death");
+	lua_remove(L, -2);
+	luaW_push<EnemyComponent>(L, this);
+	lua_pcall(L, 1, 0, 0);
+}
+
 bool EnemyComponent::is_collision() {
 	PositionComponent *position = GetPosition(entity);
 	if (!position)
