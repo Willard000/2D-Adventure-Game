@@ -1,0 +1,13 @@
+# Plant6
+
+itexture_id 23
+
+Position
+iwidth 32
+iheight 32
+
+Interact
+sinteract_name Plant
+sinteract_script_name Plant
+sinteract_script Data/Lua/Objects/plant.lua
+sinteract_ui_info Harvest

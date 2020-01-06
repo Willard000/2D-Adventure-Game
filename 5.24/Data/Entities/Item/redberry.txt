@@ -1,0 +1,20 @@
+# Redberry
+
+itexture_id 9
+
+Position
+iwidth 15
+iheight 15
+
+Item
+iitem_slot 2
+sitem_name Redberry
+sitem_info Restores 100 Health
+item_color 210 0 0 255
+
+bitem_equipable 0
+bitem_useable 1
+bitem_stackable 1
+
+sitem_script_name Redberry
+sitem_script Data/Lua/Items/redberry.lua

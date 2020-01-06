@@ -13,7 +13,7 @@
 #define SPELL_COMPONENT_H
 
 struct SpellComponent : public Component {
-	SpellComponent(Entity *entity_, float max_dis_, float speed_, int death_time, std::string script_name_, std::string script_, int damage_, SDL_Color color_);
+	SpellComponent(Entity *entity_, float max_dis_, float speed_, int death_time, std::string script_name_, std::string script_, int damage_, int mana_cost_, SDL_Color color_);
 	SpellComponent(Entity *new_entity, const SpellComponent &rhs);
 	SpellComponent *copy(Entity *new_entity) const;
 
@@ -21,7 +21,7 @@ struct SpellComponent : public Component {
 
 	const int get_type() const { return COMPONENT_SPELL; }
 
-	void cast(float x, float y, Combat_Info attacker_info_);
+	void cast(float x, float y, float x2, float y2, Combat_Info attacker_info_);
 
 	void move(float x, float y);
 
@@ -40,6 +40,7 @@ struct SpellComponent : public Component {
 	SDL_Color color;
 
 	int damage;
+	int mana_cost;
 
 	std::string script_name;
 	std::string script;

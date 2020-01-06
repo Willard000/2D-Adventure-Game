@@ -8,7 +8,7 @@ iheight 32
 
 Item
 iitem_slot 2
-sitem_name Wizard_Hat
+sitem_name Wizard Hat
 iitem_mana 30
 iitem_mps 2
 

@@ -1,0 +1,35 @@
+# Scarecrow Leader
+
+itexture_id 3
+
+Position
+iwidth 32
+iheight 64
+fspeed 100
+
+Sprite
+isprite_time 200
+isprite_cast_time 500
+
+Enemy
+senemy_name Scarecrow_Leader
+senemy_script Data/Lua/Enemies/scarecrow_leader.lua
+ienemy_combat_range_w 800
+ienemy_combat_range_h 800
+enemy_drop_table 
+
+Magic
+imain_spell_id 4
+icast_speed 500
+
+Combat
+icombat_max_health 1000
+icombat_max_mana 1000
+icombat_damage 100
+icombat_armor 1
+icombat_hps 0
+icombat_mps 0
+icombat_drain 0
+icombat_luck 0
+icombat_exp 10
+icombat_time 10000

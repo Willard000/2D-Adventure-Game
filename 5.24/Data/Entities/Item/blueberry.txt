@@ -1,0 +1,20 @@
+# Blueberry
+
+itexture_id 10
+
+Position
+iwidth 15
+iheight 15
+
+Item
+iitem_slot -1
+sitem_name Blueberry
+sitem_info Restores 100 Mana
+item_color 115 115 225 255
+
+bitem_equipable 0
+bitem_useable 1
+bitem_stackable 1
+
+sitem_script_name Blueberry
+sitem_script Data/Lua/Items/blueberry.lua

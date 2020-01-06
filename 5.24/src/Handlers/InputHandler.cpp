@@ -37,7 +37,8 @@ void cast_spell(float x, float y) {
 
 	MagicComponent *magic = GetMagic(Environment::get().get_resource_manager()->get_player());
 	if (magic) {
-		magic->cast_main(x, y);
+		PositionComponent *position = GetPosition(Environment::get().get_resource_manager()->get_player());
+		magic->cast_main(x, y, position->pos_x + position->rect.w / 2, position->pos_y + position->rect.h / 2);
 		magic->can_cast = false;
 	}
 }
@@ -54,7 +55,8 @@ void pickup_item() {
 	for (auto it = items->begin(); it != items->end(); ++it) {
 		if (PositionComponent *item_position = GetPosition(it->second)) {
 			if (collision(player_position->rect, item_position->rect)) {
-				player_component->items.push_back(it->second);
+				player_component->inventory.add_item(it->second->get_type_id());
+				delete it->second;
 				items->erase(it);
 				return;
 			}
@@ -77,7 +79,7 @@ void interact() {
 					PositionComponent *object_position = GetPosition(e);
 					if (interact_in_range(player_position->rect, object_position->rect)) {
 						interact->interact();
-						break;
+						return;
 					}
 				}
 			}

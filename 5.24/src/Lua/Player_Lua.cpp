@@ -120,8 +120,7 @@ static int player_add_kill_count(lua_State *L) {
 static int player_add_item(lua_State *L) {
 	PlayerComponent *player = luaW_check<PlayerComponent>(L, -2);
 	int item_id = luaL_checkinteger(L, -1);
-	Entity *item = new Entity(TYPE_ITEM, item_id);
-	player->items.push_back(item);
+	player->inventory.add_item(item_id);
 	return 0;
 }
 

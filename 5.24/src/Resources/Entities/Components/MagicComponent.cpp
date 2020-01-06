@@ -34,7 +34,7 @@ void MagicComponent::update() {
 	}
 }
 
-void MagicComponent::cast_main(float x_, float y_) {
+void MagicComponent::cast_main(float x_, float y_, float x2_, float y2_) {
 	if (can_cast) {
 		Entity *spell = new Entity(main_spell);
 		SpellComponent *spell_comp = GetSpell(spell);
@@ -45,9 +45,31 @@ void MagicComponent::cast_main(float x_, float y_) {
 		if (combat_info) {
 			attacker_info = { combat_info->damage, combat_info->armor, combat_info->drain, combat_info->luck };
 		}
-		spell_comp->cast(x_, y_, attacker_info);
-		Environment::get().get_resource_manager()->add_entity(spell);
-		cast_timer.reset();
+		if (combat_info->mana >= spell_comp->mana_cost) {
+			combat_info->mana -= spell_comp->mana_cost;
+			spell_comp->cast(x_, y_, x2_, y2_, attacker_info);
+			Environment::get().get_resource_manager()->add_entity(spell);
+			cast_timer.reset();
+		}
+		else {
+			delete spell;
+		}
 		//can_cast = false;
 	}
+}
+
+// ignores mana, cast time, and uses any spell id, used for making speical abilities in lua
+void MagicComponent::cast_special(float x_, float y_, float x2_, float y2_, int spell_id) {
+	Entity *spell = new Entity(TYPE_SPELL, spell_id);
+	SpellComponent *spell_comp = GetSpell(spell);
+	spell_comp->caster = entity;
+
+	Combat_Info attacker_info;
+	CombatComponent *combat_info = GetCombat(entity);
+	if (combat_info) {
+		attacker_info = { combat_info->damage, combat_info->armor, combat_info->drain, combat_info->luck };
+	}
+	spell_comp->cast(x_, y_, x2_, y2_, attacker_info);
+	Environment::get().get_resource_manager()->add_entity(spell);
+	cast_timer.reset();
 }

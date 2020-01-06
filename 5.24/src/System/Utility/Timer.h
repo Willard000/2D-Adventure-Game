@@ -16,10 +16,14 @@ public:
 
 	bool update();
 
+	bool get_pause() { return _is_paused; }
+
 	int get_time();
+	int get_clock();
 private:
 	int _time;
-	Uint32 _prev_time;
+	int _prev_time;
+	int _clock;
 	bool _is_paused;
 };
 

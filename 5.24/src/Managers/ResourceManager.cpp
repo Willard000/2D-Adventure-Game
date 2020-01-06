@@ -67,6 +67,10 @@ void ResourceManager::render_entities() {
 }
 
 void ResourceManager::render_entity(Entity *entity) {
+	if (!entity) {
+		return;
+	}
+
 	PositionComponent *position = GetPosition(entity);
 	SpriteComponent *sprite = GetSprite(entity);
 	CombatComponent *combat = GetCombat(entity);
@@ -84,6 +88,9 @@ void ResourceManager::render_entity(Entity *entity) {
 
 	if (combat) {
 		combat->draw_health();
+		if (entity->get_type() == TYPE_PLAYER) {
+			combat->draw_buffs();
+		}
 	}
 
 	if (SHOW_COMBAT_RANGE) {

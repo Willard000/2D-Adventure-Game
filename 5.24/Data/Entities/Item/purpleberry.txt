@@ -1,0 +1,23 @@
+# Purpleberry
+
+itexture_id 13
+
+Position
+iwidth 15
+iheight 15
+
+Item
+iitem_slot -1
+sitem_name Purpleberry
+sitem_info Increases armor for a short period of time
+item_color 180 80 255 255
+iitem_armor 10
+iitem_duration 10000
+
+bitem_equipable 0
+bitem_useable 1
+bitem_buffable 1
+bitem_stackable 1
+
+sitem_script_name Standard_Buff
+sitem_script Data/Lua/Items/standard_buff.lua

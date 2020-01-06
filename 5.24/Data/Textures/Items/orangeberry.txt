@@ -1,0 +1,4 @@
+# Orangeberry
+stexture Data/Textures/Items/orangeberry.png
+iwidth 15
+iheight 15

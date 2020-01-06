@@ -1,0 +1,4 @@
+# Plant3
+stexture Data/Textures/Objects/plant3.png
+iwidth 14
+iheight 53

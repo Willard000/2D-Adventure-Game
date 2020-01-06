@@ -16,8 +16,8 @@
 class Inventory {
 public:
 	struct Item_Info {
-		Text name, health, mana, damage, armor, hps, mps, drain, speed, luck;
-		Text health_val, mana_val, damage_val, armor_val, hps_val, mps_val, drain_val, speed_val, luck_val;
+		Text name, info, health, mana, damage, armor, hps, mps, drain, speed, luck, duration;
+		Text health_val, mana_val, damage_val, armor_val, hps_val, mps_val, drain_val, speed_val, luck_val, duration_val, stack_size_val;
 		bool hide;
 	};
 
@@ -39,6 +39,8 @@ public:
 	void unequip_item();
 	void use_item();
 	void drop_item();
+	void add_item(int item_id);
+	void pause_buffs();
 private:
 	void input();
 	void update();
@@ -59,6 +61,7 @@ private:
 	void set_item_equipped(bool is_equipped);
 
 	void update_inventory_size();
+	void update_selection_info();
 
 	void setup_buttons();
 	void setup_slots();

@@ -2,4 +2,5 @@
 0 Data/Textures/Enemies/Icons/bushki.png
 1 Data/Textures/Enemies/Icons/stickman.png
 2 Data/Textures/Enemies/Icons/stickman.png
-3 Data/textures/Enemies/Icons/scarecrow.png
+3 Data/Textures/Enemies/Icons/scarecrow.png
+4 Data/Textures/Enemies/Icons/scarecrow.png

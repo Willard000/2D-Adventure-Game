@@ -1,0 +1,4 @@
+# Plant7
+stexture Data/Textures/Objects/plant7.png
+iwidth 32
+iheight 32

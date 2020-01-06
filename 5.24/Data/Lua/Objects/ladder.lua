@@ -9,7 +9,5 @@ function Ladder.interact(ladder)
 		k = k + 1
 	end
 
-	print("Ladder ", ladder:get_data())
-
 	teleport_to(t[0], t[1], t[2], t[3], t[4])
 end

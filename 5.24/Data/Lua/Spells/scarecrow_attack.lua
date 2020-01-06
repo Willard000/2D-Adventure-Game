@@ -10,13 +10,11 @@ function Scarecrow_Attack.update(spell)
 	end
 end
 
-function Scarecrow_Attack.cast(spell, x, y)
+function Scarecrow_Attack.cast(spell, x, y, x2, y2)
 	local caster = spell:get_caster()
 	local pos = spell:get_entity():get_position()
 	local caster_pos = caster:get_position()
-
-	pos:set(caster_pos:get_x() + (caster_pos:get_w() / 2) - (pos:get_w() / 2),
-		caster_pos:get_y() + (caster_pos:get_h() / 2) - (pos:get_h() / 2))
+	pos:set(x2 - pos:get_w() / 2, y2 - pos:get_h() / 2)
 
 	-- direction vec
 	local vec = {x = x - pos:get_x() - (pos:get_w() / 2),

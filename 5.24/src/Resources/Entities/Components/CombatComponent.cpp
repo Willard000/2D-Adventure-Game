@@ -26,6 +26,11 @@
 
 #define ITEM_DROP_RANGE 50
 
+#define BUFF_BAR_X 50
+#define BUFF_BAR_Y 50
+#define BUFF_BAR_HEIGHT 8
+#define BUFF_BAR_COLOR {50, 75, 100, 255}
+
 CombatComponent::CombatComponent(Entity *entity_, int max_health_, int max_mana_, int damage_, int armor_, int hps_, int mps_, int drain_, int luck_, int exp_, int combat_time) :
 	Component		( entity_ ),
 	max_health		( max_health_ ),
@@ -81,6 +86,17 @@ void CombatComponent::update() {
 			mana = max_mana;
 		}
 	}
+
+	auto it = buffs.begin();
+	while (it != buffs.end()) {
+		if (it->timer.update()) {
+			remove_buff(*it);
+			it = buffs.erase(it);
+		}
+		else {
+			++it;
+		}
+	}
 }
 
 const int CombatComponent::get_type() const {
@@ -92,6 +108,9 @@ void CombatComponent::apply_damage(Combat_Info &attacker_info, const SDL_Color &
 
 	//armor
 	int final_damage = attacker_info.damage -= armor;
+	if (final_damage < 0) {
+		final_damage = 0;
+	}
 
 	//luck
 	if (rand() % 100 < attacker_info.luck) {
@@ -183,5 +202,45 @@ void CombatComponent::drop_items(EnemyComponent *enemy) {
 			float y = position->pos_y + rand() % ITEM_DROP_RANGE - rand() % ITEM_DROP_RANGE;
 			Environment::get().get_resource_manager()->create_entity(TYPE_ITEM, drop.id, x, y);
 		}
+	}
+}
+
+void CombatComponent::add_buff(Buff_Info buff, bool new_buff) {
+	health += buff.health;
+	mana += buff.mana;
+	damage += buff.damage;
+	armor += buff.armor;
+	luck += buff.luck;
+	if (PositionComponent *position = GetPosition(entity)) {
+		position->speed += buff.speed;
+	}
+
+	if (new_buff) {
+		buff.timer.reset();
+	}
+
+	buffs.push_back(buff);
+}
+
+void CombatComponent::remove_buff(Buff_Info &buff) {
+	health -= buff.health;
+	mana -= buff.mana;
+	damage -= buff.damage;
+	armor -= buff.armor;
+	luck -= buff.luck;
+	if (PositionComponent *position = GetPosition(entity)) {
+		position->speed -= buff.speed;
+	}
+}
+
+void CombatComponent::draw_buffs() {
+	int y = BUFF_BAR_Y;
+	for (auto &buff : buffs) {
+		int percent = int(((float)buff.timer.get_clock() / (float)buff.timer.get_time()) * 100);
+		SDL_Rect buff_bar = { BUFF_BAR_X, y, 100 - percent, BUFF_BAR_HEIGHT };
+		Environment::get().get_window()->get_renderer()->draw_rect(buff_bar, BUFF_BAR_COLOR, DRAW_RECT_FULL);
+		SDL_Rect buff_icon = { BUFF_BAR_X - 30, y - 5, 20, 20 };
+		Environment::get().get_window()->get_renderer()->render(Environment::get().get_resource_manager()->get_texture_info(TYPE_ITEM, buff.icon_item_id), buff_icon, true);
+		y += BUFF_BAR_HEIGHT + 5;
 	}
 }

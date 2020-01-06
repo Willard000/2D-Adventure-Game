@@ -33,6 +33,8 @@ struct EnemyComponent : public Component {
 	bool check_combat_range();
 	bool in_combat;
 
+	int move;
+
 	std::string name;
 	std::string script;
 

@@ -1,0 +1,4 @@
+# Greenberry
+stexture Data/Textures/Items/greenberry.png
+iwidth 15
+iheight 15

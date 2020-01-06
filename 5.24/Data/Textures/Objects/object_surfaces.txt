@@ -19,3 +19,8 @@
 17 Data/Textures/Objects/plant.png
 18 Data/Textures/Objects/plant2.png
 19 Data/Textures/Objects/well.png
+20 Data/Textures/Objects/plant3.png
+21 Data/Textures/Objects/plant4.png
+22 Data/Textures/Objects/plant5.png
+23 Data/Textures/Objects/plant6.png
+24 Data/Textures/Objects/plant7.png

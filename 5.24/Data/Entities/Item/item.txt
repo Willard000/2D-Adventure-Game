@@ -8,3 +8,8 @@
 6 Data/Entities/Item/wizard_hat.txt
 7 Data/Entities/Item/green_tunic.txt
 8 Data/Entities/Item/green_pants.txt
+9 Data/Entities/Item/redberry.txt
+10 Data/Entities/Item/blueberry.txt
+11 Data/Entities/Item/greenberry.txt
+12 Data/Entities/Item/orangeberry.txt
+13 Data/Entities/Item/purpleberry.txt

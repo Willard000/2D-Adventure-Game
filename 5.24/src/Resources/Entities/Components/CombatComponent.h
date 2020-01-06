@@ -1,3 +1,5 @@
+#include <vector>
+
 #include "Component.h"
 
 #include "EnemyComponent.h"
@@ -9,6 +11,12 @@
 
 struct Combat_Info {
 	int damage = 0, armor = 0, drain = 0, luck = 0, exp = 0;
+};
+
+struct Buff_Info {
+	Timer timer;
+	int health = 0, mana = 0, damage = 0, armor = 0, speed = 0, luck = 0;
+	int icon_item_id = 0;
 };
 
 struct CombatComponent : public Component {
@@ -23,12 +31,16 @@ struct CombatComponent : public Component {
 	void apply_damage(Combat_Info &attacker_info, const SDL_Color &color);
 
 	void draw_health();
+	void draw_buffs();
 
 	void start_combat();
 
 	void death();
 
 	void drop_items(EnemyComponent *enemy);
+
+	void add_buff(Buff_Info buff, bool new_buff = true);
+	void remove_buff(Buff_Info &buff);
 
 	int health, max_health;
 	int mana, max_mana;
@@ -41,6 +53,8 @@ struct CombatComponent : public Component {
 	bool in_combat;
 	Timer combat_timer;
 	Timer hps_mps_timer;
+
+	std::vector<Buff_Info> buffs;
 };
 
 #endif

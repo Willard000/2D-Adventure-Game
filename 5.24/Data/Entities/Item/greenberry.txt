@@ -1,0 +1,23 @@
+# Greenberry
+
+itexture_id 11
+
+Position
+iwidth 15
+iheight 15
+
+Item
+iitem_slot -1
+sitem_name Greenberry
+sitem_info Increases speed for a short period of time
+item_color 125 190 160 255
+iitem_speed 10
+iitem_duration 10000
+
+bitem_equipable 0
+bitem_useable 1
+bitem_buffable 1
+bitem_stackable 1
+
+sitem_script_name Standard_Buff
+sitem_script Data/Lua/Items/standard_buff.lua

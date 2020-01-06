@@ -12,8 +12,11 @@
 #include "InteractComponent.h"
 
 EntityManager::EntityManager() :
-	_player		( new Entity(TYPE_PLAYER, 0) )
+	_player		( nullptr )
 {
+	if (Environment::get().get_mode() == MODE_GAME) {
+		_player = new Entity(TYPE_PLAYER, 0);
+	}
 	Environment::get().get_log()->print("Loading Entity Manager");
 }
 

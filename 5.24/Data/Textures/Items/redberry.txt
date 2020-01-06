@@ -1,0 +1,4 @@
+# Redberry
+stexture Data/Textures/Items/redberry.png
+iwidth 15
+iheight 15

@@ -22,6 +22,7 @@
 
 #define FILE_PLAYER_INVENTORY "inventory"
 #define FILE_PLAYER_EQUIPPED "equipped"
+#define FILE_PLAYER_BUFFS "buffs"
 #define FILE_PLAYER_QUEST_LOG "quest_log"
 
 #define FILE_PLAYER_NAME "sname"
@@ -71,6 +72,22 @@ void load_items(FileReader &file, Entity *player) {
 				player_component->equip_item_stats(GetItem(item));
 			}
 			++slot;
+		}
+	}
+}
+
+void load_buffs(FileReader &file, Entity *player) {
+	CombatComponent *stats = GetCombat(player);
+
+	if (file.exists(FILE_PLAYER_BUFFS)) {
+		std::istringstream buff_data(file.get_string(FILE_PLAYER_BUFFS));
+		Buff_Info buff;
+		int clock = 0, time = 0;
+		while (buff_data >> clock >> time >> buff.health >> buff.mana >> buff.damage >> buff.armor >> buff.speed >> buff.luck >> buff.icon_item_id) {
+			buff.timer.set(time);
+			buff.timer.reset();
+			buff.timer.offset(clock);
+			stats->add_buff(buff, false);
 		}
 	}
 }
@@ -129,6 +146,7 @@ void load_player() {
 
 	load_position(file, player);
 	load_items(file, player);
+	load_buffs(file, player);
 	load_info(file, player);
 	load_quests(); // loads quest informaiton
 	load_quest_log(file, player); // loads the save data for quests
@@ -166,6 +184,21 @@ void save_player() {
 			file << -1 << " ";
 		else
 			file << item->get_type_id() << " ";
+	}
+	file << std::endl;
+
+
+	file << FILE_PLAYER_BUFFS << " ";
+	for (auto &buff : stats->buffs) {
+		file << buff.timer.get_clock() << " "
+			 << buff.timer.get_time() << " "
+			 << buff.health << " "
+			 << buff.mana << " "
+		  	 << buff.damage << " "
+			 << buff.armor << " "
+			 << buff.speed << " "
+			 << buff.luck << " "
+			 << buff.icon_item_id << " ";
 	}
 	file << std::endl;
 

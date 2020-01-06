@@ -55,6 +55,7 @@
 #define FILE_SPELL_SCRIPT_NAME "sspell_script_name"
 #define FILE_SPELL_SCRIPT "sspell_script"
 #define FILE_SPELL_DAMAGE "ispell_damage"
+#define FILE_SPELL_MANA_COST "ispell_mana_cost"
 #define FILE_SPELL_COLOR "spell_color"
 
 #define FILE_MAGIC_MAIN_SPELL_ID "imain_spell_id"
@@ -86,6 +87,7 @@
 
 #define FILE_ITEM_SLOT "iitem_slot"
 #define FILE_ITEM_NAME "sitem_name"
+#define FILE_ITEM_INFO "sitem_info"
 #define FILE_ITEM_HEALTH "iitem_health"
 #define FILE_ITEM_MANA "iitem_mana"
 #define FILE_ITEM_DAMAGE "iitem_damage"
@@ -95,9 +97,15 @@
 #define FILE_ITEM_DRAIN "iitem_drain"
 #define FILE_ITEM_SPEED "iitem_speed"
 #define FILE_ITEM_LUCK "iitem_luck"
+#define FILE_ITEM_DURATION "iitem_duration"
 #define FILE_ITEM_DROP_CHANCE "iitem_drop_chance"
 #define FILE_ITEM_EQUIPABLE "bitem_equipable"
 #define FILE_ITEM_USEABLE "bitem_useable"
+#define FILE_ITEM_BUFFABLE "bitem_buffable"
+#define FILE_ITEM_STACKABLE "bitem_stackable"
+#define FILE_ITEM_SCRIPT_NAME "sitem_script_name"
+#define FILE_ITEM_SCRIPT "sitem_script"
+#define FILE_ITEM_COLOR "item_color"
 
 #define FILE_INTERACT_NAME "sinteract_name"
 #define FILE_INTERACT_SCRIPT_NAME "sinteract_script_name"
@@ -139,6 +147,7 @@ void load_spell(FileReader &file, Entity *entity, SpellComponent *&spell) {
 	std::string script = " ";
 	std::string script_name = " ";
 	int damage = 0;
+	int mana_cost = 0;
 	SDL_Color color = { 0, 0, 0, 255 };
 
 	if (file.exists(FILE_SPELL_MAX_DIS)) max_dis = file.get_float(FILE_SPELL_MAX_DIS);
@@ -147,6 +156,7 @@ void load_spell(FileReader &file, Entity *entity, SpellComponent *&spell) {
 	if (file.exists(FILE_SPELL_SCRIPT_NAME)) script_name = file.get_string(FILE_SPELL_SCRIPT_NAME);
 	if (file.exists(FILE_SPELL_SCRIPT)) script = file.get_string(FILE_SPELL_SCRIPT);
 	if (file.exists(FILE_SPELL_DAMAGE)) damage = file.get_int(FILE_SPELL_DAMAGE);
+	if (file.exists(FILE_SPELL_MANA_COST)) mana_cost = file.get_int(FILE_SPELL_MANA_COST);
 	if (file.exists(FILE_SPELL_COLOR)) {
 		std::istringstream stream(file.get_string(FILE_SPELL_COLOR));
 		int r, g, b, a;
@@ -154,7 +164,7 @@ void load_spell(FileReader &file, Entity *entity, SpellComponent *&spell) {
 		color = { (Uint8)r, (Uint8)g, (Uint8)b, (Uint8)a };
 	}
 
-	spell = new SpellComponent(entity, max_dis, speed, death_time, script_name, script, damage, color);
+	spell = new SpellComponent(entity, max_dis, speed, death_time, script_name, script, damage, mana_cost, color);
 }
 
 void load_magic(FileReader &file, Entity *entity, MagicComponent *&magic) {
@@ -235,16 +245,20 @@ void load_combat(FileReader &file, Entity *entity, CombatComponent *&combat) {
 
 void load_item(FileReader &file, Entity *entity, ItemComponent *&item) {
 	int slot = 0;
-	std::string name = "";
+	std::string name, info;
 	int health = 0, mana = 0;
 	int damage = 0, armor = 0;
 	int hps = 0, mps = 0;
 	int leech = 0, drain = 0;
 	int speed = 0, luck = 0;
-	bool is_equipable = false, is_useable = false;
+	int duration = 0;
+	bool is_equipable = false, is_useable = false, is_buffable = false, is_stackable = false;
+	std::string script, script_name;
+	SDL_Color color = { 255, 255, 255, 255 };
 
 	if (file.exists(FILE_ITEM_SLOT)) slot = file.get_int(FILE_ITEM_SLOT);
-	if (file.exists(FILE_ITEM_NAME)) {	name = file.get_string(FILE_ITEM_NAME);	for (auto it = name.begin(); it != name.end(); ++it) {	if (*it == '_') {	*it = ' ';	}	} }
+	if (file.exists(FILE_ITEM_NAME)) name = file.get_string(FILE_ITEM_NAME);
+	if (file.exists(FILE_ITEM_INFO))  info = file.get_string(FILE_ITEM_INFO);	
 	if (file.exists(FILE_ITEM_HEALTH)) health = file.get_int(FILE_ITEM_HEALTH);
 	if (file.exists(FILE_ITEM_MANA)) mana = file.get_int(FILE_ITEM_MANA);
 	if (file.exists(FILE_ITEM_DAMAGE)) damage = file.get_int(FILE_ITEM_DAMAGE);
@@ -254,10 +268,22 @@ void load_item(FileReader &file, Entity *entity, ItemComponent *&item) {
 	if (file.exists(FILE_ITEM_DRAIN)) drain = file.get_int(FILE_ITEM_DRAIN);
 	if (file.exists(FILE_ITEM_SPEED)) speed = file.get_int(FILE_ITEM_SPEED);
 	if (file.exists(FILE_ITEM_LUCK)) luck = file.get_int(FILE_ITEM_LUCK);
+	if (file.exists(FILE_ITEM_DURATION)) duration = file.get_int(FILE_ITEM_DURATION);
 	if (file.exists(FILE_ITEM_EQUIPABLE)) is_equipable = file.get_bool(FILE_ITEM_EQUIPABLE);
 	if (file.exists(FILE_ITEM_USEABLE)) is_useable = file.get_bool(FILE_ITEM_USEABLE);
+	if (file.exists(FILE_ITEM_BUFFABLE)) is_buffable = file.get_bool(FILE_ITEM_BUFFABLE);
+	if (file.exists(FILE_ITEM_STACKABLE)) is_stackable = file.get_bool(FILE_ITEM_STACKABLE);
+	if (file.exists(FILE_ITEM_SCRIPT_NAME)) script_name = file.get_string(FILE_ITEM_SCRIPT_NAME);
+	if (file.exists(FILE_ITEM_SCRIPT)) script = file.get_string(FILE_ITEM_SCRIPT);
+	if (file.exists(FILE_ITEM_COLOR)) {
+		std::istringstream stream(file.get_string(FILE_ITEM_COLOR));
+		int r, g, b, a;
+		stream >> r >> g >> b >> a;
+		color = { (Uint8)r, (Uint8)g, (Uint8)b, (Uint8)a };
+	}
 
-	item = new ItemComponent(entity, slot, name, health, mana, damage, armor, hps, mps, drain, speed, luck, is_equipable, is_useable);
+	item = new ItemComponent(entity, slot, name, info, health, mana, damage, armor, hps, mps, drain, speed, luck, duration,
+		is_equipable, is_useable, is_buffable, is_stackable, script_name, script, color);
 }
 
 void load_interact(FileReader &file, Entity *entity, InteractComponent *&interact) {

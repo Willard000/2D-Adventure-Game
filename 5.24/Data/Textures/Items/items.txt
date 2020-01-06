@@ -8,3 +8,8 @@
 6 Data/Textures/Items/wizard_hat.txt
 7 Data/Textures/Items/green_tunic.txt
 8 Data/Textures/Items/green_pants.txt
+9 Data/Textures/Items/redberry.txt
+10 Data/Textures/Items/blueberry.txt
+11 Data/Textures/Items/greenberry.txt
+12 Data/Textures/Items/orangeberry.txt
+13 Data/Textures/Items/purpleberry.txt

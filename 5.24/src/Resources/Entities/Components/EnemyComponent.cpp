@@ -16,6 +16,7 @@ EnemyComponent::EnemyComponent(Entity *entity_, std::string name_, std::string s
 	script			( script_ ),
 	combat_range	( {combat_range_.w, combat_range_.h} ),
 	drop_table		( drop_table_ ),
+	move			( 1 ),
 	in_combat		( false )
 {
 	Environment::get().get_lua()->load_script(script);
@@ -27,6 +28,7 @@ EnemyComponent::EnemyComponent(Entity *new_entity, const EnemyComponent &rhs) :
 	script			( rhs.script ),
 	combat_range	( {rhs.combat_range.w, rhs.combat_range.h} ),
 	drop_table		( rhs.drop_table ),
+	move			( rhs.move ),
 	in_combat		( rhs.in_combat )
 {}
 

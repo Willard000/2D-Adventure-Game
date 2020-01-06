@@ -16,7 +16,7 @@
 
 #include <iostream>
 
-SpellComponent::SpellComponent(Entity *entity_, float max_dis_, float speed_, int death_time_, std::string script_name_, std::string script_, int damage_, SDL_Color color_) :
+SpellComponent::SpellComponent(Entity *entity_, float max_dis_, float speed_, int death_time_, std::string script_name_, std::string script_, int damage_, int mana_cost_, SDL_Color color_) :
 	Component			( entity_ ),
 	caster				( nullptr ),
 	dis					( 0 ),
@@ -30,6 +30,7 @@ SpellComponent::SpellComponent(Entity *entity_, float max_dis_, float speed_, in
 	script_name			( script_name_ ),
 	script				( script_ ),
 	damage				( damage_ ),
+	mana_cost			( mana_cost_ ),
 	color				( color_ )
 {
 	Environment::get().get_lua()->load_script(script);
@@ -49,6 +50,7 @@ SpellComponent::SpellComponent(Entity *new_entity, const SpellComponent &rhs) :
 	script_name			( rhs.script_name ),
 	script				( rhs.script ),
 	damage				( rhs.damage ),
+	mana_cost			( rhs.mana_cost ),
 	color				( rhs.color )
 {}
 
@@ -72,7 +74,9 @@ void SpellComponent::update() {
 	}
 }
 
-void SpellComponent::cast(float x, float y, Combat_Info attacker_info_) {
+// x, y - target's pos
+// x2, y2 - spell's starting pos
+void SpellComponent::cast(float x, float y, float x2, float y2, Combat_Info attacker_info_) {
 	attacker_info = attacker_info_;
 	attacker_info.damage += damage;
 
@@ -83,7 +87,9 @@ void SpellComponent::cast(float x, float y, Combat_Info attacker_info_) {
 	luaW_push<SpellComponent>(L, this);
 	lua_pushnumber(L, x);
 	lua_pushnumber(L, y);
-	lua_pcall(L, 3, 0, 0);
+	lua_pushnumber(L, x2);
+	lua_pushnumber(L, y2);
+	lua_pcall(L, 5, 0, 0);
 
 	SpriteComponent *sprite = GetSprite(caster);
 	if (sprite) {

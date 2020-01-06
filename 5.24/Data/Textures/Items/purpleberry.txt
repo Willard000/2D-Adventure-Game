@@ -1,0 +1,4 @@
+# Purpleberry
+stexture Data/Textures/Items/purpleberry.png
+iwidth 15
+iheight 15

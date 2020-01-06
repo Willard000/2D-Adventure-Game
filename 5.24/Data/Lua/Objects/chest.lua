@@ -1,9 +1,9 @@
 Chest = {}
 
 function Chest.interact(chest)
-	position = chest:get_entity():get_position()
-	x = position:get_x() + position:get_w() / 2
-	y = position:get_y() + position:get_h() / 2
+	local position = chest:get_entity():get_position()
+	local x = position:get_x() + position:get_w() / 2
+	local y = position:get_y() + position:get_h() / 2
 	
 	local t = {} -- t[0]=type [1]=type_id
 

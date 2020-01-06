@@ -8,3 +8,8 @@
 6 Data/Textures/Items/wizard_hat.png
 7 Data/Textures/Items/green_tunic.png
 8 Data/Textures/Items/green_pants.png
+9 Data/Textures/Items/redberry.png
+10 Data/Textures/Items/blueberry.png
+11 Data/Textures/Items/greenberry.png
+12 Data/Textures/Items/orangeberry.png
+13 Data/Textures/Items/purpleberry.png

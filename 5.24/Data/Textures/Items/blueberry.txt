@@ -1,0 +1,4 @@
+# Blueberry
+stexture Data/Textures/Items/blueberry.png
+iwidth 15
+iheight 15

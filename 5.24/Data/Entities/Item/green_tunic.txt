@@ -8,7 +8,7 @@ iheight 32
 
 Item
 iitem_slot 3
-sitem_name Green_Tunic
+sitem_name Green Tunic
 iitem_health 50
 iitem_armor 1
 

@@ -19,3 +19,8 @@
 17 Data/Entities/Object/plant.txt
 18 Data/Entities/Object/plant2.txt
 19 Data/Entities/Object/well.txt
+20 Data/Entities/Object/plant3.txt
+21 Data/Entities/Object/plant4.txt
+22 Data/Entities/Object/plant5.txt
+23 Data/Entities/Object/plant6.txt
+24 Data/Entities/Object/plant7.txt

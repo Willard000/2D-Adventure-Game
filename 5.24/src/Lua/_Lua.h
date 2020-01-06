@@ -17,6 +17,7 @@
 #include "Combat_Lua.h"
 #include "Interact_Lua.h"
 #include "NPC_Lua.h"
+#include "Item_Lua.h"
 
 #include "Environment.h"
 #include "Log.h"
@@ -41,6 +42,7 @@ public:
 		lua_init_combat(this, _L);
 		lua_init_interact(this, _L);
 		lua_init_npc(this, _L);
+		lua_init_item(this, _L);
 
 		lua_init_entity(this, _L);
 

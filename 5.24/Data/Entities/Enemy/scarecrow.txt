@@ -25,7 +25,7 @@ icast_speed 500
 Combat
 icombat_max_health 100
 icombat_max_mana 100
-icombat_damage 1
+icombat_damage 100
 icombat_armor 1
 icombat_hps 0
 icombat_mps 0

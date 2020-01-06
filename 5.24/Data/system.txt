@@ -5,7 +5,7 @@ iconsole_x -1100
 iconsole_y 450
 iconsole_w 1100
 iconsole_h 600
-bconsole_show 0
+bconsole_show 1
 
 # Window
 swindow_title ...
@@ -21,4 +21,4 @@ iwindow_mode 5
 window_color 0 0 0 255
 
 # Clock
-iclock_fps -1
+iclock_fps 144

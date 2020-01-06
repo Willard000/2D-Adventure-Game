@@ -8,7 +8,7 @@ iheight 32
 
 Item
 iitem_slot 4
-sitem_name Green_Pants
+sitem_name Green Pants
 iitem_armor 4
 
 bitem_equipable 1

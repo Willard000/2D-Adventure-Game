@@ -42,7 +42,7 @@
 #define ITEM_INFO_YOFFSET 100
 #define ITEM_INFO_FT_SIZE 20
 #define ITEM_INFO_WRAP_LENGTH 1000
-#define ITEM_INFO_NAME_COLOR {255, 0, 0, 200}
+#define ITEM_INFO_COLOR {0, 150, 150, 200}
 
 #define LEVEL_COLOR {150, 100, 200, 200}
 #define EXP_COLOR {150, 100, 200, 200}
@@ -55,6 +55,8 @@
 #define DRAIN_COLOR {100, 185, 225, 200}
 #define SPEED_COLOR {135, 210, 140, 200}
 #define LUCK_COLOR {250, 170, 100, 200}
+#define DURATION_COLOR {200, 200, 200, 200}
+#define STACK_SIZE_COLOR {255, 255, 255, 255}
 
 #define ENTITY_INFO_LABEL_XOFFSET 25
 #define ENTITY_INFO_VAL_XOFFSET 350
@@ -110,6 +112,8 @@ Inventory::~Inventory() {
 void Inventory::open() {
 	set_entity_info();
 	update_inventory_size();
+	update_selection_info();
+	pause_buffs();
 
 	_exit = false;
 	while (!_exit) {
@@ -124,6 +128,8 @@ void Inventory::open() {
 			Environment::get().get_window()->set_title(title);
 		}
 	}
+
+	pause_buffs();
 }
 
 void Inventory::input() {
@@ -147,6 +153,10 @@ void Inventory::input() {
 
 	if (input_manager->is_key(SDL_SCANCODE_E)) {
 		equip_item();
+	}
+
+	if (input_manager->is_key(SDL_SCANCODE_R)) {
+		use_item();
 	}
 
 	if (input_manager->is_key(SDL_SCANCODE_Q)) {
@@ -270,33 +280,18 @@ void Inventory::render_item_info() {
 		item = GetItem(GetPlayer(_entity)->equipped_items[_selection.index]);
 
 	renderer->draw_text(&_selection_info.name, true);
-	if (item->health > 0) {
-		renderer->draw_text(&_selection_info.health, true);		renderer->draw_text(&_selection_info.health_val, true);
-	}
-	if (item->mana > 0) {
-		renderer->draw_text(&_selection_info.mana, true);		renderer->draw_text(&_selection_info.mana_val, true);
-	}
-	if (item->damage > 0) {
-		renderer->draw_text(&_selection_info.damage, true);		renderer->draw_text(&_selection_info.damage_val, true);
-	}
-	if (item->armor > 0) {
-		renderer->draw_text(&_selection_info.armor, true);		renderer->draw_text(&_selection_info.armor_val, true);
-	}
-	if (item->hps > 0) {
-		renderer->draw_text(&_selection_info.hps, true);		renderer->draw_text(&_selection_info.hps_val, true);
-	}
-	if (item->mps > 0) {
-		renderer->draw_text(&_selection_info.mps, true);		renderer->draw_text(&_selection_info.mps_val, true);
-	}
-	if (item->drain > 0) {
-		renderer->draw_text(&_selection_info.drain, true);		renderer->draw_text(&_selection_info.drain_val, true);
-	}
-	if (item->speed > 0) {
-		renderer->draw_text(&_selection_info.speed, true);		renderer->draw_text(&_selection_info.speed_val, true);
-	}
-	if (item->luck > 0) {
-		renderer->draw_text(&_selection_info.luck, true);		renderer->draw_text(&_selection_info.luck_val, true);
-	}
+	if (item->info.size() > 0)	    renderer->draw_text(&_selection_info.info, true);
+	if (item->health > 0)		 {	renderer->draw_text(&_selection_info.health, true);			renderer->draw_text(&_selection_info.health_val, true);     }
+	if (item->mana > 0)			 {	renderer->draw_text(&_selection_info.mana, true);			renderer->draw_text(&_selection_info.mana_val, true);       }
+	if (item->damage > 0)		 {  renderer->draw_text(&_selection_info.damage, true);			renderer->draw_text(&_selection_info.damage_val, true);     }
+	if (item->armor > 0)		 {	renderer->draw_text(&_selection_info.armor, true);			renderer->draw_text(&_selection_info.armor_val, true);      }
+	if (item->hps > 0)			 {	renderer->draw_text(&_selection_info.hps, true);			renderer->draw_text(&_selection_info.hps_val, true);        }
+	if (item->mps > 0)			 {	renderer->draw_text(&_selection_info.mps, true);			renderer->draw_text(&_selection_info.mps_val, true);        }
+	if (item->drain > 0)		 {	renderer->draw_text(&_selection_info.drain, true);			renderer->draw_text(&_selection_info.drain_val, true);      }
+	if (item->speed > 0)		 {	renderer->draw_text(&_selection_info.speed, true);			renderer->draw_text(&_selection_info.speed_val, true);      }
+	if (item->luck > 0)			 {	renderer->draw_text(&_selection_info.luck, true);			renderer->draw_text(&_selection_info.luck_val, true);       }
+	if (item->duration > 0)		 {	renderer->draw_text(&_selection_info.duration, true);		renderer->draw_text(&_selection_info.duration_val, true);   }
+	if (item->is_stackable)		    renderer->draw_text(&_selection_info.stack_size_val, true);
 }
 
 void Inventory::render_entity_info() {
@@ -375,8 +370,12 @@ void Inventory::set_item_info(ItemComponent *item) {
 	int val_x = (_background.w / 2 + SELECTION_XOFFSET + SELECTION_SIZE / 2) + ITEM_INFO_VAL_XOFFSET;
 	int y = _background.h / 2 + SELECTION_YOFFSET + ITEM_INFO_YOFFSET;
 
-	_selection_info.name = Text(item->name, ITEM_INFO_NAME_COLOR, font_size, wrap_length, _background.w / 2 + SELECTION_XOFFSET + SELECTION_SIZE /2, y);
+	_selection_info.name = Text(item->name, item->color, font_size, wrap_length, _background.w / 2 + SELECTION_XOFFSET + SELECTION_SIZE / 2, y);
 	y += font_size + 2;
+
+	_selection_info.info = Text(item->info, item->color, font_size, wrap_length, _background.w / 2 + SELECTION_XOFFSET + SELECTION_SIZE / 2, y);
+	y += font_size + 2 + (font_size + 2) * (item->info.size() / 20);
+
 
 	if (item->health > 0) {
 		_selection_info.health = Text("Health:", HEALTH_COLOR, font_size, wrap_length, label_x, y);
@@ -431,6 +430,18 @@ void Inventory::set_item_info(ItemComponent *item) {
 		_selection_info.luck_val = Text(std::to_string(item->luck), LUCK_COLOR, font_size, wrap_length, val_x, y);
 		y += font_size + 2;
 	}
+
+	if (item->duration > 0) {
+		_selection_info.duration = Text("Duration:", DURATION_COLOR, font_size, wrap_length, label_x, y);
+		_selection_info.duration_val = Text(std::to_string(item->duration / 1000) + "s", DURATION_COLOR, font_size, wrap_length, val_x, y);
+		y += font_size + 2;
+	}
+
+	if (item->is_stackable) {
+		_selection_info.stack_size_val = Text("x" + std::to_string(item->stack_size), STACK_SIZE_COLOR, font_size, wrap_length, val_x, y);
+		y += font_size + 2;
+	}
+
 	_selection_info.hide = false;
 }
 
@@ -528,6 +539,14 @@ void Inventory::update_inventory_size() {
 		INV_SIZE_COLOR, INV_SIZE_FT_SIZE, INV_SIZE_WRAP_LENGTH, _items_background.x + _items_background.w, _items_background.y + _items_background.h + INV_SIZE_FT_SIZE + 2);
 }
 
+void Inventory::update_selection_info() {
+	if (_selection.index == -1) {
+		return;
+	}
+
+	set_item_info(GetItem(_items->at(_selection.index)));
+}
+
 void Inventory::setup_buttons() {
 	_buttons.push_back(new UI::Button_Pressable(&UI::equip_item, "Equip", BUTTON_EQUIP_RECT, BUTTON_FT_SIZE, BUTTON_WRAP_LENGTH, BUTTON_TEXT_COLOR, BUTTON_COLOR));
 	_buttons.push_back(new UI::Button_Pressable(&UI::drop_item, "Drop", BUTTON_DROP_RECT, BUTTON_FT_SIZE, BUTTON_WRAP_LENGTH, BUTTON_TEXT_COLOR, BUTTON_COLOR));
@@ -593,24 +612,110 @@ void Inventory::unequip_item() {
 }
 
 void Inventory::use_item() {
-	// item lua script
-}
-
-void Inventory::drop_item() {
-	if (_selection.equipped || _selection.index == -1) {
+	std::cout << _selection.index << std::endl;
+	if (_selection.index == -1) {
 		return;
 	}
 
+	ItemComponent *item = nullptr;
+	if (_selection.equipped) {
+		PlayerComponent *player = GetPlayer(_entity);
+		if (player->equipped_items[_selection.index]) {
+			item = GetItem(player->equipped_items[_selection.index]);
+		}
+		else {
+			return;
+		}
+	}
+	else {
+		item = GetItem(_items->at(_selection.index));
+	}
+
+	if (!item->is_useable) {
+		return;
+	}
+
+	if (item->is_equipable && _selection.equipped) {
+		if (_items->size() < MAX_ITEMS) {
+			unequip_item();
+			item->use(_entity);
+			if (item->is_buffable) {
+				if (CombatComponent *combat = GetCombat(_entity)) {
+					combat->buffs.back().timer.pause();
+				}
+			}
+			if (item->destroy) {
+				delete *(_items->end());
+				_items->erase(_items->end());
+			}
+		}
+		else {
+			return;
+		}
+	}
+	else {
+		item->use(_entity);
+		if (item->is_buffable) {
+			if (CombatComponent *combat = GetCombat(_entity)) {
+				combat->buffs.back().timer.pause();
+			}
+		}
+		if (item->destroy) {
+			delete _items->at(_selection.index);
+			_items->erase(_items->begin() + _selection.index);
+			_selection.index = -1;
+		}
+	}
+
+	set_entity_info();
+	update_selection_info();
+}
+
+void Inventory::drop_item() {
+	if (_selection.equipped || _selection.index == -1)
+		return;
+
 	PositionComponent *player_position = GetPosition(_entity);
-	PositionComponent *item_position = GetPosition(_items->at(_selection.index));
 
-	item_position->set(player_position->pos_x, player_position->pos_y);
+	ItemComponent *item = GetItem(_items->at(_selection.index));
+	if (item->is_stackable && item->stack_size > 1) {
+		--item->stack_size;
+		Environment::get().get_resource_manager()->create_entity(TYPE_ITEM, _items->at(_selection.index)->get_type_id(), player_position->pos_x, player_position->pos_y);
+	}
+	else {
+		PositionComponent *item_position = GetPosition(_items->at(_selection.index));
+		item_position->set(player_position->pos_x, player_position->pos_y);
+		Environment::get().get_resource_manager()->add_entity(_items->at(_selection.index));
 
-	Environment::get().get_resource_manager()->add_entity(_items->at(_selection.index));
-
-	_items->erase(_items->begin() + _selection.index);
-
-	_selection.index = -1;
+		_items->erase(_items->begin() + _selection.index);
+		_selection.index = -1;
+	}
 
 	update_inventory_size();
+}
+
+void Inventory::add_item(int item_id) {
+	for (auto &item : *_items) {
+		ItemComponent *item_comp = GetItem(item);
+		if (item->get_type_id() == item_id && item_comp->is_stackable) {
+			++item_comp->stack_size;
+			return;
+		}
+	}
+	if (_items->size() >= MAX_ITEMS) {
+		PositionComponent *player_position = GetPosition(Environment::get().get_resource_manager()->get_player());
+		Environment::get().get_resource_manager()->create_entity(TYPE_ITEM, item_id, player_position->pos_x, player_position->pos_y);
+	}
+	else {
+		Entity *item = new Entity(TYPE_ITEM, item_id);
+		_items->push_back(item);
+	}
+}
+
+void Inventory::pause_buffs() {
+	if (CombatComponent *combat = GetCombat(_entity)) {
+		for (auto &buff : combat->buffs) {
+			buff.timer.pause();
+		}
+	}
 }

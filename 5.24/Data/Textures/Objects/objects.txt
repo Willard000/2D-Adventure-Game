@@ -19,3 +19,8 @@
 17 Data/Textures/Objects/plant.txt
 18 Data/Textures/Objects/plant2.txt
 19 Data/Textures/Objects/well.txt
+20 Data/Textures/Objects/plant3.txt
+21 Data/Textures/Objects/plant4.txt
+22 Data/Textures/Objects/plant5.txt
+23 Data/Textures/Objects/plant6.txt
+24 Data/Textures/Objects/plant7.txt
