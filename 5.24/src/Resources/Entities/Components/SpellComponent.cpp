@@ -31,6 +31,7 @@ SpellComponent::SpellComponent(Entity *entity_, float max_dis_, float speed_, in
 	script				( script_ ),
 	damage				( damage_ ),
 	mana_cost			( mana_cost_ ),
+	caster_deleted		( false ),
 	color				( color_ )
 {
 	Environment::get().get_lua()->load_script(script);
@@ -51,6 +52,7 @@ SpellComponent::SpellComponent(Entity *new_entity, const SpellComponent &rhs) :
 	script				( rhs.script ),
 	damage				( rhs.damage ),
 	mana_cost			( rhs.mana_cost ),
+	caster_deleted		( rhs.caster_deleted ),
 	color				( rhs.color )
 {}
 
@@ -71,6 +73,13 @@ void SpellComponent::update() {
 		if (death_timer.update()) {
 			entity->destroy();
 		}
+	}
+
+	if (caster) {
+		caster_deleted = caster->get_is_destroyed();
+	}
+	else {
+		caster_deleted = true;
 	}
 }
 

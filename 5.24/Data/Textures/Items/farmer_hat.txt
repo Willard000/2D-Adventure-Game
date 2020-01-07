@@ -1,0 +1,4 @@
+# Farmer_hat
+stexture Data/Textures/Items/farmer_hat.png
+iwidth 15
+iheight 15

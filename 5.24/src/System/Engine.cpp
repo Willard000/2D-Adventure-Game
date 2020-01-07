@@ -22,6 +22,7 @@ Engine::Engine() :
 }
 
 void Engine::run() {
+	_environment.get_clock()->reset();
 	_environment.get_log()->print("Engine Main Loop\n");
 
 	std::string test = "";

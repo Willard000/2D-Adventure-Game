@@ -75,9 +75,6 @@ bool Entity::is_collision() {
 }
 
 void Entity::clear() {
-	if (!_is_loaded)
-		return;
-
 	for (auto it = _components.begin(); it != _components.end(); ++it) {
 		if (*it) {
 			delete *it;

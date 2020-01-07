@@ -25,6 +25,17 @@ static int magic_cast(lua_State *L) {
 	return 0;
 }
 
+// void Magic:cast_second(float x, float y, float x2, float y2)
+static int magic_cast_second(lua_State *L) {
+	MagicComponent *magic = luaW_check<MagicComponent>(L, -5);
+	float x = (float)luaL_checknumber(L, -4);
+	float y = (float)luaL_checknumber(L, -3);
+	float x2 = (float)luaL_checknumber(L, -2);
+	float y2 = (float)luaL_checknumber(L, -1);
+	magic->cast_secondary(x, y, x2, y2);
+	return 0;
+}
+
 // void Magic:cast_special(float x, float y, float x2, float y2, int spell_id)
 static int magic_cast_special(lua_State *L) {
 	MagicComponent *magic = luaW_check<MagicComponent>(L, -6);
@@ -51,6 +62,13 @@ static int magic_stop_cast_time(lua_State *L) {
 	return 0;
 }
 
+// bool Magic:get_can_cast()
+static int magic_get_can_cast(lua_State *L) {
+	MagicComponent *magic = luaW_check<MagicComponent>(L, -1);
+	lua_pushboolean(L, magic->can_cast);
+	return 1;
+}
+
 static luaL_Reg magic_table[] = {
 	{NULL, NULL}
 };
@@ -58,6 +76,7 @@ static luaL_Reg magic_table[] = {
 static luaL_Reg magic_metatable[] = {
 	// func
 	{"cast", magic_cast},
+	{"cast_second", magic_cast_second},
 	{"cast_special", magic_cast_special},
 	{"reset_cast_time", magic_reset_cast_time},
 	{"stop_cast_time", magic_stop_cast_time},
@@ -66,6 +85,7 @@ static luaL_Reg magic_metatable[] = {
 
 	// get
 	{"get_entity", magic_get_entity},
+	{"get_can_cast", magic_get_can_cast},
 
 	{NULL, NULL}
 };

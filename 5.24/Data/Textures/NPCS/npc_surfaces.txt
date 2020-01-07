@@ -1,3 +1,4 @@
 # NPC Surfaces
 0 Data/Textures/NPCS/Icons/stickman.png
 1 Data/Textures/NPCS/Icons/stickman.png
+2 Data/Textures/NPCS/Icons/stickman.png

@@ -1,24 +1,31 @@
 require "math"
 
+local function split(spell)
+	if not spell:get_caster_deleted() then
+	local spell_pos = spell:get_entity():get_position()
+	local enemy_pos = get_player():get_position()
+	local x = spell_pos:get_x()
+	local y = spell_pos:get_y()
+	local magic = spell:get_caster():get_magic()
+	magic:cast_special(x, y + 10000, x, y, 3)
+	magic:cast_special(x, y - 10000, x, y, 3)
+	magic:cast_special(x + 10000, y, x, y, 3)
+	magic:cast_special(x - 10000, y, x, y, 3)
+	magic:cast_special(x + 10000, y + 10000, x, y, 3)
+	magic:cast_special(x + 10000, y - 10000, x, y, 3)
+	magic:cast_special(x - 10000, y + 10000, x, y, 3)
+	magic:cast_special(x - 10000, y - 10000, x, y, 3)
+	end
+end
+
 Scarecrow_Leader_Attack = {}
 
 function Scarecrow_Leader_Attack.update(spell) 
 	spell:move(spell:get_dx(), spell:get_dy())
+	spell:get_entity():get_position():rotate(5.0)
 
 	if(spell:get_dis() > spell:get_max_dis()) then
-		local spell_pos = spell:get_entity():get_position()
-		local enemy_pos = get_player():get_position()
-		local x = spell_pos:get_x()
-		local y = spell_pos:get_y()
-		local magic = spell:get_caster():get_magic()
-		magic:cast_special(x, y + 10000, x, y, 3)
-		magic:cast_special(x, y - 10000, x, y, 3)
-		magic:cast_special(x + 10000, y, x, y, 3)
-		magic:cast_special(x - 10000, y, x, y, 3)
-		magic:cast_special(x + 10000, y + 10000, x, y, 3)
-		magic:cast_special(x + 10000, y - 10000, x, y, 3)
-		magic:cast_special(x - 10000, y + 10000, x, y, 3)
-		magic:cast_special(x - 10000, y - 10000, x, y, 3)
+		split(spell)
 		spell:death()
 	end
 end

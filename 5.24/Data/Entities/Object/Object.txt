@@ -24,3 +24,4 @@
 22 Data/Entities/Object/plant5.txt
 23 Data/Entities/Object/plant6.txt
 24 Data/Entities/Object/plant7.txt
+25 Data/Entities/Object/bed.txt

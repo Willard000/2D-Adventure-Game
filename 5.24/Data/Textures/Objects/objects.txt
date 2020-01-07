@@ -24,3 +24,4 @@
 22 Data/Textures/Objects/plant5.txt
 23 Data/Textures/Objects/plant6.txt
 24 Data/Textures/Objects/plant7.txt
+25 Data/Textures/Objects/bed.txt

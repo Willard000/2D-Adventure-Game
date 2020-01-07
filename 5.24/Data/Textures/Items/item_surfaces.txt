@@ -13,3 +13,5 @@
 11 Data/Textures/Items/greenberry.png
 12 Data/Textures/Items/orangeberry.png
 13 Data/Textures/Items/purpleberry.png
+14 Data/Textures/Items/pitchfork.png
+15 Data/Textures/Items/farmer_hat.png

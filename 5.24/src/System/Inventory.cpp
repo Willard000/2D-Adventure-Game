@@ -544,7 +544,12 @@ void Inventory::update_selection_info() {
 		return;
 	}
 
-	set_item_info(GetItem(_items->at(_selection.index)));
+	if (_selection.equipped) {
+		set_item_info(GetItem(GetPlayer(_entity)->equipped_items[_selection.index]));
+	}
+	else {
+		set_item_info(GetItem(_items->at(_selection.index)));
+	}
 }
 
 void Inventory::setup_buttons() {
@@ -612,7 +617,6 @@ void Inventory::unequip_item() {
 }
 
 void Inventory::use_item() {
-	std::cout << _selection.index << std::endl;
 	if (_selection.index == -1) {
 		return;
 	}

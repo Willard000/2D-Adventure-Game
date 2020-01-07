@@ -1,10 +1,10 @@
 # Scarecrow Leader Attack
 
-itexture_id 3
+itexture_id 4
 
 Position
-iwidth 10
-iheight 10
+iwidth 25
+iheight 25
 
 Sprite
 isprite_time -1
@@ -15,5 +15,5 @@ fspell_speed 400
 ideath_time 0
 sspell_script_name Scarecrow_Leader_Attack
 sspell_script Data/Lua/Spells/Scarecrow_Leader_attack.lua
-ispell_damage 5
+ispell_damage 500
 spell_color 190 170 90 255

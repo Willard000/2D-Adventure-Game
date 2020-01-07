@@ -1,0 +1,6 @@
+# Kill Scarecrows
+
+Kill_Quest
+
+itarget_id 3
+itotal 10

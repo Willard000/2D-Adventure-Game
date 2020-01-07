@@ -1,3 +1,4 @@
 # Icons
 0 Data/Textures/NPCS/Icons/stickman.txt
 1 Data/Textures/NPCS/Icons/stickman.txt
+2 Data/Textures/NPCS/Icons/stickman.txt

@@ -13,7 +13,7 @@ isprite_time 300
 NPC
 snpc_script_name Greg
 snpc_script Data/Lua/NPC/greg.lua
-inpc_quest_id 1
+inpc_quest_id 0
 
 Interact
 sinteract_name Greg

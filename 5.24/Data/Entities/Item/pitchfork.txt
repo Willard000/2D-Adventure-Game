@@ -1,0 +1,17 @@
+# Pitchfork
+
+itexture_id 14
+
+Position
+iwidth 32
+iheight 32
+
+Item
+iitem_slot 0
+sitem_name Pitchfork
+sitem_info A sharp tool
+iitem_damage 25
+item_color 130 90 60 255
+
+bitem_equipable 1
+bitem_useable 0

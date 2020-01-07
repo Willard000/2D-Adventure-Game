@@ -42,6 +42,8 @@ struct SpellComponent : public Component {
 	int damage;
 	int mana_cost;
 
+	bool caster_deleted;
+
 	std::string script_name;
 	std::string script;
 

@@ -59,6 +59,7 @@
 #define FILE_SPELL_COLOR "spell_color"
 
 #define FILE_MAGIC_MAIN_SPELL_ID "imain_spell_id"
+#define FILE_MAGIC_SECOND_SPELL_ID "isecond_spell_id"
 #define FILE_MAGIC_CAST_SPEED "icast_speed"
 
 #define FILE_PLAYER_NAME "splayer_name"
@@ -169,12 +170,14 @@ void load_spell(FileReader &file, Entity *entity, SpellComponent *&spell) {
 
 void load_magic(FileReader &file, Entity *entity, MagicComponent *&magic) {
 	int main_spell_id = 0;
+	int second_spell_id = 0;
 	int cast_speed = 0;
 
 	if (file.exists(FILE_MAGIC_MAIN_SPELL_ID)) main_spell_id = file.get_int(FILE_MAGIC_MAIN_SPELL_ID);
+	if (file.exists(FILE_MAGIC_SECOND_SPELL_ID)) second_spell_id = file.get_int(FILE_MAGIC_SECOND_SPELL_ID);
 	if (file.exists(FILE_MAGIC_CAST_SPEED)) cast_speed = file.get_int(FILE_MAGIC_CAST_SPEED);
 
-	magic = new MagicComponent(entity, main_spell_id, cast_speed);
+	magic = new MagicComponent(entity, main_spell_id, second_spell_id, cast_speed);
 }
 
 void load_player(FileReader &file, Entity *entity, PlayerComponent *&player) {

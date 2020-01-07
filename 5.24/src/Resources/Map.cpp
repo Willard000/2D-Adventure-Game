@@ -9,6 +9,7 @@
 #include "Log.h"
 #include "ResourceManager.h"
 #include "Window.h"
+#include "Clock.h"
 #include "_Lua.h"
 
 #include "Entity.h"
@@ -146,6 +147,7 @@ bool Map::load(int id, bool is_base_map) {
 	_script_name = "Map" + std::to_string(id);
 	Environment::get().get_lua()->load_script(_script);
 
+	Environment::get().get_clock()->reset();
 	Environment::get().get_log()->print("Map Loaded");
 
 	return true;
@@ -547,9 +549,9 @@ void Map::save_entities(std::ostream &file) {
 	std::map<int, EntityManager::Entity_Map> *entities = Environment::get().get_resource_manager()->get_entities();
 	for (auto it = entities->begin(); it != entities->end(); ++it) {
 		if (it->first != TYPE_SPELL) {
-			for (auto itt = it->second.begin(); itt != it->second.end(); ++itt) {
-				file << FILE_ENTITY_TYPE << " " << itt->second->get_type() << " "
-					 << FILE_ENTITY_TYPE_ID << " " << itt->second->get_type_id() << " ";
+			for (auto itt = it->second.begin(); itt != it->second.end() && itt->second != nullptr; ++itt) {
+					file << FILE_ENTITY_TYPE << " " << itt->second->get_type() << " "
+						<< FILE_ENTITY_TYPE_ID << " " << itt->second->get_type_id() << " ";
 
 				if (PositionComponent *position = GetPosition(itt->second)) {
 					file << FILE_ENTITY_POSITION_X << " " << position->pos_x << " "

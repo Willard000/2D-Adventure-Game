@@ -68,6 +68,7 @@ void EntityManager::remove_entity(const Type &type, const ID &id) {
 	//Environment::get().get_log()->print("Deleting Entity - " + type + " " + std::to_string(id));
 
 	delete _entities[type][id];
+	_entities[type][id] = nullptr;
 	_entities[type].erase(id);
 }
 

@@ -1,0 +1,4 @@
+# Bed
+stexture Data/Textures/Objects/bed.png
+iwidth 64
+iheight 32

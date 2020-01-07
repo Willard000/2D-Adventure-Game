@@ -1,0 +1,4 @@
+# Pitchfork
+stexture Data/Textures/Items/pitchfork.png
+iwidth 15
+iheight 15

@@ -21,5 +21,9 @@ function Scarecrow.update(enemy)
 end
 
 function Scarecrow.death(enemy)
+	local player = get_player():get_player()
 
+	if player:has_quest(1) then
+		player:add_kill_count(1)
+	end
 end

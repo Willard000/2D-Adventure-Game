@@ -19,7 +19,7 @@ splayer_name Matt
 
 Combat
 icombat_max_health 100
-icombat_max_mana 100
+icombat_max_mana 100000
 icombat_damage 1
 icombat_armor 1
 icombat_hps 1

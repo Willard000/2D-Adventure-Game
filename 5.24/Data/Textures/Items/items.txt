@@ -13,3 +13,5 @@
 11 Data/Textures/Items/greenberry.txt
 12 Data/Textures/Items/orangeberry.txt
 13 Data/Textures/Items/purpleberry.txt
+14 Data/Textures/Items/pitchfork.txt
+15 Data/Textures/Items/farmer_hat.txt

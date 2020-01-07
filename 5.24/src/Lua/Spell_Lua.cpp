@@ -117,6 +117,13 @@ static int spell_set_ani(lua_State *L) {
 	return 0;
 }
 
+// bool Spell:get_caster_deleted()
+static int spell_get_caster_deleted(lua_State *L) {
+	SpellComponent *spell = luaW_check<SpellComponent>(L, -1);
+	lua_pushboolean(L, spell->caster_deleted);
+	return 1;
+}
+
 static luaL_Reg spell_table[] = {
 	{NULL, NULL}
 };
@@ -145,6 +152,8 @@ static luaL_Reg spell_metatable[] = {
 
 	{"get_dis", spell_get_dis},
 	{"get_max_dis", spell_get_max_dis},
+
+	{"get_caster_deleted", spell_get_caster_deleted},
 
 	{NULL, NULL}
 };

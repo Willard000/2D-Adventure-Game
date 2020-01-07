@@ -14,12 +14,13 @@ isprite_cast_time 500
 Enemy
 senemy_name Scarecrow_Leader
 senemy_script Data/Lua/Enemies/scarecrow_leader.lua
-ienemy_combat_range_w 800
-ienemy_combat_range_h 800
-enemy_drop_table 
+ienemy_combat_range_w 1200
+ienemy_combat_range_h 1200
+enemy_drop_table 14 100
 
 Magic
 imain_spell_id 4
+isecond_spell_id 3
 icast_speed 500
 
 Combat

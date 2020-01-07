@@ -24,3 +24,4 @@
 22 Data/Textures/Objects/plant5.png
 23 Data/Textures/Objects/plant6.png
 24 Data/Textures/Objects/plant7.png
+25 Data/Textures/Objects/bed.png

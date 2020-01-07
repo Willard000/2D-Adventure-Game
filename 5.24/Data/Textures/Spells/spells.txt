@@ -3,3 +3,4 @@
 1 Data/Textures/Spells/bushki_attack.txt
 2 Data/Textures/Spells/bandit_attack.txt
 3 Data/Textures/Spells/scarecrow_attack.txt
+4 Data/Textures/Spells/scarecrow_leader_attack.txt
