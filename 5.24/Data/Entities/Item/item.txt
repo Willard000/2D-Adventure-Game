@@ -15,3 +15,5 @@
 13 Data/Entities/Item/purpleberry.txt
 14 Data/Entities/Item/pitchfork.txt
 15 Data/Entities/Item/farmer_hat.txt
+16 Data/Entities/Item/leather_gloves.txt
+17 Data/Entities/Item/leather_boots.txt

@@ -10,6 +10,7 @@ Item
 iitem_slot 0
 sitem_name Stick
 iitem_damage 1
+item_color 175 145 60 255
 
 bitem_equipable 1
 bitem_useable 0

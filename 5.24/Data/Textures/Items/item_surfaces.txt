@@ -15,3 +15,5 @@
 13 Data/Textures/Items/purpleberry.png
 14 Data/Textures/Items/pitchfork.png
 15 Data/Textures/Items/farmer_hat.png
+16 Data/Textures/Items/leather_gloves.png
+17 Data/Textures/Items/leather_boots.png

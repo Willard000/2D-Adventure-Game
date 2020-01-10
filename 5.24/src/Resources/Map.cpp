@@ -3,6 +3,8 @@
 #include <sstream>
 #include <fstream>
 
+#include <filesystem>
+
 #include "FileReader.h"
 
 #include "Environment.h"
@@ -302,7 +304,12 @@ void Map::build_entity_grid() {
 		if (it->first != TYPE_EFFECT) {
 			for (auto itt = it->second.begin(); itt != it->second.end(); ++itt) {
 				if (PositionComponent *position = GetPosition(itt->second)) {
-					_entities_grid.insert(position->rect, itt->second);
+					if (position->rotation != 0) {
+						_entities_grid.insert(position->rect, position->rotation, itt->second);
+					}
+					else {
+						_entities_grid.insert(position->rect, itt->second);
+					}
 				}
 			}
 		}
@@ -634,4 +641,9 @@ void Map::create_lua_file() {
 	file << "function " + name + ".update()\n";
 	file << "end";
 	file.close();
+}
+
+void Map::reload_all() {
+	std::filesystem::copy("Data/Maps/Base", "Data/Maps/Saved", std::filesystem::copy_options::overwrite_existing);
+	load(_id, true);
 }

@@ -11,6 +11,7 @@ iitem_slot 3
 sitem_name Shirt
 iitem_health 10
 iitem_armor 1
+item_color 175 140 100 255
 
 bitem_equipable 1
 bitem_useable 0

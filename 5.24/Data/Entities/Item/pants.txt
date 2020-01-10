@@ -10,6 +10,7 @@ Item
 iitem_slot 4
 sitem_name Pants
 iitem_armor 2
+item_color 175 140 100 255
 
 bitem_equipable 1
 bitem_useable 0

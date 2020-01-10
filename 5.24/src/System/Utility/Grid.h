@@ -2,6 +2,8 @@
 #include <SDL.h>
 #include <vector>
 
+#include "Collision.h"
+
 // Objects that are too big and fit into more then 4 cells, do not work
 
 #ifndef GRID_H
@@ -15,9 +17,14 @@ public:
 	~Grid();
 
 	// inserts an object into the grid at location pos
-	// returns the amount of times the object was removed
+	// returns the amount of times the object was inserted
 	// -- 0 - 4 one for each possible grid location
 	int insert(const SDL_Rect &pos, const T &obj);
+
+	// inserts an rotated object into the grid at location pos
+	// returns the amount of times the object was inserted
+	// -- 0 - 4 one for each possible grid location
+	int insert(const SDL_Rect &pos, const double &rotation, const T &obj);
 
 	// removes an object from the grid
 	// returns the amount of times the object was removed
@@ -42,8 +49,8 @@ private:
 private:
 	int _cell_width;
 	int _cell_height;
-	float _inv_cell_width;
-	float _inv_cell_height;
+	float _inv_cell_width; // inverted  -- 1 / cell_width for multiplication instead of division
+	float _inv_cell_height; // inverted    this is dumb :)
 
 	int _width;
 	int _height;
@@ -119,6 +126,96 @@ int Grid<T>::insert(const SDL_Rect &pos, const T &obj) {
 					_cells[y2][x2].push_back(obj);
 					++inserted;
 				}
+			}
+		}
+	}
+
+	return inserted;
+}
+
+template <class T>
+int Grid<T>::insert(const SDL_Rect &pos, const double &rotation, const T &obj) {
+	std::array<Vertex, 4> vertices = make_vertices(pos, rotation);
+	for (auto &vertex : vertices) {
+		vertex.x = int(vertex.x * _inv_cell_width);
+		vertex.y = int(vertex.y * _inv_cell_height);
+	}
+	int inserted = 0;
+
+	for (auto &vertex : vertices) {
+		if (inserted == 0) {
+			if (!(vertex.y > _height - 1 || vertex.y < 0)) {
+				if (!(vertex.x > _width - 1 || vertex.x < 0)) {
+					_cells[(int)vertex.y][(int)vertex.x].push_back(obj);
+					++inserted;
+				}
+			}
+		}
+		else {
+			bool unique = true;
+			for (int i = inserted - 1; i >= 0; --i) {
+				unique = !(vertex.x == vertices[i].x && vertex.y == vertices[i].y);
+			}
+			if (unique) {
+				if (!(vertex.y > _height - 1 || vertex.y < 0)) {
+					if (!(vertex.x > _width - 1 || vertex.x < 0)) {
+						_cells[(int)vertex.y][(int)vertex.x].push_back(obj);
+						++inserted;
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	if (inserted && vertices[0].y >= 0 && vertices[0].x >= 0 && vertices[0].y < _height - 1 && vertices[0].x < _width - 1) {
+		if ((rotation > 0 && rotation <= 90)) {
+			SDL_Rect cell_below = { _cell_width * vertices[0].x, _cell_height * vertices[0].y + 1, _cell_width, _cell_height };
+			SDL_Rect cell_left = { _cell_width * vertices[0].x - 1, _cell_height * vertices[0].y, _cell_width, _cell_height };
+			if (vertices[0].y + 1 < _height - 1 && collision(pos, cell_below, rotation, 0.0)) {
+				_cells[(int)vertices[0].y + 1][(int)vertices[0].x].push_back(obj);
+				++inserted;
+			}
+			if (vertices[0].x - 1 >= 0 && collision(pos, cell_left, rotation, 0.0)) {
+				_cells[(int)vertices[0].y][(int)vertices[0].x - 1].push_back(obj);
+				++inserted;
+			}
+		}
+		else if ((rotation > 90 && rotation <= 180)) {
+			SDL_Rect cell_above = { _cell_width * vertices[0].x, _cell_height * vertices[0].y - 1, _cell_width, _cell_height };
+			SDL_Rect cell_left = { _cell_width * vertices[0].x - 1, _cell_height * vertices[0].y, _cell_width, _cell_height };
+			if (vertices[0].y - 1 >= 0  && collision(pos, cell_above, rotation, 0.0)) {
+				_cells[(int)vertices[0].y - 1][(int)vertices[0].x].push_back(obj);
+				++inserted;
+			}
+			if (vertices[0].x - 1 >= 0 && collision(pos, cell_left, rotation, 0.0)) {
+				_cells[(int)vertices[0].y][(int)vertices[0].x - 1].push_back(obj);
+				++inserted;
+			}
+		}
+		else if ((rotation > 180 && rotation <= 270)) {
+			SDL_Rect cell_above = { _cell_width * vertices[0].x, _cell_height * vertices[0].y - 1, _cell_width, _cell_height };
+			SDL_Rect cell_right = { _cell_width * vertices[0].x + 1, _cell_height * vertices[0].y, _cell_width, _cell_height };
+
+			if (vertices[0].y - 1 >= 0 && collision(pos, cell_above, rotation, 0.0)) {
+				_cells[(int)vertices[0].y - 1][(int)vertices[0].x].push_back(obj);
+				++inserted;
+			}
+			if (vertices[0].x + 1 < _width - 1 && collision(pos, cell_right, rotation, 0.0)) {
+				_cells[(int)vertices[0].y][(int)vertices[0].x + 1].push_back(obj);
+				++inserted;
+			}
+		}
+		else if ((rotation > 270 && rotation < 360)) {
+			SDL_Rect cell_below = { _cell_width * vertices[0].x, _cell_height * vertices[0].y + 1, _cell_width, _cell_height };
+			SDL_Rect cell_right = { _cell_width * vertices[0].x + 1, _cell_height * vertices[0].y, _cell_width, _cell_height };
+			if (vertices[0].y + 1 < _height - 1 && collision(pos, cell_below, rotation, 0.0)) {
+				_cells[(int)vertices[0].y + 1][(int)vertices[0].x].push_back(obj);
+				++inserted;
+			}
+			if (vertices[0].x + 1 < _width - 1 && collision(pos, cell_right, rotation, 0.0)) {
+				_cells[(int)vertices[0].y][(int)vertices[0].x + 1].push_back(obj);
+				++inserted;
 			}
 		}
 	}

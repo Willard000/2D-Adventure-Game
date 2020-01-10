@@ -90,6 +90,8 @@ public:
 
 	std::vector<Warp> *get_warps() { return &_warps; }
 
+	void reload_all();
+
 	friend class ResourceManager;
 private:
 	std::string get_base_map_path(int id);

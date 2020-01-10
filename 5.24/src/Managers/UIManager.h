@@ -110,6 +110,8 @@ public:
 	void set_map_selection_scale(float scale);
 
 	void move_map_selection();
+
+	void unselect();
 private:
 	void get_real_mouse_location(int &x, int &y);
 	void calc_real_mouse_location(int &x, int &y);

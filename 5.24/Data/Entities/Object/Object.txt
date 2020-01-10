@@ -25,3 +25,4 @@
 23 Data/Entities/Object/plant6.txt
 24 Data/Entities/Object/plant7.txt
 25 Data/Entities/Object/bed.txt
+26 Data/Entities/Object/sleeping_bag.txt

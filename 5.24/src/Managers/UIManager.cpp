@@ -865,3 +865,8 @@ void UIManager::move_map_selection() {
 	y -= position->rect.h / 2;	
 	position->set((float)x, (float)y);
 }
+
+void UIManager::unselect() {
+	_selection.id = -1;
+	_map_selection.id = -1;
+}

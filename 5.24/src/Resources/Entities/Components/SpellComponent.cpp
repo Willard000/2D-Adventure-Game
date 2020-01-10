@@ -138,7 +138,7 @@ bool SpellComponent::is_collision() {
 				type == TYPE_ENEMY  ||
 				type == TYPE_PLAYER ||
 				type == TYPE_NPC) {
-				if (collision(position->rect, GetPosition(e)->rect) &&
+				if (collision(position->rect, GetPosition(e)->rect, position->rotation, GetPosition(e)->rotation) &&
 					e != caster && e->get_type() != caster->get_type()) {
 
 					on_collision(e);

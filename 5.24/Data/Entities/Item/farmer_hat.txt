@@ -1,4 +1,4 @@
-# Wizard Hat
+# Farmer Hat
 
 itexture_id 15
 

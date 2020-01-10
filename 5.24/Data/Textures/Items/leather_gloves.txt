@@ -1,0 +1,4 @@
+# Leather Gloves
+stexture Data/Textures/Items/leather_gloves.png
+iwidth 15
+iheight 15

@@ -11,6 +11,7 @@ iitem_slot 2
 sitem_name Wizard Hat
 iitem_mana 30
 iitem_mps 2
+item_color 100 205 240 255
 
 bitem_equipable 1
 bitem_useable 0

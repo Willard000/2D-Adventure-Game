@@ -1,5 +1,6 @@
 Chest = {}
 
+-- interact_data = typeid=x_id=y
 function Chest.interact(chest)
 	local position = chest:get_entity():get_position()
 	local x = position:get_x() + position:get_w() / 2

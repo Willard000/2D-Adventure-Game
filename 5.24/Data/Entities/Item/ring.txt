@@ -12,6 +12,7 @@ sitem_name Ring
 iitem_hps 1
 iitem_mps 1
 iitem_luck 1
+item_color 215 215 215 255
 
 bitem_equipable 1
 bitem_useable 0

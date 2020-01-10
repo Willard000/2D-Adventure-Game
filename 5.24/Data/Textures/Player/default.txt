@@ -1,6 +1,6 @@
-# Link
+# Default
 Sprite
-stexture Data/Textures/Player/link.png
+stexture Data/Textures/Player/default.png
 iwidth 32
 iheight 32
 iidle 0

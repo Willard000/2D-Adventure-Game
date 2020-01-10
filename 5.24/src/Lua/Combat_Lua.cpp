@@ -39,6 +39,13 @@ static int combat_get_health(lua_State *L) {
 	return 1;
 }
 
+// int Combat:get_max_health()
+static int combat_get_max_health(lua_State *L) {
+	CombatComponent *combat = luaW_check<CombatComponent>(L, -1);
+	lua_pushnumber(L, combat->max_health);
+	return 1;
+}
+
 // void Combat:set_manaint val)
 static int combat_set_mana(lua_State *L) {
 	CombatComponent *combat = luaW_check<CombatComponent>(L, -2);
@@ -57,6 +64,13 @@ static int combat_get_mana(lua_State *L) {
 	return 1;
 }
 
+// int Combat:get_max_mana()
+static int combat_get_max_mana(lua_State *L) {
+	CombatComponent *combat = luaW_check<CombatComponent>(L, -1);
+	lua_pushnumber(L, combat->max_mana);
+	return 1;
+}
+
 static luaL_Reg combat_table[] = {
 	{NULL, NULL}
 };
@@ -71,7 +85,9 @@ static luaL_Reg combat_metatable[] = {
 	// get
 	{"get_entity", combat_get_entity},
 	{"get_health", combat_get_health},
+	{"get_max_health", combat_get_max_health},
 	{"get_mana", combat_get_mana},
+	{"get_max_mana", combat_get_max_mana},
 	{"in_combat", combat_in_combat},
 
 	{NULL, NULL}

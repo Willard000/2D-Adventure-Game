@@ -1,0 +1,4 @@
+# Sleeping Bag
+stexture Data/Textures/Objects/sleeping_bag.png
+iwidth 64
+iheight 32

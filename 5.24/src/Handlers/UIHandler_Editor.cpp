@@ -63,6 +63,7 @@ void load_map() {
 		return;
 	}
 
+	Environment::get().get_ui_manager()->unselect();
 	Environment::get().get_resource_manager()->load_map(id, true);
 }
 
