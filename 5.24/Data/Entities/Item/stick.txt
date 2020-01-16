@@ -1,6 +1,7 @@
 # Stick
 
 itexture_id 0
+sentity_name Stick
 
 Position
 iwidth 32
@@ -11,6 +12,7 @@ iitem_slot 0
 sitem_name Stick
 iitem_damage 1
 item_color 175 145 60 255
+iitem_sell_value 1
 
 bitem_equipable 1
 bitem_useable 0

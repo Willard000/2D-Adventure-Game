@@ -1,0 +1,4 @@
+# Armor Sign
+stexture Data/Textures/Objects/armor_sign.png
+iwidth 32
+iheight 16

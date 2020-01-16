@@ -1,0 +1,4 @@
+# Small Mana Potion
+stexture Data/Textures/Items/small_mana_potion.png
+iwidth 15
+iheight 15

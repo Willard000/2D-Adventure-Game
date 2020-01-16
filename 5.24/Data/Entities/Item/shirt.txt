@@ -1,6 +1,7 @@
 # Shirt
 
 itexture_id 1
+sentity_name Shirt
 
 Position
 iwidth 32
@@ -12,6 +13,7 @@ sitem_name Shirt
 iitem_health 10
 iitem_armor 1
 item_color 175 140 100 255
+iitem_sell_value 5
 
 bitem_equipable 1
 bitem_useable 0

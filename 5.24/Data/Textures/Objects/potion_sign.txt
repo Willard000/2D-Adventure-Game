@@ -1,0 +1,4 @@
+# Potion Sign
+stexture Data/Textures/Objects/potion_sign.png
+iwidth 32
+iheight 16

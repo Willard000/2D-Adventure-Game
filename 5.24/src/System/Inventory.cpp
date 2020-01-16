@@ -44,20 +44,6 @@
 #define ITEM_INFO_WRAP_LENGTH 1000
 #define ITEM_INFO_COLOR {0, 150, 150, 200}
 
-#define LEVEL_COLOR {150, 100, 200, 200}
-#define EXP_COLOR {150, 100, 200, 200}
-#define HEALTH_COLOR {225, 55, 55, 200}
-#define MANA_COLOR {100, 185, 225, 200}
-#define DAMAGE_COLOR {240, 160, 110, 200}
-#define ARMOR_COLOR {210, 130, 200, 200}
-#define HPS_COLOR {225, 55, 55, 200}
-#define MPS_COLOR {100, 185, 225, 200}
-#define DRAIN_COLOR {100, 185, 225, 200}
-#define SPEED_COLOR {135, 210, 140, 200}
-#define LUCK_COLOR {250, 170, 100, 200}
-#define DURATION_COLOR {200, 200, 200, 200}
-#define STACK_SIZE_COLOR {255, 255, 255, 255}
-
 #define ENTITY_INFO_LABEL_XOFFSET 25
 #define ENTITY_INFO_VAL_XOFFSET 350
 #define ENTITY_INFO_YOFFSET 100
@@ -106,6 +92,7 @@ Inventory::Inventory(Entity *entity, std::vector<Entity *> *items, CombatCompone
 Inventory::~Inventory() {
 	for (auto &button : _buttons) {
 		delete button;
+		button = nullptr;
 	}
 }
 
@@ -309,6 +296,7 @@ void Inventory::render_entity_info() {
 	renderer->draw_text(&_entity_info.drain, true, DRAW_TEXT_NON_CENTER);		renderer->draw_text(&_entity_info.drain_val, true);
 	renderer->draw_text(&_entity_info.speed, true, DRAW_TEXT_NON_CENTER);		renderer->draw_text(&_entity_info.speed_val, true);
 	renderer->draw_text(&_entity_info.luck, true, DRAW_TEXT_NON_CENTER);		renderer->draw_text(&_entity_info.luck_val, true);
+	renderer->draw_text(&_entity_info.gold, true, DRAW_TEXT_NON_CENTER);		renderer->draw_text(&_entity_info.gold_val, true);
 }
 
 void Inventory::render_buttons() {
@@ -371,7 +359,7 @@ void Inventory::set_item_info(ItemComponent *item) {
 	int y = _background.h / 2 + SELECTION_YOFFSET + ITEM_INFO_YOFFSET;
 
 	_selection_info.name = Text(item->name, item->color, font_size, wrap_length, _background.w / 2 + SELECTION_XOFFSET + SELECTION_SIZE / 2, y);
-	y += font_size + 2;
+	y += (font_size + 10) * item->name.size() / 15;
 
 	_selection_info.info = Text(item->info, item->color, font_size, wrap_length, _background.w / 2 + SELECTION_XOFFSET + SELECTION_SIZE / 2, y);
 	y += font_size + 2 + (font_size + 2) * (item->info.size() / 20);
@@ -517,6 +505,10 @@ void Inventory::set_entity_info() {
 	y += font_size + 2;
 	_entity_info.luck = Text("Luck:", LUCK_COLOR, font_size, wrap_length, label_x, y);
 	_entity_info.luck_val = Text(std::to_string(combat_info->luck), LUCK_COLOR, font_size, wrap_length, val_x, y);
+
+	y += font_size + 2;
+	_entity_info.gold = Text("Gold:", VALUE_COLOR, font_size, wrap_length, label_x, y);
+	_entity_info.gold_val = Text(std::to_string(player_info->gold), VALUE_COLOR, font_size, wrap_length, val_x, y);
 }
 
 void Inventory::set_item_equipped(bool is_equipped) {

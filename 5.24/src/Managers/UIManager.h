@@ -119,6 +119,8 @@ private:
 	SDL_Rect place_warp_rect();
 
 	void update_map_selection_text();
+
+	void set_name_text();
 private:
 	int _state;
 	int _state_prev;
@@ -134,6 +136,7 @@ private:
 	Text _stacking_text;
 	Text _rotation_text;
 	Text _scale_text;
+	Text _name_text;
 
 	Callback _on_confirm;
 	Callback _on_deny;

@@ -1,6 +1,7 @@
 # Purpleberry
 
 itexture_id 13
+sentity_name Purpleberry
 
 Position
 iwidth 15
@@ -13,6 +14,7 @@ sitem_info Increases armor for a short period of time
 item_color 180 80 255 255
 iitem_armor 10
 iitem_duration 10000
+iitem_sell_value 4
 
 bitem_equipable 0
 bitem_useable 1

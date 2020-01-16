@@ -1,6 +1,7 @@
 # Sleeping Bag
 
 itexture_id 26
+sentity_name Sleeping Bag
 
 Position
 iwidth 96

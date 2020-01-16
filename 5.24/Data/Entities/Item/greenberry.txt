@@ -1,6 +1,7 @@
 # Greenberry
 
 itexture_id 11
+sentity_name Greenberry
 
 Position
 iwidth 15
@@ -13,6 +14,7 @@ sitem_info Increases speed for a short period of time
 item_color 125 190 160 255
 iitem_speed 10
 iitem_duration 10000
+iitem_sell_value 4
 
 bitem_equipable 0
 bitem_useable 1

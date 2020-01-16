@@ -1,0 +1,4 @@
+# Large Damage Potion
+stexture Data/Textures/Items/large_damage_potion.png
+iwidth 15
+iheight 15

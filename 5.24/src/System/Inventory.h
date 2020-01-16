@@ -13,17 +13,32 @@
 #ifndef INVENTORY_H
 #define INVENTORY_H
 
+#define LEVEL_COLOR {150, 100, 200, 200}
+#define EXP_COLOR {150, 100, 200, 200}
+#define HEALTH_COLOR {225, 55, 55, 200}
+#define MANA_COLOR {100, 185, 225, 200}
+#define DAMAGE_COLOR {240, 160, 110, 200}
+#define ARMOR_COLOR {210, 130, 200, 200}
+#define HPS_COLOR {225, 55, 55, 200}
+#define MPS_COLOR {100, 185, 225, 200}
+#define DRAIN_COLOR {100, 185, 225, 200}
+#define SPEED_COLOR {135, 210, 140, 200}
+#define LUCK_COLOR {250, 170, 100, 200}
+#define DURATION_COLOR {200, 200, 200, 200}
+#define VALUE_COLOR { 225, 185, 25, 255 }
+#define STACK_SIZE_COLOR {255, 255, 255, 255}
+
 class Inventory {
 public:
 	struct Item_Info {
 		Text name, info, health, mana, damage, armor, hps, mps, drain, speed, luck, duration;
-		Text health_val, mana_val, damage_val, armor_val, hps_val, mps_val, drain_val, speed_val, luck_val, duration_val, stack_size_val;
+		Text health_val, mana_val, damage_val, armor_val, hps_val, mps_val, drain_val, speed_val, luck_val, duration_val, sell_value_val, buy_value_val, stack_size_val;
 		bool hide;
 	};
 
 	struct Entity_Info {
-		Text name, level, exp, health, mana, damage, armor, mps, hps, drain, speed, luck;
-		Text level_val, exp_val, health_val, mana_val, damage_val, armor_val, mps_val, hps_val, drain_val, speed_val, luck_val;
+		Text name, level, exp, health, mana, damage, armor, mps, hps, drain, speed, luck, gold;
+		Text level_val, exp_val, health_val, mana_val, damage_val, armor_val, mps_val, hps_val, drain_val, speed_val, luck_val, gold_val;
 	};
 
 	struct Selection {

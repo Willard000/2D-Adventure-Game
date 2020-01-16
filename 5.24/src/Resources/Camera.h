@@ -1,3 +1,5 @@
+#include <SDL_rect.h>
+
 #ifndef CAMERA_H
 #define CAMERA_H
 
@@ -7,7 +9,7 @@ class Entity;
 
 class Camera {
 public:
-	Camera();
+	Camera(int width, int height);
 
 	void toggle();
 	void move(int dir, float dis = 0);
@@ -29,6 +31,9 @@ public:
 	float get_scale()	  { return _uniform_scale;	  }
 	double get_rotation() { return _uniform_rotation; }
 
+	SDL_Rect &get_rect() { return _rect; }
+	void set_size(int width, int height);
+
 	friend class Window;
 	friend class Renderer;
 private:
@@ -40,6 +45,8 @@ private:
 
 	double _uniform_rotation;
 	float _uniform_scale;
+
+	SDL_Rect _rect;
 };
 
 #endif

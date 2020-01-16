@@ -1,6 +1,7 @@
 # Wood Wall
 
 itexture_id 7
+sentity_name Wood Wall
 
 Position
 iwidth 80

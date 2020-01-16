@@ -1,0 +1,22 @@
+# Medium Health Potion
+
+itexture_id 23
+sentity_name Medium Health Potion
+
+Position
+iwidth 25
+iheight 25
+
+Item
+iitem_slot 2
+sitem_name Medium Health Potion
+sitem_info Restores 500 Health
+item_color 240 80 90 255
+iitem_sell_value 4
+
+bitem_equipable 0
+bitem_useable 1
+bitem_stackable 1
+
+sitem_script_name Medium_Health_Potion
+sitem_script Data/Lua/Items/medium_health_potion.lua

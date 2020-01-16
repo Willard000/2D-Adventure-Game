@@ -1,6 +1,7 @@
 # Scarecrow Attack
 
 itexture_id 3
+sentity_name Scarecrow Attack
 
 Position
 iwidth 10

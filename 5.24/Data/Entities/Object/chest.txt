@@ -1,6 +1,7 @@
 # Chest
 
 itexture_id 12
+sentity_name Chest
 
 Position
 iwidth 64

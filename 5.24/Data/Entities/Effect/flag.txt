@@ -1,6 +1,7 @@
-# Fire
+# Flag
 
 itexture_id 3
+sentity_name Flag
 
 Position
 iwidth 48

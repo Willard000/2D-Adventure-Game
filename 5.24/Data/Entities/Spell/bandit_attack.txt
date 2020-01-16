@@ -1,6 +1,7 @@
 # Bandit_Attack
 
 itexture_id 2
+sentity_name Bandit Attack
 
 Position
 iwidth 14

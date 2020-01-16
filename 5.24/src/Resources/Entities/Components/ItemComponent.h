@@ -36,6 +36,8 @@ struct ItemComponent : public Component {
 		int speed_,
 		int luck_,
 		int duration_,
+		int sell_value_,
+		int buy_value_,
 		bool is_equipable_,
 		bool is_useable_,
 		bool is_buffable_,
@@ -69,6 +71,8 @@ struct ItemComponent : public Component {
 	int drain;
 	int speed, luck;
 	int duration;
+
+	int sell_value, buy_value;
 
 	int stack_size;
 

@@ -1,0 +1,22 @@
+# Medium Mana Potion
+
+itexture_id 24
+sentity_name Medium Mana Potion
+
+Position
+iwidth 25
+iheight 25
+
+Item
+iitem_slot 2
+sitem_name Medium Mana Potion
+sitem_info Restores 500 Mana
+item_color 120 155 230 255
+iitem_sell_value 4
+
+bitem_equipable 0
+bitem_useable 1
+bitem_stackable 1
+
+sitem_script_name Medium_Mana_Potion
+sitem_script Data/Lua/Items/medium_mana_potion.lua

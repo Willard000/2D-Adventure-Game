@@ -1,6 +1,7 @@
 # Fire
 
 itexture_id 2
+sentity_name Fire
 
 Position
 iwidth 50

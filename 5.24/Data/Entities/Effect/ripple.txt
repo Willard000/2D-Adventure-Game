@@ -1,6 +1,7 @@
 # Ripple
 
 itexture_id 0
+sentity_name Ripple
 
 Position
 iwidth 32

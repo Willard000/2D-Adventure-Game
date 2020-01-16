@@ -30,6 +30,7 @@
 #define FILE_PLAYER_EXP "iexp"
 #define FILE_PLAYER_HEALTH "ihealth"
 #define FILE_PLAYER_MANA "imana"
+#define FILE_PLAYER_GOLD "igold"
 #define FILE_PLAYER_MAP_ID "imap_id"
 
 #define FILE_PLAYER_SEPERATOR "."
@@ -99,15 +100,18 @@ void load_info(FileReader &file, Entity *player) {
 	std::string name = "";
 	int level = 1, exp = 0;
 	int health = 0, mana = 0;
+	int gold = 0;
 
 	if (file.exists(FILE_PLAYER_NAME)) name = file.get_string(FILE_PLAYER_NAME);
 	if (file.exists(FILE_PLAYER_LEVEL)) level = file.get_int(FILE_PLAYER_LEVEL);
 	if (file.exists(FILE_PLAYER_EXP)) exp = file.get_int(FILE_PLAYER_EXP);
 	if (file.exists(FILE_PLAYER_HEALTH)) health = file.get_int(FILE_PLAYER_HEALTH);
 	if (file.exists(FILE_PLAYER_MANA)) mana = file.get_int(FILE_PLAYER_MANA);
+	if (file.exists(FILE_PLAYER_GOLD)) gold = file.get_int(FILE_PLAYER_GOLD);
 
 	player_component->name = name;
 	player_component->exp = exp;
+	player_component->gold = gold;
 	stats->health = health;
 	stats->mana = mana;
 
@@ -168,6 +172,7 @@ void save_player() {
 	file << FILE_PLAYER_EXP << " " << player_component->exp << std::endl;
 	file << FILE_PLAYER_HEALTH << " " << stats->health << std::endl;
 	file << FILE_PLAYER_MANA << " " << stats->mana << std::endl;
+	file << FILE_PLAYER_GOLD << " " << player_component->gold << std::endl;
 
 	PositionComponent *position = GetPosition(player);
 	file << FILE_PLAYER_POSITION << " " << position->pos_x << " " << position->pos_y << std::endl;

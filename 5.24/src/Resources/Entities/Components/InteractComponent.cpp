@@ -25,11 +25,7 @@ bool interact_in_range(const SDL_Rect &a, const SDL_Rect &b) {
 		INTERACT_RANGE_H
 	};
 
-	if (collision(interact_range, b)) {
-		return true;
-	}
-
-	return false;
+	return collision(interact_range, b);
 }
 
 InteractComponent::InteractComponent(Entity *entity_, std::string name_, std::string script_name_, std::string script_, std::string ui_info_) :

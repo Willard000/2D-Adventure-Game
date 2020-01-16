@@ -16,7 +16,7 @@
 
 #include <iostream>
 
-SpellComponent::SpellComponent(Entity *entity_, float max_dis_, float speed_, int death_time_, std::string script_name_, std::string script_, int damage_, int mana_cost_, SDL_Color color_) :
+SpellComponent::SpellComponent(Entity *entity_, float max_dis_, float speed_, int death_time_, std::string script_name_, std::string script_, int damage_, int mana_cost_, int spell_type_, SDL_Color color_) :
 	Component			( entity_ ),
 	caster				( nullptr ),
 	dis					( 0 ),
@@ -31,6 +31,7 @@ SpellComponent::SpellComponent(Entity *entity_, float max_dis_, float speed_, in
 	script				( script_ ),
 	damage				( damage_ ),
 	mana_cost			( mana_cost_ ),
+	spell_type			( spell_type_ ),
 	caster_deleted		( false ),
 	color				( color_ )
 {
@@ -52,6 +53,7 @@ SpellComponent::SpellComponent(Entity *new_entity, const SpellComponent &rhs) :
 	script				( rhs.script ),
 	damage				( rhs.damage ),
 	mana_cost			( rhs.mana_cost ),
+	spell_type			( rhs.spell_type ),
 	caster_deleted		( rhs.caster_deleted ),
 	color				( rhs.color )
 {}
@@ -134,11 +136,24 @@ bool SpellComponent::is_collision() {
 	for (auto &vec : entity_vec) {
 		for (auto &e : *vec) {
 			const int &type = e->get_type();
-			if (type == TYPE_OBJECT ||
+			if (e != entity && (
+				type == TYPE_OBJECT ||
 				type == TYPE_ENEMY  ||
 				type == TYPE_PLAYER ||
-				type == TYPE_NPC) {
-				if (collision(position->rect, GetPosition(e)->rect, position->rotation, GetPosition(e)->rotation) &&
+				type == TYPE_NPC ||
+				type == TYPE_SPELL)) {
+				if (type == TYPE_SPELL) {
+					SpellComponent *spell = GetSpell(e);
+					if (spell->spell_type == SPELL_TYPE::EARTH || spell_type == SPELL_TYPE::EARTH) {
+						if (collision(position->rect, GetPosition(e)->rect, position->rotation, GetPosition(e)->rotation) &&
+							e != caster && e->get_type() != caster->get_type()) {
+
+							on_collision(e);
+							return true;
+						}
+					}
+				}
+				else if (collision(position->rect, GetPosition(e)->rect, position->rotation, GetPosition(e)->rotation) &&
 					e != caster && e->get_type() != caster->get_type()) {
 
 					on_collision(e);

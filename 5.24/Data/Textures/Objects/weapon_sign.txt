@@ -1,0 +1,4 @@
+# Weapon Sign
+stexture Data/Textures/Objects/weapon_sign.png
+iwidth 32
+iheight 16

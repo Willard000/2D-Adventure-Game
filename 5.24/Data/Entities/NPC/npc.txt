@@ -2,3 +2,7 @@
 0 Data/Entities/NPC/old_man.txt
 1 Data/Entities/NPC/greg.txt
 2 Data/Entities/NPC/will.txt
+3 Data/Entities/NPC/vallen.txt
+4 Data/Entities/NPC/ziya.txt
+5 Data/Entities/NPC/nav.txt
+6 Data/Entities/NPC/makar.txt

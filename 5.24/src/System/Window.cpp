@@ -8,7 +8,7 @@ Window::Window(Console_Settings console, Window_Settings window) :
 	_width_half					( window.w / 2 ),
 	_height_half				( window.h / 2 ),
 	_window(SDL_CreateWindow	( window.title.c_str(), window.x, window.y, window.w, window.h, NULL) ),
-	_camera						( new Camera() ),
+	_camera						( new Camera(window.w, window.h) ),
 	_renderer					( new Renderer(_window, window.color, _camera) )
 {
 	_console = GetConsoleWindow();
@@ -69,4 +69,16 @@ void Window::print_display_settings() {
 	SDL_DisplayMode mode;
 	SDL_GetWindowDisplayMode(_window, &mode);
 	printf("Window Display Mode\nformat: %d\nrefresh_rate: %d\nwidth: %d\nheight: %d\n", mode.format, mode.refresh_rate, mode.w, mode.h);
+}
+
+void Window::update_size() {
+	SDL_GetWindowSize(_window, &_width, &_height);
+	_camera->set_size(_width, _height);
+}
+
+void Window::set_size(int width, int height) {
+	SDL_SetWindowSize(_window, width, height);
+	_width = width;
+	_height = height;
+	_camera->set_size(width, height);
 }

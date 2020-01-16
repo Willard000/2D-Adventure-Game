@@ -1,6 +1,7 @@
 # Tree
 
 itexture_id 0
+sentity_name Tree
 
 Position
 iwidth 194

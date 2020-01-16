@@ -1,0 +1,4 @@
+# Medium Health Potion
+stexture Data/Textures/Items/medium_health_potion.png
+iwidth 15
+iheight 15

@@ -8,6 +8,8 @@ namespace UI {
 	void equip_item();
 	void use_item();
 	void drop_item();
+
+	void sell_item();
 }
 
 #endif

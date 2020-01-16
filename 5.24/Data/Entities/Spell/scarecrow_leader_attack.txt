@@ -1,6 +1,7 @@
 # Scarecrow Leader Attack
 
 itexture_id 4
+sentity_name Scarecrow Leader Attack
 
 Position
 iwidth 25

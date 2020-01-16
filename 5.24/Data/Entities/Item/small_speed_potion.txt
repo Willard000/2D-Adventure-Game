@@ -1,0 +1,25 @@
+# Small_Speed_Potion
+
+itexture_id 22
+sentity_name Small Speed Potion
+
+Position
+iwidth 25
+iheight 25
+
+Item
+iitem_slot -1
+sitem_name Small Speed Potion
+sitem_info Increases speed for a short period of time
+item_color 170 240 190 255
+iitem_speed 14
+iitem_duration 100000
+iitem_sell_value 5
+
+bitem_equipable 0
+bitem_useable 1
+bitem_buffable 1
+bitem_stackable 1
+
+sitem_script_name Standard_Buff
+sitem_script Data/Lua/Items/standard_buff.lua

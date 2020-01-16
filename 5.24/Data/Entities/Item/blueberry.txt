@@ -1,6 +1,7 @@
 # Blueberry
 
 itexture_id 10
+sentity_name Blueberry
 
 Position
 iwidth 15
@@ -11,6 +12,7 @@ iitem_slot -1
 sitem_name Blueberry
 sitem_info Restores 100 Mana
 item_color 115 115 225 255
+iitem_sell_value 4
 
 bitem_equipable 0
 bitem_useable 1

@@ -1,6 +1,7 @@
 # Old Man
 
 itexture_id 0
+sentity_name Old Man
 
 Position
 iwidth 32
@@ -13,6 +14,8 @@ isprite_time 300
 NPC
 snpc_script_name Old_Man
 snpc_script Data/Lua/NPC/old_man.lua
+bnpc_has_shop 1
+npc_shop 1 2 3 4 5
 
 Interact
 sinteract_name Old_Man

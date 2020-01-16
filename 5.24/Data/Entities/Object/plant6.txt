@@ -1,6 +1,7 @@
 # Plant6
 
 itexture_id 23
+sentity_name Plant6
 
 Position
 iwidth 32

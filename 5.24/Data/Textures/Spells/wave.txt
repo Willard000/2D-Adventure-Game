@@ -1,0 +1,10 @@
+# Wave
+Sprite
+stexture Data/Textures/Spells/wave.png
+iwidth 20
+iheight 20
+iidle 0
+imin_idle 0
+imax_idle 2
+iend 3
+inum_frames 4

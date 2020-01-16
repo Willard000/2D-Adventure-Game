@@ -1,0 +1,25 @@
+# Medium_Speed_Potion
+
+itexture_id 27
+sentity_name Medium Speed Potion
+
+Position
+iwidth 25
+iheight 25
+
+Item
+iitem_slot -1
+sitem_name Medium Speed Potion
+sitem_info Increases speed for a short period of time
+item_color 170 240 190 255
+iitem_speed 20
+iitem_duration 100000
+iitem_sell_value 4
+
+bitem_equipable 0
+bitem_useable 1
+bitem_buffable 1
+bitem_stackable 1
+
+sitem_script_name Standard_Buff
+sitem_script Data/Lua/Items/standard_buff.lua

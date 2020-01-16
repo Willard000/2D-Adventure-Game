@@ -1,6 +1,7 @@
 # Green Tunic
 
 itexture_id 7
+sentity_name Green Tunic
 
 Position
 iwidth 32
@@ -12,6 +13,7 @@ sitem_name Green Tunic
 iitem_health 50
 iitem_armor 1
 item_color 40 175 35 255
+iitem_sell_value 25
 
 bitem_equipable 1
 bitem_useable 0

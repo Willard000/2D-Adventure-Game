@@ -1,0 +1,8 @@
+# Potion Sign
+
+itexture_id 30
+sentity_name Potion Sign
+
+Position
+iwidth 32
+iheight 16

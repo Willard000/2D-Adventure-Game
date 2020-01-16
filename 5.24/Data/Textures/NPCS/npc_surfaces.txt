@@ -2,3 +2,7 @@
 0 Data/Textures/NPCS/Icons/stickman.png
 1 Data/Textures/NPCS/Icons/stickman.png
 2 Data/Textures/NPCS/Icons/stickman.png
+3 Data/Textures/NPCS/Icons/stickman.png
+4 Data/Textures/NPCS/Icons/stickman.png
+5 Data/Textures/NPCS/Icons/stickman.png
+6 Data/Textures/NPCS/Icons/stickman.png

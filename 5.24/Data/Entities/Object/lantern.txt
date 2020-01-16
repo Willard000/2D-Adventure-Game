@@ -1,6 +1,7 @@
 # Lantern
 
 itexture_id 13
+sentity_name Lantern
 
 Position
 iwidth 24

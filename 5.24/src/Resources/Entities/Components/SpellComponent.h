@@ -12,8 +12,16 @@
 #ifndef SPELL_COMPONENT_H
 #define SPELL_COMPONENT_H
 
+enum SPELL_TYPE {
+	FIRE,
+	WATER,
+	EARTH,
+	AIR,
+	OTHER
+};
+
 struct SpellComponent : public Component {
-	SpellComponent(Entity *entity_, float max_dis_, float speed_, int death_time, std::string script_name_, std::string script_, int damage_, int mana_cost_, SDL_Color color_);
+	SpellComponent(Entity *entity_, float max_dis_, float speed_, int death_time, std::string script_name_, std::string script_, int damage_, int mana_cost_, int spell_type_, SDL_Color color_);
 	SpellComponent(Entity *new_entity, const SpellComponent &rhs);
 	SpellComponent *copy(Entity *new_entity) const;
 
@@ -41,6 +49,8 @@ struct SpellComponent : public Component {
 
 	int damage;
 	int mana_cost;
+
+	int spell_type;
 
 	bool caster_deleted;
 

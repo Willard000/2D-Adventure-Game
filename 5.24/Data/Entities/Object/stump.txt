@@ -1,6 +1,7 @@
 # Stump
 
 itexture_id 1
+sentity_name Stump
 
 Position
 iwidth 30

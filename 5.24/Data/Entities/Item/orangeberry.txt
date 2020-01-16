@@ -1,6 +1,7 @@
 # Orangeberry
 
 itexture_id 12
+sentity_name Orangeberry
 
 Position
 iwidth 15
@@ -13,6 +14,7 @@ sitem_info Increases damage for a short period of time
 item_color 210 100 85 255
 iitem_damage 10
 iitem_duration 10000
+iitem_sell_value 4
 
 bitem_equipable 0
 bitem_useable 1

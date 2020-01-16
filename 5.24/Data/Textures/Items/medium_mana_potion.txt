@@ -1,0 +1,4 @@
+# Medium Mana Potion
+stexture Data/Textures/Items/medium_mana_potion.png
+iwidth 15
+iheight 15

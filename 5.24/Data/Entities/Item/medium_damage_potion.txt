@@ -1,0 +1,25 @@
+# Medium_Damage_Potion
+
+itexture_id 25
+sentity_name Medium Damage Potion
+
+Position
+iwidth 25
+iheight 25
+
+Item
+iitem_slot -1
+sitem_name Medium Damage Potion
+sitem_info Increases damage for a short period of time
+item_color 225 170 130 255
+iitem_damage 20
+iitem_duration 100000
+iitem_sell_value 4
+
+bitem_equipable 0
+bitem_useable 1
+bitem_buffable 1
+bitem_stackable 1
+
+sitem_script_name Standard_Buff
+sitem_script Data/Lua/Items/standard_buff.lua

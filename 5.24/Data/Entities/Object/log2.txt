@@ -1,6 +1,7 @@
 # Log2
 
 itexture_id 8
+sentity_name Log2
 
 Position
 iwidth 16

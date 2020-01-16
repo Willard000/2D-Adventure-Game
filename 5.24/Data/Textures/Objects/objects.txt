@@ -26,3 +26,8 @@
 24 Data/Textures/Objects/plant7.txt
 25 Data/Textures/Objects/bed.txt
 26 Data/Textures/Objects/sleeping_bag.txt
+27 Data/Textures/Objects/tree2.txt
+28 Data/Textures/Objects/armor_sign.txt
+29 Data/Textures/Objects/weapon_sign.txt
+30 Data/Textures/Objects/potion_sign.txt
+31 Data/Textures/Objects/book_sign.txt

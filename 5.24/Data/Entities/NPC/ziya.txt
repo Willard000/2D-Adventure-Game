@@ -1,0 +1,25 @@
+# Ziya
+
+itexture_id 0
+sentity_name Ziya
+
+Position
+iwidth 32
+iheight 64
+fspeed 100
+
+Sprite
+isprite_time 300
+
+NPC
+snpc_script_name Ziya
+snpc_script Data/Lua/NPC/ziya.lua
+inpc_quest_id 1
+bnpc_has_shop 1
+npc_shop 
+
+Interact
+sinteract_name Ziya
+sinteract_script_name Ziya
+sinteract_script Data/Lua/NPC/ziya.lua
+sinteract_ui_info Talk

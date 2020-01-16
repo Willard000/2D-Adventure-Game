@@ -1,6 +1,7 @@
 # Plant
 
 itexture_id 17
+sentity_name Plant
 
 Position
 iwidth 21

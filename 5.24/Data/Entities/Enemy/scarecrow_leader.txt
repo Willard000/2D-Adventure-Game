@@ -1,6 +1,7 @@
 # Scarecrow Leader
 
 itexture_id 3
+sentity_name Scarecrow Leader
 
 Position
 iwidth 32

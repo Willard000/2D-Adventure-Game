@@ -20,6 +20,7 @@ PlayerComponent::PlayerComponent(Entity *entity_, std::string name_) :
 	level			 ( 0 ),
 	exp				 ( 0 ),
 	exp_to_level     ( 100 ),
+	gold			 ( 0 ),
 	inventory		 ( entity_, &items, GetCombat(entity_) ),
 	debug_collision  ( false )
 {}
@@ -31,6 +32,7 @@ PlayerComponent::PlayerComponent(Entity *new_entity, const PlayerComponent &rhs)
 	exp				 ( rhs.exp ),
 	exp_to_level	 ( rhs.exp_to_level),
 	items			 ( rhs.items ),
+	gold			 ( rhs.gold ),
 	inventory		 ( new_entity, &items, GetCombat(new_entity) ),
 	debug_collision  ( rhs.debug_collision )
 {}

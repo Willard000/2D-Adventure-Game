@@ -8,9 +8,8 @@
     "\\5.24\\src\\Resources\\Entities",
     "\\5.24\\src\\Resources\\Entities\\Components",
     "\\5.24\\src\\Resources\\Quests",
-    "\\5.24\\src\\System",
-    "\\5.24\\src\\System\\Utility"
+    "\\5.24\\src\\System"
   ],
-  "SelectedNode": "\\5.24\\src\\System\\Utility\\Collision.cpp",
+  "SelectedNode": "\\5.24\\src\\System\\Shop.cpp",
   "PreviewInSolutionExplorer": false
 }

@@ -1,6 +1,7 @@
 # Bandit
 
 itexture_id 1
+sentity_name Bandit
 
 Position
 iwidth 32

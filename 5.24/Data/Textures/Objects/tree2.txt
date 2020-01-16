@@ -1,0 +1,4 @@
+# Tree2
+stexture Data/Textures/Objects/tree2.png
+iwidth 51
+iheight 128

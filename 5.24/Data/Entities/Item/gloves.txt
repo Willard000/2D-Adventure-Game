@@ -1,6 +1,7 @@
 # Gloves
 
 itexture_id 3
+sentity_name Gloves
 
 Position
 iwidth 32
@@ -11,6 +12,9 @@ iitem_slot 5
 sitem_name Gloves
 iitem_mana 20
 item_color 175 140 100 255
+iitem_sell_value 100
+iitem_buy_value 200
+iitem_sell_value 5
 
 bitem_equipable 1
 bitem_useable 0

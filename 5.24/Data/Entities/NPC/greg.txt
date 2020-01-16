@@ -1,6 +1,7 @@
 # Greg
 
 itexture_id 0
+sentity_name Greg
 
 Position
 iwidth 32

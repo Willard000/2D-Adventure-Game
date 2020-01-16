@@ -1,6 +1,7 @@
 # Pond Leaf
 
 itexture_id 1
+sentity_name Pond Leaf
 
 Position
 iwidth 20

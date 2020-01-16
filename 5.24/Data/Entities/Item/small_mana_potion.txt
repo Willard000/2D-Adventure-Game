@@ -1,0 +1,22 @@
+# Small Mana Potion
+
+itexture_id 19
+sentity_name Small Mana Potion
+
+Position
+iwidth 25
+iheight 25
+
+Item
+iitem_slot 2
+sitem_name Small Mana Potion
+sitem_info Restores 150 Mana
+item_color 120 155 230 255
+iitem_sell_value 5
+
+bitem_equipable 0
+bitem_useable 1
+bitem_stackable 1
+
+sitem_script_name Small_Mana_Potion
+sitem_script Data/Lua/Items/small_mana_potion.lua

@@ -1,6 +1,7 @@
 # Fireball
 
 itexture_id 0
+sentity_name Fireball
 
 Position
 iwidth 20

@@ -1,0 +1,8 @@
+# Weapon Sign
+
+itexture_id 29
+sentity_name Weapon Sign
+
+Position
+iwidth 32
+iheight 16

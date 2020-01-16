@@ -1,6 +1,7 @@
 # Scarecrow
 
 itexture_id 3
+sentity_name Scarecrow
 
 Position
 iwidth 32

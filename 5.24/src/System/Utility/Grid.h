@@ -54,8 +54,11 @@ private:
 
 	int _width;
 	int _height;
+	int _max_width;
+	int _max_height;
 
 	std::vector<T> **_cells;
+	std::vector<T> _large_objects;
 };
 
 template <class T>
@@ -66,6 +69,8 @@ Grid<T>::Grid() :
 	_inv_cell_height(0.0f),
 	_width(0),
 	_height(0),
+	_max_width(_width * 2),
+	_max_height(_height * 2),
 	_cells(nullptr)
 {}
 
@@ -76,7 +81,9 @@ Grid<T>::Grid(int cell_width, int cell_height, int width, int height) :
 	_inv_cell_width(1.0f / (float)cell_width),
 	_inv_cell_height(1.0f / (float)cell_height),
 	_width(width),
-	_height(height)
+	_height(height),
+	_max_width(width * 2),
+	_max_height(height * 2)
 {
 	_cells = new std::vector<T> *[_height];
 	for (int i = 0; i < height; ++i) {
@@ -99,6 +106,11 @@ int Grid<T>::insert(const SDL_Rect &pos, const T &obj) {
 	const int x = int(pos.x * _inv_cell_width);
 	const int x2 = int((pos.x + pos.w) * _inv_cell_width);
 	int inserted = 0;
+
+	if ((y2 - y) > _max_height || (x2 - x) > _max_width) {
+		_large_objects.push_back(obj);
+		return 1;
+	}
 
 	if (!(y > _height - 1 || y < 0)) {
 		if (!(x > _width - 1 || x < 0)) {
@@ -142,6 +154,11 @@ int Grid<T>::insert(const SDL_Rect &pos, const double &rotation, const T &obj) {
 	}
 	int inserted = 0;
 
+	if ((vertices[1].y - vertices[0].y) > _max_height || (vertices[2].x - vertices[0].x) > _max_width) {
+		_large_objects.push_back(obj);
+		return 1;
+	}
+
 	for (auto &vertex : vertices) {
 		if (inserted == 0) {
 			if (!(vertex.y > _height - 1 || vertex.y < 0)) {
@@ -170,50 +187,50 @@ int Grid<T>::insert(const SDL_Rect &pos, const double &rotation, const T &obj) {
 
 	if (inserted && vertices[0].y >= 0 && vertices[0].x >= 0 && vertices[0].y < _height - 1 && vertices[0].x < _width - 1) {
 		if ((rotation > 0 && rotation <= 90)) {
-			SDL_Rect cell_below = { _cell_width * vertices[0].x, _cell_height * vertices[0].y + 1, _cell_width, _cell_height };
-			SDL_Rect cell_left = { _cell_width * vertices[0].x - 1, _cell_height * vertices[0].y, _cell_width, _cell_height };
-			if (vertices[0].y + 1 < _height - 1 && collision(pos, cell_below, rotation, 0.0)) {
+			SDL_Rect cell_below = { int(_cell_width * vertices[0].x), int(_cell_height * vertices[0].y + 1), _cell_width, _cell_height };
+			SDL_Rect cell_left = { int(_cell_width * vertices[0].x - 1), int(_cell_height * vertices[0].y), _cell_width, _cell_height };
+			if (vertices[0].y + 1 < _height - 1) {
 				_cells[(int)vertices[0].y + 1][(int)vertices[0].x].push_back(obj);
 				++inserted;
 			}
-			if (vertices[0].x - 1 >= 0 && collision(pos, cell_left, rotation, 0.0)) {
+			if (vertices[0].x - 1 >= 0) {
 				_cells[(int)vertices[0].y][(int)vertices[0].x - 1].push_back(obj);
 				++inserted;
 			}
 		}
 		else if ((rotation > 90 && rotation <= 180)) {
-			SDL_Rect cell_above = { _cell_width * vertices[0].x, _cell_height * vertices[0].y - 1, _cell_width, _cell_height };
-			SDL_Rect cell_left = { _cell_width * vertices[0].x - 1, _cell_height * vertices[0].y, _cell_width, _cell_height };
-			if (vertices[0].y - 1 >= 0  && collision(pos, cell_above, rotation, 0.0)) {
+			SDL_Rect cell_above = { int(_cell_width * vertices[0].x), int(_cell_height * vertices[0].y - 1), _cell_width, _cell_height };
+			SDL_Rect cell_left = { int(_cell_width * vertices[0].x - 1), int(_cell_height * vertices[0].y), _cell_width, _cell_height };
+			if (vertices[0].y - 1 >= 0) {
 				_cells[(int)vertices[0].y - 1][(int)vertices[0].x].push_back(obj);
 				++inserted;
 			}
-			if (vertices[0].x - 1 >= 0 && collision(pos, cell_left, rotation, 0.0)) {
+			if (vertices[0].x - 1 >= 0) {
 				_cells[(int)vertices[0].y][(int)vertices[0].x - 1].push_back(obj);
 				++inserted;
 			}
 		}
 		else if ((rotation > 180 && rotation <= 270)) {
-			SDL_Rect cell_above = { _cell_width * vertices[0].x, _cell_height * vertices[0].y - 1, _cell_width, _cell_height };
-			SDL_Rect cell_right = { _cell_width * vertices[0].x + 1, _cell_height * vertices[0].y, _cell_width, _cell_height };
+			SDL_Rect cell_above = { int(_cell_width * vertices[0].x), int(_cell_height * vertices[0].y - 1), _cell_width, _cell_height };
+			SDL_Rect cell_right = { int(_cell_width * vertices[0].x + 1), int(_cell_height * vertices[0].y), _cell_width, _cell_height };
 
-			if (vertices[0].y - 1 >= 0 && collision(pos, cell_above, rotation, 0.0)) {
+			if (vertices[0].y - 1 >= 0) {
 				_cells[(int)vertices[0].y - 1][(int)vertices[0].x].push_back(obj);
 				++inserted;
 			}
-			if (vertices[0].x + 1 < _width - 1 && collision(pos, cell_right, rotation, 0.0)) {
+			if (vertices[0].x + 1 < _width - 1) {
 				_cells[(int)vertices[0].y][(int)vertices[0].x + 1].push_back(obj);
 				++inserted;
 			}
 		}
 		else if ((rotation > 270 && rotation < 360)) {
-			SDL_Rect cell_below = { _cell_width * vertices[0].x, _cell_height * vertices[0].y + 1, _cell_width, _cell_height };
-			SDL_Rect cell_right = { _cell_width * vertices[0].x + 1, _cell_height * vertices[0].y, _cell_width, _cell_height };
-			if (vertices[0].y + 1 < _height - 1 && collision(pos, cell_below, rotation, 0.0)) {
+			SDL_Rect cell_below = { int(_cell_width * vertices[0].x), int(_cell_height * vertices[0].y + 1), _cell_width, _cell_height };
+			SDL_Rect cell_right = { int(_cell_width * vertices[0].x + 1), int(_cell_height * vertices[0].y), _cell_width, _cell_height };
+			if (vertices[0].y + 1 < _height - 1) {
 				_cells[(int)vertices[0].y + 1][(int)vertices[0].x].push_back(obj);
 				++inserted;
 			}
-			if (vertices[0].x + 1 < _width - 1 && collision(pos, cell_right, rotation, 0.0)) {
+			if (vertices[0].x + 1 < _width - 1) {
 				_cells[(int)vertices[0].y][(int)vertices[0].x + 1].push_back(obj);
 				++inserted;
 			}
@@ -274,8 +291,12 @@ void Grid<T>::resize(int cell_width, int cell_height, int width, int height) {
 	}
 	delete[] _cells;
 
+	_large_objects.clear();
+
 	_width = width;
+	_max_width = width * 2;
 	_height = height;
+	_max_height = height * 2;
 
 	_cells = new std::vector<T> *[_height];
 	for (int i = 0; i < height; ++i) {
@@ -290,6 +311,8 @@ void Grid<T>::clear() {
 			_cells[y][x].clear();
 		}
 	}
+
+	_large_objects.clear();
 }
 
 template <class T>
@@ -302,6 +325,8 @@ std::vector<std::vector<T> *> Grid<T>::get_cells(const SDL_Rect &pos) {
 	const int x = int(pos.x * _inv_cell_width);
 	const int x2 = int((pos.x + pos.w) * _inv_cell_width);
 	int return_val = 0;
+
+	cells.push_back(&_large_objects);
 
 	if (!(y > _height - 1 || y < 0)) {
 		if (!(x > _width - 1 || x < 0)) {

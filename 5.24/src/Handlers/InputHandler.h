@@ -10,6 +10,7 @@ void toggle_camera();
 void cast_spell(float x, float y);
 void pickup_item();
 void interact();
+void open_shop();
 void execute_command();
 
 #endif

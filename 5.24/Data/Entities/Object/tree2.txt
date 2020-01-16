@@ -1,0 +1,8 @@
+# Tree2
+
+itexture_id 27
+sentity_name Tree2
+
+Position
+iwidth 80
+iheight 300

@@ -1,0 +1,8 @@
+# Book Sign
+
+itexture_id 31
+sentity_name Book Sign
+
+Position
+iwidth 32
+iheight 16

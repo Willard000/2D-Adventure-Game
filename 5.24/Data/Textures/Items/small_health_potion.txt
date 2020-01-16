@@ -1,0 +1,4 @@
+# Small Health Potion
+stexture Data/Textures/Items/small_health_potion.png
+iwidth 15
+iheight 15

@@ -1,6 +1,7 @@
 # Green Pants
 
 itexture_id 8
+sentity_name Green Pants
 
 Position
 iwidth 32
@@ -11,6 +12,7 @@ iitem_slot 4
 sitem_name Green Pants
 iitem_armor 4
 item_color 40 175 35 255
+iitem_sell_value 25
 
 bitem_equipable 1
 bitem_useable 0

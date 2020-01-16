@@ -1,0 +1,25 @@
+# Medium_Armor_Potion
+
+itexture_id 26
+sentity_name Medium Armor Potion
+
+Position
+iwidth 25
+iheight 25
+
+Item
+iitem_slot -1
+sitem_name Medium Armor Potion
+sitem_info Increases armor for a short period of time
+item_color 190 140 220 255
+iitem_armor 31
+iitem_duration 100000
+iitem_sell_value 10
+
+bitem_equipable 0
+bitem_useable 1
+bitem_buffable 1
+bitem_stackable 1
+
+sitem_script_name Standard_Buff
+sitem_script Data/Lua/Items/standard_buff.lua

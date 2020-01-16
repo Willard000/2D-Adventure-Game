@@ -1,6 +1,7 @@
 # Farmer Hat
 
 itexture_id 15
+sentity_name Farmer Hat
 
 Position
 iwidth 32
@@ -12,6 +13,7 @@ sitem_name Farmer Hat
 iitem_mana 100
 iitem_armor 10
 item_color 165 100 30 255
+iitem_sell_value 65
 
 bitem_equipable 1
 bitem_useable 0

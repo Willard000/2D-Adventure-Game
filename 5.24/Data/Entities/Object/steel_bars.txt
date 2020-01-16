@@ -1,6 +1,7 @@
 # Steel Bars
 
 itexture_id 15
+sentity_name Steel Bars
 
 Position
 iwidth 80

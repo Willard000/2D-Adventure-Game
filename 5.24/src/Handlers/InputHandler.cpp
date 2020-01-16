@@ -9,6 +9,9 @@
 #include "MagicComponent.h"
 #include "PlayerComponent.h"
 #include "InteractComponent.h"
+#include "NPCComponent.h"
+
+#include "Shop.h"
 
 #define INTERACT_RANGE_W 96
 #define INTERACT_RANGE_H 96
@@ -80,6 +83,29 @@ void interact() {
 					if (interact_in_range(player_position->rect, object_position->rect)) {
 						interact->interact();
 						return;
+					}
+				}
+			}
+		}
+	}
+}
+
+void open_shop() {
+	Entity *player = Environment::get().get_resource_manager()->get_player();
+	PositionComponent *player_position = GetPosition(player);
+
+	const auto entity_vec = Environment::get().get_resource_manager()->get_map()->get_entity_grid()->get_cells(player_position->rect);
+
+	for (auto &vec : entity_vec) {
+		for (auto &e : *vec) {
+			if (e->get_type() == TYPE_NPC) {
+				if (NPCComponent *npc = GetNPC(e)) {
+					if (npc->has_shop) {
+						PositionComponent *position = GetPosition(e);
+						if (interact_in_range(player_position->rect, position->rect)) {
+							Shop shop(player, &GetPlayer(player)->items, e, &npc->item_ids);
+							shop.open();
+						}
 					}
 				}
 			}

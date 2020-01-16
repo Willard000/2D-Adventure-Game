@@ -4,11 +4,13 @@
 #include "ResourceManager.h"
 #include "_Lua.h"
 
-NPCComponent::NPCComponent(Entity *entity_, std::string script_name_, std::string script_, int quest_id_) :
+NPCComponent::NPCComponent(Entity *entity_, std::string script_name_, std::string script_, int quest_id_, bool has_shop_, std::vector<int> &item_ids_) :
 	Component		( entity_ ),
 	script_name		( script_name_ ),
 	script			( script_ ),
 	quest_id		( quest_id_ ),
+	has_shop		( has_shop_ ),
+	item_ids		( item_ids_ ),
 	current_line	( 0 )
 {
 	Environment::get().get_lua()->load_script(script);
@@ -19,6 +21,8 @@ NPCComponent::NPCComponent(Entity *new_entity_, const NPCComponent &rhs) :
 	script_name		( rhs.script_name ),
 	script			( rhs.script ),
 	quest_id		( rhs.quest_id ),
+	has_shop		( rhs.has_shop ),
+	item_ids		( rhs.item_ids ),
 	current_line	( rhs.current_line )
 {}
 

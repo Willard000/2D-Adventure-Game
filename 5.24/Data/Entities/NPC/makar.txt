@@ -1,0 +1,25 @@
+# Makar
+
+itexture_id 0
+sentity_name Makar
+
+Position
+iwidth 32
+iheight 64
+fspeed 100
+
+Sprite
+isprite_time 300
+
+NPC
+snpc_script_name Makar
+snpc_script Data/Lua/NPC/makar.lua
+inpc_quest_id 1
+bnpc_has_shop 1
+npc_shop 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32
+
+Interact
+sinteract_name Makar
+sinteract_script_name Makar
+sinteract_script Data/Lua/NPC/makar.lua
+sinteract_ui_info Talk

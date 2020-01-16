@@ -1,6 +1,7 @@
 # Redberry
 
 itexture_id 9
+sentity_name Redberry
 
 Position
 iwidth 15
@@ -11,6 +12,7 @@ iitem_slot 2
 sitem_name Redberry
 sitem_info Restores 100 Health
 item_color 210 0 0 255
+iitem_sell_value 4
 
 bitem_equipable 0
 bitem_useable 1

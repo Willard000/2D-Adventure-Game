@@ -1,6 +1,7 @@
 # House
 
 itexture_id 3
+sentity_name House
 
 Position
 iwidth 200

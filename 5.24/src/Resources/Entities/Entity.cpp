@@ -38,6 +38,7 @@ Entity::Entity(const Entity &rhs) :
 	_type			( rhs._type ),
 	_type_id		( rhs._type_id ),
 	_texture_id     ( rhs._texture_id ),
+	_name			( rhs._name ),
 	_is_destroyed	( rhs._is_destroyed ),
 	_is_loaded		( rhs._is_loaded )
 {

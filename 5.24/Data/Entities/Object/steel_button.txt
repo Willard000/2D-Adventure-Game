@@ -1,6 +1,7 @@
 # Steel Button
 
 itexture_id 14
+sentity_name Steel Button
 
 Position
 iwidth 20

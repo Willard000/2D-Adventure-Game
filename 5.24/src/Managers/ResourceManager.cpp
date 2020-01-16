@@ -72,13 +72,12 @@ void ResourceManager::render_entity(Entity *entity) {
 	}
 
 	PositionComponent *position = GetPosition(entity);
-	SpriteComponent *sprite = GetSprite(entity);
-	CombatComponent *combat = GetCombat(entity);
-
-	if (!position) {
+	if (!position || (Environment::get().get_mode() == MODE_GAME && !collision(position->rect, Environment::get().get_window()->get_camera()->get_rect()))) {
+//	if(!position) {
 		return;
 	}
 
+	SpriteComponent *sprite = GetSprite(entity);
 	if (sprite) {
 		Environment::get().get_window()->get_renderer()->render(get_sprite_info(entity), sprite, position);
 	}
@@ -86,6 +85,7 @@ void ResourceManager::render_entity(Entity *entity) {
 		Environment::get().get_window()->get_renderer()->render(get_texture_info(entity), position);
 	}
 
+	CombatComponent *combat = GetCombat(entity);
 	if (combat) {
 		combat->draw_health();
 		if (entity->get_type() == TYPE_PLAYER) {

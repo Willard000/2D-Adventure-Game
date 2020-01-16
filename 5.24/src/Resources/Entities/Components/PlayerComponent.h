@@ -38,6 +38,7 @@ struct PlayerComponent : public Component {
 	void warp(int map_id, SDL_Rect warp_rect);
 
 	int level, exp, exp_to_level;
+	int gold;
 	std::string name;
 	std::vector<Entity *> items;
 	std::array<Entity *, TOTAL_SLOTS> equipped_items = { nullptr };

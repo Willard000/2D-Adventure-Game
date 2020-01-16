@@ -1,6 +1,7 @@
 # Leather Boots
 
 itexture_id 17
+sentity_name Leather Boots
 
 Position
 iwidth 32
@@ -12,6 +13,7 @@ sitem_name Leather Boots
 iitem_mana 100
 iitem_mps 1
 item_color 75 50 15 255
+iitem_sell_value 25
 
 bitem_equipable 1
 bitem_useable 0

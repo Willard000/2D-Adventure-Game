@@ -1,6 +1,7 @@
 # Bed
 
 itexture_id 25
+sentity_name Bed
 
 Position
 iwidth 96

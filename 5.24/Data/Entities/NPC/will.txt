@@ -1,6 +1,7 @@
 # Will
 
 itexture_id 0
+sentity_name Will
 
 Position
 iwidth 32

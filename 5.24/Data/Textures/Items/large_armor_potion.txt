@@ -1,0 +1,4 @@
+# Large Armor Potion
+stexture Data/Textures/Items/large_armor_potion.png
+iwidth 15
+iheight 15

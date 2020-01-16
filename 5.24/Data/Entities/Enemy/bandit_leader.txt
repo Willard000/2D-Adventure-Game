@@ -1,6 +1,7 @@
 # Bandit Leader
 
 itexture_id 1
+sentity_name Bandit Leader
 
 Position
 iwidth 32

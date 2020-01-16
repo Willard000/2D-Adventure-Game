@@ -1,0 +1,4 @@
+# Large Mana Potion
+stexture Data/Textures/Items/large_mana_potion.png
+iwidth 15
+iheight 15

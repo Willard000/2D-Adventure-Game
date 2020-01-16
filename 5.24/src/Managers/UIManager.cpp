@@ -51,6 +51,9 @@
 #define SCALE_TEXT "Scale: " 
 #define SCALE_TEXT_XOFFSET 1200
 
+#define NAME_TEXT "Name: "
+#define NAME_TEXT_XOFFSET 100
+
 #define INFO_TEXT_COLOR {255, 255, 255, 255}
 #define INFO_TEXT_FTSIZE 14
 #define INFO_TEXT_WRAP_SIZE 1500
@@ -110,7 +113,8 @@ UIManager::UIManager() :
 	_selection_text			( SELECTION_TEXT + STYPE(TYPE_TILE), INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, SELECTION_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET ),
 	_stacking_text			( STACKING_TEXT + std::string("Off"), INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, STACKING_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET ),
 	_rotation_text			( ROTATION_TEXT, INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, ROTATION_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET ),
-	_scale_text				( SCALE_TEXT, INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, SCALE_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET )
+	_scale_text				( SCALE_TEXT, INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, SCALE_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET ),
+	_name_text              ( NAME_TEXT, INFO_TEXT_COLOR, INFO_TEXT_FTSIZE, INFO_TEXT_WRAP_SIZE, NAME_TEXT_XOFFSET, Environment::get().get_window()->get_height() + INFO_TEXT_YOFFSET - 20)
 {
 	Environment::get().get_log()->print("Loading UI Manager");
 }
@@ -227,6 +231,7 @@ bool UIManager::check_placement(int mouse_button) {
 
 	if (_mouse_x >= _element_area.area.x) {
 		_selection.id = select();
+		set_name_text();
 		if (_selection.id != -1) {
 			_state = STATE_PLACING;
 		}
@@ -302,6 +307,7 @@ void UIManager::render() {
 	renderer->draw_text(&_alignment_text, true);
 	renderer->draw_text(&_selection_text, true);
 	renderer->draw_text(&_stacking_text, true);
+	renderer->draw_text(&_name_text, true);
 
 	if (_map_selection.id != -1) {
 		renderer->draw_text(&_rotation_text, true);
@@ -869,4 +875,22 @@ void UIManager::move_map_selection() {
 void UIManager::unselect() {
 	_selection.id = -1;
 	_map_selection.id = -1;
+}
+
+void UIManager::set_name_text() {
+	if (_selection.id == -1) {
+		return;
+	}
+
+	if (_selection.type == TYPE_TILE) {
+		_name_text.set_text("Tile");
+	}
+	else if (_selection.type == TYPE_WARP) {
+		_name_text.set_text("Warp");
+	}
+	else {
+		Entity *entity = new Entity(_selection.type, _selection.id);
+		_name_text.set_text(NAME_TEXT + entity->get_name());
+		delete entity;
+	}
 }

@@ -1,6 +1,7 @@
 # Ladder
 
 itexture_id 16
+sentity_name Ladder
 
 Position
 iwidth 32

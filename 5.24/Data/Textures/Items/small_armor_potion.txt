@@ -1,0 +1,4 @@
+# Small Armor Potion
+stexture Data/Textures/Items/small_armor_potion.png
+iwidth 15
+iheight 15

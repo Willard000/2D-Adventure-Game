@@ -85,6 +85,9 @@ bool InputManager::get() {
 		if (event.type == SDL_MOUSEWHEEL) {
 			_mouse_wheel = event.wheel.y;
 		}
+		if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED) {
+			Environment::get().get_window()->update_size();
+		}
 		if (_state == STATE_TEXT_INPUT && event.type == SDL_TEXTINPUT) {
 			_text_input += event.text.text;
 		}
@@ -182,6 +185,10 @@ void InputManager::update() {
 
 	if (is_key(SDL_SCANCODE_E)) {
 		interact();
+	}
+
+	if (is_key(SDL_SCANCODE_R)) {
+		open_shop();
 	}
 
 	if (is_key(SDL_SCANCODE_1)) {

@@ -1,6 +1,7 @@
 # Bushki_Attack
 
 itexture_id 1
+sentity_name Bushki Attack
 
 Position
 iwidth 13

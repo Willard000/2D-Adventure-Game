@@ -1,6 +1,7 @@
 # Bushki
 
 itexture_id 0
+sentity_name Bushki
 
 Position
 iwidth 32

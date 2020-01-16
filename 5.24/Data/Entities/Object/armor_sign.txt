@@ -1,0 +1,8 @@
+# Armor Sign
+
+itexture_id 28
+sentity_name Armor Sign
+
+Position
+iwidth 32
+iheight 16

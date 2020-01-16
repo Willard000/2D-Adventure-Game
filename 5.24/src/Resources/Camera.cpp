@@ -14,14 +14,15 @@
 
 #define CAMERA_ZOOM_SPEED 1.0f
 
-Camera::Camera() :
+Camera::Camera(int width, int height) :
 	_x						( 0 ),
 	_y						( 0 ),
 	_speed					( _SPEED ),
 	_uniform_scale			( 1.0f ),
 	_uniform_rotation		( 0.0 ),
 	_is_locked				( Environment::get().get_mode() == MODE_EDITOR ? false : true  ),
-	_entity					( nullptr )
+	_entity					( nullptr ),
+	_rect					( {0, 0, width, height} )
 {
 	FileReader file(_FILE_PATH);
 	if (file.exists(FILE_CAMERA_SPEED)) _speed = file.get_float(FILE_CAMERA_SPEED);
@@ -83,6 +84,9 @@ void Camera::update() {
 	else if (_y > (max_height)) {
 		_y = (float)max_height;
 	}
+
+	_rect.x = (int)_x;
+	_rect.y = (int)_y;
 }
 
 void Camera::update(float x, float y) {
@@ -128,4 +132,9 @@ void Camera::set_scale(float factor) {
 
 bool Camera::get_locked() {
 	return _is_locked;
+}
+
+void Camera::set_size(int width, int height) {
+	_rect.w = width;
+	_rect.h = height;
 }

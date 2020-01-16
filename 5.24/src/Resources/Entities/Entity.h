@@ -44,6 +44,9 @@ public:
 	int get_type() const { return _type; }
 	int get_type_id() { return _type_id; }
 
+	void set_name(std::string name) { _name = name; }
+	std::string &get_name() { return _name; }
+
 	bool get_is_destroyed() { return _is_destroyed; }
 	void destroy() { _is_destroyed = true; }
 
@@ -58,6 +61,8 @@ private:
 	int _type_id;
 
 	int _texture_id;
+
+	std::string _name;
 
 	bool _is_destroyed;
 

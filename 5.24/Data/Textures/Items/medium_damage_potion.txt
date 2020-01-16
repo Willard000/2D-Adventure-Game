@@ -1,0 +1,4 @@
+# Medium Damage Potion
+stexture Data/Textures/Items/medium_damage_potion.png
+iwidth 15
+iheight 15

@@ -1,6 +1,7 @@
 # Pitchfork
 
 itexture_id 14
+sentity_name Pitchfork
 
 Position
 iwidth 32
@@ -12,6 +13,7 @@ sitem_name Pitchfork
 sitem_info A sharp tool
 iitem_damage 25
 item_color 130 90 60 255
+iitem_sell_value 100
 
 bitem_equipable 1
 bitem_useable 0

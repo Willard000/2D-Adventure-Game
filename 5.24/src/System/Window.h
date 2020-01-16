@@ -37,14 +37,17 @@ public:
 
 	bool is_focused()					{ return SDL_GetMouseFocus() == _window; }
 
-	Camera *get_camera()			  { return _camera;			 }
-	SDL_Window *get_window()		  { return _window;          }
-	Renderer *get_renderer()		  { return _renderer;        }
+	Camera *get_camera()			  { return _camera;	  }
+	SDL_Window *get_window()		  { return _window;   }
+	Renderer *get_renderer()		  { return _renderer; }
 
 	int get_width() { return _width; }
 	int get_height() { return _height; }
 	int get_width_half() { return _width_half; }
 	int get_height_half() { return _height_half; }
+
+	void update_size();
+	void set_size(int width, int height);
 
 	void print_display_settings();
 private:

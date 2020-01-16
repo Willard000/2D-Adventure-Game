@@ -1,0 +1,22 @@
+# Small Health Potion
+
+itexture_id 18
+sentity_name Small Health Potion
+
+Position
+iwidth 25
+iheight 25
+
+Item
+iitem_slot 2
+sitem_name Small Health Potion
+sitem_info Restores 150 Health
+item_color 240 80 90 255
+iitem_sell_value 5
+
+bitem_equipable 0
+bitem_useable 1
+bitem_stackable 1
+
+sitem_script_name Small_Health_Potion
+sitem_script Data/Lua/Items/small_health_potion.lua

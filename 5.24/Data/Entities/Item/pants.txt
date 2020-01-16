@@ -1,6 +1,7 @@
 # Pants
 
 itexture_id 2
+sentity_name Pants
 
 Position
 iwidth 32
@@ -11,6 +12,7 @@ iitem_slot 4
 sitem_name Pants
 iitem_armor 2
 item_color 175 140 100 255
+iitem_sell_value 5
 
 bitem_equipable 1
 bitem_useable 0

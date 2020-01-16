@@ -4,3 +4,4 @@
 2 Data/Entities/Spell/bandit_attack.txt
 3 Data/Entities/Spell/scarecrow_attack.txt
 4 Data/Entities/Spell/scarecrow_leader_attack.txt
+5 Data/Entities/Spell/wave.txt

@@ -1,6 +1,7 @@
 # Campfire
 
 itexture_id 11
+sentity_name Campfire
 
 Position
 iwidth 56

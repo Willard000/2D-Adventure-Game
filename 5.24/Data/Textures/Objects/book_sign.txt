@@ -1,0 +1,4 @@
+# Book Sign
+stexture Data/Textures/Objects/book_sign.png
+iwidth 32
+iheight 16

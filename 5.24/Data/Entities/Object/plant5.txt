@@ -1,6 +1,7 @@
 # Plant5
 
 itexture_id 22
+sentity_name Plant5
 
 Position
 iwidth 32

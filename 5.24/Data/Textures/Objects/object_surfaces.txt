@@ -26,3 +26,8 @@
 24 Data/Textures/Objects/plant7.png
 25 Data/Textures/Objects/bed.png
 26 Data/Textures/Objects/sleeping_bag.png
+27 Data/Textures/Objects/tree2.png
+28 Data/Textures/Objects/armor_sign.png
+29 Data/Textures/Objects/weapon_sign.png
+30 Data/Textures/Objects/potion_sign.png
+31 Data/Textures/Objects/book_sign.png
