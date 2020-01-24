@@ -72,13 +72,21 @@ void Camera::update() {
 	_x = position->pos_x - width_half;
 	_y = position->pos_y - height_half;
 
-	if (_x < 0) {
+
+	if (max_width < 0) {
+		_x = max_width / 2;
+	}
+	else if (_x < 0) {
 		_x = 0;
 	}
 	else if (_x > (max_width)) {
 		_x = (float)max_width;
 	}
-	if (_y < 0) {
+
+	if (max_height < 0) {
+		_y = max_height / 2;
+	}
+	else if (_y < 0) {
 		_y = 0;
 	}
 	else if (_y > (max_height)) {

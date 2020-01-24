@@ -1,0 +1,4 @@
+# Dagger
+stexture Data/Textures/Items/dagger.png
+iwidth 15
+iheight 15

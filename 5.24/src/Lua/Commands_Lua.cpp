@@ -3,9 +3,12 @@
 #include "Environment.h"
 #include "_Lua.h"
 #include "ResourceManager.h"
+#include "Window.h"
 
 #include "Component.h"
 #include "PlayerComponent.h"
+
+#include <cstdlib>
 
 // void teleport(int map_id)
 static int teleport(lua_State *L) {
@@ -54,9 +57,37 @@ static int reload_all(lua_State *L) {
 	return 0;
 }
 
+
+// void snowfall()
+static int snowfall(lua_State *L) {
+	static Timer timer(50);
+	if (!timer.update()) {
+		return 0;
+	}
+	ResourceManager *resource_manager = Environment::get().get_resource_manager();
+	SDL_Rect camera = Environment::get().get_window()->get_camera()->get_rect();
+	camera.x -= 100;
+	camera.w += 200;
+	camera.y -= 100;
+	camera.h += 200;
+	float x = 0;
+	float y = 0;
+
+	x = float((rand() % camera.w) + camera.x);
+	y = float((rand() % camera.h) + camera.y);
+	Entity *snowflake = new Entity(TYPE_EFFECT, 4);
+	PositionComponent *position = GetPosition(snowflake);
+	position->scale( 1.0 + float(rand() % 100) / 100.0);
+	position->set(x, y);
+	resource_manager->add_entity(snowflake);
+
+	return 0;
+}
+
 void lua_init_commands(Lua *lua, lua_State *L) {
 	lua->register_global("teleport", teleport);
 	lua->register_global("teleport_to", teleport_to);
 	lua->register_global("tcl", player_collision);
 	lua->register_global("reload_all", reload_all);
+	lua->register_global("snowfall", snowfall);
 }

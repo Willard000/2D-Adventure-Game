@@ -1,0 +1,22 @@
+# Rocks
+
+itexture_id 6
+sentity_name Rocks
+
+Position
+iwidth 32
+iheight 32
+
+Sprite
+isprite_time 200
+
+Spell
+fmax_dis 100
+fspell_speed 0
+ideath_time 1000
+sspell_script_name Spell_Rocks
+sspell_script Data/Lua/Spells/spell_rocks.lua
+ispell_damage 5
+ispell_mana_cost 10
+ispell_type 2
+spell_color 245 175 15 255

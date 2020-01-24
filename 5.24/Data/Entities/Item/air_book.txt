@@ -1,0 +1,17 @@
+# Air Book
+
+itexture_id 36
+sentity_name Air Book
+
+Position
+iwidth 32
+iheight 32
+
+Item
+iitem_slot 0
+sitem_name Air Book
+item_color 255 255 255 255
+iitem_sell_value 1
+
+bitem_equipable 1
+bitem_useable 0

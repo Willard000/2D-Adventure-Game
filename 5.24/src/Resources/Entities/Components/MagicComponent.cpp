@@ -12,8 +12,8 @@ MagicComponent::MagicComponent(Entity *entity_, int main_spell_id_, int secondar
 	Component				( entity_ ),
 	main_spell_id			( main_spell_id_ ),
 	secondary_spell_id		( secondary_spell_id_ ),
-	main_spell				( TYPE_SPELL, main_spell_id_ ),
-	secondary_spell			( TYPE_SPELL, secondary_spell_id_ ),
+	main_spell				( new Entity(TYPE_SPELL, main_spell_id_) ),
+	secondary_spell			( new Entity(TYPE_SPELL, secondary_spell_id_) ),
 	can_cast				( true ),
 	cast_timer				( cast_speed_ )
 {}
@@ -22,14 +22,21 @@ MagicComponent::MagicComponent(Entity *new_entity, const MagicComponent &rhs) :
 	Component				( new_entity ),
 	main_spell_id			( rhs.main_spell_id ),
 	secondary_spell_id		( rhs.secondary_spell_id ),
-	main_spell				( rhs.main_spell.get_type(), rhs.main_spell_id ),
-	secondary_spell			( rhs.secondary_spell.get_type(), rhs.secondary_spell_id ),
+	main_spell				( new Entity(TYPE_SPELL, rhs.main_spell_id) ),
+	secondary_spell			( new Entity(TYPE_SPELL, rhs.secondary_spell_id) ),
 	can_cast				( rhs.can_cast ),
 	cast_timer				( rhs.cast_timer )
 {}
 
 MagicComponent *MagicComponent::copy(Entity *new_entity) const {
 	return new MagicComponent(new_entity, *this);
+}
+
+MagicComponent::~MagicComponent() {
+	delete main_spell;
+	main_spell = nullptr;
+	delete secondary_spell;
+	secondary_spell = nullptr;
 }
 
 void MagicComponent::update() {
@@ -40,7 +47,7 @@ void MagicComponent::update() {
 
 void MagicComponent::cast_main(float x_, float y_, float x2_, float y2_) {
 	if (can_cast) {
-		Entity *spell = new Entity(main_spell);
+		Entity *spell = new Entity(*main_spell);
 		SpellComponent *spell_comp = GetSpell(spell);
 		spell_comp->caster = entity;
 		
@@ -64,7 +71,7 @@ void MagicComponent::cast_main(float x_, float y_, float x2_, float y2_) {
 
 void MagicComponent::cast_secondary(float x_, float y_, float x2_, float y2_) {
 	if (can_cast) {
-		Entity *spell = new Entity(secondary_spell);
+		Entity *spell = new Entity(*secondary_spell);
 		SpellComponent *spell_comp = GetSpell(spell);
 		spell_comp->caster = entity;
 
@@ -100,4 +107,16 @@ void MagicComponent::cast_special(float x_, float y_, float x2_, float y2_, int 
 	spell_comp->cast(x_, y_, x2_, y2_, attacker_info);
 	Environment::get().get_resource_manager()->add_entity(spell);
 	cast_timer.reset();
+}
+
+void MagicComponent::set_main(int id) {
+	delete main_spell;
+	main_spell = new Entity(TYPE_SPELL, id);
+	main_spell_id = id;
+}
+
+void MagicComponent::set_secondary(int id) {
+	delete secondary_spell;
+	secondary_spell = new Entity(TYPE_SPELL, id);
+	secondary_spell_id = id;
 }

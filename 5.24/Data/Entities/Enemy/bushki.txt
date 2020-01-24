@@ -17,7 +17,7 @@ senemy_name Bushki
 senemy_script Data/Lua/Enemies/bushki.lua
 ienemy_combat_range_w 300
 ienemy_combat_range_h 300
-enemy_drop_table 0 25 8 8
+enemy_drop_table 0 25
 
 Magic
 imain_spell_id 1

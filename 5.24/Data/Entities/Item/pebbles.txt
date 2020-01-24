@@ -1,0 +1,18 @@
+# Pebbles
+
+itexture_id 38
+sentity_name Pebbles
+
+Position
+iwidth 32
+iheight 32
+
+Item
+iitem_slot 0
+sitem_name Pebbles
+iitem_damage 3
+item_color 175 175 175 255
+iitem_sell_value 3
+
+bitem_equipable 1
+bitem_useable 0

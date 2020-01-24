@@ -16,7 +16,7 @@ snpc_script_name Vallen
 snpc_script Data/Lua/NPC/vallen.lua
 inpc_quest_id 1
 bnpc_has_shop 1
-npc_shop 
+npc_shop 0 38 37
 
 Interact
 sinteract_name Vallen

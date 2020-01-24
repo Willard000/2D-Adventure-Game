@@ -5,10 +5,9 @@
 #include "Window.h"
 #include "ResourceManager.h"
 
-
 #include "Collision.h"
 
-#define INTERACT_TEXT_COLOR {255, 255, 255, 225}
+#define INTERACT_TEXT_COLOR {0, 0, 255, 225}
 #define INTERACT_TEXT_FTSIZE 18
 #define INTERACT_TEXT_WRAP_LENGTH 1000
 

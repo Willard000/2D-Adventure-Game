@@ -3,3 +3,4 @@
 1 Data/Textures/Effects/Icons/pond_leaf.png
 2 Data/Textures/Effects/Icons/fire.png
 3 Data/Textures/Effects/Icons/flag.png
+4 Data/Textures/Effects/Icons/snowfall.png

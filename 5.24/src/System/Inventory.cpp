@@ -12,6 +12,7 @@
 #include "SpriteComponent.h"
 #include "ItemComponent.h"
 #include "EnemyComponent.h"
+#include "MagicComponent.h"
 
 #include "UIHandler.h"
 
@@ -27,7 +28,7 @@
 #define ITEM_SIZE 32
 #define MAX_ROW_SIZE 20
 
-#define SELECTION_XOFFSET 425
+#define SELECTION_XOFFSET 450
 #define SELECTION_YOFFSET -200
 #define SELECTION_SIZE 86
 #define SELECTION_MAIN_COLOR {0, 0, 0, 100}
@@ -51,24 +52,43 @@
 #define ENTITY_INFO_WRAP_LENGTH 100
 #define ENTITY_INFO_NAME_COLOR {250, 250, 250, 200}
 
-#define BUTTON_EQUIP_RECT {1300, 300, 100, 20}
-#define BUTTON_USE_RECT {1300, 320, 100, 20}
-#define BUTTON_DROP_RECT {1300, 340, 100, 20}
 #define BUTTON_FT_SIZE 16
 #define BUTTON_WRAP_LENGTH 1000
 #define BUTTON_TEXT_COLOR {255, 255, 255, 200}
 #define BUTTON_COLOR {0, 0, 0, 200}
 
-#define SLOT_COLOR {0, 0, 0, 200}
-#define SLOT_WEAPON_RECT {625, 284, ITEM_SIZE, ITEM_SIZE}
-#define SLOT_HEAD_RECT {625, 200, ITEM_SIZE, ITEM_SIZE}
-#define SLOT_CHEST_RECT {625, 242, ITEM_SIZE, ITEM_SIZE}
-#define SLOT_RING_RECT {625, 326, ITEM_SIZE, ITEM_SIZE}
+#define BUTTON_WIDTH 100
+#define BUTTON_HEIGHT 20
 
-#define SLOT_OFFHAND_RECT {875, 284, ITEM_SIZE, ITEM_SIZE}
-#define SLOT_GLOVES_RECT {875, 200, ITEM_SIZE, ITEM_SIZE}
-#define SLOT_LEGS_RECT {875, 242, ITEM_SIZE, ITEM_SIZE}
-#define SLOT_BOOTS_RECT {875, 326, ITEM_SIZE, ITEM_SIZE}
+#define SLOT_COLOR {0, 0, 0, 200}
+
+#define SPELL_XOFFSET 35
+#define SPELL_HEIGHT 250
+
+#define FIRE_ONE_ICON_ID 8
+#define FIRE_TWO_ICON_ID 0
+#define FIRE_THREE_ICON_ID 0
+#define FIRE_FOUR_ICON_ID 0
+
+#define WATER_ONE_ICON_ID 9
+#define WATER_TWO_ICON_ID 0
+#define WATER_THREE_ICON_ID 0
+#define WATER_FOUR_ICON_ID 0
+
+#define EARTH_ONE_ICON_ID 6
+#define EARTH_TWO_ICON_ID 0
+#define EARTH_THREE_ICON_ID 0
+#define EARTH_FOUR_ICON_ID 0
+
+#define AIR_ONE_ICON_ID 10
+#define AIR_TWO_ICON_ID 0
+#define AIR_THREE_ICON_ID 0
+#define AIR_FOUR_ICON_ID 0
+
+#define SPELL_SIZE 40
+#define SPELL_COLOR { 0, 0, 0, 100}
+#define MAIN_SPELL_COLOR { 200, 50, 25, 100}
+#define SECONDARY_SPELL_COLOR {150, 100, 25, 100}
 
 Inventory::Inventory(Entity *entity, std::vector<Entity *> *items, CombatComponent *stats) :
 	_entity			( entity ),
@@ -82,11 +102,13 @@ Inventory::Inventory(Entity *entity, std::vector<Entity *> *items, CombatCompone
 	int y = int(height / 8);
 
 	_background = { x, y, width, height };
-	_items_background = { _background.w / 2 + ITEMS_XOFFSET, _background.h / 2 + ITEMS_YOFFSET, MAX_ROW_SIZE * ITEM_SIZE, (MAX_ITEMS / MAX_ROW_SIZE) * ITEM_SIZE };
+	_items_background = { int(width * 0.6), int(height * 0.85), MAX_ROW_SIZE * ITEM_SIZE, (MAX_ITEMS / MAX_ROW_SIZE) * ITEM_SIZE };
+	_spell_background = { int(x + width * 0.1), int(y + height * 0.55), 100, 100 };
 	_selection_info.hide = true;
 
 	setup_buttons();
 	setup_slots();
+	setup_spells();
 }
 
 Inventory::~Inventory() {
@@ -100,6 +122,7 @@ void Inventory::open() {
 	set_entity_info();
 	update_inventory_size();
 	update_selection_info();
+	update_spell_selection();
 	pause_buffs();
 
 	_exit = false;
@@ -136,6 +159,25 @@ void Inventory::input() {
 				break;
 			}
 		}
+
+		for (unsigned int i = 0; i < _spells.size(); ++i) {
+			if (collision(mouse_rect, _spells[i].rect)) {
+				select_spell(_spells[i], i);
+				break;
+			}
+		}
+	}
+
+	if (input_manager->is_mouse(SDL_BUTTON_RIGHT)) {
+		int mouse_x = input_manager->get_mouse_x();
+		int mouse_y = input_manager->get_mouse_y();
+		SDL_Rect mouse_rect = { mouse_x, mouse_y, 1, 1 };
+		for (unsigned int i = 0; i < _spells.size(); ++i) {
+			if (collision(mouse_rect, _spells[i].rect)) {
+				select_spell(_spells[i], i, false);
+				break;
+			}
+		}
 	}
 
 	if (input_manager->is_key(SDL_SCANCODE_E)) {
@@ -166,10 +208,12 @@ void Inventory::render() {
 
 	renderer->draw_rect(_background, BACKGROUND_COLOR);
 	renderer->draw_rect(_items_background, ITEMS_BACKGROUND_COLOR);
+	//renderer->draw_rect(_spell_background, ITEMS_BACKGROUND_COLOR);
 
 	render_entity();
 	render_entity_info();
 	render_slots();
+	render_spells();
 	render_items();
 	if (!_selection_info.hide) {
 		render_item_info();
@@ -184,7 +228,7 @@ void Inventory::render_entity() {
 
 	SpriteComponent *sprite = GetSprite(_entity);
 
-	SDL_Rect center_rect = { (_background.w / 2) + ENTITY_CENTER_XOFFSET, (_background.h / 2) + ENTITY_CENTER_YOFFSET, ENTITY_CENTER_WIDTH, ENTITY_CENTER_HEIGHT };
+	SDL_Rect center_rect = { int(_background.w * 0.55), int(_background.h * 0.38), ENTITY_CENTER_WIDTH, ENTITY_CENTER_HEIGHT };
 
 	if (sprite) {
 		renderer->render(Environment::get().get_resource_manager()->get_sprite_info(_entity), sprite, center_rect, true);
@@ -306,6 +350,18 @@ void Inventory::render_buttons() {
 		renderer->draw_rect(button->get_rect(), button->get_color());
 		renderer->draw_text(&button->get_text(), true);
 	}
+}
+
+void Inventory::render_spells() {
+	Renderer *renderer = Environment::get().get_window()->get_renderer();
+
+	for (auto &spell : _spells) {
+		renderer->draw_rect(spell.rect, SPELL_COLOR, DRAW_RECT_FULL);
+		renderer->render(Environment::get().get_resource_manager()->get_texture_info(TYPE_SPELL, spell.icon_id), spell.rect, true);
+	}
+
+	renderer->draw_rect(_main_spell_selection, MAIN_SPELL_COLOR);
+	renderer->draw_rect(_secondary_spell_selection, SECONDARY_SPELL_COLOR);
 }
 
 void Inventory::select_item(int mouse_x, int mouse_y) {
@@ -438,7 +494,7 @@ void Inventory::set_entity_info() {
 	int wrap_length = ENTITY_INFO_WRAP_LENGTH;
 	int label_x = _background.x + ENTITY_INFO_LABEL_XOFFSET;
 	int val_x = _background.x + ENTITY_INFO_VAL_XOFFSET;
-	int y = ENTITY_INFO_YOFFSET;
+	int y = _background.y;
 
 	CombatComponent *combat_info = GetCombat(_entity);
 	if (!combat_info) {
@@ -544,21 +600,100 @@ void Inventory::update_selection_info() {
 	}
 }
 
+void Inventory::update_spell_selection() {
+	MagicComponent *player = GetMagic(_entity);
+
+	for (auto &spell : _spells) {
+		if (spell.id == player->main_spell_id) {
+			_main_spell_selection = spell.rect;
+		}
+		if (spell.id == player->secondary_spell_id) {
+			_secondary_spell_selection = spell.rect;
+		}
+	}
+}
+
 void Inventory::setup_buttons() {
-	_buttons.push_back(new UI::Button_Pressable(&UI::equip_item, "Equip", BUTTON_EQUIP_RECT, BUTTON_FT_SIZE, BUTTON_WRAP_LENGTH, BUTTON_TEXT_COLOR, BUTTON_COLOR));
-	_buttons.push_back(new UI::Button_Pressable(&UI::drop_item, "Drop", BUTTON_DROP_RECT, BUTTON_FT_SIZE, BUTTON_WRAP_LENGTH, BUTTON_TEXT_COLOR, BUTTON_COLOR));
-	_buttons.push_back(new UI::Button_Pressable(&UI::use_item, "Use", BUTTON_USE_RECT, BUTTON_FT_SIZE, BUTTON_WRAP_LENGTH, BUTTON_TEXT_COLOR, BUTTON_COLOR));
+	SDL_Rect rect = { _items_background.x, _items_background.y - BUTTON_HEIGHT - 2, BUTTON_WIDTH, BUTTON_HEIGHT };
+	_buttons.push_back(new UI::Button_Pressable(&UI::equip_item, "Equip", rect, BUTTON_FT_SIZE, BUTTON_WRAP_LENGTH, BUTTON_TEXT_COLOR, BUTTON_COLOR));
+	rect.x += rect.w + 2;
+	_buttons.push_back(new UI::Button_Pressable(&UI::drop_item, "Drop", rect, BUTTON_FT_SIZE, BUTTON_WRAP_LENGTH, BUTTON_TEXT_COLOR, BUTTON_COLOR));
+	rect.x += rect.w + 2;
+	_buttons.push_back(new UI::Button_Pressable(&UI::use_item, "Use", rect, BUTTON_FT_SIZE, BUTTON_WRAP_LENGTH, BUTTON_TEXT_COLOR, BUTTON_COLOR));
 }
 
 void Inventory::setup_slots() {
-	_slots[SLOT_WEAPON] = SLOT_WEAPON_RECT;
-	_slots[SLOT_OFFHAND] = SLOT_OFFHAND_RECT;
-	_slots[SLOT_HEAD] = SLOT_HEAD_RECT;
-	_slots[SLOT_CHEST] = SLOT_CHEST_RECT;
-	_slots[SLOT_GLOVES] = SLOT_GLOVES_RECT;
-	_slots[SLOT_LEGS] = SLOT_LEGS_RECT;
-	_slots[SLOT_BOOTS] = SLOT_BOOTS_RECT;
-	_slots[SLOT_RING] = SLOT_RING_RECT;
+	int left_x = int((_background.w - ITEM_SIZE / 2) * 0.51);
+	int right_x = int((_background.w - ITEM_SIZE ) * 0.67);
+	int y = int(_background.h * 0.35);
+	int spacing = 50;
+
+	SDL_Rect rect = { left_x, y, ITEM_SIZE, ITEM_SIZE };
+
+	_slots[SLOT_HEAD] = rect;	rect.y += spacing;
+	_slots[SLOT_CHEST] = rect;	rect.y += spacing;
+	_slots[SLOT_WEAPON] = rect; rect.y += spacing;
+	_slots[SLOT_RING] = rect;   rect.y += spacing;
+
+	rect.x = right_x;
+	rect.y = y;
+	_slots[SLOT_GLOVES] = rect; rect.y += spacing;
+	_slots[SLOT_LEGS] = rect;   rect.y += spacing;
+	_slots[SLOT_OFFHAND] = rect;rect.y += spacing;
+	_slots[SLOT_BOOTS] = rect;  rect.y += spacing;
+}
+
+void Inventory::setup_spells() {
+	MagicComponent *player = GetMagic(_entity);
+
+	int x = int(_spell_background.x + _spell_background.w * 0.2);
+	int y = int(_spell_background.y + _spell_background.h * 0.2);
+	int spacing = 55;
+	SDL_Rect rect = { x, y, SPELL_SIZE, SPELL_SIZE };
+	for (unsigned int i = 0; i < _spells.size(); ++i) {
+		if (i % 4 == 0 && i != 0) {
+			rect.x += spacing;
+			rect.y = y;
+		}
+		_spells[i].rect = rect;
+		rect.y += spacing;
+	}
+
+	_spells[0].id = FIRE_ONE_ID;
+	_spells[0].icon_id = FIRE_ONE_ICON_ID;
+	_spells[1].id = FIRE_TWO_ID;
+	_spells[1].icon_id = FIRE_TWO_ICON_ID;
+	_spells[2].id = FIRE_THREE_ID;
+	_spells[2].icon_id = FIRE_THREE_ICON_ID;
+	_spells[3].id = FIRE_FOUR_ID;
+	_spells[3].icon_id = FIRE_FOUR_ICON_ID;
+
+	_spells[4].id = WATER_ONE_ID;
+	_spells[4].icon_id = WATER_ONE_ICON_ID;
+	_spells[5].id = WATER_TWO_ID;
+	_spells[5].icon_id = WATER_TWO_ICON_ID;
+	_spells[6].id = WATER_THREE_ID;
+	_spells[6].icon_id = WATER_THREE_ICON_ID;
+	_spells[7].id = WATER_FOUR_ID;
+	_spells[7].icon_id = WATER_FOUR_ICON_ID;
+
+	_spells[8].id = EARTH_ONE_ID;
+	_spells[8].icon_id = EARTH_ONE_ICON_ID;
+	_spells[9].id = EARTH_TWO_ID;
+	_spells[9].icon_id = EARTH_TWO_ICON_ID;
+	_spells[10].id = EARTH_THREE_ID;
+	_spells[10].icon_id = EARTH_THREE_ICON_ID;
+	_spells[11].id = EARTH_FOUR_ID;
+	_spells[11].icon_id = EARTH_FOUR_ICON_ID;
+
+	_spells[12].id = AIR_ONE_ID;
+	_spells[12].icon_id = AIR_ONE_ICON_ID;
+	_spells[13].id = AIR_TWO_ID;
+	_spells[13].icon_id = AIR_TWO_ICON_ID;
+	_spells[14].id = AIR_THREE_ID;
+	_spells[14].icon_id = AIR_THREE_ICON_ID;
+	_spells[15].id = AIR_FOUR_ID;
+	_spells[15].icon_id = AIR_FOUR_ICON_ID;
 }
 
 void Inventory::equip_item() {
@@ -713,5 +848,29 @@ void Inventory::pause_buffs() {
 		for (auto &buff : combat->buffs) {
 			buff.timer.pause();
 		}
+	}
+}
+
+void Inventory::select_spell(Spell_Info &spell, int index, bool main_spell) {
+	PlayerComponent *player = GetPlayer(_entity);
+	if (player->known_spells[index] == 0)
+		return;
+
+	MagicComponent *magic = GetMagic(_entity);
+	if (main_spell) {
+		if (magic->secondary_spell_id == spell.id) {
+			magic->set_secondary(magic->main_spell_id);
+			_secondary_spell_selection = _main_spell_selection;
+		}
+		magic->set_main(spell.id);
+		_main_spell_selection = spell.rect;
+	}
+	else {
+		if (magic->main_spell_id == spell.id) {
+			magic->set_main(magic->secondary_spell_id);
+			_main_spell_selection = _secondary_spell_selection;
+		}
+		magic->set_secondary(spell.id);
+		_secondary_spell_selection = spell.rect;
 	}
 }

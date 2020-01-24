@@ -1,0 +1,10 @@
+# Snowball
+Sprite
+stexture Data/Textures/Spells/snowball.png
+iwidth 20
+iheight 20
+iidle 0
+imin_idle 0
+imax_idle 1
+iend 2
+inum_frames 3

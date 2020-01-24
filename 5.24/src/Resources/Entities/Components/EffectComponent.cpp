@@ -11,12 +11,13 @@
 
 #include <iostream>
 
-EffectComponent::EffectComponent(Entity *entity_, std::string name_, std::string script_, int rand_rotation_, int rand_time_) :
+EffectComponent::EffectComponent(Entity *entity_, std::string name_, std::string script_, int rand_rotation_, int rand_time_, int duration_) :
 	Component				( entity_ ),
 	name					( name_ ),
 	script					( script_ ),
 	rand_rotation			( rand_rotation_ ),
-	rand_time				( rand_time_ )
+	rand_time				( rand_time_ ),
+	duration				( duration_ )
 {
 	Environment::get().get_lua()->load_script(script);
 
@@ -39,7 +40,8 @@ EffectComponent::EffectComponent(Entity *new_entity, const EffectComponent &rhs)
 	name					 ( rhs.name ),
 	script					 ( rhs.script ),
 	rand_rotation		     ( rhs.rand_rotation ),
-	rand_time				 ( rhs.rand_time)
+	rand_time				 ( rhs.rand_time),
+	duration				 ( rhs.duration )
 {
 	Environment::get().get_lua()->load_script(script);
 
@@ -66,5 +68,9 @@ void EffectComponent::update() {
 	lua_remove(L, -2);
 	luaW_push<EffectComponent>(L, this);
 	lua_pcall(L, 1, 0, 0);
+
+	if (duration.update()) {
+		entity->destroy();
+	}
 }
 

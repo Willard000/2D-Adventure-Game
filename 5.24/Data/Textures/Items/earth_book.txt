@@ -1,0 +1,4 @@
+# Earth Book
+stexture Data/Textures/Items/earth_book.png
+iwidth 15
+iheight 15

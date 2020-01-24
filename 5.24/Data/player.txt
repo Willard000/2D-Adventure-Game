@@ -1,13 +1,16 @@
 # Player
 sname Matthew
 ilevel 11
-iexp 80
+iexp 490
 ihealth 475
-imana 100307
-igold 299138
-position 776.46 2451.22
-inventory 10 6 7 17 16 5 5 5 5 27 
+imana 100625
+igold 299116
+imain_spell 0
+isecondary_spell 7
+position 440.16 2813.35
+inventory 17 5 5 5 7 6 16 5 8 0 37 8 38 0 0 0 0 0 0 0 0 0 0 38 37 14 
 equipped 14 -1 15 7 8 16 17 5 
 buffs 
-quest_log id 0 active 1 complete 1 count 21 . id 1 active 1 complete 1 count 11 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-imap_id 1
+quest_log id 0 active 1 complete 1 count 36 . id 1 active 1 complete 1 count 13 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+spells 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 
+imap_id 27

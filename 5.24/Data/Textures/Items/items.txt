@@ -32,3 +32,9 @@
 30 Data/Textures/Items/large_damage_potion.txt
 31 Data/Textures/Items/large_armor_potion.txt
 32 Data/Textures/Items/large_speed_potion.txt
+33 Data/Textures/Items/fire_book.txt
+34 Data/Textures/Items/water_book.txt
+35 Data/Textures/Items/earth_book.txt
+36 Data/Textures/Items/air_book.txt
+37 Data/Textures/Items/dagger.txt
+38 Data/Textures/Items/pebbles.txt

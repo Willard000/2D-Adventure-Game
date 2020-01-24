@@ -1,0 +1,21 @@
+# Snowball
+
+itexture_id 11
+sentity_name Snowball
+
+Position
+iwidth 20
+iheight 20
+
+Sprite
+isprite_time 200
+
+Spell
+fmax_dis 1000
+fspell_speed 300
+ideath_time 100
+sspell_script_name Snowball
+sspell_script Data/Lua/Spells/snowball.lua
+ispell_damage 8
+ispell_mana_cost 10
+spell_color 210 255 250 255

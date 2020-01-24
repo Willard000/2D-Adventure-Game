@@ -32,3 +32,9 @@
 30 Data/Textures/Items/large_damage_potion.png
 31 Data/Textures/Items/large_armor_potion.png
 32 Data/Textures/Items/large_speed_potion.png
+33 Data/Textures/Items/fire_book.png
+34 Data/Textures/Items/water_book.png
+35 Data/Textures/Items/earth_book.png
+36 Data/Textures/Items/air_book.png
+37 Data/Textures/Items/dagger.png
+38 Data/Textures/Items/pebbles.png

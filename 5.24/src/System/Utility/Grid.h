@@ -54,8 +54,6 @@ private:
 
 	int _width;
 	int _height;
-	int _max_width;
-	int _max_height;
 
 	std::vector<T> **_cells;
 	std::vector<T> _large_objects;
@@ -69,8 +67,6 @@ Grid<T>::Grid() :
 	_inv_cell_height(0.0f),
 	_width(0),
 	_height(0),
-	_max_width(_width * 2),
-	_max_height(_height * 2),
 	_cells(nullptr)
 {}
 
@@ -81,9 +77,7 @@ Grid<T>::Grid(int cell_width, int cell_height, int width, int height) :
 	_inv_cell_width(1.0f / (float)cell_width),
 	_inv_cell_height(1.0f / (float)cell_height),
 	_width(width),
-	_height(height),
-	_max_width(width * 2),
-	_max_height(height * 2)
+	_height(height)
 {
 	_cells = new std::vector<T> *[_height];
 	for (int i = 0; i < height; ++i) {
@@ -107,7 +101,7 @@ int Grid<T>::insert(const SDL_Rect &pos, const T &obj) {
 	const int x2 = int((pos.x + pos.w) * _inv_cell_width);
 	int inserted = 0;
 
-	if ((y2 - y) > _max_height || (x2 - x) > _max_width) {
+	if ((y2 - y) >= 2  || (x2 - x) >= 2) {
 		_large_objects.push_back(obj);
 		return 1;
 	}
@@ -154,7 +148,7 @@ int Grid<T>::insert(const SDL_Rect &pos, const double &rotation, const T &obj) {
 	}
 	int inserted = 0;
 
-	if ((vertices[1].y - vertices[0].y) > _max_height || (vertices[2].x - vertices[0].x) > _max_width) {
+	if ((vertices[1].y - vertices[0].y) >= 2 || (vertices[2].x - vertices[0].x) >= 2) {
 		_large_objects.push_back(obj);
 		return 1;
 	}
@@ -294,9 +288,7 @@ void Grid<T>::resize(int cell_width, int cell_height, int width, int height) {
 	_large_objects.clear();
 
 	_width = width;
-	_max_width = width * 2;
 	_height = height;
-	_max_height = height * 2;
 
 	_cells = new std::vector<T> *[_height];
 	for (int i = 0; i < height; ++i) {

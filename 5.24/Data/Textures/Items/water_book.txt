@@ -1,0 +1,4 @@
+# Water Book
+stexture Data/Textures/Items/water_book.png
+iwidth 15
+iheight 15

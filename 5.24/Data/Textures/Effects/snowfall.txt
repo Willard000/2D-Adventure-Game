@@ -1,0 +1,9 @@
+# Snowfall
+Sprite
+stexture Data/Textures/Effects/snowfall.png
+iwidth 8
+iheight 64
+iidle 0
+imin_idle 0
+imax_idle 8
+inum_frames 10

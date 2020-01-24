@@ -1,0 +1,4 @@
+# Wind Icon
+stexture Data/Textures/Spells/wind_icon.png
+iwidth 20
+iheight 20

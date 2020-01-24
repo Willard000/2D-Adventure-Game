@@ -3,3 +3,4 @@
 1 Data/Entities/Effect/pond_leaf.txt
 2 Data/Entities/Effect/fire.txt
 3 Data/Entities/Effect/flag.txt
+4 Data/Entities/Effect/snowfall.txt

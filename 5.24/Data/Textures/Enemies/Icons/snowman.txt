@@ -1,0 +1,4 @@
+# Snowman Icon
+stexture Data/Textures/Enemies/Icons/snowman.png
+iwidth 48
+iheight 64

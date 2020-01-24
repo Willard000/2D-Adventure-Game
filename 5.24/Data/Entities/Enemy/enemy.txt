@@ -4,3 +4,4 @@
 2 Data/Entities/Enemy/bandit_leader.txt
 3 Data/Entities/Enemy/scarecrow.txt
 4 Data/Entities/Enemy/scarecrow_leader.txt
+5 Data/Entities/Enemy/snowman.txt

@@ -1,0 +1,17 @@
+# Water Book
+
+itexture_id 34
+sentity_name Water Book
+
+Position
+iwidth 32
+iheight 32
+
+Item
+iitem_slot 0
+sitem_name Water Book
+item_color 75 230 230 255
+iitem_sell_value 1
+
+bitem_equipable 1
+bitem_useable 0

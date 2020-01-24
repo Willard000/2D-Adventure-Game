@@ -14,6 +14,26 @@
 #define MAX_ITEMS 100
 #define QUEST_LOG_CAPACITY 50
 
+#define FIRE_ONE_ID 0
+#define FIRE_TWO_ID 0
+#define FIRE_THREE_ID 0
+#define FIRE_FOUR_ID 0
+
+#define WATER_ONE_ID 5
+#define WATER_TWO_ID 0
+#define WATER_THREE_ID 0
+#define WATER_FOUR_ID 0
+
+#define EARTH_ONE_ID 6
+#define EARTH_TWO_ID 0
+#define EARTH_THREE_ID 0
+#define EARTH_FOUR_ID 0
+
+#define AIR_ONE_ID 7
+#define AIR_TWO_ID 0
+#define AIR_THREE_ID 0
+#define AIR_FOUR_ID 0
+
 struct PlayerComponent : public Component {
 	PlayerComponent(Entity *entity_, std::string name);
 	PlayerComponent(Entity *new_entity, const PlayerComponent &rhs);
@@ -43,6 +63,7 @@ struct PlayerComponent : public Component {
 	std::vector<Entity *> items;
 	std::array<Entity *, TOTAL_SLOTS> equipped_items = { nullptr };
 	std::array<Quest *, QUEST_LOG_CAPACITY> quest_log = { nullptr };
+	std::array<bool, TOTAL_PLAYER_SPELLS> known_spells = { 0 };
 
 	Inventory inventory;
 

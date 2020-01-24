@@ -1,0 +1,4 @@
+# Fireball Icon
+stexture Data/Textures/Spells/fireball_icon.png
+iwidth 20
+iheight 20

@@ -16,6 +16,8 @@
 
 #include "Inventory.h"
 
+#define TEXT_INPUT_COLOR { 0, 0, 255, 255 }
+
 bool valid_string_to_int(std::string str) {
 	if (str == "") {
 		return false;
@@ -197,6 +199,10 @@ void InputManager::update() {
 
 	if (is_mouse_held(SDL_BUTTON_LEFT)) {
 		cast_spell((float)_mouse_x, (float)_mouse_y);
+	}
+
+	if (is_mouse_held(SDL_BUTTON_RIGHT)) {
+		cast_spell((float)_mouse_x, (float)_mouse_y, false);
 	}
 
 	if (is_mouse(SDL_BUTTON_MIDDLE)) {
@@ -404,10 +410,10 @@ std::string InputManager::start_text_input(int flag) {
 			text_size = _text_input.size();
 			if (flag == TEXT_INPUT_TEXTBOX) {
 				SDL_Rect pos = Environment::get().get_resource_manager()->get_textbox().get_rect();
-				text = Text(_text_input, { 255, 255, 255, 255 }, 18, 10000, pos.x, pos.y + pos.h - 20);
+				text = Text(_text_input, TEXT_INPUT_COLOR, 18, 10000, pos.x, pos.y + pos.h - 20);
 			}
 			else {
-				text = Text(_text_input, { 255, 255, 255, 255 }, 24, 5000, width, height);
+				text = Text(_text_input, TEXT_INPUT_COLOR, 24, 5000, width, height);
 			}
 		}
 

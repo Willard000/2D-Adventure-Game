@@ -3,3 +3,4 @@
 1 Data/Textures/Effects/pond_leaf.txt
 2 Data/Textures/Effects/fire.txt
 3 Data/Textures/Effects/flag.txt
+4 Data/Textures/Effects/snowfall.txt

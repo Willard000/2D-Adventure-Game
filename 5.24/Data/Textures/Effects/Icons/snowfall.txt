@@ -1,0 +1,4 @@
+# Snowfall Icon
+stexture Data/Textures/Effects/Icons/snowfall.png
+iwidth 8
+iheight 64

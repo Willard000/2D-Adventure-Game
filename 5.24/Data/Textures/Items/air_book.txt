@@ -1,0 +1,4 @@
+# Air Book
+stexture Data/Textures/Items/air_book.png
+iwidth 15
+iheight 15

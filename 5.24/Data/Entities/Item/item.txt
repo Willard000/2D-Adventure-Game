@@ -32,3 +32,9 @@
 30 Data/Entities/Item/large_damage_potion.txt
 31 Data/Entities/Item/large_armor_potion.txt
 32 Data/Entities/Item/large_speed_potion.txt
+33 Data/Entities/Item/fire_book.txt
+34 Data/Entities/Item/water_book.txt
+35 Data/Entities/Item/earth_book.txt
+36 Data/Entities/Item/air_book.txt
+37 Data/Entities/Item/dagger.txt
+38 Data/Entities/Item/pebbles.txt

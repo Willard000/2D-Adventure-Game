@@ -17,6 +17,7 @@
 #include "PositionComponent.h"
 #include "ItemComponent.h"
 #include "PlayerComponent.h"
+#include "MagicCOmponent.h"
 
 #define FILE_PLAYER_POSITION "position"
 
@@ -24,6 +25,7 @@
 #define FILE_PLAYER_EQUIPPED "equipped"
 #define FILE_PLAYER_BUFFS "buffs"
 #define FILE_PLAYER_QUEST_LOG "quest_log"
+#define FILE_PLAYER_SPELLS "spells"
 
 #define FILE_PLAYER_NAME "sname"
 #define FILE_PLAYER_LEVEL "ilevel"
@@ -32,6 +34,8 @@
 #define FILE_PLAYER_MANA "imana"
 #define FILE_PLAYER_GOLD "igold"
 #define FILE_PLAYER_MAP_ID "imap_id"
+#define FILE_PLAYER_MAIN_SPELL "imain_spell"
+#define FILE_PLAYER_SECONDARY_SPELL "isecondary_spell"
 
 #define FILE_PLAYER_SEPERATOR "."
 
@@ -144,6 +148,21 @@ void load_quest_log(FileReader &file, Entity *player) {
 	}
 }
 
+void load_spells(FileReader &file, Entity *player) {
+	PlayerComponent *player_component = GetPlayer(player);
+	MagicComponent *magic = GetMagic(player);
+
+	if (file.exists(FILE_PLAYER_MAIN_SPELL)) magic->set_main(file.get_int(FILE_PLAYER_MAIN_SPELL));
+	if (file.exists(FILE_PLAYER_SECONDARY_SPELL)) magic->set_secondary(file.get_int(FILE_PLAYER_SECONDARY_SPELL));
+	if (!file.exists(FILE_PLAYER_SPELLS))
+		return;
+
+	std::stringstream stream(file.get_string(FILE_PLAYER_SPELLS));
+	std::string data;
+	int i = 0;
+	while (i < TOTAL_PLAYER_SPELLS && stream >> player_component->known_spells[i]) { ++i; }
+}
+
 void load_player() {
 	FileReader file(PLAYER_FILE);
 	Entity *player = Environment::get().get_resource_manager()->get_player();
@@ -154,6 +173,7 @@ void load_player() {
 	load_info(file, player);
 	load_quests(); // loads quest informaiton
 	load_quest_log(file, player); // loads the save data for quests
+	load_spells(file, player);
 
 	if (file.exists(FILE_PLAYER_MAP_ID)) Environment::get().get_resource_manager()->load_map(file.get_int(FILE_PLAYER_MAP_ID), false);
 }
@@ -173,6 +193,10 @@ void save_player() {
 	file << FILE_PLAYER_HEALTH << " " << stats->health << std::endl;
 	file << FILE_PLAYER_MANA << " " << stats->mana << std::endl;
 	file << FILE_PLAYER_GOLD << " " << player_component->gold << std::endl;
+
+	MagicComponent *magic = GetMagic(player);
+	file << FILE_PLAYER_MAIN_SPELL << " " <<  magic->main_spell_id << std::endl;
+	file << FILE_PLAYER_SECONDARY_SPELL << " " << magic->secondary_spell_id << std::endl;
 
 	PositionComponent *position = GetPosition(player);
 	file << FILE_PLAYER_POSITION << " " << position->pos_x << " " << position->pos_y << std::endl;
@@ -213,6 +237,12 @@ void save_player() {
 			quest->save(file);
 
 		file << ". ";
+	}
+	file << std::endl;
+
+	file << FILE_PLAYER_SPELLS << " ";
+	for (auto &spell : player_component->known_spells) {
+		file << spell << " ";
 	}
 	file << std::endl;
 

@@ -12,7 +12,7 @@ Sprite
 isprite_time 300
 
 Magic
-imain_spell_id 5
+imain_spell_id 7
 icast_speed 300
 
 Player

@@ -18,5 +18,5 @@ sspell_script_name Fireball
 sspell_script Data/Lua/Spells/fireball.lua
 ispell_damage 5
 ispell_mana_cost 10
-ispell_type 2
+ispell_type 0
 spell_color 245 175 15 255

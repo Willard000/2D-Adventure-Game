@@ -23,6 +23,8 @@
 #define BUTTON_EFFECTS_POSITION {1245, 75, 100, 25}
 #define BUTTON_ITEMS_POSITION {1245, 100, 100, 25}
 #define BUTTON_NPCS_POSITION {1245, 125, 100, 25}
+#define BUTTON_WIDTH 100
+#define BUTTON_HEIGHT 25
 
 #define BUTTON_SELECT_FREE_POSITION {600, 0, 100, 25}
 #define BUTTON_ALIGN_PLACEMENT_POSITION {700, 0, 100, 25}
@@ -105,12 +107,15 @@ void Editor::load_buttons() {
 	ui_manager->add_button(new UI::Button_Pressable(&UI::button_save_map, "Save", BUTTON_SAVE_POSITION));
 	ui_manager->add_button(new UI::Button_Pressable(&UI::button_load_map, "Load", BUTTON_LOAD_POSITION));
 
-	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_tiles, "Tiles", BUTTON_TILES_POSITION));
-	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_objects, "Objects", BUTTON_OBJECTS_POSITION));
-	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_enemies, "Enemies", BUTTON_ENEMIES_POSITION));
-	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_effects, "Effects", BUTTON_EFFECTS_POSITION));
-	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_items, "Items", BUTTON_ITEMS_POSITION));
-	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_npcs, "NPCS", BUTTON_NPCS_POSITION));
+	int x = ui_manager->get_element_area().x;
+	int y = ui_manager->get_element_area().y;
+	SDL_Rect rect = { x - BUTTON_WIDTH, y, BUTTON_WIDTH, BUTTON_HEIGHT };
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_tiles, "Tiles", rect)); rect.y += BUTTON_HEIGHT;
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_objects, "Objects", rect)); rect.y += BUTTON_HEIGHT;
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_enemies, "Enemies", rect)); rect.y += BUTTON_HEIGHT;
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_effects, "Effects", rect)); rect.y += BUTTON_HEIGHT;
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_items, "Items", rect)); rect.y += BUTTON_HEIGHT;
+	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_npcs, "NPCS", rect)); rect.y += BUTTON_HEIGHT;
 
 	ui_manager->add_button(new UI::Button_Pressable(&UI::button_select_free, "Select", BUTTON_SELECT_FREE_POSITION));
 	ui_manager->add_button(new UI::Button_Pressable(&UI::button_align_placement, "Align", BUTTON_ALIGN_PLACEMENT_POSITION));

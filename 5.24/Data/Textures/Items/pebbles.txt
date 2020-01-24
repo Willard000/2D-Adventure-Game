@@ -1,0 +1,4 @@
+# Pebbles
+stexture Data/Textures/Items/pebbles.png
+iwidth 15
+iheight 15

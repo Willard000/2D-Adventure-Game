@@ -1,0 +1,17 @@
+# Earth Book
+
+itexture_id 35
+sentity_name Earth Book
+
+Position
+iwidth 32
+iheight 32
+
+Item
+iitem_slot 0
+sitem_name Earth Book
+item_color 170 105 30 255
+iitem_sell_value 1
+
+bitem_equipable 1
+bitem_useable 0

@@ -28,6 +28,8 @@
 #define VALUE_COLOR { 225, 185, 25, 255 }
 #define STACK_SIZE_COLOR {255, 255, 255, 255}
 
+#define TOTAL_PLAYER_SPELLS 16
+
 class Inventory {
 public:
 	struct Item_Info {
@@ -45,6 +47,12 @@ public:
 		bool equipped;
 		int index;
 	};
+
+	struct Spell_Info {
+		SDL_Rect rect;
+		int icon_id;
+		int id;
+	};
 public:
 	Inventory(Entity *entity, std::vector<Entity *> *items, CombatComponent *stats);
 	~Inventory();
@@ -56,6 +64,7 @@ public:
 	void drop_item();
 	void add_item(int item_id);
 	void pause_buffs();
+	void select_spell(Spell_Info &spell, int index, bool main_spell = true);
 private:
 	void input();
 	void update();
@@ -63,6 +72,7 @@ private:
 
 	void render_entity();
 	void render_slots();
+	void render_spells();
 	void render_items();
 	void render_item_info();
 	void render_entity_info();
@@ -77,14 +87,19 @@ private:
 
 	void update_inventory_size();
 	void update_selection_info();
+	void update_spell_selection();
 
 	void setup_buttons();
 	void setup_slots();
+	void setup_spells();
 	
 	bool _exit;
 
 	SDL_Rect _background;
 	SDL_Rect _items_background;
+	SDL_Rect _spell_background;
+	SDL_Rect _main_spell_selection;
+	SDL_Rect _secondary_spell_selection;
 	Entity *_entity;
 	std::vector<Entity *> *_items;
 	CombatComponent *_stats;
@@ -96,6 +111,7 @@ private:
 
 	std::vector<UI::Button *> _buttons;
 	std::array<SDL_Rect, TOTAL_SLOTS> _slots = { {0, 0, 0, 0} };
+	std::array<Spell_Info, TOTAL_PLAYER_SPELLS> _spells = { {0, 0, 0, 0} };
 };
 
 #endif

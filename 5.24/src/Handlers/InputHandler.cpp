@@ -33,7 +33,7 @@ void toggle_camera() {
 	}
 }
 
-void cast_spell(float x, float y) {
+void cast_spell(float x, float y, bool main_spell) {
 	Camera *camera = Environment::get().get_window()->get_camera();
 	x = (x / camera->get_scale()) + camera->get_x();
 	y = (y / camera->get_scale()) + camera->get_y();
@@ -41,7 +41,12 @@ void cast_spell(float x, float y) {
 	MagicComponent *magic = GetMagic(Environment::get().get_resource_manager()->get_player());
 	if (magic) {
 		PositionComponent *position = GetPosition(Environment::get().get_resource_manager()->get_player());
-		magic->cast_main(x, y, position->pos_x + position->rect.w / 2, position->pos_y + position->rect.h / 2);
+		if (main_spell) {
+			magic->cast_main(x, y, position->pos_x + position->rect.w / 2, position->pos_y + position->rect.h / 2);
+		}
+		else {
+			magic->cast_secondary(x, y, position->pos_x + position->rect.w / 2, position->pos_y + position->rect.h / 2);
+		}
 		magic->can_cast = false;
 	}
 }

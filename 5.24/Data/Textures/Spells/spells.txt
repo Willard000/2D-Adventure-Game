@@ -5,3 +5,9 @@
 3 Data/Textures/Spells/scarecrow_attack.txt
 4 Data/Textures/Spells/scarecrow_leader_attack.txt
 5 Data/Textures/Spells/wave.txt
+6 Data/Textures/Spells/rocks.txt
+7 Data/Textures/Spells/wind.txt
+8 Data/Textures/Spells/fireball_icon.txt
+9 Data/Textures/Spells/wave_icon.txt
+10 Data/Textures/Spells/wind_icon.txt
+11 Data/Textures/Spells/snowball.txt

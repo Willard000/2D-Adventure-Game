@@ -4,3 +4,4 @@
 2 Data/Textures/Enemies/Icons/stickman.png
 3 Data/Textures/Enemies/Icons/scarecrow.png
 4 Data/Textures/Enemies/Icons/scarecrow.png
+5 Data/Textures/Enemies/Icons/snowman.png

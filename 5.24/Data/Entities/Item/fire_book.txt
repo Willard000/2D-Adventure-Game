@@ -1,0 +1,17 @@
+# Fire Book
+
+itexture_id 33
+sentity_name Fire Book
+
+Position
+iwidth 32
+iheight 32
+
+Item
+iitem_slot 0
+sitem_name Fire Book
+item_color 245 175 25 255
+iitem_sell_value 1
+
+bitem_equipable 1
+bitem_useable 0

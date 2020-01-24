@@ -30,7 +30,7 @@
 #define FILE_FRAME_MAX_RIGHT "imax_right"
 #define FILE_FRAME_NUM_FRAMES "inum_frames"
 
-#define EDITOR_LINE_COLOR {255, 255, 255, 50}
+#define EDITOR_LINE_COLOR {0, 255, 0, 50}
 
 #define MAP_TEXTURE_SECTION_SIZE 10
 

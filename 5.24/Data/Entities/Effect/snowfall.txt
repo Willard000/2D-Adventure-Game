@@ -1,0 +1,18 @@
+# Snowfall
+
+itexture_id 4
+sentity_name Snowfall
+
+Position
+iwidth 8
+iheight 64
+
+Sprite
+isprite_time 250
+
+Effect
+seffect_name Fire
+seffect_script Data/Lua/Effects/fire.lua
+ieffect_rand_rotation 0
+ieffect_rand_time -1
+ieffect_duration 2000

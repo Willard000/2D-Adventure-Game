@@ -111,6 +111,8 @@ public:
 
 	void move_map_selection();
 
+	SDL_Rect get_element_area() { return _element_area.background; }
+
 	void unselect();
 private:
 	void get_real_mouse_location(int &x, int &y);

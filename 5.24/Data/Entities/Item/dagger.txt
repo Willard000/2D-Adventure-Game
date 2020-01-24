@@ -1,0 +1,18 @@
+# Dagger
+
+itexture_id 37
+sentity_name Dagger
+
+Position
+iwidth 32
+iheight 32
+
+Item
+iitem_slot 0
+sitem_name Dagger
+iitem_damage 5
+item_color 230 230 230 255
+iitem_sell_value 5
+
+bitem_equipable 1
+bitem_useable 0

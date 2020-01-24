@@ -1,0 +1,10 @@
+# Wind
+Sprite
+stexture Data/Textures/Spells/wind.png
+iwidth 20
+iheight 20
+iidle 0
+imin_idle 0
+imax_idle 6
+iend 6
+inum_frames 7

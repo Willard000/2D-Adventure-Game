@@ -1,0 +1,4 @@
+# Fire Book
+stexture Data/Textures/Items/fire_book.png
+iwidth 15
+iheight 15
