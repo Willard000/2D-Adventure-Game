@@ -6,3 +6,4 @@
 4 Data/Textures/NPCS/Icons/stickman.txt
 5 Data/Textures/NPCS/Icons/stickman.txt
 6 Data/Textures/NPCS/Icons/stickman.txt
+7 Data/Textures/NPCS/Icons/fire_block.txt

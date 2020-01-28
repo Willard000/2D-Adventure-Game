@@ -11,3 +11,4 @@
 9 Data/Textures/Spells/wave_icon.txt
 10 Data/Textures/Spells/wind_icon.txt
 11 Data/Textures/Spells/snowball.txt
+12 Data/Textures/Spells/eskimo_attack.txt

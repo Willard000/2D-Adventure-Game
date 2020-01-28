@@ -38,3 +38,6 @@
 36 Data/Textures/Items/air_book.txt
 37 Data/Textures/Items/dagger.txt
 38 Data/Textures/Items/pebbles.txt
+39 Data/Textures/Items/snowball.txt
+40 Data/Textures/Items/ice_shield.txt
+41 Data/Textures/Items/axe.txt

@@ -1,0 +1,4 @@
+# Eskimo Icon
+stexture Data/Textures/Enemies/Icons/eskimo.png
+iwidth 32
+iheight 32

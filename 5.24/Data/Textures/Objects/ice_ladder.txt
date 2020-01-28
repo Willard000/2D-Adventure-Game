@@ -1,0 +1,4 @@
+# Ice Ladder
+stexture Data/Textures/Objects/ice_ladder.png
+iwidth 40
+iheight 128

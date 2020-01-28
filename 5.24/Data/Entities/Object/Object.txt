@@ -31,3 +31,9 @@
 29 Data/Entities/Object/weapon_sign.txt
 30 Data/Entities/Object/potion_sign.txt
 31 Data/Entities/Object/book_sign.txt
+32 Data/Entities/Object/igloo.txt
+33 Data/Entities/Object/ice_ladder.txt
+34 Data/Entities/Object/ice_button.txt
+35 Data/Entities/Object/snow_block.txt
+36 Data/Entities/Object/ice_block.txt
+37 Data/Entities/Object/ice_block2.txt

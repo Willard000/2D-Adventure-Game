@@ -1,0 +1,4 @@
+# Igloo
+stexture Data/Textures/Objects/igloo.png
+iwidth 145
+iheight 100

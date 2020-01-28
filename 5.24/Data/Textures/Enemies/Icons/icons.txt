@@ -5,3 +5,4 @@
 3 Data/Textures/Enemies/Icons/scarecrow.txt
 4 Data/Textures/Enemies/Icons/scarecrow.txt
 5 Data/Textures/Enemies/Icons/snowman.txt
+6 Data/Textures/Enemies/Icons/eskimo.txt

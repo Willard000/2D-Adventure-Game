@@ -47,7 +47,7 @@ static luaL_Reg npc_metatable[] = {
 	{"set_current_line", npc_set_current_line},
 
 	// get
-	{"get_npc", npc_get_entity},
+	{"get_entity", npc_get_entity},
 	{"get_current_line", npc_get_current_line},
 	{"get_quest_id", npc_get_quest_id},
 

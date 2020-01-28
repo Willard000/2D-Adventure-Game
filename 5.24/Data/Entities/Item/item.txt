@@ -38,3 +38,6 @@
 36 Data/Entities/Item/air_book.txt
 37 Data/Entities/Item/dagger.txt
 38 Data/Entities/Item/pebbles.txt
+39 Data/Entities/Item/snowball.txt
+40 Data/Entities/Item/ice_shield.txt
+41 Data/Entities/Item/axe.txt

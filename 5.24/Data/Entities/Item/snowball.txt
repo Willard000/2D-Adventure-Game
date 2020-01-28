@@ -1,0 +1,18 @@
+# Snowball
+
+itexture_id 39
+sentity_name Snowball
+
+Position
+iwidth 20
+iheight 20
+
+Item
+iitem_slot 0
+sitem_name Snowball
+iitem_damage 4
+item_color 220 255 250 255
+iitem_sell_value 4
+
+bitem_equipable 1
+bitem_useable 0

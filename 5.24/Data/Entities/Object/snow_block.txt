@@ -1,0 +1,8 @@
+# Snow Block
+
+itexture_id 35
+sentity_name Snow Block
+
+Position
+iwidth 32
+iheight 32

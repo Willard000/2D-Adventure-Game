@@ -1,0 +1,4 @@
+# Snow Block
+stexture Data/Textures/Objects/snow_block.png
+iwidth 32
+iheight 32

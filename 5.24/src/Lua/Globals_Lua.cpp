@@ -47,8 +47,42 @@ static int get_player(lua_State *L) {
 static int collision(lua_State *L) {
 	PositionComponent *a = luaW_check<PositionComponent>(L, -2);
 	PositionComponent *b = luaW_check<PositionComponent>(L, -1);
-	bool is_collision = collision(a->rect, b->rect);
-	lua_pushboolean(L, is_collision);
+	lua_pushboolean(L, collision(a->rect, b->rect));
+	return 1;
+}
+
+// bool in_range(PositionComponent *a, PositionComponent *b, int range)
+static int in_range(lua_State *L) {
+	PositionComponent *a = luaW_check<PositionComponent>(L, -3);
+	PositionComponent *b = luaW_check<PositionComponent>(L, -2);
+	int range = luaL_checknumber(L, -1);
+	SDL_Rect new_rect = { b->rect.x - range, b->rect.y - range, int(b->rect.w + range * 2), int(b->rect.h + range * 2) };
+	lua_pushboolean(L, collision(a->rect, new_rect));
+	return 1;
+}
+
+// Entity get_nearby_entity(PositionComponent *a, int range, int type, int type_id)
+static int get_nearby_entity(lua_State *L) {
+	PositionComponent *a = luaW_check<PositionComponent>(L, -4);
+	int range = luaL_checknumber(L, -3);
+	int type = luaL_checknumber(L, -2);
+	int type_id = luaL_checknumber(L, -1);
+	SDL_Rect new_rect = { a->rect.x - range, a->rect.y - range, int(a->rect.w + range * 2), int(a->rect.h + range * 2) };
+
+	auto entity_vec = Environment::get().get_resource_manager()->get_map()->get_entity_grid()->get_cells(a->rect);
+	for (auto &vec : entity_vec) {
+		for (auto &e : *vec) {
+			if (e->get_type() == type && e->get_type_id() == type_id) {
+				PositionComponent *b = GetPosition(e);
+				if (collision(new_rect, b->rect, a->rotation, b->rotation)) {
+					luaW_push<Entity>(L, e);
+					return 1;
+				}
+			}
+		}
+	}
+
+	lua_pushnil(L);
 	return 1;
 }
 
@@ -76,6 +110,8 @@ void lua_init_globals(Lua *lua, lua_State *L) {
 	lua->register_global("get_time", get_time);
 	lua->register_global("get_player", get_player);
 	lua->register_global("collision", collision);
+	lua->register_global("in_range", in_range);
+	lua->register_global("get_nearby_entity", get_nearby_entity);
 	lua->register_global("print_blank", print_blank);
 	lua->register_global("print_color", print_color);
 }

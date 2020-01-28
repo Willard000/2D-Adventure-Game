@@ -31,3 +31,9 @@
 29 Data/Textures/Objects/weapon_sign.png
 30 Data/Textures/Objects/potion_sign.png
 31 Data/Textures/Objects/book_sign.png
+32 Data/Textures/Objects/igloo.png
+33 Data/Textures/Objects/ice_ladder.png
+34 Data/Textures/Objects/ice_button.png
+35 Data/Textures/Objects/snow_block.png
+36 Data/Textures/Objects/ice_block.png
+37 Data/Textures/Objects/ice_block2.png

@@ -1,0 +1,4 @@
+# Ice Block
+stexture Data/Textures/Objects/ice_block2.png
+iwidth 32
+iheight 64

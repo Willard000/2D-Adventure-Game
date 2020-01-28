@@ -8,3 +8,4 @@
 6 Data/Entities/Spell/rocks.txt
 7 Data/Entities/Spell/wind.txt
 8 Data/Entities/Spell/snowball.txt
+9 Data/Entities/Spell/eskimo_attack.txt

@@ -1,0 +1,4 @@
+# Stickman Icon
+stexture Data/Textures/NPCS/Icons/fire_block.png
+iwidth 32
+iheight 64

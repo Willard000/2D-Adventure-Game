@@ -38,3 +38,6 @@
 36 Data/Textures/Items/air_book.png
 37 Data/Textures/Items/dagger.png
 38 Data/Textures/Items/pebbles.png
+39 Data/Textures/Items/snowball.png
+40 Data/Textures/Items/ice_shield.png
+41 Data/Textures/Items/axe.png

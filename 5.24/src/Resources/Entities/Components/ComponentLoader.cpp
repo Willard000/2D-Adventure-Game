@@ -222,7 +222,7 @@ void load_effect(FileReader &file, Entity *entity, EffectComponent *&effect) {
 	std::string script = " ";
 	int rand_rotation = 0;
 	int rand_time = 0;
-	int duration = 0;
+	int duration = -1;
 
 	if (file.exists(FILE_EFFECT_NAME)) name = file.get_string(FILE_EFFECT_NAME);
 	if (file.exists(FILE_EFFECT_SCRIPT)) script = file.get_string(FILE_EFFECT_SCRIPT);

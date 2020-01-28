@@ -31,3 +31,9 @@
 29 Data/Textures/Objects/weapon_sign.txt
 30 Data/Textures/Objects/potion_sign.txt
 31 Data/Textures/Objects/book_sign.txt
+32 Data/Textures/Objects/igloo.txt
+33 Data/Textures/Objects/ice_ladder.txt
+34 Data/Textures/Objects/ice_button.txt
+35 Data/Textures/Objects/snow_block.txt
+36 Data/Textures/Objects/ice_block.txt
+37 Data/Textures/Objects/ice_block2.txt

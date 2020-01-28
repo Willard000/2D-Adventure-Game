@@ -6,3 +6,4 @@
 4 Data/Textures/NPCS/Icons/stickman.png
 5 Data/Textures/NPCS/Icons/stickman.png
 6 Data/Textures/NPCS/Icons/stickman.png
+7 Data/Textures/NPCS/Icons/fire_block.png

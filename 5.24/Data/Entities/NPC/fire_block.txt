@@ -1,0 +1,16 @@
+# Fire Block
+
+itexture_id 7
+sentity_name Fire Block
+
+Position
+iwidth 32
+iheight 64
+
+Sprite
+isprite_time 225
+
+NPC
+snpc_script_name Fire_Block
+snpc_script Data/Lua/NPC/fire_block.lua
+bnpc_has_shop 0

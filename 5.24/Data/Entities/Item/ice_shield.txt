@@ -1,0 +1,18 @@
+# Ice Shield
+
+itexture_id 40
+sentity_name Ice Shield
+
+Position
+iwidth 32
+iheight 32
+
+Item
+iitem_slot 1
+sitem_name Ice Shield
+iitem_armor 10
+item_color 100 250 255 255
+iitem_sell_value 10
+
+bitem_equipable 1
+bitem_useable 0

@@ -1,0 +1,8 @@
+# Igloo
+
+itexture_id 32
+sentity_name Igloo
+
+Position
+iwidth 145
+iheight 100

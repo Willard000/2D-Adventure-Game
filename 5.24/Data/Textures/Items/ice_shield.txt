@@ -1,0 +1,4 @@
+# Ice Shield
+stexture Data/Textures/Items/ice_shield.png
+iwidth 15
+iheight 15

@@ -1,0 +1,20 @@
+# Eskimo_Attack
+
+itexture_id 12
+sentity_name Eskimo Attack
+
+Position
+iwidth 15
+iheight 15
+
+Sprite
+isprite_time -1
+
+Spell
+fmax_dis 800
+fspell_speed 400
+ideath_time 10000
+sspell_script_name Bandit_Attack
+sspell_script Data/Lua/Spells/bandit_attack.lua
+ispell_damage 10
+spell_color 75 75 75 255

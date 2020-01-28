@@ -6,3 +6,4 @@
 4 Data/Entities/NPC/ziya.txt
 5 Data/Entities/NPC/nav.txt
 6 Data/Entities/NPC/makar.txt
+7 Data/Entities/NPC/fire_block.txt

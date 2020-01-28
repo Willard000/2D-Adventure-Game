@@ -1,0 +1,17 @@
+# Fire Block
+Sprite
+stexture Data/Textures/NPCS/fire_block.png
+iwidth 32
+iheight 64
+iidle 0
+imin_idle 0
+imax_idle 3
+imin_up 0
+imax_up 3
+imin_down 0
+imax_down 3
+imin_left 0
+imax_left 3
+imin_right 0
+imax_right 3
+inum_frames 4

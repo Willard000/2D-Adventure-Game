@@ -1,0 +1,14 @@
+# Ice Ladder
+
+itexture_id 33
+sentity_name Ice Ladder
+
+Position
+iwidth 32
+iheight 180
+
+Interact
+sinteract_name Ladder
+sinteract_script_name Ladder
+sinteract_script Data/Lua/Objects/ladder.lua
+sinteract_ui_info Climb

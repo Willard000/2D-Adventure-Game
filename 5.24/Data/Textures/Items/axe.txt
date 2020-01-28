@@ -1,0 +1,4 @@
+# Axe
+stexture Data/Textures/Items/axe.png
+iwidth 15
+iheight 15

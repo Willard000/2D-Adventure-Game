@@ -50,13 +50,19 @@ static int player_collision(lua_State *L) {
 	return 0;
 }
 
+// void reload()
+static int reload(lua_State *L) {
+	Map *map = Environment::get().get_resource_manager()->get_map();
+	map->load(map->get_id(), true);
+	return 0;
+}
+
 // void reload_all()
 // reloads all maps to their base
 static int reload_all(lua_State *L) {
 	Environment::get().get_resource_manager()->get_map()->reload_all();
 	return 0;
-}
-
+}  
 
 // void snowfall()
 static int snowfall(lua_State *L) {
@@ -88,6 +94,7 @@ void lua_init_commands(Lua *lua, lua_State *L) {
 	lua->register_global("teleport", teleport);
 	lua->register_global("teleport_to", teleport_to);
 	lua->register_global("tcl", player_collision);
+	lua->register_global("reload", reload);
 	lua->register_global("reload_all", reload_all);
 	lua->register_global("snowfall", snowfall);
 }

@@ -1,0 +1,8 @@
+# Ice Block
+
+itexture_id 36
+sentity_name Ice Block
+
+Position
+iwidth 32
+iheight 32
