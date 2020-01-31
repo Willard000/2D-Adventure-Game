@@ -7,9 +7,6 @@ Position
 iwidth 25
 iheight 25
 
-Sprite
-isprite_time -1
-
 Spell
 fmax_dis 800
 fspell_speed 400
