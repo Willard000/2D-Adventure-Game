@@ -17,6 +17,6 @@ Editor Demo - https://www.youtube.com/watch?v=icD7bMi9fzw
 
 
 Download Instructions  
-1. Download all files or just /Release & /Data  
+1. Download all files or just /Release & /5.24/Data  
 2. Place /Data folder into /Release  
 3. Run 5.24.exe  
