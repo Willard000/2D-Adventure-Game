@@ -9,15 +9,11 @@ bconsole_show 0
 
 # Window
 swindow_title ...
-#iwindow_x 0
-#iwindow_y 0
-#iwindow_w 1600
-#iwindow_h 900
 iwindow_x 500
 iwindow_y 200
 iwindow_w 1920
 iwindow_h 1080
-iwindow_mode 5
+iwindow_mode 2
 window_color 0 0 0 255
 
 # Clock
