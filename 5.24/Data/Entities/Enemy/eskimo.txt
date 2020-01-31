@@ -15,8 +15,8 @@ isprite_cast_time 500
 Enemy
 senemy_name Eskimo
 senemy_script Data/Lua/Enemies/eskimo.lua
-ienemy_combat_range_w 500
-ienemy_combat_range_h 500
+ienemy_combat_range_w 800
+ienemy_combat_range_h 800
 enemy_drop_table 41 10
 
 Magic
@@ -24,13 +24,13 @@ imain_spell_id 9
 icast_speed 100
 
 Combat
-icombat_max_health 1000
+icombat_max_health 150
 icombat_max_mana 1000
-icombat_damage 100
-icombat_armor 1
+icombat_damage 18
+icombat_armor 12
 icombat_hps 0
 icombat_mps 0
 icombat_drain 0
 icombat_luck 0
-icombat_exp 10
+icombat_exp 88
 icombat_time 10000

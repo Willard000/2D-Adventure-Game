@@ -12,7 +12,7 @@ iitem_slot 2
 sitem_name Large Mana Potion
 sitem_info Restores 800 Mana
 item_color 120 155 230 255
-iitem_sell_value 4
+iitem_sell_value 20
 
 bitem_equipable 0
 bitem_useable 1

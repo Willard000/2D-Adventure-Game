@@ -12,9 +12,9 @@ iitem_slot -1
 sitem_name Medium Speed Potion
 sitem_info Increases speed for a short period of time
 item_color 170 240 190 255
-iitem_speed 20
+iitem_speed 200
 iitem_duration 100000
-iitem_sell_value 4
+iitem_sell_value 15
 
 bitem_equipable 0
 bitem_useable 1

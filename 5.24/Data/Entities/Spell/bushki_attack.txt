@@ -12,7 +12,7 @@ isprite_time -1
 
 Spell
 fmax_dis 1000
-fspell_speed 500
+fspell_speed 300
 ideath_time 10000
 sspell_script_name Fireball
 sspell_script Data/Lua/Spells/fireball.lua

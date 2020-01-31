@@ -10,7 +10,8 @@ iheight 32
 Item
 iitem_slot 4
 sitem_name Green Pants
-iitem_armor 4
+iitem_mana 25
+iitem_armor 1
 item_color 40 175 35 255
 iitem_sell_value 25
 

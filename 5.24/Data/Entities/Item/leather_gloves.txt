@@ -10,8 +10,8 @@ iheight 32
 Item
 iitem_slot 5
 sitem_name Leather Gloves
-iitem_mana 100
-iitem_mps 1
+iitem_health 50
+iitem_mana 25
 item_color 75 50 15 255
 iitem_sell_value 25
 

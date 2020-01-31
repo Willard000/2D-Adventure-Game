@@ -6,3 +6,4 @@
 4 Data/Entities/Enemy/scarecrow_leader.txt
 5 Data/Entities/Enemy/snowman.txt
 6 Data/Entities/Enemy/eskimo.txt
+7 Data/Entities/Enemy/eskimo_leader.txt

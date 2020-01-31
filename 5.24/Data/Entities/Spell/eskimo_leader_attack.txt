@@ -1,0 +1,20 @@
+# Eskimo_Leader_Attack
+
+itexture_id 12
+sentity_name Eskimo Leader Attack
+
+Position
+iwidth 15
+iheight 15
+
+Sprite
+isprite_time -1
+
+Spell
+fmax_dis 2000
+fspell_speed 500
+ideath_time 10000
+sspell_script_name Eskimo_Leader_Attack
+sspell_script Data/Lua/Spells/Eskimo_leader_attack.lua
+ispell_damage 10
+spell_color 75 75 75 255

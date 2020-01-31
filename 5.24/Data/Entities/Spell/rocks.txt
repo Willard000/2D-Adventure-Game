@@ -8,7 +8,7 @@ iwidth 32
 iheight 32
 
 Sprite
-isprite_time 200
+isprite_time 1000
 
 Spell
 fmax_dis 100
@@ -19,4 +19,4 @@ sspell_script Data/Lua/Spells/spell_rocks.lua
 ispell_damage 5
 ispell_mana_cost 10
 ispell_type 2
-spell_color 245 175 15 255
+spell_color 175 110 35 255

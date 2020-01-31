@@ -10,7 +10,7 @@ iheight 32
 Item
 iitem_slot 6
 sitem_name Boots
-iitem_speed 10
+iitem_speed 25
 item_color 175 140 100 255
 iitem_sell_value 5
 

@@ -12,7 +12,7 @@ iitem_slot 2
 sitem_name Large Health Potion
 sitem_info Restores 800 Health
 item_color 240 80 90 255
-iitem_sell_value 4
+iitem_sell_value 20
 
 bitem_equipable 0
 bitem_useable 1

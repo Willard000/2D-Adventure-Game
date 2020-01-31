@@ -12,11 +12,11 @@ isprite_time 200
 
 Spell
 fmax_dis 1000
-fspell_speed 300
+fspell_speed 400
 ideath_time 100
 sspell_script_name Fireball
 sspell_script Data/Lua/Spells/fireball.lua
-ispell_damage 5
-ispell_mana_cost 10
+ispell_damage 1
+ispell_mana_cost 4
 ispell_type 0
-spell_color 245 175 15 255
+spell_color 75 230 230 255

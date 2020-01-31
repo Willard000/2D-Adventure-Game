@@ -22,4 +22,4 @@ Interact
 sinteract_name Nav
 sinteract_script_name Nav
 sinteract_script Data/Lua/NPC/nav.lua
-sinteract_ui_info Talk
+sinteract_ui_info Talk [E] Trade [R]

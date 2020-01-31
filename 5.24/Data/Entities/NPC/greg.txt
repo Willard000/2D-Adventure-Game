@@ -20,4 +20,4 @@ Interact
 sinteract_name Greg
 sinteract_script_name Greg
 sinteract_script Data/Lua/NPC/greg.lua
-sinteract_ui_info Talk
+sinteract_ui_info Talk [E]

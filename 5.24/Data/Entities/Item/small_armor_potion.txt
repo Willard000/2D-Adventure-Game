@@ -12,7 +12,7 @@ iitem_slot -1
 sitem_name Small Armor Potion
 sitem_info Increases armor for a short period of time
 item_color 190 140 220 255
-iitem_armor 15
+iitem_armor 5
 iitem_duration 100000
 iitem_sell_value 5
 

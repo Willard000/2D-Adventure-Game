@@ -592,10 +592,10 @@ void Inventory::update_selection_info() {
 		return;
 	}
 
-	if (_selection.equipped) {
+	if (_selection.equipped && GetPlayer(_entity)->equipped_items[_selection.index]) {
 		set_item_info(GetItem(GetPlayer(_entity)->equipped_items[_selection.index]));
 	}
-	else {
+	else if (!_selection.equipped) {
 		set_item_info(GetItem(_items->at(_selection.index)));
 	}
 }

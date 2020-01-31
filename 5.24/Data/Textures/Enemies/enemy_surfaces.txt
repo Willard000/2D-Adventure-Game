@@ -6,3 +6,4 @@
 4 Data/Textures/Enemies/Icons/scarecrow.png
 5 Data/Textures/Enemies/Icons/snowman.png
 6 Data/Textures/Enemies/Icons/eskimo.png
+7 Data/Textures/Enemies/Icons/eskimo_leader.png

@@ -1,6 +1,6 @@
 # Snowman
 
-itexture_id 4
+itexture_id 5
 sentity_name Snowman
 
 Position
@@ -17,20 +17,20 @@ senemy_name Snowman
 senemy_script Data/Lua/Enemies/snowman.lua
 ienemy_combat_range_w 1000
 ienemy_combat_range_h 1000
-enemy_drop_table 14 100
+enemy_drop_table 39 50
 
 Magic
 imain_spell_id 8
-icast_speed 500
+icast_speed 400
 
 Combat
-icombat_max_health 1000
+icombat_max_health 125
 icombat_max_mana 1000
-icombat_damage 100
-icombat_armor 1
+icombat_damage 18
+icombat_armor 10
 icombat_hps 0
 icombat_mps 0
 icombat_drain 0
 icombat_luck 0
-icombat_exp 10
+icombat_exp 77
 icombat_time 10000

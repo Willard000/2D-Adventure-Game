@@ -1,16 +1,16 @@
 # Player
-sname Matthew
-ilevel 11
-iexp 510
-ihealth 475
-imana 100625
-igold 299116
+sname Jim
+ilevel 1
+iexp 0
+ihealth 100
+imana 100
+igold 0
 imain_spell 0
-isecondary_spell 5
-position 239.74 269.56
-inventory 17 5 5 5 7 6 16 5 8 0 37 8 38 0 0 0 0 0 0 0 0 0 0 38 37 14 14 40 39 
-equipped 39 40 15 7 8 16 17 5 
+isecondary_spell 7
+position 604.78 667.5
+inventory 
+equipped -1 -1 -1 -1 -1 -1 -1 -1 
 buffs 
-quest_log id 0 active 1 complete 1 count 36 . id 1 active 1 complete 1 count 13 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+quest_log id 0 active 0 complete 0 count 0 . id 1 active 0 complete 0 count 0 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 spells 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 
-imap_id 38
+imap_id 10000

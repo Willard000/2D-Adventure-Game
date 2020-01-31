@@ -1,0 +1,16 @@
+# Eskimo Leader
+Sprite
+stexture Data/Textures/Enemies/eskimo_leader.png
+iwidth 32
+iheight 32
+iidle 0
+imin_up 2
+imax_up 3
+imin_down 0
+imax_down 1
+imin_left 6
+imax_left 7
+imin_right 4
+imax_right 5
+icast 0
+inum_frames 8

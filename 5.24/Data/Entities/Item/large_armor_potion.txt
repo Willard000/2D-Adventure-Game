@@ -14,7 +14,7 @@ sitem_info Increases armor for a short period of time
 item_color 190 140 220 255
 iitem_armor 30
 iitem_duration 100000
-iitem_sell_value 4
+iitem_sell_value 20
 
 bitem_equipable 0
 bitem_useable 1

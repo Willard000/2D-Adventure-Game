@@ -12,9 +12,9 @@ iitem_slot -1
 sitem_name Medium Damage Potion
 sitem_info Increases damage for a short period of time
 item_color 225 170 130 255
-iitem_damage 20
+iitem_damage 15
 iitem_duration 100000
-iitem_sell_value 4
+iitem_sell_value 15
 
 bitem_equipable 0
 bitem_useable 1

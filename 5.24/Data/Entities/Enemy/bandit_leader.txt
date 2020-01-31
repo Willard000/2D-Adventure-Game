@@ -15,8 +15,8 @@ isprite_cast_time 500
 Enemy
 senemy_name Bandit_Leader
 senemy_script Data/Lua/Enemies/bandit_leader.lua
-ienemy_combat_range_w 300
-ienemy_combat_range_h 300
+ienemy_combat_range_w 500
+ienemy_combat_range_h 500
 enemy_drop_table 16 100 17 100
 
 Magic
@@ -24,12 +24,12 @@ imain_spell_id 2
 icast_speed 500
 
 Combat
-icombat_max_health 1000
+icombat_max_health 250
 icombat_max_mana 1000
-icombat_damage 5
-icombat_armor 5
+icombat_damage 20
+icombat_armor 7
 icombat_hps 0
-icombat_mps 0
+icombat_mps 4
 icombat_drain 0
 icombat_luck 0
 icombat_exp 100

@@ -21,10 +21,10 @@ enemy_drop_table 0 25
 
 Magic
 imain_spell_id 1
-icast_speed 500
+icast_speed 600
 
 Combat
-icombat_max_health 100
+icombat_max_health 25
 icombat_max_mana 100
 icombat_damage 1
 icombat_armor 1

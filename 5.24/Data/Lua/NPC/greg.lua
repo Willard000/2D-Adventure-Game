@@ -21,7 +21,7 @@ function Greg.interact(interact)
 		print_blank(player:get_quest_info(0) .. " Bushkis")
 		if player:quest_should_complete(0) and not player:quest_is_complete(0) then
 			print_blank("Greg: Thank you for killing those nasty creatures for me!")
-			print_blank("Greg: Here this shirt I made.")
+			print_blank("Greg: Here take this shirt I made.")
 			player:add_item(7)
 			player:complete_quest(0)
 			npc:set_current_line(2)

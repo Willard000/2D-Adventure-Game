@@ -1,0 +1,36 @@
+# Eskimo Leader
+
+itexture_id 7
+sentity_name Eskimo Leader
+
+Position
+iwidth 32
+iheight 32
+fspeed 300
+
+Sprite
+isprite_time 300
+isprite_cast_time 500
+
+Enemy
+senemy_name Eskimo_Leader
+senemy_script Data/Lua/Enemies/eskimo_leader.lua
+ienemy_combat_range_w 500
+ienemy_combat_range_h 500
+enemy_drop_table 41 10
+
+Magic
+imain_spell_id 10
+icast_speed 100
+
+Combat
+icombat_max_health 1000
+icombat_max_mana 1000
+icombat_damage 100
+icombat_armor 1
+icombat_hps 0
+icombat_mps 0
+icombat_drain 0
+icombat_luck 0
+icombat_exp 10
+icombat_time 10000

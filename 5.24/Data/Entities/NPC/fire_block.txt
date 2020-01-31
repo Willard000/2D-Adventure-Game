@@ -6,6 +6,7 @@ sentity_name Fire Block
 Position
 iwidth 32
 iheight 64
+ispeed 100
 
 Sprite
 isprite_time 225

@@ -10,8 +10,8 @@ iheight 32
 Item
 iitem_slot 7
 sitem_name Ring
-iitem_hps 1
-iitem_mps 1
+iitem_hps 2
+iitem_mps 4
 iitem_luck 1
 item_color 215 215 215 255
 iitem_sell_value 25

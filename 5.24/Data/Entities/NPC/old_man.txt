@@ -21,4 +21,4 @@ Interact
 sinteract_name Old_Man
 sinteract_script_name Old_Man
 sinteract_script Data/Lua/NPC/old_man.lua
-sinteract_ui_info Talk
+sinteract_ui_info Talk [E]

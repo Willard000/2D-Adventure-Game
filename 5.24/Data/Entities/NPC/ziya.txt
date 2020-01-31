@@ -22,4 +22,4 @@ Interact
 sinteract_name Ziya
 sinteract_script_name Ziya
 sinteract_script Data/Lua/NPC/ziya.lua
-sinteract_ui_info Talk
+sinteract_ui_info Talk [E] Trade [R]

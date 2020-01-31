@@ -1,0 +1,4 @@
+# Eskimo Leader Icon
+stexture Data/Textures/Enemies/Icons/eskimo_leader.png
+iwidth 32
+iheight 32

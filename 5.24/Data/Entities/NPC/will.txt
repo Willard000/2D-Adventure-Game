@@ -20,4 +20,4 @@ Interact
 sinteract_name Will
 sinteract_script_name Will
 sinteract_script Data/Lua/NPC/will.lua
-sinteract_ui_info Talk
+sinteract_ui_info Talk [E]

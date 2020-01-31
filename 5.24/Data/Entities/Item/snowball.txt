@@ -10,7 +10,7 @@ iheight 20
 Item
 iitem_slot 0
 sitem_name Snowball
-iitem_damage 4
+iitem_damage 8
 item_color 220 255 250 255
 iitem_sell_value 4
 

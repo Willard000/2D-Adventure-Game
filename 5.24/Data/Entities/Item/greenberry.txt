@@ -12,7 +12,7 @@ iitem_slot -1
 sitem_name Greenberry
 sitem_info Increases speed for a short period of time
 item_color 125 190 160 255
-iitem_speed 10
+iitem_speed 50
 iitem_duration 10000
 iitem_sell_value 4
 

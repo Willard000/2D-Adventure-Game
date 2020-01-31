@@ -6,7 +6,7 @@ sentity_name Player
 Position
 iwidth 32
 iheight 32
-fspeed 1000
+fspeed 400
 
 Sprite
 isprite_time 300
@@ -20,11 +20,11 @@ splayer_name Matt
 
 Combat
 icombat_max_health 100
-icombat_max_mana 100000
+icombat_max_mana 100
 icombat_damage 1
 icombat_armor 1
-icombat_hps 1
-icombat_mps 1
+icombat_hps 2
+icombat_mps 2
 icombat_drain 0
 icombat_luck 0
 icombat_time 10000
