@@ -145,20 +145,24 @@ bool SpellComponent::is_collision() {
 				if (type == TYPE_SPELL) {
 					if (SpellComponent *spell = GetSpell(e)) {
 						if (spell->spell_type == SPELL_TYPE::EARTH || spell_type == SPELL_TYPE::EARTH) {
-							if (collision(position->rect, GetPosition(e)->rect, position->rotation, GetPosition(e)->rotation) &&
-								e != caster && e->get_type() != caster->get_type()) {
+							if (PositionComponent *e_position = GetPosition(e)) {
+								if (collision(position->rect, e_position->rect, position->rotation, e_position->rotation) &&
+									e != caster && e->get_type() != caster->get_type()) {
 
-								on_collision(e);
-								return true;
+									on_collision(e);
+									return true;
+								}
 							}
 						}
 					}
 				}
-				else if (collision(position->rect, GetPosition(e)->rect, position->rotation, GetPosition(e)->rotation) &&
-					e != caster && e->get_type() != caster->get_type()) {
+				else if (PositionComponent *e_position = GetPosition(e)) {
+					if (collision(position->rect, e_position->rect, position->rotation, e_position->rotation) &&
+						e != caster && e->get_type() != caster->get_type()) {
 
-					on_collision(e);
-					return true;
+						on_collision(e);
+						return true;
+					}
 				}
 			}
 		}
@@ -179,9 +183,10 @@ void SpellComponent::death() {
 	dead = true;
 	death_timer.reset();
 	if (SpriteComponent *sprite = GetSprite(entity)) {
-		Sprite *sprite_info = Environment::get().get_resource_manager()->get_sprite_info(entity);
-		sprite->pos.x = sprite_info->get_frame(sprite_info->end).x;
-		sprite->pos.y = sprite_info->get_frame(sprite_info->end).y;
-		sprite->time = -1;
+		if (Sprite *sprite_info = Environment::get().get_resource_manager()->get_sprite_info(entity)) {
+			sprite->pos.x = sprite_info->get_frame(sprite_info->end).x;
+			sprite->pos.y = sprite_info->get_frame(sprite_info->end).y;
+			sprite->time = -1;
+		}
 	}
 }
