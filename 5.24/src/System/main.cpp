@@ -21,7 +21,7 @@ int main(int args, char *argc[]) {
 	srand(time(NULL));
 
 	int input = 0;
-	std::cin >> input;
+	//std::cin >> input;
 
 	if (input == 1) {
 		Editor editor;

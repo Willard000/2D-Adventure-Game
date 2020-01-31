@@ -143,13 +143,14 @@ bool SpellComponent::is_collision() {
 				type == TYPE_NPC ||
 				type == TYPE_SPELL)) {
 				if (type == TYPE_SPELL) {
-					SpellComponent *spell = GetSpell(e);
-					if (spell->spell_type == SPELL_TYPE::EARTH || spell_type == SPELL_TYPE::EARTH) {
-						if (collision(position->rect, GetPosition(e)->rect, position->rotation, GetPosition(e)->rotation) &&
-							e != caster && e->get_type() != caster->get_type()) {
+					if (SpellComponent *spell = GetSpell(e)) {
+						if (spell->spell_type == SPELL_TYPE::EARTH || spell_type == SPELL_TYPE::EARTH) {
+							if (collision(position->rect, GetPosition(e)->rect, position->rotation, GetPosition(e)->rotation) &&
+								e != caster && e->get_type() != caster->get_type()) {
 
-							on_collision(e);
-							return true;
+								on_collision(e);
+								return true;
+							}
 						}
 					}
 				}

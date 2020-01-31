@@ -5,7 +5,7 @@ iconsole_x -1100
 iconsole_y 450
 iconsole_w 1100
 iconsole_h 600
-bconsole_show 1
+bconsole_show 0
 
 # Window
 swindow_title ...

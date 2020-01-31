@@ -1,0 +1,76 @@
+﻿  InputHandler.cpp
+  UIHandler.cpp
+  UIHandler_Editor.cpp
+  Combat_Lua.cpp
+  Commands_Lua.cpp
+d:\documents\visual studio 2017\projects\5.24\5.24\src\lua\commands_lua.cpp(86): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Effect_Lua.cpp
+  Enemy_Lua.cpp
+  Entity_Lua.cpp
+  Globals_Lua.cpp
+d:\documents\visual studio 2017\projects\5.24\5.24\src\lua\globals_lua.cpp(58): warning C4244: 'initializing': conversion from 'lua_Number' to 'int', possible loss of data
+d:\documents\visual studio 2017\projects\5.24\5.24\src\lua\globals_lua.cpp(67): warning C4244: 'initializing': conversion from 'lua_Number' to 'int', possible loss of data
+d:\documents\visual studio 2017\projects\5.24\5.24\src\lua\globals_lua.cpp(68): warning C4244: 'initializing': conversion from 'lua_Number' to 'int', possible loss of data
+d:\documents\visual studio 2017\projects\5.24\5.24\src\lua\globals_lua.cpp(69): warning C4244: 'initializing': conversion from 'lua_Number' to 'int', possible loss of data
+  Interact_Lua.cpp
+  Item_Lua.cpp
+  Magic_Lua.cpp
+  NPC_Lua.cpp
+  Player_Lua.cpp
+  Position_Lua.cpp
+  Spell_Lua.cpp
+  Sprite_Lua.cpp
+  EntityManager.cpp
+  InputManager.cpp
+  ResourceManager.cpp
+  Compiling...
+  TextManager.cpp
+  TextureManager.cpp
+  UIManager.cpp
+  Camera.cpp
+d:\documents\visual studio 2017\projects\5.24\5.24\src\resources\camera.cpp(77): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\documents\visual studio 2017\projects\5.24\5.24\src\resources\camera.cpp(87): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  ComponentLoader.cpp
+  EffectComponent.cpp
+  EnemyComponent.cpp
+  InteractComponent.cpp
+  ItemComponent.cpp
+  MagicComponent.cpp
+  NPCComponent.cpp
+  PlayerComponent.cpp
+  PositionComponent.cpp
+  SpellComponent.cpp
+  SpriteComponent.cpp
+  CombatComponent.cpp
+  Entity.cpp
+  Map.cpp
+  Kill_Quest.cpp
+  Sprite.cpp
+  Compiling...
+  Text.cpp
+  Text_Timed.cpp
+  Editor.cpp
+  Engine.cpp
+  Environment.cpp
+  Inventory.cpp
+  main.cpp
+d:\documents\visual studio 2017\projects\5.24\5.24\src\system\main.cpp(21): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Renderer.cpp
+  Shop.cpp
+  Clock.cpp
+  Collision.cpp
+  FileReader.cpp
+  Log.cpp
+  PlayerLoader.cpp
+  QuestLoader.cpp
+  TextBox.cpp
+d:\documents\visual studio 2017\projects\5.24\5.24\src\system\utility\textbox.cpp(38): warning C4018: '>': signed/unsigned mismatch
+  Timer.cpp
+  WindowLoader.cpp
+  Window.cpp
+  Generating code
+  5442 of 5442 functions (100.0%) were compiled.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  5.24.vcxproj -> D:\Documents\Visual Studio 2017\Projects\5.24\Release\5.24.exe
