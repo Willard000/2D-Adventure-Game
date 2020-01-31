@@ -16,7 +16,7 @@ Game Demo - https://www.youtube.com/watch?v=sG_juegHz-M
 Editor Demo - https://www.youtube.com/watch?v=icD7bMi9fzw
 
 
-Download Instruction  
+Download Instructions  
 1. Download all files or just /Release & /Data  
 2. Place /Data folder into /Release  
 3. Run 5.24.exe  
