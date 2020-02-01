@@ -34,3 +34,10 @@ Trade - R
 Talk - E  
 Pick up item - Q  
 Save / Quit - Escape  
+
+**Debug**  
+Press Enter and type...  
+tcl() -- Turns off collision  
+reload() -- Reloads current map  
+reload_all() -- Reloads all maps  
+teleport(map_id) -- Teleports to new map  
