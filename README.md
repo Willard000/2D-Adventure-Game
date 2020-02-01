@@ -1,7 +1,7 @@
 # C++ Adventure Game
 
 Written in C/C++ using the SDL Graphics Library,  
-including lua scripting thanks to https://github.com/tomaka/luawrapper  
+Including lua scripting thanks to https://github.com/tomaka/luawrapper  
 
 **Screenshots**  
 ![](https://github.com/willardt/2D-Adventure-Game/blob/master/Screenshots/ss1.png?raw=true "")  
