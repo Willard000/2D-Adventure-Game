@@ -1,8 +1,6 @@
-﻿  main.cpp
-d:\documents\visual studio 2017\projects\5.24\5.24\src\system\main.cpp(21): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-d:\documents\visual studio 2017\projects\5.24\5.24\src\system\main.cpp(24): warning C4018: '<': signed/unsigned mismatch
+﻿  EnemyComponent.cpp
   Generating code
-  1 of 5442 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  2 of 5442 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     2 functions had inline decision re-evaluated but remain unchanged
   Finished generating code

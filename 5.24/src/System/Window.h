@@ -1,5 +1,5 @@
 #include <string>
-#include <Windows.h>
+//#include <Windows.h>
 
 #include <SDL.h>
 
@@ -58,7 +58,7 @@ private:
 	int _width, _height;
 	int _width_half, _height_half;
 
-	HWND _console;
+	//HWND _console;
 	bool _show_console;
 };
 

@@ -11,9 +11,9 @@ Window::Window(Console_Settings console, Window_Settings window) :
 	_camera						( new Camera(window.w, window.h) ),
 	_renderer					( new Renderer(_window, window.color, _camera) )
 {
-	_console = GetConsoleWindow();
-	MoveWindow(_console, console.x, console.y, console.w, console.h, TRUE);
-	ShowWindow(_console, console.show);
+	//_console = GetConsoleWindow();
+	//MoveWindow(_console, console.x, console.y, console.w, console.h, TRUE);
+	//ShowWindow(_console, console.show);
 	set_window_mode(window.mode);
 }
 
@@ -25,7 +25,7 @@ Window::~Window() {
 
 void Window::toggle_console() {
 	_show_console = !_show_console;
-	ShowWindow(_console, _show_console);
+	//ShowWindow(_console, _show_console);
 }
 
 void Window::set_window_mode(int window_mode) {

@@ -79,9 +79,11 @@ bool EnemyComponent::is_collision() {
 				type == TYPE_PLAYER ||
 				type == TYPE_ENEMY  ||
 				type == TYPE_NPC) {
-				if (collision(position->rect, GetPosition(e)->rect, position->rotation, GetPosition(e)->rotation) &&
-					e != entity)
-					return true;
+				if (PositionComponent *e_position = GetPosition(e)) {
+					if (collision(position->rect, e_position->rect, position->rotation, e_position->rotation) &&
+						e != entity)
+						return true;
+				}
 			}
 		}
 	}
