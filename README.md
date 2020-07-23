@@ -3,6 +3,9 @@
 Written in C/C++ using the SDL Graphics Library,  
 Including Lua scripting thanks to https://github.com/tomaka/luawrapper  
 
+**Game Demo** - https://www.youtube.com/watch?v=sG_juegHz-M  
+**Editor Demo** - https://www.youtube.com/watch?v=icD7bMi9fzw  
+
 **Screenshots**  
 ![](https://github.com/willardt/2D-Adventure-Game/blob/master/Screenshots/ss1.png?raw=true "")  
 ![](https://github.com/willardt/2D-Adventure-Game/blob/master/Screenshots/ss2.png?raw=true "")  
@@ -16,9 +19,6 @@ Unique enemies for each zone
 40+ items  
 2 Quests  
 Trading / Inventory system  
-
-**Game Demo** - https://www.youtube.com/watch?v=sG_juegHz-M  
-**Editor Demo** - https://www.youtube.com/watch?v=icD7bMi9fzw
 
 **Download Instructions**  
 1. Download all files or just /Release & /5.24/Data  
